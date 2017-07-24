@@ -1,0 +1,78 @@
+﻿<%@page contentType="text/html;charset=utf-8" language="java"%>
+<%@page isELIgnored="false"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
+<table  id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
+	<thead>
+		<tr>
+			<th width="30"></th>
+			<th>服务名称</th>
+			<th>服务品类</th>
+			<!-- <th>服务别名</th> -->
+			<th>服务类型</th>
+			<th>排序</th>
+			<th width="100">创建人</th>
+			<th width="150">创建时间</th>
+			<th width="50">状态</th>
+			<th width="125">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:choose>
+			<c:when test="${fn:length(list) >0}">
+				<c:forEach items="${list}" var="e" varStatus="s">
+					<c:forEach items="${e.goodsList}" var="goodsOne" varStatus="status">
+						<tr class="bg_list_body">
+							<td width="30">${status.index+1}</td>							
+							<td style="text-align: left;"><c:out value="${goodsOne.title}" /></td>
+							<td><c:out value="${e.title}" /></td>
+							<%-- <td><c:out value="${goodsOne.subTitle}" /></td> --%>
+							<%-- <td><c:out value="${e.content}"/></td> --%>
+							<%-- <td><c:out value="${e.amount}"/></td>
+								<td><c:out value="${e.profit}"/></td> --%>
+							<%-- <td><c:out value="${e.tijianTypeId}"/></td>
+								<td><c:out value="${e.tijianHospitalId}"/></td> --%>
+							<td>
+								<c:if test="${goodsOne.type == 1}">
+									<c:out value="开放型订单" />
+								</c:if> <c:if test="${goodsOne.type != 1}">
+									<c:out value="内部订单" />
+								</c:if>
+							</td>
+							<td><c:out value="${goodsOne.sort}" /></td>
+							<%-- <td><c:out value="${e.remark}"/></td> --%>
+							
+								<td><c:out value="${goodsOne.creatorName}"/></td>
+							<td><fmt:formatDate value="${goodsOne.createTime}"
+								pattern="yy-MM-dd HH:mm" /></td>
+								<td><c:if test="${goodsOne.status == 0}">
+									<c:out value="使用中" />
+								</c:if> <c:if test="${goodsOne.status != 0}">
+									<c:out value="已停用" />
+								</c:if></td>
+							<td><a onclick="redirectDetailPage('${goodsOne.id}')"> <img
+									src="/static/images/chakan.png">
+							</a> <a onclick="redirectUpdatePage('${goodsOne.id}')"> <img
+									src="/static/images/xiugai.png">
+							</a>
+							 <a onclick="deleteById('${goodsOne.id}')"> 
+							</a> <a onclick="deleteById('${goodsOne.id}')"> <img
+									src="/static/images/shanchu.png">
+							</a></td>
+						</tr>
+					</c:forEach>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<tr>
+					<td colspan="20" align="center">没有可显示的记录。</td>
+				</tr>
+			</c:otherwise>
+		</c:choose>
+	</tbody>
+</table>
+<div class="page">
+	<jphs:page pageInfos="${pageInfo }"></jphs:page>	
+</div>
