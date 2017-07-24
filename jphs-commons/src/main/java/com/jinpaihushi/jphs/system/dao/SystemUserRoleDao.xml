@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-07-06 09:05:06
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.system.dao.SystemUserRoleDao">
+	
+	<sql id="field">
+		SUR.id, SUR.system_user_id, SUR.system_role_id
+	</sql>
+
+	<sql id="fieldGlobal">
+		SUR.id SUR_id, SUR.system_user_id SUR_system_user_id, 
+		SUR.system_role_id SUR_system_role_id
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		SUR.id id, SUR.system_user_id systemUserId, 
+		SUR.system_role_id systemRoleId
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND SUR.id=#{id}
+		</if>
+		<if test="systemUserId!=null and systemUserId!=''">
+			AND SUR.system_user_id=#{systemUserId}
+		</if>
+		<if test="systemRoleId!=null and systemRoleId!=''">
+			AND SUR.system_role_id=#{systemRoleId}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND SUR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="systemUserId!=null and systemUserId!=''">
+				AND SUR.system_user_id LIKE CONCAT('%', #{systemUserId}, '%')
+			</if>
+			<if test="systemRoleId!=null and systemRoleId!=''">
+				AND SUR.system_role_id LIKE CONCAT('%', #{systemRoleId}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				SUR.id=#{id}, 
+		   </if>
+           <if test="systemUserId!=null">
+				SUR.system_user_id=#{systemUserId}, 
+		   </if>
+           <if test="systemRoleId!=null">
+				SUR.system_role_id=#{systemRoleId}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="systemUserRole" type="com.jinpaihushi.jphs.system.model.SystemUserRole">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemUserId" column="system_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemRoleId" column="system_role_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="systemUserRoleGlobal" type="com.jinpaihushi.jphs.system.model.SystemUserRole">
+		<result property="id" column="SUR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemUserId" column="SUR_system_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemRoleId" column="SUR_system_role_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.system.model.SystemUserRole">
+		INSERT INTO `SYSTEM_USER_ROLE`(
+			id, system_user_id, 
+			system_role_id
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{systemUserId,jdbcType=VARCHAR}, 
+			#{systemRoleId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSTEM_USER_ROLE`(
+			id, system_user_id, 
+			system_role_id
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.systemUserId,jdbcType=VARCHAR}, 
+			#{item.systemRoleId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE SUR FROM `SYSTEM_USER_ROLE` SUR WHERE SUR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SYSTEM_USER_ROLE` SUR
+		SET 
+		SUR.STATUS = -1
+		WHERE SUR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSTEM_USER_ROLE` SUR
+		<include refid="dynamicSet" /> 
+	    WHERE SUR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="systemUserRole">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_USER_ROLE` SUR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSTEM_USER_ROLE` SUR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="systemUserRole">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_USER_ROLE` SUR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="systemUserRole">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_USER_ROLE` SUR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="systemUserRole">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_USER_ROLE` SUR
+		WHERE SUR.ID = #{id}
+	</select>
+	
+</mapper>

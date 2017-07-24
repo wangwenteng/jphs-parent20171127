@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	zhangzd
+	date	:	2017-06-26 14:48:27
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.activity.dao.VoucherUseDao">
+	
+	<sql id="field">
+		VU.id, VU.voucher_repertory_id, VU.phone, VU.amount, 
+		VU.start_time, VU.end_time, VU.use_time, VU.creator_name, 
+		VU.creator_id, VU.create_time, VU.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		VU.id VU_id, VU.voucher_repertory_id VU_voucher_repertory_id, 
+		VU.phone VU_phone, VU.amount VU_amount, 
+		VU.start_time VU_start_time, VU.end_time VU_end_time, 
+		VU.use_time VU_use_time, VU.creator_name VU_creator_name, 
+		VU.creator_id VU_creator_id, VU.create_time VU_create_time, 
+		VU.status VU_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		VU.id id, VU.voucher_repertory_id voucherRepertoryId, 
+		VU.phone phone, VU.amount amount, 
+		VU.start_time startTime, VU.end_time endTime, 
+		VU.use_time useTime, VU.creator_name creatorName, 
+		VU.creator_id creatorId, VU.create_time createTime, 
+		VU.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND VU.id=#{id}
+		</if>
+		<if test="voucherRepertoryId!=null and voucherRepertoryId!=''">
+			AND VU.voucher_repertory_id=#{voucherRepertoryId}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND VU.phone=#{phone}
+		</if>
+		<if test="amount!=null">
+			AND VU.amount=#{amount}
+		</if>
+		<if test="startTime!=null">
+			AND VU.start_time=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			AND VU.end_time=#{endTime}
+		</if>
+		<if test="useTime!=null">
+			AND VU.use_time=#{useTime}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND VU.creator_name=#{creatorName}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND VU.creator_id=#{creatorId}
+		</if>
+		<if test="createTime!=null">
+			AND VU.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND VU.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND VU.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="voucherRepertoryId!=null and voucherRepertoryId!=''">
+				AND VU.voucher_repertory_id LIKE CONCAT('%', #{voucherRepertoryId}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND VU.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="amount!=null">
+				AND VU.amount=#{amount}
+			</if>
+			<if test="startTime!=null">
+				AND VU.start_time=#{startTime}
+			</if>
+			<if test="endTime!=null">
+				AND VU.end_time=#{endTime}
+			</if>
+			<if test="useTime!=null">
+				AND VU.use_time=#{useTime}
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND VU.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND VU.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND VU.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND VU.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				VU.id=#{id}, 
+		   </if>
+           <if test="voucherRepertoryId!=null">
+				VU.voucher_repertory_id=#{voucherRepertoryId}, 
+		   </if>
+           <if test="phone!=null">
+				VU.phone=#{phone}, 
+		   </if>
+           <if test="amount!=null">
+				VU.amount=#{amount}, 
+		   </if>
+           <if test="startTime!=null">
+				VU.start_time=#{startTime}, 
+		   </if>
+           <if test="endTime!=null">
+				VU.end_time=#{endTime}, 
+		   </if>
+           <if test="useTime!=null">
+				VU.use_time=#{useTime}, 
+		   </if>
+           <if test="creatorName!=null">
+				VU.creator_name=#{creatorName}, 
+		   </if>
+           <if test="creatorId!=null">
+				VU.creator_id=#{creatorId}, 
+		   </if>
+           <if test="createTime!=null">
+				VU.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				VU.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="voucherUse" type="com.jinpaihushi.jphs.activity.model.VoucherUse">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherRepertoryId" column="voucher_repertory_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="startTime" column="start_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="useTime" column="use_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="voucherUseGlobal" type="com.jinpaihushi.jphs.activity.model.VoucherUse">
+		<result property="id" column="VU_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherRepertoryId" column="VU_voucher_repertory_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="VU_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="VU_amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="startTime" column="VU_start_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="VU_end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="useTime" column="VU_use_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorName" column="VU_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="VU_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="VU_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="VU_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.activity.model.VoucherUse">
+		INSERT INTO `VOUCHER_USE`(
+			id, voucher_repertory_id, 
+			phone, amount, 
+			start_time, end_time, 
+			use_time, creator_name, 
+			creator_id, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{voucherRepertoryId,jdbcType=VARCHAR}, 
+			#{phone,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+			#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+			#{useTime,jdbcType=TIMESTAMP}, #{creatorName,jdbcType=VARCHAR}, 
+			#{creatorId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `VOUCHER_USE`(
+			id, voucher_repertory_id, 
+			phone, amount, 
+			start_time, end_time, 
+			use_time, creator_name, 
+			creator_id, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.voucherRepertoryId,jdbcType=VARCHAR}, 
+			#{item.phone,jdbcType=VARCHAR}, #{item.amount,jdbcType=DECIMAL}, 
+			#{item.startTime,jdbcType=TIMESTAMP}, #{item.endTime,jdbcType=TIMESTAMP}, 
+			#{item.useTime,jdbcType=TIMESTAMP}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE VU FROM `VOUCHER_USE` VU WHERE VU.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `VOUCHER_USE` VU
+		SET 
+		VU.STATUS = -1
+		WHERE VU.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `VOUCHER_USE` VU
+		<include refid="dynamicSet" /> 
+	    WHERE VU.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="voucherUse">
+		SELECT <include refid="field"/>
+		FROM `VOUCHER_USE` VU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `VOUCHER_USE` VU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="voucherUse">
+		SELECT <include refid="field"/>
+		FROM `VOUCHER_USE` VU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="voucherUse">
+		SELECT <include refid="field"/>
+		FROM `VOUCHER_USE` VU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="voucherUse">
+		SELECT <include refid="field"/>
+		FROM `VOUCHER_USE` VU
+		WHERE VU.ID = #{id}
+	</select>
+	
+	
+		<select id="getList" resultMap="voucherUse">
+		 SELECT
+		    `vu`.`phone`
+		    , `vu`.`amount`
+		    , `vu`.`start_time`
+		    , `vu`.`end_time`
+		    , `vu`.`use_time`
+		    , `vu`.`creator_name`
+		    , `vu`.`creator_id`
+		    , `vu`.`create_time`
+		    , `vu`.`status`
+		    , `v`.`type`
+		    , `vu`.`id`
+			FROM
+		    `jphs`.`voucher_use` AS `vu`
+		    LEFT JOIN `jphs`.`voucher_repertory` AS `vr` 
+		        ON (`vu`.`voucher_repertory_id` = `vr`.`voucher_id`)
+		    LEFT JOIN `jphs`.`voucher` AS `v`
+		        ON (`vr`.`voucher_id` = `v`.`id`)
+		        WHERE 1=1 
+		    <if test="id!=null">
+				AND `vu`.`id` LIKE CONCAT('%', #{id}, '%') 
+		   </if>
+		    <if test="creatorName!=null">
+				AND `vu`.`creator_name` LIKE CONCAT('%', #{creatorName}, '%')  
+		   </if>
+		    <if test="status!=null">
+				AND `vu`.`status`=#{status} 
+		   </if>
+		    <if test="type!=null">
+				AND `v`.`type`=#{type} 
+		   </if>
+		   	<if test="beginTime!=null">
+				AND `vu`.`use_time` &gt;= #{beginTime}
+			</if>
+			<if test="stopTime!=null">
+				AND `vu`.`use_time` &lt;= #{stopTime}
+			</if>
+	</select>
+	
+	
+	<select id="getDetailtList" resultMap="voucherUse">
+		SELECT
+		    `voucher_use`.`voucher_repertory_id`
+		    , `voucher_use`.`creator_name`
+		    , `voucher_use`.`create_time`
+		    , `voucher_use`.`status`
+		FROM
+		    `jphs`.`voucher`
+		    LEFT JOIN `jphs`.`voucher_repertory` 
+		        ON (`voucher`.`id` = `voucher_repertory`.`voucher_id`)
+		    LEFT JOIN `jphs`.`voucher_use` 
+		        ON (`voucher_repertory`.`id` = `voucher_use`.`voucher_repertory_id`)
+		    WHERE voucher.`id` = #{id} 
+	</select>
+	
+</mapper>

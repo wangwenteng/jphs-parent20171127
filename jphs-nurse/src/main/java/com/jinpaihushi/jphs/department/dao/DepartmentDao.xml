@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-27 11:24:30
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.department.dao.DepartmentDao">
+	
+	<sql id="field">
+		D.id, D.name, D.sort, D.creator_id, 
+		D.creator_name, D.create_time, D.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		D.id D_id, D.name D_name, 
+		D.sort D_sort, D.creator_id D_creator_id, 
+		D.creator_name D_creator_name, D.create_time D_create_time, 
+		D.status D_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		D.id id, D.name name, 
+		D.sort sort, D.creator_id creatorId, 
+		D.creator_name creatorName, D.create_time createTime, 
+		D.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND D.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND D.name=#{name}
+		</if>
+		<if test="sort!=null">
+			AND D.sort=#{sort}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND D.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND D.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND D.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND D.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND D.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND D.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sort!=null">
+				AND D.sort=#{sort}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND D.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND D.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND D.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND D.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				D.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				D.name=#{name}, 
+		   </if>
+           <if test="sort!=null">
+				D.sort=#{sort}, 
+		   </if>
+           <if test="creatorId!=null">
+				D.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				D.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				D.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				D.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="department" type="com.jinpaihushi.jphs.department.model.Department">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="departmentGlobal" type="com.jinpaihushi.jphs.department.model.Department">
+		<result property="id" column="D_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="D_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="D_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="D_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="D_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="D_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="D_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.department.model.Department">
+		INSERT INTO `DEPARTMENT`(
+			id, name, 
+			sort, creator_id, 
+			creator_name, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{sort,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `DEPARTMENT`(
+			id, name, 
+			sort, creator_id, 
+			creator_name, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.sort,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE D FROM `DEPARTMENT` D WHERE D.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `DEPARTMENT` D
+		SET 
+		D.STATUS = -1
+		WHERE D.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `DEPARTMENT` D
+		<include refid="dynamicSet" /> 
+	    WHERE D.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="department">
+		SELECT <include refid="field"/>
+		FROM `DEPARTMENT` D
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `DEPARTMENT` D
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="department">
+		SELECT <include refid="field"/>
+		FROM `DEPARTMENT` D
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="department">
+		SELECT <include refid="field"/>
+		FROM `DEPARTMENT` D
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="department">
+		SELECT <include refid="field"/>
+		FROM `DEPARTMENT` D
+		WHERE D.ID = #{id}
+	</select>
+	
+</mapper>

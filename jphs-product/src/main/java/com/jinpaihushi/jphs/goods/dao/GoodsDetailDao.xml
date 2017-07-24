@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : scj date : 2017-06-27 10:02:37 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.goods.dao.GoodsDetailDao">
+	<resultMap id="getGoodsDetail" type="com.jinpaihushi.jphs.goods.model.GoodsDetail">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="productId" column="product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productName" column="product_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="gradeType" column="grade_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="tool" column="tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="insurance" column="insurance" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="must" column="must" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<association property="images"
+			javaType="com.jinpaihushi.jphs.goods.model.Images">
+			<result property="id" column="si_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="url" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="device_type" column="device_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<collection property="grade"
+			ofType="com.jinpaihushi.jphs.goods.model.Grade">
+			<result property="name" column="grade_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="grade" column="grade" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<collection property="goodsPrice"
+				ofType="com.jinpaihushi.jphs.goods.model.GoodsPrice">
+				<result property="id" column="pp_id" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="serviceNumber" column="service_number"
+					javaType="Integer" jdbcType="INTEGER"></result>
+				<result property="serviceTime" column="service_time"
+					javaType="Integer" jdbcType="INTEGER"></result>
+				<result property="unit" column="unit" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="title" column="pp_title" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="price" column="price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="oldPrice" column="old_price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="costPrice" column="cost_price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="profit" column="profit" javaType="Double"
+					jdbcType="DECIMAL"></result>
+			</collection>
+		</collection>
+	</resultMap>
+	<select id="getGoodsDetail" resultMap="getGoodsDetail">
+		SELECT
+		g.id,
+		g.title,
+		g.insurance,
+		g.grade_type,
+		g.tool,
+		g.must,
+		g.sub_title,
+		pd.id product_id,
+		pd.title product_name,
+		g.content,
+		si.id si_id,
+		si.url,
+		si.device_type,
+		p.grade,
+		p.grade_name,
+		pp.id pp_id,
+		p.title pp_title,
+		p.service_number,
+		p.service_time,
+		p.unit,
+		pp.price,
+		pp.old_price,
+		pp.cost_price
+		FROM
+		price_part pp
+		LEFT JOIN
+		price p ON pp.price_id = p.id
+		LEFT JOIN goods g ON p.goods_id = g.id
+		LEFT JOIN service_images si ON
+		si.source_id = g.id
+		LEFT JOIN product pd
+		ON g.product_id = pd.id
+		WHERE
+		pp.site_id = #{siteId}
+		AND p.goods_id =
+		#{goodsId}
+		AND si.device_type =
+		#{deviceType}
+		ORDER BY
+		p.grade,
+		p.sort
+	</select>
+</mapper>

@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-06-29 18:40:45
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.transaction.dao.TransactionDao">
+	
+	<sql id="field">
+		T.id, T.order_id, T.amount, T.score, 
+		T.operate, T.remark, T.withdraw, T.pay_type, 
+		T.out_trade_no, T.creator_id, T.creator_name, T.create_time, 
+		T.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		T.id T_id, T.order_id T_order_id, 
+		T.amount T_amount, T.score T_score, 
+		T.operate T_operate, T.remark T_remark, 
+		T.withdraw T_withdraw, T.pay_type T_pay_type, 
+		T.out_trade_no T_out_trade_no, T.creator_id T_creator_id, 
+		T.creator_name T_creator_name, T.create_time T_create_time, 
+		T.status T_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		T.id id, T.order_id orderId, 
+		T.amount amount, T.score score, 
+		T.operate operate, T.remark remark, 
+		T.withdraw withdraw, T.pay_type payType, 
+		T.out_trade_no outTradeNo, T.creator_id creatorId, 
+		T.creator_name creatorName, T.create_time createTime, 
+		T.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND T.id=#{id}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND T.order_id=#{orderId}
+		</if>
+		<if test="amount!=null">
+			AND T.amount=#{amount}
+		</if>
+		<if test="score!=null">
+			AND T.score=#{score}
+		</if>
+		<if test="operate!=null">
+			AND T.operate=#{operate}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND T.remark=#{remark}
+		</if>
+		<if test="withdraw!=null">
+			AND T.withdraw=#{withdraw}
+		</if>
+		<if test="payType!=null">
+			AND T.pay_type=#{payType}
+		</if>
+		<if test="outTradeNo!=null and outTradeNo!=''">
+			AND T.out_trade_no=#{outTradeNo}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND T.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND T.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND T.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND T.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND T.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND T.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="amount!=null">
+				AND T.amount=#{amount}
+			</if>
+			<if test="score!=null">
+				AND T.score=#{score}
+			</if>
+			<if test="operate!=null">
+				AND T.operate=#{operate}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND T.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="withdraw!=null">
+				AND T.withdraw=#{withdraw}
+			</if>
+			<if test="payType!=null">
+				AND T.pay_type=#{payType}
+			</if>
+			<if test="outTradeNo!=null and outTradeNo!=''">
+				AND T.out_trade_no LIKE CONCAT('%', #{outTradeNo}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND T.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND T.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="beginTime!=null">
+				AND T.create_time &gt;= #{beginTime}
+			</if>
+			<if test="stopTime!=null">
+				AND T.create_time &lt;= #{stopTime}
+			</if>
+			<if test="status!=null">
+				AND T.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				T.id=#{id}, 
+		   </if>
+           <if test="orderId!=null">
+				T.order_id=#{orderId}, 
+		   </if>
+           <if test="amount!=null">
+				T.amount=#{amount}, 
+		   </if>
+           <if test="score!=null">
+				T.score=#{score}, 
+		   </if>
+           <if test="operate!=null">
+				T.operate=#{operate}, 
+		   </if>
+           <if test="remark!=null">
+				T.remark=#{remark}, 
+		   </if>
+           <if test="withdraw!=null">
+				T.withdraw=#{withdraw}, 
+		   </if>
+           <if test="payType!=null">
+				T.pay_type=#{payType}, 
+		   </if>
+           <if test="outTradeNo!=null">
+				T.out_trade_no=#{outTradeNo}, 
+		   </if>
+           <if test="creatorId!=null">
+				T.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				T.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				T.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				T.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="transaction" type="com.jinpaihushi.jphs.transaction.model.Transaction">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="score" column="score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="operate" column="operate" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="withdraw" column="withdraw" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="payType" column="pay_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="outTradeNo" column="out_trade_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="transactionGlobal" type="com.jinpaihushi.jphs.transaction.model.Transaction">
+		<result property="id" column="T_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="T_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="T_amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="score" column="T_score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="operate" column="T_operate" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="T_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="withdraw" column="T_withdraw" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="payType" column="T_pay_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="outTradeNo" column="T_out_trade_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="T_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="T_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="T_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="T_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.transaction.model.Transaction">
+		INSERT INTO `TRANSACTION`(
+			id, order_id, 
+			amount, score, 
+			operate, remark, 
+			withdraw, pay_type, 
+			out_trade_no, creator_id, 
+			creator_name, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+			#{amount,jdbcType=DECIMAL}, #{score,jdbcType=INTEGER}, 
+			#{operate,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+			#{withdraw,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, 
+			#{outTradeNo,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `TRANSACTION`(
+			id, order_id, 
+			amount, score, 
+			operate, remark, 
+			withdraw, pay_type, 
+			out_trade_no, creator_id, 
+			creator_name, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
+			#{item.amount,jdbcType=DECIMAL}, #{item.score,jdbcType=INTEGER}, 
+			#{item.operate,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR}, 
+			#{item.withdraw,jdbcType=INTEGER}, #{item.payType,jdbcType=INTEGER}, 
+			#{item.outTradeNo,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE T FROM `TRANSACTION` T WHERE T.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `TRANSACTION` T
+		SET 
+		T.STATUS = -1
+		WHERE T.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `TRANSACTION` T
+		<include refid="dynamicSet" /> 
+	    WHERE T.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="transaction">
+		SELECT <include refid="field"/>
+		FROM `TRANSACTION` T
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `TRANSACTION` T
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="transaction">
+		SELECT <include refid="field"/>
+		FROM `TRANSACTION` T
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="transaction">
+		SELECT <include refid="field"/>
+		FROM `TRANSACTION` T
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="getUserInfo" resultMap="transaction">
+		SELECT
+		    `t`.`order_id`
+		    , `t`.`amount`
+		    , `t`.`score`
+		    , `t`.`operate`
+		    , `t`.`operate_source`
+		    , `t`.`remark`
+		    , `t`.`withdraw`
+		    , `t`.`pay_type`
+		    , `t`.`out_trade_no`
+		    , `u`.`name`
+		    , `u`.`phone`
+		     , `t`.`id`
+		      , `t`.`create_time`
+		FROM
+		    `jphs`.`transaction` AS `t`
+		    LEFT JOIN `jphs`.`user` AS `u` 
+		        ON (`t`.`creator_id` = `u`.`id`)
+		        		WHERE 1 = 1
+		<if test="creatorName!=null and creatorName!=''">
+			AND `u`.`name` LIKE CONCAT(CONCAT('%', #{creatorName}), '%') 
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND `t`.`order_id` =#{orderId} 
+		</if>
+		<if test="outTradeNo!=null and outTradeNo!=''">
+			AND `t`.`out_trade_no` =#{outTradeNo} 
+		</if>
+		<if test="payType!=null and payType!=''">
+			AND `t`.`pay_type` =#{payType} 
+		</if>
+		<if test="operate!=null">
+			 AND T.operate= #{operate}
+		</if>
+		<if test="operate ==null">
+			 AND T.operate IN(2,3) 
+		</if>
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="transaction">
+		SELECT <include refid="field"/>
+		FROM `TRANSACTION` T
+		WHERE T.ID = #{id}
+	</select>
+	
+	<update id="refund">
+	    UPDATE `TRANSACTION` T
+		SET T.`amount` = #{amount} ,
+		T.`remark` = #{remark},
+		t.`operate` = #{operate}
+		WHERE t.`order_id` = #{orderId}
+ 
+	</update>
+	
+	
+</mapper>

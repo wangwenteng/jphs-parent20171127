@@ -1,0 +1,12 @@
+<div class="public_page_btn">
+<span>第${pageInfo.pageNum}页 每页${pageInfo.pageSize}条 共${pageInfo.total}条记录 共${pageInfo.pages}页</span>
+#if($pageInfo.hasPreviousPage)
+	<a class="gotoPage" onclick="gotoPage('$pageInfo.url','$pageInfo.prePage.toString()');">上一页</a>
+#end
+#foreach($i in $pageInfo.navigatepageNums)
+	<a class="gotoPage" #if($i==${pageInfo.pageNum})id="page_disabled"#end onclick="gotoPage('$pageInfo.url','$i.toString()');" >$i</a>
+#end
+#if($pageInfo.hasNextPage)
+	<a class="gotoPage" onclick="gotoPage('$pageInfo.url','$pageInfo.nextPage.toString()');">下一页</a>
+#end
+</div>

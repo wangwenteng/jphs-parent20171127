@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-06-27 14:43:43
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.insurance.dao.InsuranceDao">
+	
+	<sql id="field">
+		I.id, I.order_id, I.name, I.sfz, 
+		I.remark, I.create_time, I.status, I.creator_id, 
+		I.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		I.id I_id, I.order_id I_order_id, 
+		I.name I_name, I.sfz I_sfz, 
+		I.remark I_remark, I.create_time I_create_time, 
+		I.status I_status, I.creator_id I_creator_id, 
+		I.creator_name I_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		I.id id, I.order_id orderId, 
+		I.name name, I.sfz sfz, 
+		I.remark remark, I.create_time createTime, 
+		I.status status, I.creator_id creatorId, 
+		I.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND I.id=#{id}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND I.order_id=#{orderId}
+		</if>
+		<if test="name!=null and name!=''">
+			AND I.name=#{name}
+		</if>
+		<if test="sfz!=null and sfz!=''">
+			AND I.sfz=#{sfz}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND I.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND I.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND I.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND I.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND I.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND I.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND I.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND I.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sfz!=null and sfz!=''">
+				AND I.sfz LIKE CONCAT('%', #{sfz}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND I.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND I.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND I.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND I.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND I.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				I.id=#{id}, 
+		   </if>
+           <if test="orderId!=null">
+				I.order_id=#{orderId}, 
+		   </if>
+           <if test="name!=null">
+				I.name=#{name}, 
+		   </if>
+           <if test="sfz!=null">
+				I.sfz=#{sfz}, 
+		   </if>
+           <if test="remark!=null">
+				I.remark=#{remark}, 
+		   </if>
+           <if test="createTime!=null">
+				I.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				I.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				I.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				I.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="insurance" type="com.jinpaihushi.jphs.insurance.model.Insurance">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="insuranceGlobal" type="com.jinpaihushi.jphs.insurance.model.Insurance">
+		<result property="id" column="I_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="I_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="I_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sfz" column="I_sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="I_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="I_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="I_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="I_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="I_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.insurance.model.Insurance">
+		INSERT INTO `INSURANCE`(
+			id, order_id, 
+			name, sfz, 
+			remark, create_time, 
+			status, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+			#{name,jdbcType=VARCHAR}, #{sfz,jdbcType=VARCHAR}, 
+			#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `INSURANCE`(
+			id, order_id, 
+			name, sfz, 
+			remark, create_time, 
+			status, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.sfz,jdbcType=VARCHAR}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE I FROM `INSURANCE` I WHERE I.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `INSURANCE` I
+		SET 
+		I.STATUS = -1
+		WHERE I.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `INSURANCE` I
+		<include refid="dynamicSet" /> 
+	    WHERE I.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="insurance">
+		SELECT <include refid="field"/>
+		FROM `INSURANCE` I
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `INSURANCE` I
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="insurance">
+		SELECT <include refid="field"/>
+		FROM `INSURANCE` I
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="insurance">
+		SELECT <include refid="field"/>
+		FROM `INSURANCE` I
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="insurance">
+		SELECT <include refid="field"/>
+		FROM `INSURANCE` I
+		WHERE I.ID = #{id}
+	</select>
+	
+</mapper>

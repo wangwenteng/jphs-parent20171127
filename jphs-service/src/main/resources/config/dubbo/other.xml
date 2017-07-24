@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<dubbo:service interface="com.jinpaihushi.jphs.access.service.AccessLogService"
+		ref="accessLogService" />
+	<dubbo:service ref="advertisingService"
+		interface="com.jinpaihushi.jphs.activity.service.AdvertisingService" />
+	<dubbo:service ref="aptitudeService"
+		interface="com.jinpaihushi.jphs.aptitude.service.AptitudeService" />
+	<dubbo:service ref="auditService"
+		interface="com.jinpaihushi.jphs.audit.service.AuditService" />
+	<dubbo:service ref="departmentService"
+		interface="com.jinpaihushi.jphs.department.service.DepartmentService" />
+	<dubbo:service ref="evaluationService"
+		interface="com.jinpaihushi.jphs.evaluation.service.EvaluationService" />
+	
+	<dubbo:service ref="healthLogService"
+		interface="com.jinpaihushi.jphs.health.service.HealthLogService" />
+	<dubbo:service ref="locationService"
+		interface="com.jinpaihushi.jphs.location.service.LocationService" />
+	
+	<dubbo:service ref="transactionService"
+		interface="com.jinpaihushi.jphs.transaction.service.TransactionService" />
+	<dubbo:service ref="insuranceService"
+		interface="com.jinpaihushi.jphs.insurance.service.InsuranceService" />
+
+	<dubbo:service ref="feedbackService"
+		interface="com.jinpaihushi.jphs.user.service.FeedbackService" />
+	
+
+</beans>

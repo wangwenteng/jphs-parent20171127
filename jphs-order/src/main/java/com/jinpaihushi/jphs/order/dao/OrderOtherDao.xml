@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-04 10:39:09
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.order.dao.OrderOtherDao">
+	
+	<sql id="field">
+		OO.id, OO.order_id, OO.department_id, OO.hospital, 
+		OO.address, OO.detail_address, OO.drug, OO.tool, 
+		OO.public_name, OO.public_content, OO.status, OO.create_time, 
+		OO.creator_id, OO.remarks
+	</sql>
+
+	<sql id="fieldGlobal">
+		OO.id OO_id, OO.order_id OO_order_id, 
+		OO.department_id OO_department_id, OO.hospital OO_hospital, 
+		OO.address OO_address, OO.detail_address OO_detail_address, 
+		OO.drug OO_drug, OO.tool OO_tool, 
+		OO.public_name OO_public_name, OO.public_content OO_public_content, 
+		OO.status OO_status, OO.create_time OO_create_time, 
+		OO.creator_id OO_creator_id, OO.remarks OO_remarks
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		OO.id id, OO.order_id orderId, 
+		OO.department_id departmentId, OO.hospital hospital, 
+		OO.address address, OO.detail_address detailAddress, 
+		OO.drug drug, OO.tool tool, 
+		OO.public_name publicName, OO.public_content publicContent, 
+		OO.status status, OO.create_time createTime, 
+		OO.creator_id creatorId, OO.remarks remarks
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND OO.id=#{id}
+		</if>
+		<if test="orderId!=null">
+			AND OO.order_id=#{orderId}
+		</if>
+		<if test="departmentId!=null and departmentId!=''">
+			AND OO.department_id=#{departmentId}
+		</if>
+		<if test="hospital!=null and hospital!=''">
+			AND OO.hospital=#{hospital}
+		</if>
+		<if test="address!=null and address!=''">
+			AND OO.address=#{address}
+		</if>
+		<if test="detailAddress!=null and detailAddress!=''">
+			AND OO.detail_address=#{detailAddress}
+		</if>
+		<if test="drug!=null and drug!=''">
+			AND OO.drug=#{drug}
+		</if>
+		<if test="tool!=null and tool!=''">
+			AND OO.tool=#{tool}
+		</if>
+		<if test="publicName!=null and publicName!=''">
+			AND OO.public_name=#{publicName}
+		</if>
+		<if test="publicContent!=null and publicContent!=''">
+			AND OO.public_content=#{publicContent}
+		</if>
+		<if test="status!=null">
+			AND OO.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND OO.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND OO.creator_id=#{creatorId}
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			AND OO.remarks=#{remarks}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND OO.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderId!=null">
+				AND OO.order_id=#{orderId}
+			</if>
+			<if test="departmentId!=null and departmentId!=''">
+				AND OO.department_id LIKE CONCAT('%', #{departmentId}, '%')
+			</if>
+			<if test="hospital!=null and hospital!=''">
+				AND OO.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND OO.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="detailAddress!=null and detailAddress!=''">
+				AND OO.detail_address LIKE CONCAT('%', #{detailAddress}, '%')
+			</if>
+			<if test="drug!=null and drug!=''">
+				AND OO.drug LIKE CONCAT('%', #{drug}, '%')
+			</if>
+			<if test="tool!=null and tool!=''">
+				AND OO.tool LIKE CONCAT('%', #{tool}, '%')
+			</if>
+			<if test="publicName!=null and publicName!=''">
+				AND OO.public_name LIKE CONCAT('%', #{publicName}, '%')
+			</if>
+			<if test="publicContent!=null and publicContent!=''">
+				AND OO.public_content LIKE CONCAT('%', #{publicContent}, '%')
+			</if>
+			<if test="status!=null">
+				AND OO.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND OO.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND OO.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="remarks!=null and remarks!=''">
+				AND OO.remarks LIKE CONCAT('%', #{remarks}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				OO.id=#{id}, 
+		   </if>
+           <if test="orderId!=null">
+				OO.order_id=#{orderId}, 
+		   </if>
+           <if test="departmentId!=null">
+				OO.department_id=#{departmentId}, 
+		   </if>
+           <if test="hospital!=null">
+				OO.hospital=#{hospital}, 
+		   </if>
+           <if test="address!=null">
+				OO.address=#{address}, 
+		   </if>
+           <if test="detailAddress!=null">
+				OO.detail_address=#{detailAddress}, 
+		   </if>
+           <if test="drug!=null">
+				OO.drug=#{drug}, 
+		   </if>
+           <if test="tool!=null">
+				OO.tool=#{tool}, 
+		   </if>
+           <if test="publicName!=null">
+				OO.public_name=#{publicName}, 
+		   </if>
+           <if test="publicContent!=null">
+				OO.public_content=#{publicContent}, 
+		   </if>
+           <if test="status!=null">
+				OO.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				OO.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				OO.creator_id=#{creatorId}, 
+		   </if>
+           <if test="remarks!=null">
+				OO.remarks=#{remarks}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="orderOther" type="com.jinpaihushi.jphs.order.model.OrderOther">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="department_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hospital" column="hospital" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="detail_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="drug" column="drug" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tool" column="tool" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="publicName" column="public_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="publicContent" column="public_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remarks" column="remarks" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="orderOtherGlobal" type="com.jinpaihushi.jphs.order.model.OrderOther">
+		<result property="id" column="OO_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="OO_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="OO_department_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hospital" column="OO_hospital" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="OO_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="OO_detail_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="drug" column="OO_drug" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tool" column="OO_tool" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="publicName" column="OO_public_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="publicContent" column="OO_public_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="OO_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="OO_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="OO_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remarks" column="OO_remarks" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.order.model.OrderOther">
+		INSERT INTO `ORDER_OTHER`(
+			id, order_id, 
+			department_id, hospital, 
+			address, detail_address, 
+			drug, tool, 
+			public_name, public_content, 
+			status, create_time, 
+			creator_id, remarks
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=INTEGER}, 
+			#{departmentId,jdbcType=VARCHAR}, #{hospital,jdbcType=VARCHAR}, 
+			#{address,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, 
+			#{drug,jdbcType=VARCHAR}, #{tool,jdbcType=VARCHAR}, 
+			#{publicName,jdbcType=VARCHAR}, #{publicContent,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `ORDER_OTHER`(
+			id, order_id, 
+			department_id, hospital, 
+			address, detail_address, 
+			drug, tool, 
+			public_name, public_content, 
+			status, create_time, 
+			creator_id, remarks
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=INTEGER}, 
+			#{item.departmentId,jdbcType=VARCHAR}, #{item.hospital,jdbcType=VARCHAR}, 
+			#{item.address,jdbcType=VARCHAR}, #{item.detailAddress,jdbcType=VARCHAR}, 
+			#{item.drug,jdbcType=VARCHAR}, #{item.tool,jdbcType=VARCHAR}, 
+			#{item.publicName,jdbcType=VARCHAR}, #{item.publicContent,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.remarks,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE OO FROM `ORDER_OTHER` OO WHERE OO.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `ORDER_OTHER` OO
+		SET 
+		OO.STATUS = -1
+		WHERE OO.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ORDER_OTHER` OO
+		<include refid="dynamicSet" /> 
+	    WHERE OO.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="orderOther">
+		SELECT <include refid="field"/>
+		FROM `ORDER_OTHER` OO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ORDER_OTHER` OO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="orderOther">
+		SELECT <include refid="field"/>
+		FROM `ORDER_OTHER` OO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="orderOther">
+		SELECT <include refid="field"/>
+		FROM `ORDER_OTHER` OO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="orderOther">
+		SELECT <include refid="field"/>
+		FROM `ORDER_OTHER` OO
+		WHERE OO.ID = #{id}
+	</select>
+	
+	<update id="updateDetailAddress">
+		UPDATE `ORDER_OTHER` OO
+		SET OO.`address` = #{address},OO.`detail_address` = #{detailAddress} 
+		WHERE OO.`order_id` = #{orderId}
+	</update>
+	
+</mapper>

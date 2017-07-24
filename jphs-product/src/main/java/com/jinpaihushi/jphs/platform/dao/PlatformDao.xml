@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-06-21 15:30:04 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.platform.dao.PlatformDao">
+
+	<sql id="field">
+		P.id, P.name, P.company, P.channel,
+		P.contacts_name,
+		P.contacts_phone, P.company_address, P.split_ratio,
+		P.auth_code,
+		P.remark, P.status, P.create_time,
+		P.creator_id, P.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		P.id P_id, P.name P_name,
+		P.company P_company, P.channel
+		P_channel,
+		P.contacts_name P_contacts_name, P.contacts_phone
+		P_contacts_phone,
+		P.company_address P_company_address, P.split_ratio
+		P_split_ratio,
+		P.auth_code P_auth_code, P.remark P_remark,
+		P.status
+		P_status, P.create_time P_create_time,
+		P.creator_id P_creator_id,
+		P.creator_name P_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		P.id id, P.name name,
+		P.company company, P.channel channel,
+		P.contacts_name contactsName, P.contacts_phone contactsPhone,
+		P.company_address companyAddress, P.split_ratio splitRatio,
+		P.auth_code authCode, P.remark remark,
+		P.status status, P.create_time
+		createTime,
+		P.creator_id creatorId, P.creator_name creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND P.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND P.name=#{name}
+		</if>
+		<if test="company!=null and company!=''">
+			AND P.company=#{company}
+		</if>
+		<if test="channel!=null and channel!=''">
+			AND P.channel=#{channel}
+		</if>
+		<if test="contactsName!=null and contactsName!=''">
+			AND P.contacts_name=#{contactsName}
+		</if>
+		<if test="contactsPhone!=null and contactsPhone!=''">
+			AND P.contacts_phone=#{contactsPhone}
+		</if>
+		<if test="companyAddress!=null and companyAddress!=''">
+			AND P.company_address=#{companyAddress}
+		</if>
+		<if test="splitRatio!=null">
+			AND P.split_ratio=#{splitRatio}
+		</if>
+		<if test="authCode!=null and authCode!=''">
+			AND P.auth_code=#{authCode}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND P.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND P.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND P.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND P.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND P.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND P.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND P.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="company!=null and company!=''">
+				AND P.company LIKE CONCAT('%', #{company}, '%')
+			</if>
+			<if test="channel!=null and channel!=''">
+				AND P.channel LIKE CONCAT('%', #{channel}, '%')
+			</if>
+			<if test="contactsName!=null and contactsName!=''">
+				AND P.contacts_name LIKE CONCAT('%', #{contactsName},
+				'%')
+			</if>
+			<if test="contactsPhone!=null and contactsPhone!=''">
+				AND P.contacts_phone LIKE CONCAT('%', #{contactsPhone},
+				'%')
+			</if>
+			<if test="companyAddress!=null and companyAddress!=''">
+				AND P.company_address LIKE CONCAT('%', #{companyAddress},
+				'%')
+			</if>
+			<if test="splitRatio!=null">
+				AND P.split_ratio=#{splitRatio}
+			</if>
+			<if test="authCode!=null and authCode!=''">
+				AND P.auth_code LIKE CONCAT('%', #{authCode}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND P.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND P.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND P.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND P.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND P.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				P.id=#{id},
+			</if>
+			<if test="name!=null">
+				P.name=#{name},
+			</if>
+			<if test="company!=null">
+				P.company=#{company},
+			</if>
+			<if test="channel!=null">
+				P.channel=#{channel},
+			</if>
+			<if test="contactsName!=null">
+				P.contacts_name=#{contactsName},
+			</if>
+			<if test="contactsPhone!=null">
+				P.contacts_phone=#{contactsPhone},
+			</if>
+			<if test="companyAddress!=null">
+				P.company_address=#{companyAddress},
+			</if>
+			<if test="splitRatio!=null">
+				P.split_ratio=#{splitRatio},
+			</if>
+			<if test="authCode!=null">
+				P.auth_code=#{authCode},
+			</if>
+			<if test="remark!=null">
+				P.remark=#{remark},
+			</if>
+			<if test="status!=null">
+				P.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				P.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				P.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				P.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="platform" type="com.jinpaihushi.jphs.platform.model.Platform">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="company" column="company" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="channel" column="channel" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="contacts_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="contacts_phone"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="companyAddress" column="company_address"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="splitRatio" column="split_ratio" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="authCode" column="auth_code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="platformGlobal" type="com.jinpaihushi.jphs.platform.model.Platform">
+		<result property="id" column="P_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="P_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="company" column="P_company" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="channel" column="P_channel" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="P_contacts_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="P_contacts_phone"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="companyAddress" column="P_company_address"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="splitRatio" column="P_split_ratio" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="authCode" column="P_auth_code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="remark" column="P_remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="P_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="P_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="P_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="P_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.platform.model.Platform">
+		INSERT INTO `PLATFORM`(
+		id, name,
+		company, channel,
+		contacts_name, contacts_phone,
+		company_address, split_ratio,
+		auth_code,
+		remark,
+		status, create_time,
+		creator_id, creator_name
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{company,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR},
+		#{contactsName,jdbcType=VARCHAR}, #{contactsPhone,jdbcType=VARCHAR},
+		#{companyAddress,jdbcType=VARCHAR}, #{splitRatio,jdbcType=DECIMAL},
+		#{authCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `PLATFORM`(
+			id, name, 
+			company, channel, 
+			contacts_name, contacts_phone, 
+			company_address, split_ratio, 
+			auth_code, remark, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.company,jdbcType=VARCHAR},
+			#{item.channel,jdbcType=VARCHAR},
+			#{item.contactsName,jdbcType=VARCHAR},
+			#{item.contactsPhone,jdbcType=VARCHAR},
+			#{item.companyAddress,jdbcType=VARCHAR},
+			#{item.splitRatio,jdbcType=DECIMAL},
+			#{item.authCode,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE P FROM `PLATFORM` P WHERE P.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `PLATFORM` P
+		SET
+		P.STATUS = -1
+		WHERE P.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PLATFORM` P
+		<include refid="dynamicSet" />
+		WHERE P.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="platform">
+		SELECT
+		<include refid="field" />
+		FROM `PLATFORM` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PLATFORM` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="platform">
+		SELECT
+		<include refid="field" />
+		FROM `PLATFORM` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="platform">
+		SELECT
+		<include refid="field" />
+		FROM `PLATFORM` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="platform">
+		SELECT
+		<include refid="field" />
+		FROM `PLATFORM` P
+		WHERE P.ID = #{id}
+	</select>
+	<select id="getProductList" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		p.*,
+		si.url
+		FROM
+		platform_goods pg
+		LEFT JOIN goods g ON pg.goods_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN service_images si
+		ON si.source_id = p.id
+		WHERE
+		pg.platform_id = #{platformId}
+		AND
+		si.device_type = #{deviceType}
+	</select>
+
+	<select id="getAllGoods" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		g.*,si.url
+		FROM
+		platform_goods pg
+		LEFT JOIN goods g ON pg.goods_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN service_images si ON si.source_id =g.id
+		WHERE
+		pg.platform_id = #{platformId}
+		AND si.device_type = #{deviceType}
+		<if test="productId!=null">
+		AND	g.product_id =#{productId}
+		</if>
+		;
+	</select>
+</mapper>

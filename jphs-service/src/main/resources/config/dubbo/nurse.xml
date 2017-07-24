@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<!-- 要暴露的服务接口 -->
+	<dubbo:service interface="com.jinpaihushi.jphs.nurse.service.NurseService"
+		ref="nurseService" />
+	<dubbo:service interface="com.jinpaihushi.jphs.nurse.service.NurseImagesService"
+		ref="nurseImagesService" />
+	<dubbo:service ref="nurseSkillService"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseSkillService" />
+	<dubbo:service ref="skillService"
+		interface="com.jinpaihushi.jphs.skill.service.SkillService" />
+	<dubbo:service ref="jobtitleService"
+		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleService" />
+	<dubbo:service ref="jobtitleTypeService"
+		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService" />
+</beans>

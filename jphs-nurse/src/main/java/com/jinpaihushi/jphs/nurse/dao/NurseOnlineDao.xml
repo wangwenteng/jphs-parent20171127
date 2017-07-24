@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-27 11:24:30
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseOnlineDao">
+	
+	<sql id="field">
+		NO.id, NO.nurse_id, NO.online, NO.online_time, 
+		NO.offline_time, NO.time_long, NO.creator_id, NO.creator_name, 
+		NO.create_time, NO.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		NO.id NO_id, NO.nurse_id NO_nurse_id, 
+		NO.online NO_online, NO.online_time NO_online_time, 
+		NO.offline_time NO_offline_time, NO.time_long NO_time_long, 
+		NO.creator_id NO_creator_id, NO.creator_name NO_creator_name, 
+		NO.create_time NO_create_time, NO.status NO_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NO.id id, NO.nurse_id nurseId, 
+		NO.online online, NO.online_time onlineTime, 
+		NO.offline_time offlineTime, NO.time_long timeLong, 
+		NO.creator_id creatorId, NO.creator_name creatorName, 
+		NO.create_time createTime, NO.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NO.id=#{id}
+		</if>
+		<if test="nurseId!=null and nurseId!=''">
+			AND NO.nurse_id=#{nurseId}
+		</if>
+		<if test="online!=null">
+			AND NO.online=#{online}
+		</if>
+		<if test="onlineTime!=null">
+			AND NO.online_time=#{onlineTime}
+		</if>
+		<if test="offlineTime!=null">
+			AND NO.offline_time=#{offlineTime}
+		</if>
+		<if test="timeLong!=null and timeLong!=''">
+			AND NO.time_long=#{timeLong}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND NO.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND NO.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND NO.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND NO.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NO.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="nurseId!=null and nurseId!=''">
+				AND NO.nurse_id LIKE CONCAT('%', #{nurseId}, '%')
+			</if>
+			<if test="online!=null">
+				AND NO.online=#{online}
+			</if>
+			<if test="onlineTime!=null">
+				AND NO.online_time=#{onlineTime}
+			</if>
+			<if test="offlineTime!=null">
+				AND NO.offline_time=#{offlineTime}
+			</if>
+			<if test="timeLong!=null and timeLong!=''">
+				AND NO.time_long LIKE CONCAT('%', #{timeLong}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NO.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NO.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND NO.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND NO.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NO.id=#{id}, 
+		   </if>
+           <if test="nurseId!=null">
+				NO.nurse_id=#{nurseId}, 
+		   </if>
+           <if test="online!=null">
+				NO.online=#{online}, 
+		   </if>
+           <if test="onlineTime!=null">
+				NO.online_time=#{onlineTime}, 
+		   </if>
+           <if test="offlineTime!=null">
+				NO.offline_time=#{offlineTime}, 
+		   </if>
+           <if test="timeLong!=null">
+				NO.time_long=#{timeLong}, 
+		   </if>
+           <if test="creatorId!=null">
+				NO.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				NO.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				NO.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				NO.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseOnline" type="com.jinpaihushi.jphs.nurse.model.NurseOnline">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="online" column="online" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="onlineTime" column="online_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="offlineTime" column="offline_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="timeLong" column="time_long" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="nurseOnlineGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseOnline">
+		<result property="id" column="NO_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="NO_nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="online" column="NO_online" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="onlineTime" column="NO_online_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="offlineTime" column="NO_offline_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="timeLong" column="NO_time_long" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="NO_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NO_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="NO_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="NO_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseOnline">
+		INSERT INTO `NURSE_ONLINE`(
+			id, nurse_id, 
+			online, online_time, 
+			offline_time, time_long, 
+			creator_id, creator_name, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{nurseId,jdbcType=VARCHAR}, 
+			#{online,jdbcType=INTEGER}, #{onlineTime,jdbcType=TIMESTAMP}, 
+			#{offlineTime,jdbcType=TIMESTAMP}, #{timeLong,jdbcType=VARCHAR}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_ONLINE`(
+			id, nurse_id, 
+			online, online_time, 
+			offline_time, time_long, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.nurseId,jdbcType=VARCHAR}, 
+			#{item.online,jdbcType=INTEGER}, #{item.onlineTime,jdbcType=TIMESTAMP}, 
+			#{item.offlineTime,jdbcType=TIMESTAMP}, #{item.timeLong,jdbcType=VARCHAR}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NO FROM `NURSE_ONLINE` NO WHERE NO.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_ONLINE` NO
+		SET 
+		NO.STATUS = -1
+		WHERE NO.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_ONLINE` NO
+		<include refid="dynamicSet" /> 
+	    WHERE NO.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseOnline">
+		SELECT <include refid="field"/>
+		FROM `NURSE_ONLINE` NO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_ONLINE` NO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseOnline">
+		SELECT <include refid="field"/>
+		FROM `NURSE_ONLINE` NO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseOnline">
+		SELECT <include refid="field"/>
+		FROM `NURSE_ONLINE` NO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseOnline">
+		SELECT <include refid="field"/>
+		FROM `NURSE_ONLINE` NO
+		WHERE NO.ID = #{id}
+	</select>
+	
+</mapper>

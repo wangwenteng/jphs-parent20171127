@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="system/system/role/module/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="角色权限中间表管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/role/module/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/role/module/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="system/system/role/module/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="角色权限中间表编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/role/module/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/role/module/edit.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="system/system/role/module/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="角色权限中间表详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/role/module/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/role/module/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

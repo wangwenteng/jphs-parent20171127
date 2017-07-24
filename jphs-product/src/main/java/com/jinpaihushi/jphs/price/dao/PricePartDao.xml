@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-07-11 11:02:47
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.price.dao.PricePartDao">
+	
+	<sql id="field">
+		PP.id, PP.price_id, PP.site_id, PP.price, 
+		PP.old_price, PP.cost_price, PP.profit, PP.status, 
+		PP.creator_id, PP.creator_name, PP.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		PP.id PP_id, PP.price_id PP_price_id, 
+		PP.site_id PP_site_id, PP.price PP_price, 
+		PP.old_price PP_old_price, PP.cost_price PP_cost_price, 
+		PP.profit PP_profit, PP.status PP_status, 
+		PP.creator_id PP_creator_id, PP.creator_name PP_creator_name, 
+		PP.create_time PP_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PP.id id, PP.price_id priceId, 
+		PP.site_id siteId, PP.price price, 
+		PP.old_price oldPrice, PP.cost_price costPrice, 
+		PP.profit profit, PP.status status, 
+		PP.creator_id creatorId, PP.creator_name creatorName, 
+		PP.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PP.id=#{id}
+		</if>
+		<if test="priceId!=null and priceId!=''">
+			AND PP.price_id=#{priceId}
+		</if>
+		<if test="siteId!=null and siteId!=''">
+			AND PP.site_id=#{siteId}
+		</if>
+		<if test="price!=null">
+			AND PP.price=#{price}
+		</if>
+		<if test="oldPrice!=null">
+			AND PP.old_price=#{oldPrice}
+		</if>
+		<if test="costPrice!=null">
+			AND PP.cost_price=#{costPrice}
+		</if>
+		<if test="profit!=null">
+			AND PP.profit=#{profit}
+		</if>
+		<if test="status!=null">
+			AND PP.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PP.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PP.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND PP.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PP.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="priceId!=null and priceId!=''">
+				AND PP.price_id LIKE CONCAT('%', #{priceId}, '%')
+			</if>
+			<if test="siteId!=null and siteId!=''">
+				AND PP.site_id LIKE CONCAT('%', #{siteId}, '%')
+			</if>
+			<if test="price!=null">
+				AND PP.price=#{price}
+			</if>
+			<if test="oldPrice!=null">
+				AND PP.old_price=#{oldPrice}
+			</if>
+			<if test="costPrice!=null">
+				AND PP.cost_price=#{costPrice}
+			</if>
+			<if test="profit!=null">
+				AND PP.profit=#{profit}
+			</if>
+			<if test="status!=null">
+				AND PP.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PP.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PP.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND PP.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PP.id=#{id}, 
+		   </if>
+           <if test="priceId!=null">
+				PP.price_id=#{priceId}, 
+		   </if>
+           <if test="siteId!=null">
+				PP.site_id=#{siteId}, 
+		   </if>
+           <if test="price!=null">
+				PP.price=#{price}, 
+		   </if>
+           <if test="oldPrice!=null">
+				PP.old_price=#{oldPrice}, 
+		   </if>
+           <if test="costPrice!=null">
+				PP.cost_price=#{costPrice}, 
+		   </if>
+           <if test="profit!=null">
+				PP.profit=#{profit}, 
+		   </if>
+           <if test="status!=null">
+				PP.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				PP.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PP.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				PP.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="pricePart" type="com.jinpaihushi.jphs.price.model.PricePart">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="priceId" column="price_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="siteId" column="site_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="oldPrice" column="old_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="costPrice" column="cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="pricePartGlobal" type="com.jinpaihushi.jphs.price.model.PricePart">
+		<result property="id" column="PP_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="priceId" column="PP_price_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="siteId" column="PP_site_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="PP_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="oldPrice" column="PP_old_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="costPrice" column="PP_cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="PP_profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="status" column="PP_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="PP_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PP_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="PP_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.price.model.PricePart">
+		INSERT INTO `PRICE_PART`(
+			id, price_id, 
+			site_id, price, 
+			old_price, cost_price, 
+			profit, status, 
+			creator_id, creator_name, 
+			create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{priceId,jdbcType=VARCHAR}, 
+			#{siteId,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+			#{oldPrice,jdbcType=DECIMAL}, #{costPrice,jdbcType=DECIMAL}, 
+			#{profit,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			now()
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PRICE_PART`(
+			id, price_id, 
+			site_id, price, 
+			old_price, cost_price, 
+			profit, status, 
+			creator_id, creator_name, 
+			create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.priceId,jdbcType=VARCHAR}, 
+			#{item.siteId,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, 
+			#{item.oldPrice,jdbcType=DECIMAL}, #{item.costPrice,jdbcType=DECIMAL}, 
+			#{item.profit,jdbcType=DECIMAL}, #{item.status,jdbcType=INTEGER}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PP FROM `PRICE_PART` PP WHERE PP.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PRICE_PART` PP
+		SET 
+		PP.STATUS = -1
+		WHERE PP.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PRICE_PART` PP
+		<include refid="dynamicSet" /> 
+	    WHERE PP.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="pricePart">
+		SELECT <include refid="field"/>
+		FROM `PRICE_PART` PP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PRICE_PART` PP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="pricePart">
+		SELECT <include refid="field"/>
+		FROM `PRICE_PART` PP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="pricePart">
+		SELECT <include refid="field"/>
+		FROM `PRICE_PART` PP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="pricePart">
+		SELECT <include refid="field"/>
+		FROM `PRICE_PART` PP
+		WHERE PP.ID = #{id}
+	</select>
+	
+</mapper>

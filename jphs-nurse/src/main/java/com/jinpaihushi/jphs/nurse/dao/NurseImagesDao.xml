@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	fengrz
+	date	:	2017-06-09 14:36:57
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseImagesDao">
+	
+	<sql id="field">
+		NI.id, NI.url, NI.path, NI.source_id, 
+		NI.type, NI.creator_id, NI.creator_name, NI.create_time, 
+		NI.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		NI.id NI_id, NI.url NI_url, 
+		NI.path NI_path, NI.source_id NI_source_id, 
+		NI.type NI_type, NI.creator_id NI_creator_id, 
+		NI.creator_name NI_creator_name, NI.create_time NI_create_time, 
+		NI.status NI_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NI.id id, NI.url url, 
+		NI.path path, NI.source_id sourceId, 
+		NI.type type, NI.creator_id creatorId, 
+		NI.creator_name creatorName, NI.create_time createTime, 
+		NI.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NI.id=#{id}
+		</if>
+		<if test="url!=null and url!=''">
+			AND NI.url=#{url}
+		</if>
+		<if test="path!=null and path!=''">
+			AND NI.path=#{path}
+		</if>
+		<if test="sourceId!=null and sourceId!=''">
+			AND NI.source_id=#{sourceId}
+		</if>
+		<if test="type!=null">
+			AND NI.type=#{type}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND NI.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND NI.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND NI.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND NI.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NI.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND NI.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="path!=null and path!=''">
+				AND NI.path LIKE CONCAT('%', #{path}, '%')
+			</if>
+			<if test="sourceId!=null and sourceId!=''">
+				AND NI.source_id LIKE CONCAT('%', #{sourceId}, '%')
+			</if>
+			<if test="type!=null">
+				AND NI.type=#{type}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NI.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NI.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND NI.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND NI.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NI.id=#{id}, 
+		   </if>
+           <if test="url!=null">
+				NI.url=#{url}, 
+		   </if>
+           <if test="path!=null">
+				NI.path=#{path}, 
+		   </if>
+           <if test="sourceId!=null">
+				NI.source_id=#{sourceId}, 
+		   </if>
+           <if test="type!=null">
+				NI.type=#{type}, 
+		   </if>
+           <if test="creatorId!=null">
+				NI.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				NI.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				NI.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				NI.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseImages" type="com.jinpaihushi.jphs.nurse.model.NurseImages">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="nurseImagesGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseImages">
+		<result property="id" column="NI_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="NI_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="NI_path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="NI_source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="NI_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="NI_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NI_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="NI_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="NI_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseImages">
+		INSERT INTO `NURSE_IMAGES`(
+			id, url, 
+			path, source_id, 
+			type, creator_id, 
+			creator_name, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+			#{path,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+			#{type,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_IMAGES`(
+			id, url, 
+			path, source_id, 
+			type, creator_id, 
+			creator_name, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR}, 
+			#{item.path,jdbcType=VARCHAR}, #{item.sourceId,jdbcType=VARCHAR}, 
+			#{item.type,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NI FROM `NURSE_IMAGES` NI WHERE NI.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_IMAGES` NI
+		SET 
+		NI.STATUS = -1
+		WHERE NI.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_IMAGES` NI
+		<include refid="dynamicSet" /> 
+	    WHERE NI.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseImages">
+		SELECT <include refid="field"/>
+		FROM `NURSE_IMAGES` NI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_IMAGES` NI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseImages">
+		SELECT <include refid="field"/>
+		FROM `NURSE_IMAGES` NI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseImages">
+		SELECT <include refid="field"/>
+		FROM `NURSE_IMAGES` NI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseImages">
+		SELECT <include refid="field"/>
+		FROM `NURSE_IMAGES` NI
+		WHERE NI.ID = #{id}
+	</select>
+	
+</mapper>

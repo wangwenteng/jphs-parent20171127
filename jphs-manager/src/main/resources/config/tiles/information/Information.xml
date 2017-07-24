@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="information/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="管理" />
+		<put-attribute type="template" name="body" value="/WEB-INF/view/information/list/index.jsp" />
+		<put-attribute type="template" name="left" value="/WEB-INF/view/information/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/information/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="information/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/information/edit/index.jsp" />
+			<put-attribute type="template" name="left" value="/WEB-INF/view/information/left.jsp" />
+			<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/umeditor/themes/default/css/umeditor.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/information/edit.js" />
+			<add-attribute value="/static/js/ajaxfileupload.js" />
+			<add-attribute value="/static/js/img.js" />
+			<add-attribute value="/static/umeditor/umeditor.config.js" />
+			<add-attribute value="/static/umeditor/umeditor.min.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="information/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/information/detail/index.jsp" />
+			<put-attribute type="template" name="left" value="/WEB-INF/view/information/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/information/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

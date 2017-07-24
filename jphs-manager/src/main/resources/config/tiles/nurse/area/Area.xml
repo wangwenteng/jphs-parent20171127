@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="nurse/area/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="区域表管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/area/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/area/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="nurse/area/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="区域表编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/area/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/area/edit.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="nurse/area/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="区域表详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/area/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/area/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

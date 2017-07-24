@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-27 11:24:30
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.aptitude.dao.AptitudeNurseDao">
+	
+	<sql id="field">
+		AN.id, AN.aptitude_id, AN.nurse_id, AN.audit_id, 
+		AN.aptitude_goods_ids, AN.create_time, AN.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		AN.id AN_id, AN.aptitude_id AN_aptitude_id, 
+		AN.nurse_id AN_nurse_id, AN.audit_id AN_audit_id, 
+		AN.aptitude_goods_ids AN_aptitude_goods_ids, AN.create_time AN_create_time, 
+		AN.status AN_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		AN.id id, AN.aptitude_id aptitudeId, 
+		AN.nurse_id nurseId, AN.audit_id auditId, 
+		AN.aptitude_goods_ids aptitudeGoodsIds, AN.create_time createTime, 
+		AN.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND AN.id=#{id}
+		</if>
+		<if test="aptitudeId!=null and aptitudeId!=''">
+			AND AN.aptitude_id=#{aptitudeId}
+		</if>
+		<if test="nurseId!=null and nurseId!=''">
+			AND AN.nurse_id=#{nurseId}
+		</if>
+		<if test="auditId!=null and auditId!=''">
+			AND AN.audit_id=#{auditId}
+		</if>
+		<if test="aptitudeGoodsIds!=null and aptitudeGoodsIds!=''">
+			AND AN.aptitude_goods_ids=#{aptitudeGoodsIds}
+		</if>
+		<if test="createTime!=null">
+			AND AN.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND AN.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND AN.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="aptitudeId!=null and aptitudeId!=''">
+				AND AN.aptitude_id LIKE CONCAT('%', #{aptitudeId}, '%')
+			</if>
+			<if test="nurseId!=null and nurseId!=''">
+				AND AN.nurse_id LIKE CONCAT('%', #{nurseId}, '%')
+			</if>
+			<if test="auditId!=null and auditId!=''">
+				AND AN.audit_id LIKE CONCAT('%', #{auditId}, '%')
+			</if>
+			<if test="aptitudeGoodsIds!=null and aptitudeGoodsIds!=''">
+				AND AN.aptitude_goods_ids LIKE CONCAT('%', #{aptitudeGoodsIds}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND AN.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND AN.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				AN.id=#{id}, 
+		   </if>
+           <if test="aptitudeId!=null">
+				AN.aptitude_id=#{aptitudeId}, 
+		   </if>
+           <if test="nurseId!=null">
+				AN.nurse_id=#{nurseId}, 
+		   </if>
+           <if test="auditId!=null">
+				AN.audit_id=#{auditId}, 
+		   </if>
+           <if test="aptitudeGoodsIds!=null">
+				AN.aptitude_goods_ids=#{aptitudeGoodsIds}, 
+		   </if>
+           <if test="createTime!=null">
+				AN.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				AN.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="aptitudeNurse" type="com.jinpaihushi.jphs.aptitude.model.AptitudeNurse">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitudeId" column="aptitude_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditId" column="audit_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitudeGoodsIds" column="aptitude_goods_ids" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="aptitudeNurseGlobal" type="com.jinpaihushi.jphs.aptitude.model.AptitudeNurse">
+		<result property="id" column="AN_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitudeId" column="AN_aptitude_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="AN_nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditId" column="AN_audit_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitudeGoodsIds" column="AN_aptitude_goods_ids" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="AN_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="AN_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.aptitude.model.AptitudeNurse">
+		INSERT INTO `APTITUDE_NURSE`(
+			id, aptitude_id, 
+			nurse_id, audit_id, 
+			aptitude_goods_ids, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{aptitudeId,jdbcType=VARCHAR}, 
+			#{nurseId,jdbcType=VARCHAR}, #{auditId,jdbcType=VARCHAR}, 
+			#{aptitudeGoodsIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `APTITUDE_NURSE`(
+			id, aptitude_id, 
+			nurse_id, audit_id, 
+			aptitude_goods_ids, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.aptitudeId,jdbcType=VARCHAR}, 
+			#{item.nurseId,jdbcType=VARCHAR}, #{item.auditId,jdbcType=VARCHAR}, 
+			#{item.aptitudeGoodsIds,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE AN FROM `APTITUDE_NURSE` AN WHERE AN.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `APTITUDE_NURSE` AN
+		SET 
+		AN.STATUS = -1
+		WHERE AN.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `APTITUDE_NURSE` AN
+		<include refid="dynamicSet" /> 
+	    WHERE AN.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="aptitudeNurse">
+		SELECT <include refid="field"/>
+		FROM `APTITUDE_NURSE` AN
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `APTITUDE_NURSE` AN
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="aptitudeNurse">
+		SELECT <include refid="field"/>
+		FROM `APTITUDE_NURSE` AN
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="aptitudeNurse">
+		SELECT <include refid="field"/>
+		FROM `APTITUDE_NURSE` AN
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="aptitudeNurse">
+		SELECT <include refid="field"/>
+		FROM `APTITUDE_NURSE` AN
+		WHERE AN.ID = #{id}
+	</select>
+	
+</mapper>

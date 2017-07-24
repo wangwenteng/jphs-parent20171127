@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-06-27 17:15:32 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.user.dao.UserDao">
+
+	<sql id="field">
+		U.id, U.type, U.name, U.sex, U.phone, U.password, U.brief,
+		U.open_id, U.device, U.recommend_id, U.create_time, U.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		U.id U_id, U.type U_type, U.name U_name, U.sex U_sex,
+		U.phone U_phone, U.password U_password, U.brief U_brief, U.open_id
+		U_open_id, U.device U_device, U.recommend_id U_recommend_id,
+		U.create_time U_create_time, U.status U_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		U.id id, U.type type, U.name name, U.sex sex, U.phone
+		phone, U.password password, U.brief brief, U.open_id openId, U.device
+		device, U.recommend_id recommendId, U.create_time createTime, U.status
+		status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND U.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND U.type=#{type}
+		</if>
+		<if test="name!=null and name!=''">
+			AND U.name LIKE CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+		<if test="sex!=null">
+			AND U.sex=#{sex}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND U.phone LIKE CONCAT(CONCAT('%', #{phone}), '%')
+		</if>
+		<if test="password!=null and password!=''">
+			AND U.password=#{password}
+		</if>
+		<if test="brief!=null and brief!=''">
+			AND U.brief=#{brief}
+		</if>
+		<if test="openId!=null and openId!=''">
+			AND U.open_id=#{openId}
+		</if>
+		<if test="device!=null">
+			AND U.device=#{device}
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			AND U.recommend_id=#{recommendId}
+		</if>
+		<if test="createTime!=null">
+			AND U.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND U.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND U.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND U.type=#{type}
+			</if>
+			<if test="name!=null and name!=''">
+				AND U.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sex!=null">
+				AND U.sex=#{sex}
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND U.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="password!=null and password!=''">
+				AND U.password LIKE CONCAT('%', #{password}, '%')
+			</if>
+			<if test="brief!=null and brief!=''">
+				AND U.brief LIKE CONCAT('%', #{brief}, '%')
+			</if>
+			<if test="openId!=null and openId!=''">
+				AND U.open_id LIKE CONCAT('%', #{openId}, '%')
+			</if>
+			<if test="device!=null">
+				AND U.device=#{device}
+			</if>
+			<if test="recommendId!=null and recommendId!=''">
+				AND U.recommend_id LIKE CONCAT('%', #{recommendId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND U.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND U.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				U.id=#{id},
+			</if>
+			<if test="type!=null">
+				U.type=#{type},
+			</if>
+			<if test="name!=null">
+				U.name=#{name},
+			</if>
+			<if test="sex!=null">
+				U.sex=#{sex},
+			</if>
+			<if test="phone!=null">
+				U.phone=#{phone},
+			</if>
+			<if test="password!=null">
+				U.password=#{password},
+			</if>
+			<if test="brief!=null">
+				U.brief=#{brief},
+			</if>
+			<if test="openId!=null">
+				U.open_id=#{openId},
+			</if>
+			<if test="device!=null">
+				U.device=#{device},
+			</if>
+			<if test="recommendId!=null">
+				U.recommend_id=#{recommendId},
+			</if>
+			<if test="createTime!=null">
+				U.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				U.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="user" type="com.jinpaihushi.jphs.user.model.User">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="password" column="password" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="brief" column="brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="openId" column="open_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="recommendId" column="recommend_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<resultMap id="userGlobal" type="com.jinpaihushi.jphs.user.model.User">
+		<result property="id" column="U_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="U_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="name" column="U_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="U_sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="phone" column="U_phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="password" column="U_password" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="brief" column="U_brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="openId" column="U_open_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="U_device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="recommendId" column="U_recommend_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="U_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="U_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.user.model.User">
+		INSERT INTO `USER`(
+		id, type, name, sex, phone, password, brief, open_id, device,
+		recommend_id, create_time, status )VALUES(
+		#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{sex,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR},
+		#{openId,jdbcType=VARCHAR}, #{device,jdbcType=INTEGER},
+		#{recommendId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `USER`(
+			id, type, 
+			name, sex, 
+			phone, password, 
+			brief, open_id, 
+			device, recommend_id, 
+			create_time, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR},
+			#{item.sex,jdbcType=INTEGER}, #{item.phone,jdbcType=VARCHAR},
+			#{item.password,jdbcType=VARCHAR}, #{item.brief,jdbcType=VARCHAR},
+			#{item.openId,jdbcType=VARCHAR}, #{item.device,jdbcType=INTEGER},
+			#{item.recommendId,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE U FROM `USER` U WHERE U.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `USER` U
+		SET
+		U.STATUS = -1
+		WHERE U.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `USER` U
+		<include refid="dynamicSet" />
+		WHERE U.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="user">
+		SELECT
+		<include refid="field" />
+		FROM `USER` U
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `USER` U
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="user">
+		SELECT
+		<include refid="field" />
+		FROM `USER` U
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="user">
+		SELECT
+		<include refid="field" />
+		FROM `USER` U
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="user">
+		SELECT
+		<include refid="field" />
+		FROM `USER` U
+		WHERE U.ID = #{id}
+	</select>
+
+	<resultMap id="userDetail" type="com.jinpaihushi.jphs.user.model.User">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="password" column="password" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="brief" column="brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="openId" column="open_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="recommendId" column="recommend_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="balance" column="balance" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="score" column="score" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="province" column="UA_province" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="city" column="UA_city" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="area" column="UA_area" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="detailaddress" column="UA_detailAddress"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<select id="getUserDetail" resultMap="userDetail">
+		SELECT
+		`user`.`id`
+		, `user`.`type`
+		, `user`.`name`
+		, `user`.`sex`
+		, `user`.`phone`
+		, `user`.`password`
+		, `user`.`brief`
+		, `user`.`open_id`
+		, `user`.`device`
+		, `user`.`recommend_id`
+		, `user`.`create_time`
+		, `user`.`status`
+		, `account`.`balance`
+		, `account`.`score`
+		FROM
+		`jphs`.`user`LEFT JOIN`jphs`.`account`
+		ON (`user`.`id` = `account`.`creator_id`) WHERE user.`id`= #{id}
+	</select>
+
+	<select id="userList" resultMap="userDetail">
+		SELECT
+		`user`.`id`
+		, `user`.`name`
+		, `user`.`type`
+		, `user`.`sex`
+		, `user`.`phone`
+		, `user`.`brief`
+		, `user`.`password`
+		, `user`.`open_id`
+		, `user`.`device`
+		, `user`.`recommend_id`
+		, `user`.`create_time`
+		, `user`.`status`
+		, `user_address`.`province` province
+		, `user_address`.`city` city
+		, `user_address`.`area` AREA
+		, `user_address`.`detailAddress` detailAddress
+		, `account`.`balance` balance
+		, `account`.`score` score
+		FROM
+		`jphs`.`user`
+		LEFT JOIN `jphs`.`user_address`
+		ON (`user`.`id` = `user_address`.`creator_id`)
+		LEFT JOIN `jphs`.`account`
+		ON (`user`.`id` = `account`.`creator_id`)
+		WHERE `user`.`TYPE` = #{type} AND `user`.`status` = #{status}
+		<if test="id!=null">
+			AND `user`.`id` LIKE CONCAT(CONCAT('%', #{id}), '%')
+		</if>
+		<if test="name!=null">
+			AND `user`.`name` LIKE CONCAT(CONCAT('%', #{name}), '%')
+		</if>
+		<if test="phone!=null">
+			AND `user`.`phone` LIKE CONCAT(CONCAT('%', #{phone}), '%')
+		</if>
+		<if test="province!=null">
+			AND `user_address`.`province` LIKE CONCAT(CONCAT('%', #{province}), '%')
+		</if>
+		<if test="city!=null">
+			AND `user_address`.`city` LIKE CONCAT(CONCAT('%', #{city}), '%')
+		</if>
+		<if test="beginTime!=null">
+		     AND `user`.`create_time` &gt;= #{beginTime}
+		</if>
+		<if test="stopTime!=null">
+		     AND `user`.`create_time` &lt;= #{stopTime}
+		</if>
+		
+		 GROUP BY  `user`.`id`
+	</select>
+		<select id="findUser" resultMap="userDetail">
+		select * from user where status=0 and phone=#{phone}  and type=#{type}
+	</select>
+
+</mapper>

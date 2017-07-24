@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-06-30 09:46:29 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseSkillDao">
+
+	<sql id="field">
+		NS.id, NS.skill_id, NS.price, NS.location_id,
+		NS.free_cycle, NS.leisure_time, NS.creator_id, NS.creator_name,
+		NS.create_time, NS.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		NS.id NS_id, NS.skill_id NS_skill_id,
+		NS.price NS_price, NS.location_id NS_location_id,
+		NS.free_cycle NS_free_cycle, NS.leisure_time NS_leisure_time,
+		NS.creator_id NS_creator_id, NS.creator_name NS_creator_name,
+		NS.create_time NS_create_time, NS.status NS_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		NS.id id, NS.skill_id skillId,
+		NS.price price, NS.location_id locationId,
+		NS.free_cycle freeCycle, NS.leisure_time leisureTime,
+		NS.creator_id creatorId, NS.creator_name creatorName,
+		NS.create_time createTime, NS.status status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NS.id=#{id}
+		</if>
+		<if test="skillId!=null and skillId!=''">
+			AND NS.skill_id=#{skillId}
+		</if>
+		<if test="price!=null">
+			AND NS.price=#{price}
+		</if>
+		<if test="locationId!=null and locationId!=''">
+			AND NS.location_id=#{locationId}
+		</if>
+		<if test="freeCycle!=null and freeCycle!=''">
+			AND NS.free_cycle=#{freeCycle}
+		</if>
+		<if test="leisureTime!=null and leisureTime!=''">
+			AND NS.leisure_time=#{leisureTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND NS.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND NS.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND NS.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND NS.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NS.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="skillId!=null and skillId!=''">
+				AND NS.skill_id LIKE CONCAT('%', #{skillId}, '%')
+			</if>
+			<if test="price!=null">
+				AND NS.price=#{price}
+			</if>
+			<if test="locationId!=null and locationId!=''">
+				AND NS.location_id LIKE CONCAT('%', #{locationId}, '%')
+			</if>
+			<if test="freeCycle!=null and freeCycle!=''">
+				AND NS.free_cycle LIKE CONCAT('%', #{freeCycle}, '%')
+			</if>
+			<if test="leisureTime!=null and leisureTime!=''">
+				AND NS.leisure_time LIKE CONCAT('%', #{leisureTime}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NS.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NS.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND NS.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND NS.status=#{status}
+			</if>
+			<if test="skill!=null">
+				<if test="skill.name!=null">
+					AND s.`name` LIKE CONCAT('%', #{skill.name}, '%')
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				NS.id=#{id},
+			</if>
+			<if test="skillId!=null">
+				NS.skill_id=#{skillId},
+			</if>
+			<if test="price!=null">
+				NS.price=#{price},
+			</if>
+			<if test="locationId!=null">
+				NS.location_id=#{locationId},
+			</if>
+			<if test="freeCycle!=null">
+				NS.free_cycle=#{freeCycle},
+			</if>
+			<if test="leisureTime!=null">
+				NS.leisure_time=#{leisureTime},
+			</if>
+			<if test="creatorId!=null">
+				NS.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				NS.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				NS.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				NS.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseSkill" type="com.jinpaihushi.jphs.nurse.model.NurseSkill">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="skillId" column="skill_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="locationId" column="location_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="freeCycle" column="free_cycle" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="leisureTime" column="leisure_time" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Long"
+			jdbcType="BIGINT"></result>
+	</resultMap>
+	<resultMap id="nurseSkillDetail" type="com.jinpaihushi.jphs.nurse.model.NurseSkill">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="skillId" column="skill_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="locationId" column="location_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="freeCycle" column="free_cycle" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="leisureTime" column="leisure_time" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="imageUrl" column="image_url" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<association property="skill"
+			javaType="com.jinpaihushi.jphs.skill.model.Skill">
+			<result property="name" column="skill_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="amount" column="skill_amount" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="creatorId" column="skill_creator_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="skill_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="skill_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="skill_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<association property="location"
+			javaType="com.jinpaihushi.jphs.location.model.Location">
+			<result property="id" column="location_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="content" column="location_content" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="parentId" column="location_parent_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="type" column="location_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<collection property="nurseImage"
+			ofType="com.jinpaihushi.jphs.nurse.model.NurseImages">
+			<result property="id" column="nurseImage_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="nurseImage_url" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="path" column="nurseImage_path" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="sourceId" column="nurseImage_source_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="type" column="nurseImage_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="creatorId" column="nurseImage_creator_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="nurseImage_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="nurseImage_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="nurseImage_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</collection>
+	</resultMap>
+
+	<resultMap id="nurseSkillGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseSkill">
+		<result property="id" column="NS_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="skillId" column="NS_skill_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="price" column="NS_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="locationId" column="NS_location_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="freeCycle" column="NS_free_cycle" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="leisureTime" column="NS_leisure_time"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="NS_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NS_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="NS_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="NS_status" javaType="Long"
+			jdbcType="BIGINT"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.nurse.model.NurseSkill">
+		INSERT INTO `NURSE_SKILL`(
+		id, skill_id,
+		price, location_id,
+		free_cycle, leisure_time,
+		creator_id, creator_name,
+		create_time, status
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{skillId,jdbcType=VARCHAR},
+		#{price,jdbcType=DECIMAL}, #{locationId,jdbcType=VARCHAR},
+		#{freeCycle,jdbcType=VARCHAR}, #{leisureTime,jdbcType=VARCHAR},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIGINT}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_SKILL`(
+			id, skill_id, 
+			price, location_id, 
+			free_cycle, leisure_time, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.skillId,jdbcType=VARCHAR},
+			#{item.price,jdbcType=DECIMAL}, #{item.locationId,jdbcType=VARCHAR},
+			#{item.freeCycle,jdbcType=VARCHAR},
+			#{item.leisureTime,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=BIGINT}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE NS FROM `NURSE_SKILL` NS WHERE NS.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `NURSE_SKILL` NS
+		SET
+		NS.STATUS = -1
+		WHERE NS.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_SKILL` NS
+		<include refid="dynamicSet" />
+		WHERE NS.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseSkill">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE_SKILL` NS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_SKILL` NS
+		<include refid="queryWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseSkill">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE_SKILL` NS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseSkill">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE_SKILL` NS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="nurseSkill">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE_SKILL` NS
+		WHERE NS.ID = #{id}
+	</select>
+	<select id="queryDetail" resultMap="nurseSkillDetail">
+		SELECT
+		ns.id,
+		ns.creator_id,
+		ns.creator_name,
+		ns.skill_id,
+		ns.status,
+		ns.create_time,
+		s.id s_id,
+		s.`name` skill_name,
+		ns.price,
+		ns.location_id,
+		t.content location_content,
+		ns.free_cycle,
+		ns.leisure_time,
+		s.amount skill_amount,
+		ni.url nurseImage_url
+		FROM
+		nurse_skill ns
+		LEFT JOIN skill s ON ns.skill_id = s.id
+		LEFT JOIN nurse_images ni ON
+		ni.source_id = ns.id
+		LEFT JOIN (SELECT
+		l.id,
+		CONCAT(
+
+		l2.content,'-',
+		l.content
+		) content
+		FROM
+		`location` l
+		LEFT JOIN location l2 ON l.parent_id
+		= l2.id
+
+		) t ON ns.location_id =t.id
+		<include refid="queryWhere" />
+	</select>
+</mapper>

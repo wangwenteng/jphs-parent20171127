@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-07-19 15:01:20
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.information.dao.InformationLikesDao">
+	
+	<sql id="field">
+		IL.id, IL.information_id, IL.information_evaluate_id, IL.likes, 
+		IL.device, IL.status, IL.create_time, IL.creator_id, 
+		IL.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		IL.id IL_id, IL.information_id IL_information_id, 
+		IL.information_evaluate_id IL_information_evaluate_id, IL.likes IL_likes, 
+		IL.device IL_device, IL.status IL_status, 
+		IL.create_time IL_create_time, IL.creator_id IL_creator_id, 
+		IL.creator_name IL_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		IL.id id, IL.information_id informationId, 
+		IL.information_evaluate_id informationEvaluateId, IL.likes likes, 
+		IL.device device, IL.status status, 
+		IL.create_time createTime, IL.creator_id creatorId, 
+		IL.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND IL.id=#{id}
+		</if>
+		<if test="informationId!=null and informationId!=''">
+			AND IL.information_id=#{informationId}
+		</if>
+		<if test="informationEvaluateId!=null and informationEvaluateId!=''">
+			AND IL.information_evaluate_id=#{informationEvaluateId}
+		</if>
+		<if test="likes!=null">
+			AND IL.likes=#{likes}
+		</if>
+		<if test="device!=null and device!=''">
+			AND IL.device=#{device}
+		</if>
+		<if test="status!=null">
+			AND IL.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND IL.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND IL.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND IL.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND IL.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="informationId!=null and informationId!=''">
+				AND IL.information_id LIKE CONCAT('%', #{informationId}, '%')
+			</if>
+			<if test="informationEvaluateId!=null and informationEvaluateId!=''">
+				AND IL.information_evaluate_id LIKE CONCAT('%', #{informationEvaluateId}, '%')
+			</if>
+			<if test="likes!=null">
+				AND IL.likes=#{likes}
+			</if>
+			<if test="device!=null and device!=''">
+				AND IL.device LIKE CONCAT('%', #{device}, '%')
+			</if>
+			<if test="status!=null">
+				AND IL.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND IL.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND IL.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND IL.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				IL.id=#{id}, 
+		   </if>
+           <if test="informationId!=null">
+				IL.information_id=#{informationId}, 
+		   </if>
+           <if test="informationEvaluateId!=null">
+				IL.information_evaluate_id=#{informationEvaluateId}, 
+		   </if>
+           <if test="likes!=null">
+				IL.likes=#{likes}, 
+		   </if>
+           <if test="device!=null">
+				IL.device=#{device}, 
+		   </if>
+           <if test="status!=null">
+				IL.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				IL.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				IL.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				IL.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="informationLikes" type="com.jinpaihushi.jphs.information.model.InformationLikes">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationId" column="information_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationEvaluateId" column="information_evaluate_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="likes" column="likes" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="informationLikesGlobal" type="com.jinpaihushi.jphs.information.model.InformationLikes">
+		<result property="id" column="IL_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationId" column="IL_information_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationEvaluateId" column="IL_information_evaluate_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="likes" column="IL_likes" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="device" column="IL_device" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="IL_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="IL_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="IL_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="IL_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.information.model.InformationLikes">
+		INSERT INTO `INFORMATION_LIKES`(
+			id, information_id, 
+			information_evaluate_id, likes, 
+			device, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{informationId,jdbcType=VARCHAR}, 
+			#{informationEvaluateId,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER}, 
+			#{device,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `INFORMATION_LIKES`(
+			id, information_id, 
+			information_evaluate_id, likes, 
+			device, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.informationId,jdbcType=VARCHAR}, 
+			#{item.informationEvaluateId,jdbcType=VARCHAR}, #{item.likes,jdbcType=INTEGER}, 
+			#{item.device,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE IL FROM `INFORMATION_LIKES` IL WHERE IL.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `INFORMATION_LIKES` IL
+		SET 
+		IL.STATUS = -1
+		WHERE IL.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `INFORMATION_LIKES` IL
+		<include refid="dynamicSet" /> 
+	    WHERE IL.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="informationLikes">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_LIKES` IL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `INFORMATION_LIKES` IL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="informationLikes">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_LIKES` IL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="informationLikes">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_LIKES` IL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="informationLikes">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_LIKES` IL
+		WHERE IL.ID = #{id}
+	</select>
+	
+</mapper>

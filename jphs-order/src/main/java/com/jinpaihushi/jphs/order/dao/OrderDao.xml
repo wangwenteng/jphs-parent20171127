@@ -1,0 +1,888 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-06-27 14:43:43 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.order.dao.OrderDao">
+
+	<sql id="field">
+		O.id, O.order_no, O.voucher_price, O.voucher_use_id,
+		O.platform_id, O.expector_id, O.accept_user_id, O.appointment_time,
+		O.accept_time, O.transaction_id, O.schedule, O.device,
+		O.remarks,
+		O.status, O.create_time, O.creator_id
+	</sql>
+
+	<sql id="fieldGlobal">
+		O.id O_id, O.order_no O_order_no,
+		O.voucher_price
+		O_voucher_price, O.voucher_use_id O_voucher_use_id,
+		O.platform_id
+		O_platform_id, O.expector_id O_expector_id,
+		O.accept_user_id
+		O_accept_user_id, O.appointment_time O_appointment_time,
+		O.accept_time
+		O_accept_time, O.transaction_id O_transaction_id,
+		O.schedule
+		O_schedule, O.device O_device,
+		O.remarks O_remarks, O.status O_status,
+		O.create_time O_create_time, O.creator_id O_creator_id
+	</sql>
+
+	<sql id="fieldWithAlias">
+		O.id id, O.order_no orderNo,
+		O.voucher_price voucherPrice,
+		O.voucher_use_id voucherUseId,
+		O.platform_id platformId, O.expector_id
+		expectorId,
+		O.accept_user_id acceptUserId, O.appointment_time
+		appointmentTime,
+		O.accept_time acceptTime, O.transaction_id
+		transactionId,
+		O.schedule schedule, O.device device,
+		O.remarks remarks,
+		O.status status,
+		O.create_time createTime, O.creator_id creatorId
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND O.id=#{id}
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			AND O.order_no=#{orderNo}
+		</if>
+		<if test="voucherPrice!=null">
+			AND O.voucher_price=#{voucherPrice}
+		</if>
+		<if test="voucherUseId!=null and voucherUseId!=''">
+			AND O.voucher_use_id=#{voucherUseId}
+		</if>
+		<if test="platformId!=null and platformId!=''">
+			AND O.platform_id=#{platformId}
+		</if>
+		<if test="expectorId!=null and expectorId!=''">
+			AND O.expector_id=#{expectorId}
+		</if>
+		<if test="acceptUserId!=null and acceptUserId!=''">
+			AND O.accept_user_id=#{acceptUserId}
+		</if>
+		<if test="appointmentTime!=null">
+			AND O.appointment_time=#{appointmentTime}
+		</if>
+		<if test="acceptTime!=null">
+			AND O.accept_time=#{acceptTime}
+		</if>
+		<if test="transactionId!=null and transactionId!=''">
+			AND O.transaction_id=#{transactionId}
+		</if>
+		<if test="schedule!=null">
+			AND O.schedule=#{schedule}
+		</if>
+		<if test="device!=null">
+			AND O.device=#{device}
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			AND O.remarks=#{remarks}
+		</if>
+		<if test="status!=null">
+			AND O.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND O.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND O.creator_id=#{creatorId}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND O.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderNo!=null and orderNo!=''">
+				AND O.order_no LIKE CONCAT('%', #{orderNo}, '%')
+			</if>
+			<if test="voucherPrice!=null">
+				AND O.voucher_price=#{voucherPrice}
+			</if>
+			<if test="voucherUseId!=null and voucherUseId!=''">
+				AND O.voucher_use_id LIKE CONCAT('%', #{voucherUseId},
+				'%')
+			</if>
+			<if test="platformId!=null and platformId!=''">
+				AND O.platform_id LIKE CONCAT('%', #{platformId}, '%')
+			</if>
+			<if test="expectorId!=null and expectorId!=''">
+				AND O.expector_id LIKE CONCAT('%', #{expectorId}, '%')
+			</if>
+			<if test="acceptUserId!=null and acceptUserId!=''">
+				AND O.accept_user_id LIKE CONCAT('%', #{acceptUserId},
+				'%')
+			</if>
+			<if test="appointmentTime!=null">
+				AND O.appointment_time=#{appointmentTime}
+			</if>
+			<if test="acceptTime!=null">
+				AND O.accept_time=#{acceptTime}
+			</if>
+			<if test="transactionId!=null and transactionId!=''">
+				AND O.transaction_id LIKE CONCAT('%', #{transactionId},
+				'%')
+			</if>
+			<if test="schedule!=null">
+				AND O.schedule=#{schedule}
+			</if>
+			<if test="device!=null">
+				AND O.device=#{device}
+			</if>
+			<if test="remarks!=null and remarks!=''">
+				AND O.remarks LIKE CONCAT('%', #{remarks}, '%')
+			</if>
+			<if test="status!=null">
+				AND O.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND O.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND O.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				O.id=#{id},
+			</if>
+			<if test="orderNo!=null">
+				O.order_no=#{orderNo},
+			</if>
+			<if test="voucherPrice!=null">
+				O.voucher_price=#{voucherPrice},
+			</if>
+			<if test="voucherUseId!=null">
+				O.voucher_use_id=#{voucherUseId},
+			</if>
+			<if test="platformId!=null">
+				O.platform_id=#{platformId},
+			</if>
+			<if test="expectorId!=null">
+				O.expector_id=#{expectorId},
+			</if>
+			<if test="acceptUserId!=null">
+				O.accept_user_id=#{acceptUserId},
+			</if>
+			<if test="appointmentTime!=null">
+				O.appointment_time=#{appointmentTime},
+			</if>
+			<if test="acceptTime!=null">
+				O.accept_time=#{acceptTime},
+			</if>
+			<if test="transactionId!=null">
+				O.transaction_id=#{transactionId},
+			</if>
+			<if test="schedule!=null">
+				O.schedule=#{schedule},
+			</if>
+			<if test="device!=null">
+				O.device=#{device},
+			</if>
+			<if test="remarks!=null">
+				O.remarks=#{remarks},
+			</if>
+			<if test="status!=null">
+				O.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				O.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				O.creator_id=#{creatorId},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+	<resultMap id="order" type="com.jinpaihushi.jphs.order.model.Order">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="platform_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="expector_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="accept_user_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="accept_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="transaction_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+	<resultMap id="orderGlobal" type="com.jinpaihushi.jphs.order.model.Order">
+		<result property="id" column="O_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="O_order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="O_voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="O_voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="O_platform_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="O_expector_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="O_accept_user_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="O_appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="O_accept_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="O_transaction_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="O_schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="device" column="O_device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remarks" column="O_remarks" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="O_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="O_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="O_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.order.model.Order">
+		INSERT INTO `ORDER`(
+		id, order_no,
+		voucher_price,
+		voucher_use_id,
+		platform_id, expector_id,
+		accept_user_id,
+		appointment_time,
+		accept_time, transaction_id,
+		schedule, device,
+		remarks, status,
+		create_time, creator_id
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
+		#{voucherPrice,jdbcType=DECIMAL}, #{voucherUseId,jdbcType=VARCHAR},
+		#{platformId,jdbcType=VARCHAR}, #{expectorId,jdbcType=VARCHAR},
+		#{acceptUserId,jdbcType=VARCHAR},
+		#{appointmentTime,jdbcType=TIMESTAMP},
+		#{acceptTime,jdbcType=TIMESTAMP}, #{transactionId,jdbcType=VARCHAR},
+		#{schedule,jdbcType=INTEGER}, #{device,jdbcType=INTEGER},
+		#{remarks,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `ORDER`(
+			id, order_no, 
+			voucher_price, voucher_use_id, 
+			platform_id, expector_id, 
+			accept_user_id, appointment_time, 
+			accept_time, transaction_id, 
+			schedule, device, 
+			remarks, status, 
+			create_time, creator_id
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.orderNo,jdbcType=VARCHAR},
+			#{item.voucherPrice,jdbcType=DECIMAL},
+			#{item.voucherUseId,jdbcType=VARCHAR},
+			#{item.platformId,jdbcType=VARCHAR},
+			#{item.expectorId,jdbcType=VARCHAR},
+			#{item.acceptUserId,jdbcType=VARCHAR},
+			#{item.appointmentTime,jdbcType=TIMESTAMP},
+			#{item.acceptTime,jdbcType=TIMESTAMP},
+			#{item.transactionId,jdbcType=VARCHAR},
+			#{item.schedule,jdbcType=INTEGER}, #{item.device,jdbcType=INTEGER},
+			#{item.remarks,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE O FROM `ORDER` O WHERE O.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `ORDER` O
+		SET
+		O.STATUS = -1
+		WHERE O.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ORDER` O
+		<include refid="dynamicSet" />
+		WHERE O.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="order">
+		SELECT
+		<include refid="field" />
+		FROM `ORDER` O
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ORDER` O
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="order">
+		SELECT
+		<include refid="field" />
+		FROM `ORDER` O
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="order">
+		SELECT
+		<include refid="field" />
+		FROM `ORDER` O
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="order">
+		SELECT
+		<include refid="field" />
+		FROM `ORDER` O
+		WHERE O.ID = #{id}
+	</select>
+
+
+	<resultMap id="orderList" type="com.jinpaihushi.jphs.order.model.Order">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="expector_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="accept_user_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="accept_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="transaction_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="userName" column="userName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseName" column="nurseName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<association property="orderGoods"
+			javaType="com.jinpaihushi.jphs.order.model.OrderGoods">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="orderId" column="order_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="goodsId" column="goods_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="title" column="title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="payPrice" column="pay_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="profit" column="profit" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="expectorId" column="expector_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="executorId" column="executor_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="remark" column="remark" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</association>
+		<association property="orderService"
+			javaType="com.jinpaihushi.jphs.order.model.OrderService">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="orderId" column="order_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="nurseId" column="nurse_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="patientName" column="patient_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="patientPhone" column="patient_phone"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="expectorDoctor" column="expector_doctor"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="schedule" column="schedule" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="appointmentTime" column="appointment_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="setoutTime" column="setout_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="startServiceTime" column="start_service_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="endServiceTime" column="end_service_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="remindTime" column="remind_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="confirmTime" column="confirm_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="creator_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</association>
+		<association property="user"
+			javaType="com.jinpaihushi.jphs.user.model.User">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="type" column="type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="name" column="name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="sex" column="sex" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="phone" column="phone" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="password" column="password" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="brief" column="brief" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="openId" column="open_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="device" column="device" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="recommendId" column="recommend_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="createTime" column="create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+	</resultMap>
+
+	<select id="getList" resultMap="orderList">
+		SELECT
+		`o`.`id`
+		, `u1`.`name` userName
+		, `u1`.`phone`
+		, `g` .`title`
+		,
+		`o`.`appointment_time`
+		, `o`.`status`
+		, `u2`.`name` nurseName
+		,
+		`o`.`order_no`
+		, `o`.`schedule`
+		FROM
+		`jphs`.`order` AS `o`
+		LEFT JOIN
+		`jphs`.`order_goods` AS `og`
+		ON (`o`.`order_no` = `og`.`order_id`)
+		LEFT
+		JOIN `jphs`.`user` AS `u1`
+		ON (`o`.`creator_id` = `u1`.`id`)
+		LEFT JOIN
+		`jphs`.`user` AS `u2`
+		ON (`o`.`accept_user_id` = `u2`.`id`)
+		LEFT JOIN
+		`jphs`.`goods` AS `g`
+		ON (`og`.`goods_id` = `g`.`id`)
+		WHERE o.`schedule`
+		= #{schedule}
+		<if test="orderNo !=null">
+			AND `o`.`order_no` LIKE concat(concat('%',#{orderNo}),'%')
+		</if>
+		<if test="phone !=null">
+			AND `u1`.`phone` LIKE concat(concat('%',#{phone}),'%')
+		</if>
+		<if test="nursePhone !=null">
+			AND `u2`.`phone` LIKE
+			concat(concat('%',#{nursePhone}),'%')
+		</if>
+		<if test="userName !=null">
+			AND `u1`.`name` LIKE concat(concat('%',#{userName}),'%')
+		</if>
+		<if test="nurseName !=null">
+			AND `u2`.`name` LIKE concat(concat('%',#{nurseName}),'%')
+		</if>
+		<if test="device !=null">
+			AND `o`.`device` = #{device}
+		</if>
+		<if test="beginTime!=null">
+			AND `o`.`appointment_time` &gt;= #{beginTime}
+		</if>
+		<if test="stopTime!=null">
+			AND `o`.`appointment_time` &lt;= #{stopTime}
+		</if>
+	</select>
+	<select id="getUserOrder" resultType="java.util.HashMap">
+		SELECT
+		o.id,
+		o.order_no,
+		o.appointment_time,
+		g.id goods_id,
+		g.title,
+		g.sub_title,
+		g.content,
+		si.url,
+		og.pay_price,
+		og.price,
+		t.pay_type,
+		o.SCHEDULE
+		FROM
+		`order` o
+		LEFT JOIN order_goods og ON o.id = og.order_id
+		LEFT JOIN goods g ON og.goods_id = g.id
+		LEFT JOIN service_images si ON
+		si.source_id = g.id
+		LEFT JOIN `transaction` t ON t.order_id = o.id
+		WHERE
+		o.creator_id = #{userId}
+		AND si.device_type = 1
+		AND t.creator_id =
+		o.creator_id
+		AND o.`status` =0
+		AND t.`status`=0
+		<if test="schedule!=null">
+			o.schedule = #{schedule}
+		</if>
+	</select>
+	<resultMap id="orderDetail" type="com.jinpaihushi.jphs.order.model.Order">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="platform_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="expector_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="accept_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="accept_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="transaction_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<association property="orderGoods"
+			javaType="com.jinpaihushi.jphs.order.model.OrderGoods">
+			<result property="id" column="og_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="orderId" column="og_order_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="goodsId" column="og_goods_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="title" column="og_title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="price" column="og_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="payPrice" column="og_pay_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="profit" column="og_profit" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="expectorId" column="og_expector_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="executorId" column="og_executor_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="status" column="og_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="og_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="remark" column="og_remark" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</association>
+		<association property="orderOther"
+			javaType="com.jinpaihushi.jphs.order.model.OrderOther">
+			<result property="id" column="oo_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="orderId" column="oo_order_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="departmentId" column="oo_department_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="hospital" column="oo_hospital" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="address" column="oo_address" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="detailAddress" column="oo_detail_address"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="drug" column="oo_drug" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="tool" column="oo_tool" javaType="String"
+				jdbcType="VARCHAR"></result>
+				
+			<result property="publicName" column="oo_public_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="publicContent" column="oo_public_content"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="status" column="oo_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="oo_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="oo_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="remarks" column="oo_remarks" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</association>
+		<association property="goods"
+			javaType="com.jinpaihushi.jphs.goods.model.Goods">
+			<result property="id" column="g_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="productId" column="g_product_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="title" column="g_title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="subTitle" column="g_sub_title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="content" column="g_content" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="tijianTypeId" column="g_tijian_type_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="tijianHospitalId" column="g_tijian_hospital_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="tool" column="g_tool" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="insurance" column="g_insurance" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="must" column="g_must" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="type" column="g_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="gradeType" column="g_gradeType" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="sort" column="g_sort" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="remark" column="g_remark" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="g_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="g_create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="g_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="g_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="url" column="url" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</association>
+		<association property="transaction"
+			javaType="com.jinpaihushi.jphs.transaction.model.Transaction">
+			<result property="id" column="t_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="orderId" column="t_order_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="amount" column="t_amount" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="score" column="t_score" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="operate" column="t_operate" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="remark" column="t_remark" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="withdraw" column="t_withdraw" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="payType" column="t_pay_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="outTradeNo" column="t_out_trade_no"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorId" column="t_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="t_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="t_create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="status" column="t_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+	</resultMap>
+	<select id="getUserOrderDetail" resultMap="orderDetail">
+		SELECT
+		o.id,
+		o.order_no,
+		o.voucher_price,
+		o.voucher_use_id,
+		o.platform_id,
+		o.expector_id,
+		o.accept_user_id,
+		o.appointment_time,
+		o.accept_time,
+		o.transaction_id,
+		o.`schedule`,
+		o.device,
+		o.remarks,
+		o.`status`,
+		o.create_time,
+		o.creator_id,
+		og.id AS og_id,
+		og.order_id AS og_order_id,
+		og.goods_id AS og_goods_id,
+		og.title AS og_title,
+		og.price AS og_price,
+		og.pay_price AS og_pay_price,
+		og.profit AS og_profit,
+		og.expector_id AS
+		of_expector_id,
+		og.executor_id AS og_executor_id,
+		og.`status` AS
+		og_status,
+		og.create_time AS og_create_time,
+		og.remark AS og_remark,
+		oo.id AS oo_id,
+		oo.order_id AS oo_order_id,
+		oo.department_id AS
+		oo_department_id,
+		oo.hospital AS oo_hospital,
+		oo.address AS oo_address,
+		oo.detail_address AS oo_detail_address,
+		oo.drug AS oo_drug,
+		oo.tool AS
+		oo_tool,
+		oo.public_name AS oo_public_name,
+		oo.public_content AS
+		oo_public_content,
+		oo.`status` AS oo_status,
+		oo.create_time AS
+		oo_create_time,
+		oo.creator_id AS oo_creator_id,
+		oo.remarks AS
+		oo_remarks,
+		g.id AS g_id,
+		g.product_id AS g_product_id,
+		g.title AS
+		g_title,
+		g.sub_title AS g_sub_title,
+		g.content AS g_content,
+		g.tijian_type_id AS g_tijian_type_id,
+		g.tijian_hospital_id AS
+		g_tijian_hospital_id,
+		g.tool AS g_tool,
+		g.insurance AS g_insurance,
+		g.must AS g_must,
+		g.type AS g_type,
+		g.grade_type AS g_grade_type,
+		g.sort
+		AS g_sort,
+		g.remark AS g_remark,
+		g.`status` AS g_status,
+		g.create_time AS
+		g_create_time,
+		g.creator_id AS g_creator_id,
+		g.creator_name AS
+		g_creator_name,
+		si.url,
+		t.id AS t_id,
+		t.order_id AS t_order_id,
+		t.amount
+		AS t_amount,
+		t.score AS t_score,
+		t.operate AS t_operate,
+		t.operate_source AS t_operate_source,
+		t.remark AS t_remark,
+		t.withdraw
+		AS t_withdraw,
+		t.pay_type AS t_pay_type,
+		t.out_trade_no AS
+		t_out_trade_no,
+		t.creator_id AS t_creator_id,
+		t.creator_name AS
+		t_creator_name,
+		t.create_time AS t_create_time,
+		t.`status` AS t_status
+		FROM
+		`order` o
+		LEFT JOIN order_goods og ON o.id = og.order_id
+		LEFT JOIN
+		order_other oo ON o.id =oo.order_id
+		LEFT JOIN goods g ON og.goods_id =
+		g.id
+		LEFT JOIN service_images si ON si.source_id = g.id
+		LEFT JOIN
+		`transaction` t ON t.order_id = o.id
+		<where>
+			<if test="id!=null and id!=''">
+				AND o.id =#{id}
+			</if>
+		</where>
+	</select>
+</mapper>

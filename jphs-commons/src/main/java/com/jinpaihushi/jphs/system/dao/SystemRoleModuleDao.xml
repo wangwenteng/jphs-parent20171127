@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-07-06 09:05:06
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.system.dao.SystemRoleModuleDao">
+	
+	<sql id="field">
+		SRM.system_role_id, SRM.system_module_id
+	</sql>
+
+	<sql id="fieldGlobal">
+		SRM.system_role_id SRM_system_role_id, SRM.system_module_id SRM_system_module_id
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		SRM.system_role_id systemRoleId, SRM.system_module_id systemModuleId
+	</sql>
+	
+	<sql id="condition">
+		<if test="systemRoleId!=null and systemRoleId!=''">
+			AND SRM.system_role_id=#{systemRoleId}
+		</if>
+		<if test="systemModuleId!=null and systemModuleId!=''">
+			AND SRM.system_module_id=#{systemModuleId}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="systemRoleId!=null and systemRoleId!=''">
+				AND SRM.system_role_id LIKE CONCAT('%', #{systemRoleId}, '%')
+			</if>
+			<if test="systemModuleId!=null and systemModuleId!=''">
+				AND SRM.system_module_id LIKE CONCAT('%', #{systemModuleId}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="systemRoleId!=null">
+				SRM.system_role_id=#{systemRoleId}, 
+		   </if>
+           <if test="systemModuleId!=null">
+				SRM.system_module_id=#{systemModuleId}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="systemRoleModule" type="com.jinpaihushi.jphs.system.model.SystemRoleModule">
+		<result property="systemRoleId" column="system_role_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemModuleId" column="system_module_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="systemRoleModuleGlobal" type="com.jinpaihushi.jphs.system.model.SystemRoleModule">
+		<result property="systemRoleId" column="SRM_system_role_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="systemModuleId" column="SRM_system_module_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.system.model.SystemRoleModule">
+		INSERT INTO `SYSTEM_ROLE_MODULE`(
+			system_role_id, system_module_id
+		)VALUES(
+			#{systemRoleId,jdbcType=VARCHAR}, #{systemModuleId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSTEM_ROLE_MODULE`(
+			system_role_id, system_module_id
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.systemRoleId,jdbcType=VARCHAR}, #{item.systemModuleId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE SRM FROM `SYSTEM_ROLE_MODULE` SRM WHERE SRM.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SYSTEM_ROLE_MODULE` SRM
+		SET 
+		SRM.STATUS = -1
+		WHERE SRM.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSTEM_ROLE_MODULE` SRM
+		<include refid="dynamicSet" /> 
+	    WHERE SRM.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="systemRoleModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_ROLE_MODULE` SRM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSTEM_ROLE_MODULE` SRM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="systemRoleModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_ROLE_MODULE` SRM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="systemRoleModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_ROLE_MODULE` SRM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="systemRoleModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_ROLE_MODULE` SRM
+		WHERE SRM.ID = #{id}
+	</select>
+	<delete id="deleteByRole">
+		DELETE SRM FROM `SYSTEM_ROLE_MODULE` SRM WHERE SRM.system_role_id = #{id} 
+	</delete>
+</mapper>

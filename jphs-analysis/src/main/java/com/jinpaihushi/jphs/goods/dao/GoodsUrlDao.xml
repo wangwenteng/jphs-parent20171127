@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-13 15:01:42
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.goods.dao.GoodsUrlDao">
+	
+	<sql id="field">
+		GU.id, GU.path, GU.name, GU.product_id, 
+		GU.type
+	</sql>
+
+	<sql id="fieldGlobal">
+		GU.id GU_id, GU.path GU_path, 
+		GU.name GU_name, GU.product_id GU_product_id, 
+		GU.type GU_type
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		GU.id id, GU.path path, 
+		GU.name name, GU.product_id productId, 
+		GU.type type
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND GU.id=#{id}
+		</if>
+		<if test="path!=null and path!=''">
+			AND GU.path=#{path}
+		</if>
+		<if test="name!=null and name!=''">
+			AND GU.name=#{name}
+		</if>
+		<if test="productId!=null and productId!=''">
+			AND GU.product_id=#{productId}
+		</if>
+		<if test="type!=null">
+			AND GU.type=#{type}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND GU.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="path!=null and path!=''">
+				AND GU.path LIKE CONCAT('%', #{path}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND GU.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="productId!=null and productId!=''">
+				AND GU.product_id LIKE CONCAT('%', #{productId}, '%')
+			</if>
+			<if test="type!=null">
+				AND GU.type=#{type}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				GU.id=#{id}, 
+		   </if>
+           <if test="path!=null">
+				GU.path=#{path}, 
+		   </if>
+           <if test="name!=null">
+				GU.name=#{name}, 
+		   </if>
+           <if test="productId!=null">
+				GU.product_id=#{productId}, 
+		   </if>
+           <if test="type!=null">
+				GU.type=#{type}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="goodsUrl" type="com.jinpaihushi.jphs.goods.model.GoodsUrl">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="productId" column="product_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="goodsUrlGlobal" type="com.jinpaihushi.jphs.goods.model.GoodsUrl">
+		<result property="id" column="GU_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="GU_path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="GU_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="productId" column="GU_product_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="GU_type" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.goods.model.GoodsUrl">
+		INSERT INTO `GOODS_URL`(
+			id, path, 
+			name, product_id, 
+			type
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+			#{name,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+			#{type,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `GOODS_URL`(
+			id, path, 
+			name, product_id, 
+			type
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.path,jdbcType=VARCHAR}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.productId,jdbcType=VARCHAR}, 
+			#{item.type,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE GU FROM `GOODS_URL` GU WHERE GU.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `GOODS_URL` GU
+		SET 
+		GU.STATUS = -1
+		WHERE GU.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `GOODS_URL` GU
+		<include refid="dynamicSet" /> 
+	    WHERE GU.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="goodsUrl">
+		SELECT <include refid="field"/>
+		FROM `GOODS_URL` GU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `GOODS_URL` GU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="goodsUrl">
+		SELECT <include refid="field"/>
+		FROM `GOODS_URL` GU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="goodsUrl">
+		SELECT <include refid="field"/>
+		FROM `GOODS_URL` GU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="goodsUrl">
+		SELECT <include refid="field"/>
+		FROM `GOODS_URL` GU
+		WHERE GU.ID = #{id}
+	</select>
+	
+</mapper>

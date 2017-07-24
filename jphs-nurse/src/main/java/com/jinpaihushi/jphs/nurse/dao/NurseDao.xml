@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-06-28 10:05:23 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseDao">
+
+	<sql id="field">
+		N.id,N.sfz, N.work_years,
+		N.details,
+		N.hospital, N.department_id,
+		N.creator_id, N.creator_name,
+		N.create_time, N.active,
+		N.address, N.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		N.id N_id,
+		N.sfz N_sfz, N.work_years
+		N_work_years,
+		N.details N_details,
+		N.hospital
+		N_hospital, N.department_id N_department_id,
+		N.creator_id N_creator_id,
+		N.creator_name N_creator_name,
+		N.create_time N_create_time, N.active
+		N_active,
+		N.address N_address, N.status N_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		N.id id,
+		N.sfz sfz, N.work_years workYears,
+		N.details details,
+		N.hospital hospital, N.department_id
+		departmentId,
+		N.creator_id creatorId, N.creator_name creatorName,
+		N.create_time
+		createTime, N.active active,
+		N.address address, N.status
+		status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND N.id=#{id}
+		</if>
+		<if test="sfz!=null and sfz!=''">
+			AND N.sfz=#{sfz}
+		</if>
+		<if test="workYears!=null">
+			AND N.work_years=#{workYears}
+		</if>
+		<if test="details!=null and details!=''">
+			AND N.details=#{details}
+		</if>
+		<if test="hospital!=null and hospital!=''">
+			AND N.hospital=#{hospital}
+		</if>
+		<if test="departmentId!=null and departmentId!=''">
+			AND N.department_id=#{departmentId}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND N.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND N.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND N.create_time=#{createTime}
+		</if>
+		<if test="active!=null">
+			AND N.active=#{active}
+		</if>
+		<if test="address!=null and address!=''">
+			AND N.address=#{address}
+		</if>
+		<if test="status!=null">
+			AND N.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND N.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="sfz!=null and sfz!=''">
+				AND N.sfz LIKE CONCAT('%', #{sfz}, '%')
+			</if>
+			<if test="workYears!=null">
+				AND N.work_years=#{workYears}
+			</if>
+			<if test="details!=null and details!=''">
+				AND N.details LIKE CONCAT('%', #{details}, '%')
+			</if>
+			<if test="hospital!=null and hospital!=''">
+				AND N.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="departmentId!=null and departmentId!=''">
+				AND N.department_id LIKE CONCAT('%', #{departmentId},
+				'%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND N.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND N.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND N.create_time=#{createTime}
+			</if>
+			<if test="active!=null">
+				AND N.active=#{active}
+			</if>
+			<if test="address!=null and address!=''">
+				AND N.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="status!=null">
+				AND N.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				N.id=#{id},
+			</if>
+			<if test="sfz!=null">
+				N.sfz=#{sfz},
+			</if>
+			<if test="workYears!=null">
+				N.work_years=#{workYears},
+			</if>
+			<if test="details!=null">
+				N.details=#{details},
+			</if>
+			<if test="hospital!=null">
+				N.hospital=#{hospital},
+			</if>
+			<if test="departmentId!=null">
+				N.department_id=#{departmentId},
+			</if>
+			<if test="creatorId!=null">
+				N.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				N.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				N.create_time=#{createTime},
+			</if>
+			<if test="active!=null">
+				N.active=#{active},
+			</if>
+			<if test="address!=null">
+				N.address=#{address},
+			</if>
+			<if test="status!=null">
+				N.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurse" type="com.jinpaihushi.jphs.nurse.model.Nurse">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="workYears" column="work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="details" column="details" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="hospital" column="hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="active" column="active" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+	<resultMap id="nurseDetail" type="com.jinpaihushi.jphs.nurse.model.Nurse">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="workYears" column="work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="details" column="details" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="hospital" column="hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="head_portrait" column="head_portrait"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitude_positive" column="aptitude_positive"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="aptitude_negative" column="aptitude_negative"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="id_positive" column="id_positive" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="id_negative" column="id_negative" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="recommendName" column="recommendName"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="active" column="active" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<association property="user"
+			javaType="com.jinpaihushi.jphs.user.model.User">
+			<result property="id" column="user_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="type" column="user_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="name" column="user_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="sex" column="user_sex" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="phone" column="user_phone" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="password" column="user_password" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="openId" column="user_open_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="device" column="user_device" javaType="Integer"
+				jdbcType="INTEGER"></result>
+				<result property="brief" column="user_brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+			<result property="recommendId" column="user_recommend_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="user_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="user_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<collection property="location"
+			ofType="com.jinpaihushi.jphs.location.model.Location">
+			<result property="id" column="location_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="content" column="location_content" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</collection>
+	</resultMap>
+	<resultMap id="nurseGlobal" type="com.jinpaihushi.jphs.nurse.model.Nurse">
+		<result property="id" column="N_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="N_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sfz" column="N_sfz" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="workYears" column="N_work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="details" column="N_details" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="hospital" column="N_hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="N_department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="N_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="N_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="N_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="active" column="N_active" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="address" column="N_address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="N_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
+		INSERT INTO `NURSE`(
+		id, type,
+		sfz, work_years,
+		details,
+		hospital, department_id,
+		creator_id, creator_name,
+		create_time,
+		active,
+		address, status
+		)VALUES(
+		#{id,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER},
+		#{sfz,jdbcType=VARCHAR},
+		#{workYears,jdbcType=TIMESTAMP},
+		#{details,jdbcType=VARCHAR},
+		#{hospital,jdbcType=VARCHAR},
+		#{departmentId,jdbcType=VARCHAR},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{active,jdbcType=INTEGER},
+		#{address,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE`(
+			id, type, 
+			sfz, work_years, 
+			 details, 
+			hospital, department_id, 
+			creator_id, creator_name, 
+			create_time, active, 
+			address, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.sfz,jdbcType=VARCHAR},
+			#{item.workYears,jdbcType=TIMESTAMP},
+			#{item.details,jdbcType=VARCHAR},
+			#{item.hospital,jdbcType=VARCHAR},
+			#{item.departmentId,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.active,jdbcType=INTEGER},
+			#{item.address,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	<delete id="deleteById">
+		DELETE N FROM `NURSE` N WHERE N.ID = #{id}
+	</delete>
+	<update id="disableById">
+		UPDATE `NURSE` N
+		SET
+		N.STATUS = -1
+		WHERE N.ID = #{id}
+	</update>
+	<update id="update">
+		UPDATE `NURSE` N
+		<include refid="dynamicSet" />
+		WHERE N.ID = #{id}
+	</update>
+	<select id="load" resultMap="nurse">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE` N
+		<include refid="dynamicWhere" />
+	</select>
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE` N
+		<include refid="queryWhere" />
+	</select>
+	<select id="list" resultMap="nurse">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE` N
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
+	<select id="query" resultMap="nurse">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE` N
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
+	<select id="loadById" resultMap="nurse">
+		SELECT
+		<include refid="field" />
+		FROM `NURSE` N
+		WHERE N.ID = #{id}
+	</select>
+	<select id="getNurseDetail" resultMap="nurseDetail"
+		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
+		SELECT
+		u.phone user_phone,
+		n.id,
+		u.id user_id,
+		n.sfz,
+		n.status,
+		(
+		SELECT url
+		FROM nurse_images WHERE source_id = n.id AND type = 1 ) AS
+		head_portrait,
+		( SELECT url FROM nurse_images WHERE source_id = n.id
+		AND type = 2 ) AS
+		aptitude_positive,
+		( SELECT url FROM nurse_images
+		WHERE source_id = n.id AND type = 3 ) AS
+		aptitude_negative,
+		( SELECT url
+		FROM nurse_images WHERE source_id = n.id AND type = 4 ) AS
+		id_positive,
+		( SELECT url FROM nurse_images WHERE source_id = n.id AND
+		type = 5 ) AS
+		id_negative,
+		u.id user_id,
+		uu.`name`
+		recommendName,
+		u.`name` user_name,
+		n.work_years,
+		n.hospital,
+		n.address,
+		n.department_id,
+		u.sex user_sex,
+		u.brief
+		user_brief,
+		n.details,
+		<if test="nurse.id!=null and nurse.id!=''">
+			t.id location_id,
+			t.content location_content,
+		</if>
+		n.create_time
+		FROM
+		nurse n
+		LEFT JOIN `user` u ON n.creator_id = u.id
+		<if test="nurse.id!=null and nurse.id!=''">
+			LEFT JOIN area ar ON n.id = ar.source_id
+			LEFT JOIN ( SELECT
+			l.id, CONCAT( l3.content,'-', l2.content,'-', l.content )
+			content FROM
+			`location` l
+			LEFT JOIN location l2 ON l.parent_id = l2.id
+			LEFT
+			JOIN
+			location l3 ON l2.parent_id = l3.id ) t ON t.id = ar.location
+		</if>
+		LEFT JOIN `user` uu ON u.recommend_id =uu.id
+		<include refid="queryDetail" />
+	</select>
+	<sql id="queryDetail">
+		<where>
+			AND u.type=0
+			<if test="nurse!=null">
+				<if test="nurse.id!=null and nurse.id!=''">
+					AND N.id LIKE CONCAT('%', #{nurse.id}, '%')
+				</if>
+				<if test="nurse.type!=null">
+					AND N.type=#{nurse.type}
+				</if>
+				<if test="nurse.sfz!=null and nurse.sfz!=''">
+					AND N.sfz LIKE CONCAT('%', #{nurse.sfz}, '%')
+				</if>
+				<if test="nurse.workYear!=null">
+					AND
+					DATE_FORMAT(N.work_years,'%Y-%m-%d')=#{nurse.workYear}
+				</if>
+				<if test="nurse.brief!=null and nurse.brief!=''">
+					AND N.brief LIKE CONCAT('%', #{nurse.brief}, '%')
+				</if>
+				<if test="nurse.details!=null and nurse.details!=''">
+					AND N.details LIKE CONCAT('%', #{nurse.details}, '%')
+				</if>
+				<if test="nurse.hospital!=null and nurse.hospital!=''">
+					AND N.hospital LIKE CONCAT('%', #{nurse.hospital}, '%')
+				</if>
+				<if test="nurse.departmentId!=null and nurse.departmentId!=''">
+					AND N.department_id LIKE CONCAT('%',
+					#{nurse.departmentId},
+					'%')
+				</if>
+				<if test="nurse.creatorId!=null and nurse.creatorId!=''">
+					AND N.creator_id LIKE CONCAT('%', #{nurse.creatorId},
+					'%')
+				</if>
+				<if test="nurse.creatorName!=null and nurse.creatorName!=''">
+					AND N.creator_name LIKE CONCAT('%',
+					#{nurse.creatorName}, '%')
+				</if>
+				<if test="nurse.createTime!=null">
+					AND N.create_time=#{nurse.createTime}
+				</if>
+				<if test="nurse.active!=null">
+					AND N.active=#{nurse.active}
+				</if>
+				<if test="nurse.address!=null and nurse.address!=''">
+					AND N.address LIKE CONCAT('%', #{nurse.address}, '%')
+				</if>
+				<if test="nurse.status!=null">
+					AND N.status=#{nurse.status}
+				</if>
+				<if test="nurse.user!=null ">
+					<if test="nurse.user.phone!=null and nurse.user.phone!=''">
+						AND u.phone LIKE CONCAT('%', #{nurse.user.phone}, '%')
+					</if>
+					<if test="nurse.user.name!=null and nurse.user.name!=''">
+						AND u.name LIKE CONCAT('%', #{nurse.user.name}, '%') </if>
+				</if>
+			</if>
+		</where>
+	</sql>
+	<sql id="queryOrder">
+		<where>
+			<if test="id!=null and id!=''">
+				AND N.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND N.type=#{type}
+			</if>
+			<if test="sfz!=null and sfz!=''">
+				AND N.sfz LIKE CONCAT('%', #{sfz}, '%')
+			</if>
+			<if test="workYears!=null">
+				AND N.work_years=#{workYears}
+			</if>
+			<if test="brief!=null and brief!=''">
+				AND N.brief LIKE CONCAT('%', #{brief}, '%')
+			</if>
+			<if test="details!=null and details!=''">
+				AND N.details LIKE CONCAT('%', #{details}, '%')
+			</if>
+			<if test="hospital!=null and hospital!=''">
+				AND N.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="departmentId!=null and departmentId!=''">
+				AND N.department_id LIKE CONCAT('%', #{departmentId},
+				'%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND N.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND N.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND N.create_time=#{createTime}
+			</if>
+			<if test="active!=null">
+				AND N.active=#{active}
+			</if>
+			<if test="address!=null and address!=''">
+				AND N.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="status!=null">
+				AND N.status=#{status}
+			</if>
+			AND u.type=0 AND o.schedule=5
+		</where>
+	</sql>
+	<select id="queryNurseOrder" resultType="java.util.Map">
+		SELECT
+		o.accept_user_id,
+		u.`name`,
+		oo.address,
+		count(o.id) count
+		FROM
+		`order` o
+		LEFT JOIN order_other oo ON oo.order_id = o.id
+		LEFT JOIN
+		`user` u ON
+		o.accept_user_id = u.id
+		LEFT JOIN order_goods og ON
+		og.order_id = o.id
+		<include refid="queryOrder" />
+		GROUP BY
+		o.accept_user_id,
+		oo.address
+		ORDER BY count(o.id) DESC
+	</select>
+	<select id="queryNurseIncome" resultType="java.util.Map">
+		SELECT
+		t.creator_id,
+		t.creator_name,
+		SUM(t.amount) income
+		FROM
+		`transaction` t
+		WHERE
+		t.operate =
+		4
+		GROUP BY
+		t.creator_id
+		ORDER BY SUM(t.amount) DESC
+	</select>
+
+
+	<select id="getSomeNurse" resultMap="nurseDetail">
+		SELECT
+		`u`.`name` user_name
+		, `u`.`phone` user_phone
+		, `n`.`type`
+		,`n`.`id`
+		, `n`.`creator_id`
+		FROM
+		`jphs`.`user` AS `u`
+		INNER JOIN
+		`jphs`.`nurse` AS `n`
+		ON
+		(`u`.`id` = `n`.`creator_id`)
+		WHERE u.`type`=0
+		AND u.`status` = 0
+		<if test="user!=null">
+			<if test="user.name!=null">
+				AND u.`name` = #{user.name}
+			</if>
+			<if test="user.phone!=null">
+				AND u.`phone` = #{user.phone}
+			</if>
+		</if>
+		<if test="type !=null">
+			AND n.`type` = #{type}
+		</if>
+	</select>
+</mapper>

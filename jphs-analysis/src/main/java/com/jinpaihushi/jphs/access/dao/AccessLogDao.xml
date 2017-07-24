@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-13 15:01:41
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.access.dao.AccessLogDao">
+	
+	<sql id="field">
+		AL.id, AL.goods_url_id, AL.uv, AL.pv, 
+		AL.accesstime, AL.startTime, AL.endTime, AL.platform_id
+	</sql>
+
+	<sql id="fieldGlobal">
+		AL.id AL_id, AL.goods_url_id AL_goods_url_id, 
+		AL.uv AL_uv, AL.pv AL_pv, 
+		AL.accesstime AL_accesstime, AL.startTime AL_startTime, 
+		AL.endTime AL_endTime, AL.platform_id AL_platform_id
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		AL.id id, AL.goods_url_id goodsUrlId, 
+		AL.uv uv, AL.pv pv, 
+		AL.accesstime accesstime, AL.startTime starttime, 
+		AL.endTime endtime, AL.platform_id platformId
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND AL.id=#{id}
+		</if>
+		<if test="goodsUrlId!=null and goodsUrlId!=''">
+			AND AL.goods_url_id=#{goodsUrlId}
+		</if>
+		<if test="uv!=null">
+			AND AL.uv=#{uv}
+		</if>
+		<if test="pv!=null">
+			AND AL.pv=#{pv}
+		</if>
+		<if test="accesstime!=null">
+			AND AL.accesstime=#{accesstime}
+		</if>
+		<if test="starttime!=null">
+			AND AL.startTime=#{starttime}
+		</if>
+		<if test="endtime!=null">
+			AND AL.endTime=#{endtime}
+		</if>
+		<if test="platformId!=null and platformId!=''">
+			AND AL.platform_id=#{platformId}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND AL.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="goodsUrlId!=null and goodsUrlId!=''">
+				AND AL.goods_url_id LIKE CONCAT('%', #{goodsUrlId}, '%')
+			</if>
+			<if test="uv!=null">
+				AND AL.uv=#{uv}
+			</if>
+			<if test="pv!=null">
+				AND AL.pv=#{pv}
+			</if>
+			<if test="accesstime!=null">
+				AND AL.accesstime=#{accesstime}
+			</if>
+			<if test="starttime!=null">
+				AND AL.startTime=#{starttime}
+			</if>
+			<if test="endtime!=null">
+				AND AL.endTime=#{endtime}
+			</if>
+			<if test="platformId!=null and platformId!=''">
+				AND AL.platform_id LIKE CONCAT('%', #{platformId}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				AL.id=#{id}, 
+		   </if>
+           <if test="goodsUrlId!=null">
+				AL.goods_url_id=#{goodsUrlId}, 
+		   </if>
+           <if test="uv!=null">
+				AL.uv=#{uv}, 
+		   </if>
+           <if test="pv!=null">
+				AL.pv=#{pv}, 
+		   </if>
+           <if test="accesstime!=null">
+				AL.accesstime=#{accesstime}, 
+		   </if>
+           <if test="starttime!=null">
+				AL.startTime=#{starttime}, 
+		   </if>
+           <if test="endtime!=null">
+				AL.endTime=#{endtime}, 
+		   </if>
+           <if test="platformId!=null">
+				AL.platform_id=#{platformId}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="accessLog" type="com.jinpaihushi.jphs.access.model.AccessLog">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsUrlId" column="goods_url_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="uv" column="uv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="pv" column="pv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="accesstime" column="accesstime" javaType="Date" jdbcType="DATE"></result>
+		<result property="starttime" column="startTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="endtime" column="endTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="platformId" column="platform_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="accessLogGlobal" type="com.jinpaihushi.jphs.access.model.AccessLog">
+		<result property="id" column="AL_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsUrlId" column="AL_goods_url_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="uv" column="AL_uv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="pv" column="AL_pv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="accesstime" column="AL_accesstime" javaType="Date" jdbcType="DATE"></result>
+		<result property="starttime" column="AL_startTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="endtime" column="AL_endTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="platformId" column="AL_platform_id" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.access.model.AccessLog">
+		INSERT INTO `ACCESS_LOG`(
+			id, goods_url_id, 
+			uv, pv, 
+			accesstime, startTime, 
+			endTime, platform_id
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{goodsUrlId,jdbcType=VARCHAR}, 
+			#{uv,jdbcType=INTEGER}, #{pv,jdbcType=INTEGER}, 
+			#{accesstime,jdbcType=DATE}, #{starttime,jdbcType=TIME}, 
+			#{endtime,jdbcType=TIME}, #{platformId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `ACCESS_LOG`(
+			id, goods_url_id, 
+			uv, pv, 
+			accesstime, startTime, 
+			endTime, platform_id
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.goodsUrlId,jdbcType=VARCHAR}, 
+			#{item.uv,jdbcType=INTEGER}, #{item.pv,jdbcType=INTEGER}, 
+			#{item.accesstime,jdbcType=DATE}, #{item.starttime,jdbcType=TIME}, 
+			#{item.endtime,jdbcType=TIME}, #{item.platformId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE AL FROM `ACCESS_LOG` AL WHERE AL.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `ACCESS_LOG` AL
+		SET 
+		AL.STATUS = -1
+		WHERE AL.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ACCESS_LOG` AL
+		<include refid="dynamicSet" /> 
+	    WHERE AL.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="accessLog">
+		SELECT <include refid="field"/>
+		FROM `ACCESS_LOG` AL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ACCESS_LOG` AL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="accessLog">
+		SELECT <include refid="field"/>
+		FROM `ACCESS_LOG` AL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="accessLog">
+		SELECT <include refid="field"/>
+		FROM `ACCESS_LOG` AL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="accessLog">
+		SELECT <include refid="field"/>
+		FROM `ACCESS_LOG` AL
+		WHERE AL.ID = #{id}
+	</select>
+</mapper>

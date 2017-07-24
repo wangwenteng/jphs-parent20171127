@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-07-03 16:58:14
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.platform.dao.PlatformGoodsDao">
+	
+	<sql id="field">
+		PG.id, PG.platform_id, PG.goods_id, PG.create_time, 
+		PG.creator_id, PG.creator_name, PG.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		PG.id PG_id, PG.platform_id PG_platform_id, 
+		PG.goods_id PG_goods_id, PG.create_time PG_create_time, 
+		PG.creator_id PG_creator_id, PG.creator_name PG_creator_name, 
+		PG.status PG_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PG.id id, PG.platform_id platformId, 
+		PG.goods_id goodsId, PG.create_time createTime, 
+		PG.creator_id creatorId, PG.creator_name creatorName, 
+		PG.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PG.id=#{id}
+		</if>
+		<if test="platformId!=null and platformId!=''">
+			AND PG.platform_id=#{platformId}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND PG.goods_id=#{goodsId}
+		</if>
+		<if test="createTime!=null">
+			AND PG.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PG.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PG.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND PG.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PG.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="platformId!=null and platformId!=''">
+				AND PG.platform_id LIKE CONCAT('%', #{platformId}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND PG.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND PG.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND PG.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PG.id=#{id}, 
+		   </if>
+           <if test="platformId!=null">
+				PG.platform_id=#{platformId}, 
+		   </if>
+           <if test="goodsId!=null">
+				PG.goods_id=#{goodsId}, 
+		   </if>
+           <if test="createTime!=null">
+				PG.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				PG.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PG.creator_name=#{creatorName}, 
+		   </if>
+           <if test="status!=null">
+				PG.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="platformGoods" type="com.jinpaihushi.jphs.platform.model.PlatformGoods">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="platformGoodsGlobal" type="com.jinpaihushi.jphs.platform.model.PlatformGoods">
+		<result property="id" column="PG_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="PG_platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="PG_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="PG_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PG_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PG_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="PG_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.platform.model.PlatformGoods">
+		INSERT INTO `PLATFORM_GOODS`(
+			id, platform_id, 
+			goods_id, create_time, 
+			creator_id, creator_name, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{platformId,jdbcType=VARCHAR}, 
+			#{goodsId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PLATFORM_GOODS`(
+			id, platform_id, 
+			goods_id, create_time, 
+			creator_id, creator_name, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.platformId,jdbcType=VARCHAR}, 
+			#{item.goodsId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PG FROM `PLATFORM_GOODS` PG WHERE PG.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PLATFORM_GOODS` PG
+		SET 
+		PG.STATUS = -1
+		WHERE PG.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PLATFORM_GOODS` PG
+		<include refid="dynamicSet" /> 
+	    WHERE PG.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="platformGoods">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_GOODS` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PLATFORM_GOODS` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="platformGoods">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_GOODS` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="platformGoods">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_GOODS` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="platformGoods">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_GOODS` PG
+		WHERE PG.ID = #{id}
+	</select>
+	
+</mapper>
