@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
  * @author admin
  *
  */
-@SuppressWarnings("unused")
 public class ObjectVerification {
 	/**
 	 * 判断对象的必填字段是否为空
@@ -16,6 +15,7 @@ public class ObjectVerification {
 	 * @return true or false
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	public static Boolean verification(Object object) throws Exception {
 		Class clazz = object.getClass();
 		Field[] fields = clazz.getDeclaredFields();
@@ -23,6 +23,9 @@ public class ObjectVerification {
 			field.setAccessible(true);
 			String name = field.getName();
 			if(name.equals("id")||name.equals("createTime"))continue;
+//			if(name.equals("address")){
+//				if(field.get(object).equals("省份,地级市,市、县级市"))return false;
+//			}
 			if (field.get(object) == null) {
 				return false;
 			}

@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.evaluation.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +46,11 @@ public class EvaluationServiceImpl extends BaseServiceImpl<Evaluation> implement
 	public Integer getGoodLevel(String goodsId) {
 		int i=evaluationDao.getGoodsLevel(goodsId);
 		return i;
+	}
+
+	@Override
+	public List<Evaluation> listInfo(Evaluation evaluation) {
+		return evaluationDao.listInfo(evaluation);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.information.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,9 @@ public class InformationEvaluateServiceImpl extends BaseServiceImpl<InformationE
 		return informationEvaluateDao;
 	}
 
+	@Override
+	public List<InformationEvaluate> listInfo(InformationEvaluate query,String userId) {
+		return informationEvaluateDao.listInfo(query,userId);
+	}
+	
 }

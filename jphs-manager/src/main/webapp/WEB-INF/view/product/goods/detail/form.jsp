@@ -142,7 +142,7 @@
 		<c:choose>
 			<c:when test="${fn:length(goods.priceGrade) >0}">
 				<c:forEach var="priceOne_g" items="${goods.priceGrade }" varStatus="status_g">
-				<span class="price_add_title"><input style="width: 200px;" type="text"  value="${priceOne_g.gradeName }"/></span>
+					<span class="price_add_title">${priceOne_g.gradeName }</span>
 						<div class="marage_right_content"  style="margin-top:0;padding-top:0">
 							<table id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
 								<tbody id="addtrprice${status_g.index }">

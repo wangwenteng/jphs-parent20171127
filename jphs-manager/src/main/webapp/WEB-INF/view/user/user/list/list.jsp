@@ -33,13 +33,23 @@
 							pattern="yy-MM-dd HH:mm" />
 					<td><c:if test="${e.status == 0}">开启</c:if> <c:if
 							test="${e.status == 1}">关闭</c:if></td>
-					<td><a onclick="redirectDetailPage('${e.id}')"> <img
+					<td>
+					<jphs:hasPermission url="/user/detail.jhtml">
+					<a onclick="redirectDetailPage('${e.id}')"> <img
 							src="/static/images/chakan.png">
-					</a> <a onclick="redirectUpdatePage('${e.id}')"> <img
+					</a> 
+					</jphs:hasPermission>
+					<jphs:hasPermission url="/user/redirectUpdate.jhtml">
+					<a onclick="redirectUpdatePage('${e.id}')"> <img
 							src="/static/images/xiugai.png">
-					</a> <a onclick="deleteById('${e.id}')"> <img
+					</a> 
+					</jphs:hasPermission>
+					<jphs:hasPermission url="/user/delete.jhtml">
+					<a onclick="deleteById('${e.id}')"> <img
 							src="/static/images/shanchu.png">
-					</a></td>
+					</a>
+					</jphs:hasPermission>
+					</td>
 				</tr>
 			</c:forEach>
 		</c:when>

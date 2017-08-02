@@ -8,7 +8,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="field">
 		N.id,N.sfz, N.work_years,
 		N.details,
-		N.hospital, N.department_id,
+		N.hospital,
+		N.department_id,
 		N.creator_id, N.creator_name,
 		N.create_time, N.active,
 		N.address, N.status
@@ -18,12 +19,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		N.id N_id,
 		N.sfz N_sfz, N.work_years
 		N_work_years,
-		N.details N_details,
+		N.details
+		N_details,
 		N.hospital
 		N_hospital, N.department_id N_department_id,
 		N.creator_id N_creator_id,
 		N.creator_name N_creator_name,
-		N.create_time N_create_time, N.active
+		N.create_time
+		N_create_time, N.active
 		N_active,
 		N.address N_address, N.status N_status
 	</sql>
@@ -31,12 +34,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="fieldWithAlias">
 		N.id id,
 		N.sfz sfz, N.work_years workYears,
-		N.details details,
+		N.details
+		details,
 		N.hospital hospital, N.department_id
 		departmentId,
-		N.creator_id creatorId, N.creator_name creatorName,
+		N.creator_id
+		creatorId, N.creator_name creatorName,
 		N.create_time
-		createTime, N.active active,
+		createTime,
+		N.active active,
 		N.address address, N.status
 		status
 	</sql>
@@ -256,8 +262,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="VARCHAR"></result>
 			<result property="device" column="user_device" javaType="Integer"
 				jdbcType="INTEGER"></result>
-				<result property="brief" column="user_brief" javaType="String"
-			jdbcType="VARCHAR"></result>
+			<result property="brief" column="user_brief" javaType="String"
+				jdbcType="VARCHAR"></result>
 			<result property="recommendId" column="user_recommend_id"
 				javaType="String" jdbcType="VARCHAR"></result>
 			<result property="createTime" column="user_create_time"
@@ -404,41 +410,74 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getNurseDetail" resultMap="nurseDetail"
 		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
-		SELECT
+		SELECT DISTINCT
+		u.type,
 		u.phone user_phone,
 		n.id,
-		u.id user_id,
+		n.creator_id,
+		u.id
+		user_id,
 		n.sfz,
-		n.status,
-		(
-		SELECT url
-		FROM nurse_images WHERE source_id = n.id AND type = 1 ) AS
-		head_portrait,
-		( SELECT url FROM nurse_images WHERE source_id = n.id
-		AND type = 2 ) AS
-		aptitude_positive,
-		( SELECT url FROM nurse_images
-		WHERE source_id = n.id AND type = 3 ) AS
-		aptitude_negative,
-		( SELECT url
-		FROM nurse_images WHERE source_id = n.id AND type = 4 ) AS
-		id_positive,
-		( SELECT url FROM nurse_images WHERE source_id = n.id AND
-		type = 5 ) AS
-		id_negative,
-		u.id user_id,
+		n. STATUS,
 		uu.`name`
 		recommendName,
-		u.`name` user_name,
+		u.`name`
+		user_name,
 		n.work_years,
 		n.hospital,
 		n.address,
 		n.department_id,
-		u.sex user_sex,
-		u.brief
-		user_brief,
-		n.details,
 		<if test="nurse.id!=null and nurse.id!=''">
+			u.sex
+			user_sex,
+			u.brief
+			user_brief,
+			n.details,
+			(
+			SELECT
+			url
+			FROM
+			nurse_images
+			WHERE
+			source_id = u.id
+			AND type = 1
+			) AS head_portrait,
+			(
+			SELECT
+			url
+			FROM
+			nurse_images
+			WHERE
+			source_id = u.id
+			AND type = 2
+			) AS aptitude_positive,
+			(
+			SELECT
+			url
+			FROM
+			nurse_images
+			WHERE
+			source_id = u.id
+			AND type = 3
+			) AS aptitude_negative,
+			(
+			SELECT
+			url
+			FROM
+			nurse_images
+			WHERE
+			source_id = u.id
+			AND type = 4
+			) AS id_positive,
+			(
+			SELECT
+			url
+			FROM
+			nurse_images
+			WHERE
+			source_id = u.id
+			AND type = 5
+			) AS id_negative,
 			t.id location_id,
 			t.content location_content,
 		</if>
@@ -459,13 +498,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		LEFT JOIN `user` uu ON u.recommend_id =uu.id
 		<include refid="queryDetail" />
+		ORDER BY n.create_time DESC
 	</select>
 	<sql id="queryDetail">
 		<where>
 			AND u.type=0
 			<if test="nurse!=null">
 				<if test="nurse.id!=null and nurse.id!=''">
-					AND N.id LIKE CONCAT('%', #{nurse.id}, '%')
+					AND N.id = #{nurse.id}
 				</if>
 				<if test="nurse.type!=null">
 					AND N.type=#{nurse.type}
@@ -516,7 +556,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						AND u.phone LIKE CONCAT('%', #{nurse.user.phone}, '%')
 					</if>
 					<if test="nurse.user.name!=null and nurse.user.name!=''">
-						AND u.name LIKE CONCAT('%', #{nurse.user.name}, '%') </if>
+						AND u.name LIKE CONCAT('%', #{nurse.user.name}, '%')
+					</if>
 				</if>
 			</if>
 		</where>

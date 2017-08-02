@@ -9,7 +9,7 @@
 		<tr >
 			<th width="30px"></th>
 			<!-- <th width="20px"></th> -->
-			<th>讯资名称</th>
+			<th>咨询名称</th>
 			<th>精华</th>
 			<!-- <th>评价内容</th> -->
 			<th width="100px">评论人</th>
@@ -26,7 +26,14 @@
 						<tr class="bg_list_body">
 							<td width="30">${s.index+1}</td>
 							<%-- <td><input type="checkbox" name="status" value="${e.id}" /></td> --%>
-							<td><c:out value="${e.information.title }"/></td>
+							<td>
+							
+								<c:if test="${fn:length(e.information.title) > 15}">
+									<c:out value="${fn:substring(e.information.title, 0, 14)}..." />
+								</c:if>
+								<c:if test="${fn:length(e.information.title) < 16}">
+									<c:out value="${e.information.title}" />
+								</c:if>
 							<td>
 								<c:if test="${e.essence == 0}">
 									是
@@ -37,7 +44,7 @@
 							</td>
 							<%-- <td><c:out value="${e.content}"/></td> --%>
 							<td><c:out value="${e.creatorName}" /></td>
-							<td><fmt:formatDate value="${e.createTime}" pattern="yy-MM-dd HH:mm:ss" /></td>
+							<td><fmt:formatDate value="${e.createTime}" pattern="yy-MM-dd HH:mm" /></td>
 							<td>
 								<c:if test="${e.device == 1 }">
 									IOS-APP

@@ -108,7 +108,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements Prod
 			ServiceImages serviceImages = new ServiceImages();
 			serviceImages.setSourceId(ida);
 			serviceImages.setSort(product.getSort());
-			serviceImages.setStatus(product.getStatus());
+			serviceImages.setStatus(1);
 			serviceImages.setType(1);
 			try {
 				serviceImages.setCreatorId(product.getCreatorId());

@@ -5,7 +5,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div class="common_right_title">
-	<img src="/static/images/yousanjiaox.png" />信息管理<i class="public1-horn-45"></i>资讯管理 <i class="public1-horn-45"></i>新闻管理 <i class="public1-horn-45"></i>新闻列表 
+	<img src="/static/images/yousanjiaox.png" />信息管理<i class="public1-horn-45"></i>资讯管理 <i class="public1-horn-45"></i>咨询管理 <i class="public1-horn-45"></i>咨询列表 
 </div>
 <div class="marage_right_title">
 	<jsp:include page="search.jsp"></jsp:include>

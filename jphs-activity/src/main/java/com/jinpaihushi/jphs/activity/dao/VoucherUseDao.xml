@@ -170,6 +170,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="userName" column="name" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<resultMap id="voucherUseGlobal" type="com.jinpaihushi.jphs.activity.model.VoucherUse">
@@ -333,5 +334,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		        ON (`voucher_repertory`.`id` = `voucher_use`.`voucher_repertory_id`)
 		    WHERE voucher.`id` = #{id} 
 	</select>
+	
+	<select id="getVoucherUse" resultMap="voucherUse">
+		SELECT 
+		  vu.`id`,
+		  vu.`voucher_repertory_id`,
+		  vu.`phone`,
+		  vu.`amount`,
+		  vu.`start_time`,
+		  vu.`end_time`,
+		  vu.`use_time`,
+		  vu.`status`,
+		  vu.`create_time` ,
+		  u.`name`
+		FROM
+		  `jphs`.`voucher_use` vu
+		  LEFT JOIN `jphs`.`user` AS `u` 
+		    ON (vu.`creator_id`= u.`id`)  
+	    WHERE  `voucher_repertory_id` = #{voucherRepertoryId}
+	</select>
+	
 	
 </mapper>

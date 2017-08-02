@@ -223,6 +223,12 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.14</version>
+		</dependency>
+		
+		<dependency>
 		  <groupId>ueditor-mini</groupId>
 		  <artifactId>ueditor-mini</artifactId>
 		  <version>1.0</version>

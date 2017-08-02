@@ -27,3 +27,13 @@ function deleteById(id) {
 }
 
 
+function getExcel(){
+	
+	
+	$('#serach-form').attr('action','/order/getExcel.jhtml');
+	$('#serach-form').submit();
+	
+	$('#serach-form').attr('action','/order/index.jhtml');
+}
+
+

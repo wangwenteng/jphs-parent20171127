@@ -26,7 +26,7 @@
 							data-link-format="yyyy-mm-dd">
 							<input class="form-control" id="beginTime"
 								name="beginTime"
-								value="<fmt:formatDate value="${user.beginTime }" type="both" pattern="yyyy-MM-dd" />"
+								value="<fmt:formatDate value="${customService.beginTime }" type="both" pattern="yyyy-MM-dd HH:mm:ss" />"
 								size="14" placeholder="请选择时间" type="text" value="" readonly>
 							<span class="input-group-addon"><span
 								class="glyphicon glyphicon-remove"></span></span> <span
@@ -41,7 +41,7 @@
 							data-link-format="yyyy-mm-dd">
 							<input class="form-control" id="stopTime"
 								name="stopTime"
-								value="<fmt:formatDate value="${user.stopTime }" type="both" pattern="yyyy-MM-dd" />"
+								value="<fmt:formatDate value="${customService.stopTime }" type="both" pattern="yyyy-MM-dd HH:mm:ss" />"
 								size="14" placeholder="请选择时间" type="text" value="" readonly>
 							<span class="input-group-addon"><span
 								class="glyphicon glyphicon-remove"></span></span> <span

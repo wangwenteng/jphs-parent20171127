@@ -46,7 +46,7 @@ public class ProductController extends BaseController<Product> {
 			HttpServletResponse resp, ModelMap modelMap,
 			Product product, Integer p, Integer n) {
 		startPage(p, n);
-		product.setStatus(0);
+		product.setOrderby("create_time DESC");
 		Page<Product> list = productService.query(product);
 		PageInfos<Product> pageInfo = new PageInfos<Product>(list, req);
 		System.out.println("pageInfo---pp--"+pageInfo);
@@ -138,7 +138,6 @@ public class ProductController extends BaseController<Product> {
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
 	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Product product) {
-		product.setStatus(-1);
 		boolean b = productService.update(product);
 		if (b == false) {
 			// 跳转到错误页

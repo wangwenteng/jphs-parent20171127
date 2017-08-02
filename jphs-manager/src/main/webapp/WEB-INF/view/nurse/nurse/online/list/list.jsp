@@ -24,8 +24,8 @@
 							<td width="30">${s.index+1}</td>
 							<td><c:out value="${e.nurseId}"/></td>
 							<td><c:out value="${e.online}"/></td>
-							<td><fmt:formatDate value="${e.onlineTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.offlineTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td><fmt:formatDate value="${e.onlineTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.offlineTime}" pattern="yy-MM-dd HH:mm"/></td>
 							<td><c:out value="${e.timeLong}"/></td>
 							<td>
 							<a onclick="redirectDetailPage('${e.id}')">

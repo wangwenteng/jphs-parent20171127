@@ -30,26 +30,42 @@
 								pattern="yy-MM-dd HH:mm" /></td>
 							
 							<td>
-								<c:if test="${e.status == 0}">
-									<c:out value="使用中"/>
+								<c:if test="${e.status == 1}">
+									<span style="color: #34BC2C;">启用中</span>
 								</c:if>
-								<c:if test="${e.status != 0}">
-									<c:out value="已停用"/>
+								<c:if test="${e.status == 0}">
+									<span style="color: #F0BB1C;">待开启</span>
 								</c:if>
 							</td>
 							<td>
+							<jphs:hasPermission url="/product/delete.jhtml">	
+								<c:if test="${e.status == 0}">
+									<a onclick="deleteById('${e.id}','1')"> 
+										<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
+									</a>
+								</c:if>
+								<c:if test="${e.status == 1}">
+									<a onclick="deleteById('${e.id}','0')">
+										<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
+									</a>
+								</c:if>
+							</jphs:hasPermission>
 							<jphs:hasPermission url="/product/detail.jhtml">
-							<a onclick="redirectDetailPage('${e.id}')">
-								<img src="/static/images/chakan.png">
-							</a>		</jphs:hasPermission>		
+								<a onclick="redirectDetailPage('${e.id}')">
+									<img src="/static/images/chakan.png">
+								</a>
+							</jphs:hasPermission>		
 							<jphs:hasPermission url="/product/redirectUpdate.jhtml">				
-							<a onclick="redirectUpdatePage('${e.id}')">
-								<img  src="/static/images/xiugai.png">
-							</a>		</jphs:hasPermission>	
+								<a onclick="redirectUpdatePage('${e.id}')">
+									<img  src="/static/images/xiugai.png">
+								</a>
+							</jphs:hasPermission>	
 							<jphs:hasPermission url="/product/delete.jhtml">						
-							<a onclick="deleteById('${e.id}')">
-								<img src="/static/images/shanchu.png">
-							</a></jphs:hasPermission>
+								<a onclick="deleteById('${e.id}','-1')">
+									<img src="/static/images/shanchu.png">
+								</a>
+							</jphs:hasPermission>
+							
 							</td>
 						</tr>
 					</c:forEach>

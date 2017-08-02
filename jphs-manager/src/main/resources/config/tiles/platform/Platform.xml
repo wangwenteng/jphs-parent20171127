@@ -16,10 +16,8 @@
 	
 	<definition name="product/platform/edit" extends="default.layout">
 		<put-attribute type="string" name="title" value="编辑" />
-		<put-attribute type="template" name="body"
-			value="/WEB-INF/view/product/platform/edit/index.jsp" />
-		<put-attribute type="template" name="left"
-			value="/WEB-INF/view/product/left.jsp" />
+		<put-attribute type="template" name="body" value="/WEB-INF/view/product/platform/edit/index.jsp" />
+		<put-attribute type="template" name="left" value="/WEB-INF/view/product/left.jsp" />
 		<put-list-attribute name="scripts" inherit="true">
 			<add-attribute value="/static/js/product/platform/edit.js" />
 		</put-list-attribute>

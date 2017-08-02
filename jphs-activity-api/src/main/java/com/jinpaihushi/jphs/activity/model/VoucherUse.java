@@ -3,9 +3,7 @@ package com.jinpaihushi.jphs.activity.model;
 import java.util.Date;
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -54,6 +52,8 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 	private Date stopTime;
 	
 	private Integer type;
+	
+	private String userName;
 	
 	public Integer getType() {
 		return type;
@@ -169,23 +169,24 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 		this.stopTime = stopTime;
 	}
 
-	public String toString() {
-		return new StringBuilder().append("VoucherUse{").
-			append("id=").append(id).
-			append(",voucherRepertoryId=").append(voucherRepertoryId).
-			append(",phone=").append(phone).
-			append(",amount=").append(amount).
-			append(",startTime=").append(startTime).
-			append(",endTime=").append(endTime).
-			append(",useTime=").append(useTime).
-			append(",creatorName=").append(creatorName).
-			append(",creatorId=").append(creatorId).
-			append(",createTime=").append(createTime).
-			append(",status=").append(status).
-			append('}').toString();
-    }
+	 
 	
-    /**
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Override
+	public String toString() {
+		return "VoucherUse [voucherRepertoryId=" + voucherRepertoryId + ", phone=" + phone + ", amount=" + amount
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", useTime=" + useTime + ", beginTime="
+				+ beginTime + ", stopTime=" + stopTime + ", type=" + type + "]";
+	}
+
+	/**
 	 * 复制字段：
 	 * id, voucherRepertoryId, phone, amount, 
 	 * startTime, endTime, useTime, creatorName, 

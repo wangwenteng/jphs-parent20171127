@@ -23,4 +23,6 @@ public interface SystemUserService extends BaseService<SystemUser> {
 	List<String> getUserModule(String userId);
 	
 	String initSystemUser();
+
+	int chackUser(String chackValue, String userId);
 }

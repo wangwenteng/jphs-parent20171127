@@ -13,8 +13,9 @@ import java.util.Map;
 * @author 王文腾
 * @date 2016年10月19日 上午10:48:15 
 */
+@SuppressWarnings("unused")
 public class CollectionShort {
-    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+	private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     public static List<Map<String, Object>> testMapOrder(List<Map<String, Object>> list, final String name) {
 

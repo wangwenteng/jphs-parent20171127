@@ -4,6 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
+<%
+	int i = 1;
+%>
 <div style="margin: 10px 0px 10px 0px;" class="event_start_from">
 	<div class="title_defalt"></div>
 	<table id="siteTable" class="tableStyle">
@@ -67,7 +70,8 @@
 								<c:forEach var="priceOne" items="${goodsOne.priceList }" varStatus="priceStatus">
 									<tr class="price${productStatus.index }">
 										<td>
-											${priceStatus.index+1 }
+										<%=i++%>
+											<%-- ${priceStatus.index+1 } --%>
 										</td>
 										<td>${goodsOne.title }</td>
 										<td>${priceOne.grade }

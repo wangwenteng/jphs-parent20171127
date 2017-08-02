@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
@@ -42,8 +43,7 @@ public class SystemUserController extends BaseController<SystemUser> {
 	}
 
 	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
+	public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
 			SystemUser systemUser, Integer p, Integer n) {
 		startPage(p, n);
 		Page<SystemUser> list = systemUserService.query(systemUser);
@@ -60,13 +60,13 @@ public class SystemUserController extends BaseController<SystemUser> {
 		modelMap.put("systemUser", systemUser);
 		return "system/system/user/edit";
 	}
-	
+
 	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
 	public String redirectAddPage(ModelMap modelMap) {
 
 		return "system/system/user/edit";
 	}
-	
+
 	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
 	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
 			String id) {
@@ -76,8 +76,9 @@ public class SystemUserController extends BaseController<SystemUser> {
 	}
 
 	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, SystemUser systemUser) {
-		SystemUser seesion_user =(SystemUser) req.getSession().getAttribute("session_user");
+	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			SystemUser systemUser) {
+		SystemUser seesion_user = (SystemUser) req.getSession().getAttribute("session_user");
 		if (systemUser.getId() != null && !systemUser.getId().equals("")) {
 			boolean b = systemUserService.update(systemUser);
 			if (b == false) {
@@ -85,7 +86,7 @@ public class SystemUserController extends BaseController<SystemUser> {
 				return "redirect:/system/user/err.jhtml";
 			}
 		} else {
-			String newPassword=MD5.md5crypt(MD5.md5crypt(systemUser.getPassword()));
+			String newPassword = MD5.md5crypt(MD5.md5crypt(systemUser.getPassword()));
 			systemUser.setPassword(newPassword);
 			systemUser.setId(UUIDUtils.getId());
 			systemUser.setCreateTime(new Date());
@@ -102,7 +103,8 @@ public class SystemUserController extends BaseController<SystemUser> {
 	}
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String id) {
 
 		SystemUser user = systemUserService.loadById(id);
 		user.setStatus(-1);
@@ -114,19 +116,23 @@ public class SystemUserController extends BaseController<SystemUser> {
 
 		return "redirect:/system/user/index.jhtml";
 	}
-	@RequestMapping(name = "用户分配角色", path = "/saveRoles.jhtml")
-	public String saveRoles(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String userId,String roleIds) {
 
-		int i = systemUserService.saveRoles(userId,roleIds);
-		if (i<0) {
+	@RequestMapping(name = "用户分配角色", path = "/saveRoles.jhtml")
+	public String saveRoles(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String userId, String roleIds) {
+
+		int i = systemUserService.saveRoles(userId, roleIds);
+		if (i < 0) {
 			// 跳转到错误页
 			return "redirect:/system/user/err.jhtml";
 		}
 
 		return "redirect:/system/user/index.jhtml";
 	}
+
 	@RequestMapping(name = "查看用户角色", path = "/getUserRoles.jhtml")
-	public String getUserRoles(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String userId) {
+	public String getUserRoles(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String userId) {
 
 		List<SystemRole> userRole = systemUserService.getUserRoles(userId);
 		modelMap.put("userRole", userRole);
@@ -134,4 +140,44 @@ public class SystemUserController extends BaseController<SystemUser> {
 		return "system/system/user/role/edit";
 	}
 
+	@RequestMapping(name = "查看用户角色", path = "/toEditPassword.jhtml")
+	public String toEditPassword(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String id, String type) {
+
+		modelMap.put("id", id);
+		modelMap.put("type", type);
+		modelMap.put("name", req.getParameter("name"));
+		return "system/system/user/editPassword";
+	}
+
+	@RequestMapping(name = "查看用户角色", path = "/editPassword.jhtml")
+	public String editPassword(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,SystemUser user) {
+		String password =MD5.md5crypt(MD5.md5crypt(user.getPassword()));
+		user.setPassword(password);
+		boolean b = systemUserService.update(user);
+		if (!b) {
+			// 跳转到错误页
+			return "redirect:/system/user/err.jhtml";
+		}
+		return "redirect:/system/user/index.jhtml";
+	}
+
+	@ResponseBody
+	@RequestMapping(name = "检查用户信息是否重复", path = "/chackUser.json")
+	public int chackUser(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String chackValue,
+			String userId) {
+		// 查空
+		int count = systemUserService.chackUser(chackValue, userId);
+		return count;
+	}
+	@ResponseBody
+	@RequestMapping(name = "检查用户密码是否正确", path = "/checkPassword.json")
+	public Boolean checkPassword(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String password,
+			String userId) {
+		// 查空
+		SystemUser loadById = systemUserService.loadById(userId);
+		password =MD5.md5crypt(MD5.md5crypt(password));
+		Boolean flag = password.equals(loadById.getPassword());
+		return flag;
+	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.department.service.DepartmentService;
@@ -59,7 +60,7 @@ public class NurseController extends BaseController<Nurse> {
 			Nurse nurse, Integer p, Integer n) {
 		startPage(p, n);
 		nurse.setStatus(1);
-		List<Nurse> list = nurseService.getNurseDetail(nurse);
+		Page<Nurse> list = nurseService.getNurseDetail(nurse);
 		PageInfos<Nurse> pageInfo = new PageInfos<Nurse>(list, req);
 		//科室列表
 		List<Department> department = departmentService.query(null);
@@ -80,12 +81,12 @@ public class NurseController extends BaseController<Nurse> {
 		//获取护士的职称
 		List<JobtitleType> list=nurseService.getNurseJobtitle(nurse);
 		List<Location> location=(List<Location>)req.getSession().getAttribute("location");
-		List<Location> locationList = locationService.getEasyTreeData(location,nurse.getId());
+		List<Location> locationList = locationService.getEasyTreeData(location,result.getUser().getId());
 		message.put("treeData", locationList);
 		modelMap.put("data", message);
 		modelMap.put("nurse", result);
 		modelMap.put("list", list);
-		modelMap.put("addressName", result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getAddress()==null?"":result.getAddress().split("-")[3]);
 		return "nurse/nurse/edit";
 	}
 	
@@ -107,7 +108,7 @@ public class NurseController extends BaseController<Nurse> {
 		List<NurseSkill> skillList = nurseSkillService.queryDetail(query);
 		modelMap.put("nurse", result);
 		modelMap.put("skillList", skillList);
-		modelMap.put("addressName", result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getAddress()==null?"":result.getAddress().split("-")[3]);
 		return "nurse/nurse/detail";
 	}
 

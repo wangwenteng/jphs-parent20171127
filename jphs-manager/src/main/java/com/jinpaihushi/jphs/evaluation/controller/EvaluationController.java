@@ -26,7 +26,7 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "Evaluation", path = "/evaluation")
+@RequestMapping(name = "评价管理", path = "/evaluation")
 public class EvaluationController extends BaseController<Evaluation> {
 
 	@Autowired

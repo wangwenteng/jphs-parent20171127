@@ -66,7 +66,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
-				AND E.id LIKE CONCAT('%', #{id}, '%')
+				AND E.id = #{id}
 			</if>
 			<if test="orderId!=null and orderId!=''">
 				AND E.order_id LIKE CONCAT('%', #{orderId}, '%')
@@ -166,6 +166,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="goodsName" column="goodsName" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="headPortrait" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="userPhone" column="userPhone" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="title" column="title" javaType="String"
@@ -200,12 +202,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.evaluation.model.Evaluation">
 		INSERT INTO `EVALUATION`(
-		id, order_id, goods_id, nurse_id, level, content, status, create_time,
-		creator_id, creator_name )VALUES(
-		#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
-		#{nurseId,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER},
-		#{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		id, order_id, goods_id,
+		nurse_id, level, content, status, create_time,
+		creator_id, creator_name
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+		#{goodsId,jdbcType=VARCHAR},
+		#{nurseId,jdbcType=VARCHAR},
+		#{level,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR} )
 	</insert>
 
@@ -240,7 +248,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		UPDATE `EVALUATION` E
 		SET
 		E.STATUS = -1
-		WHERE E.ID = #{id}
+		WHERE E.ID =
+		#{id}
 	</update>
 
 	<update id="update">
@@ -283,42 +292,71 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `EVALUATION` E
 		WHERE E.ID = #{id}
 	</select>
-
+	<select id="listInfo" resultMap="evaluation">
+		SELECT
+		E.id,
+		E.goods_id,
+		E.nurse_id,
+		n.name nurseName,
+		ni.url ,
+		E. LEVEL,
+		E.content,
+		E. STATUS,
+		E.create_time,
+		u.id creator_id,
+		REPLACE(u.phone,SUBSTR(u.phone,4,4),'****') creator_name
+		FROM
+		`EVALUATION` E
+		LEFT JOIN `user` u ON E.creator_id = u.id
+		LEFT JOIN `user` n ON E.creator_id = n.id
+		LEFT JOIN nurse_images ni ON E.creator_id = ni.source_id
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
 	<select id="getInfo" resultMap="evaluation">
 		SELECT
 		`e`.`order_id`
 		, `e`.`id`
 		, `e`.`level`
 		, `e`.`content`
-		, `e`.`status`
+		,
+		`e`.`status`
 		, `e`.`create_time`
 		, `e`.`creator_name`
 		, `u`.`id`
-		, `u`.`name` userName
+		,
+		`u`.`name` userName
 		, `g`.`title` goodsName
 		, `e`.`nurse_id`
-		, `e`.`creator_id`
+		,
+		`e`.`creator_id`
 		, `u`.`phone` userPhone
 		, `u2`.`name` nurseName
 		FROM
 		`jphs`.`evaluation` AS `e`
 		LEFT JOIN `jphs`.`user` AS `u`
-		ON (`e`.`creator_id` = `u`.`id`)
+		ON
+		(`e`.`creator_id` = `u`.`id`)
 		LEFT JOIN `jphs`.`nurse` AS `n`
-		ON (`e`.`nurse_id` = `n`.`id`)
+		ON
+		(`e`.`nurse_id` = `n`.`id`)
 		LEFT JOIN `jphs`.`goods` AS `g`
-		ON (`e`.`goods_id` = `g`.`product_id`)
+		ON
+		(`e`.`goods_id` = `g`.`id`)
 		LEFT JOIN `jphs`.`user` AS `u2`
-		ON (`n`.`creator_id` = `u2`.`id`)
+		ON
+		(`n`.`creator_id` = `u2`.`id`)
 		WHERE 1 =1
 		<if test="userName!=null">
-			AND `e`.`creator_name` LIKE concat(concat('%',#{userName}),'%')
+			AND `e`.`creator_name` LIKE
+			concat(concat('%',#{userName}),'%')
 		</if>
 		<if test="orderId!=null">
 			AND e.`order_id` LIKE concat(concat('%',#{orderId}),'%')
 		</if>
 		<if test="creatorId!=null">
-			AND e.`creator_id` LIKE concat(concat('%',#{creatorId}),'%')
+			AND e.`creator_id` LIKE
+			concat(concat('%',#{creatorId}),'%')
 		</if>
 		<if test="nurseId!=null">
 			AND e.`nurse_id` LIKE concat(concat('%',#{nurseId}),'%')
@@ -332,6 +370,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="id!=null">
 			AND `e`.`id` = #{id}
 		</if>
+		ORDER BY e.create_time DESC
 	</select>
 
 
@@ -341,21 +380,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		, `e`.`id`
 		, `g`.`title`
 		, `u`.`name` nurseName
-		, `u`.`phone`
+		,
+		`u`.`phone`
 		, `e`.`level`
 		, `e`.`content`
 		, `e`.`status`
-		, `e`.`creator_name`
+		,
+		`e`.`creator_name`
 		, `e`.`create_time`
 		FROM
 		`jphs`.`evaluation` AS `e`
 		LEFT JOIN `jphs`.`goods` AS `g`
 		ON (`e`.`goods_id` = `g`.`id`)
-		LEFT JOIN `jphs`.`nurse` AS `n`
+		LEFT JOIN
+		`jphs`.`nurse` AS `n`
 		ON (`e`.`nurse_id` = `n`.`id`)
-		LEFT JOIN `jphs`.`user` AS `u`
+		LEFT JOIN
+		`jphs`.`user` AS `u`
 		ON (`n`.`creator_id` = `u`.`id`)
-		LEFT JOIN `jphs`.`user` AS `u1`
+		LEFT JOIN
+		`jphs`.`user` AS `u1`
 		ON (`e`.`creator_id` = `u1`.`id`)
 		WHERE 1 = 1
 		<if test="orderId != null">
@@ -371,14 +415,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND `u`.`phone` LIKE concat(concat('%',#{nursePhone}),'%')
 		</if>
 		<if test="creatorName != null">
-			AND `e`.`creator_name` LIKE concat(concat('%',#{creatorName}),'%')
+			AND `e`.`creator_name` LIKE
+			concat(concat('%',#{creatorName}),'%')
 		</if>
 		<if test="userPhone != null">
 			AND `u1`.`phone` LIKE concat(concat('%',#{userPhone}),'%')
 		</if>
 	</select>
 	<select id="getGoodsLevel" resultType="java.lang.Integer">
-		SELECT IFNULL(ROUND(AVG( `level`)),0) level FROM `evaluation` where goods_id
+		SELECT IFNULL(ROUND(AVG(
+		`level`)),0) level FROM `evaluation` where goods_id
 		=#{goodsId};
 	</select>
 </mapper>

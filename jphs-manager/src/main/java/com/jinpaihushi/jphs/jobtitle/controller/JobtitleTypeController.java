@@ -45,6 +45,7 @@ public class JobtitleTypeController extends BaseController<JobtitleType> {
 			HttpServletResponse resp, ModelMap modelMap,
 			JobtitleType jobtitleType, Integer p, Integer n) {
 		startPage(p, n);
+		jobtitleType.setOrderby("create_time DESC");
 		Page<JobtitleType> list = jobtitleTypeService.query(jobtitleType);
 		PageInfos<JobtitleType> pageInfo = new PageInfos<JobtitleType>(list, req);
 		modelMap.put("list", list);
@@ -88,6 +89,7 @@ public class JobtitleTypeController extends BaseController<JobtitleType> {
 			jobtitleType.setCreateTime(new Date());
 			jobtitleType.setCreatorId(systemUser.getId());
 			jobtitleType.setCreatorName(systemUser.getName());
+			jobtitleType.setStatus(0);
 			String result = jobtitleTypeService.insert(jobtitleType);
 			if (result.length() <= 0) {
 				// 跳转到错误页
@@ -98,10 +100,10 @@ public class JobtitleTypeController extends BaseController<JobtitleType> {
 	}
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, JobtitleType jobtitleType) {
 
-		boolean b = jobtitleTypeService.disableById(id);
-		if (b == false) {
+		boolean b = jobtitleTypeService.update(jobtitleType);
+		if (!b) {
 			// 跳转到错误页
 			return "redirect:/jobtitle/type/err.jhtml";
 		}

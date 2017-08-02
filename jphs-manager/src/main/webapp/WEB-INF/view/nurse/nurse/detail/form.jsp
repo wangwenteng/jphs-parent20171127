@@ -8,8 +8,7 @@
 	<p class="details_box_xinxi">基本信息</p>
 	<div class="col-md-6">
 	
-		<p><img alt="" height="200" width="200" id="head_portraits"
-			src="${nurse.head_portrait}"></p>
+		<p><img alt="" height="200" width="200" id="head_portraits" src="${nurse.head_portrait}"></p>
 		<p>
 			<img alt="" width="120" id="id_positives"
 				src="${nurse.id_positive}">	

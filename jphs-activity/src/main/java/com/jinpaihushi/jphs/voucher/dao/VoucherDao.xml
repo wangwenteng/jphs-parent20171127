@@ -7,23 +7,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<sql id="field">
 		V.id, V.type, V.batch_no, V.product_id, V.goods_id,
-		V.start_time, V.end_time, V.days, V.creator_id, V.creator_name,
+		V.start_time, V.end_time,V.activation_start_time,
+		V.activation_end_time, V.days, V.creator_id, V.creator_name,
 		V.create_time, V.status
 	</sql>
 
 	<sql id="fieldGlobal">
 		V.id V_id, V.type V_type, V.batch_no V_batch_no,
-		V.product_id V_product_id, V.goods_id V_goods_id, V.start_time
-		V_start_time, V.end_time V_end_time, V.days V_days, V.creator_id
-		V_creator_id, V.creator_name V_creator_name, V.create_time
+		V.product_id V_product_id, V.goods_id V_goods_id,
+		V.start_time V_start_time, V.end_time V_end_time,
+		V.activation_start_time V_activation_start_time,
+		V.activation_end_time V_activation_end_time,
+		V.days V_days, V.creator_id
+		V_creator_id, V.creator_name
+		V_creator_name, V.create_time
 		V_create_time, V.status V_status
 	</sql>
 
 	<sql id="fieldWithAlias">
 		V.id id, V.type type, V.batch_no batchNo, V.product_id
-		productId, V.goods_id goodsId, V.start_time startTime, V.end_time
-		endTime, V.days days, V.creator_id creatorId, V.creator_name
-		creatorName, V.create_time createTime, V.status status
+		productId, V.goods_id goodsId,
+		V.start_time startTime, V.end_time endTime,
+		V.activation_start_time activationStartTime,
+		V.activation_end_time activationEndTime,
+		V.days
+		days, V.creator_id creatorId, V.creator_name
+		creatorName, V.create_time
+		createTime, V.status status
 	</sql>
 
 	<sql id="condition">
@@ -48,6 +58,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="endTime!=null">
 			AND V.end_time=#{endTime}
 		</if>
+		<if test="activationStartTime!=null">
+			AND V.activation_start_time=#{activationStartTime}
+		</if>
+		<if test="activationEndTime!=null">
+			AND V.activation_end_time=#{activationEndTime}
+		</if>
+
 		<if test="days!=null">
 			AND V.days=#{days}
 		</if>
@@ -94,6 +111,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="endTime!=null">
 				AND V.end_time=#{endTime}
 			</if>
+			<if test="startTime!=null">
+				AND V.activation_start_time=#{activationStartTime}
+			</if>
+			<if test="endTime!=null">
+				AND V.activation_end_time=#{activationEndTime}
+			</if>
+
 			<if test="days!=null">
 				AND V.days=#{days}
 			</if>
@@ -135,6 +159,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="endTime!=null">
 				V.end_time=#{endTime},
 			</if>
+			<if test="activationStartTime!=null">
+				V.activation_start_time=#{activationStartTime},
+			</if>
+			<if test="activationEndTime!=null">
+				V.activation_end_time=#{activationEndTime},
+			</if>
 			<if test="days!=null">
 				V.days=#{days},
 			</if>
@@ -173,6 +203,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="TIMESTAMP"></result>
 		<result property="endTime" column="end_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="days" column="days" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
@@ -204,10 +238,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="goodsId" column="goods_id" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="goodsName" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="startTime" column="start_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="endTime" column="end_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="days" column="days" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
@@ -251,6 +291,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="TIMESTAMP"></result>
 			<result property="endTime" column="vu_end_time" javaType="Date"
 				jdbcType="TIMESTAMP"></result>
+			<result property="activationStartTime" column="vu_activation_start_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="activationEndTime" column="vu_activation_end_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
 			<result property="useTime" column="vu_use_time" javaType="Date"
 				jdbcType="TIMESTAMP"></result>
 			<result property="creatorId" column="vu_creator_id" javaType="String"
@@ -278,6 +322,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="TIMESTAMP"></result>
 		<result property="endTime" column="V_end_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="V_activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="V_activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="days" column="V_days" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="creatorId" column="V_creator_id" javaType="String"
@@ -294,9 +342,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		parameterType="com.jinpaihushi.jphs.voucher.model.Voucher">
 		INSERT INTO `VOUCHER`(
 		id, type, batch_no, product_id,
-		goods_id, start_time, end_time, days,
+		goods_id, start_time, end_time,activation_start_time,
+		activation_end_time, days,
 		creator_id, creator_name,
-		create_time, status )VALUES(
+		create_time, status
+		)VALUES(
 		#{id,jdbcType=VARCHAR},
 		#{type,jdbcType=INTEGER},
 		#{batchNo,jdbcType=VARCHAR},
@@ -304,6 +354,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{goodsId,jdbcType=VARCHAR},
 		#{startTime,jdbcType=TIMESTAMP},
 		#{endTime,jdbcType=TIMESTAMP},
+		#{activationStartTime,jdbcType=TIMESTAMP},
+		#{activationEndTime,jdbcType=TIMESTAMP},
 		#{days,jdbcType=INTEGER},
 		#{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR},
@@ -317,7 +369,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, type, 
 			batch_no, product_id, 
 			goods_id, start_time, 
-			end_time, days, 
+			end_time,activation_start_time,activation_end_time, days, 
 			creator_id, creator_name, 
 			create_time, status
         )]]>
@@ -326,10 +378,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR},
-			#{item.type,jdbcType=INTEGER}, #{item.batchNo,jdbcType=VARCHAR},
-			#{item.productId,jdbcType=VARCHAR}, #{item.goodsId,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.batchNo,jdbcType=VARCHAR},
+			#{item.productId,jdbcType=VARCHAR},
+			#{item.goodsId,jdbcType=VARCHAR},
 			#{item.startTime,jdbcType=TIMESTAMP},
-			#{item.endTime,jdbcType=TIMESTAMP}, #{item.days,jdbcType=INTEGER},
+			#{item.endTime,jdbcType=TIMESTAMP},
+			#{item.activationStartTime,jdbcType=TIMESTAMP},
+			#{item.activationEndTime,jdbcType=TIMESTAMP},
+			#{item.days,jdbcType=INTEGER},
 			#{item.creatorId,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR},
 			#{item.createTime,jdbcType=TIMESTAMP},
@@ -392,31 +449,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="getList" resultMap="voucher">
 		SELECT
 		`v`.`id`
-		, `v`.`type`
-		, `v`.`batch_no`
-		, `v`.`start_time`
-		,
-		`v`.`end_time`
-		, `v`.`days`
-		, `v`.`creator_id`
-		, `v`.`creator_name`
-		,
-		`v`.`create_time`
-		, `v`.`status`
-		, `vr`.`amount`
-		,
-		`vr`.`condition_amount`
-		, `vr`.`discount_amount`
-		, `p`.`title`
-		productName
+		,`v`.`type`
+		,`v`.`batch_no`
+		,`v`.`product_id`
+		,`v`.`goods_id`
+		,`v`.`start_time`
+		,`v`.`end_time`
+		,`v`.`days`
+		,`v`.`creator_id`
+		,`v`.`creator_name`
+		,`v`.`product_id`
+		,`v`.`goods_id`
+		,`v`.`create_time`
+		,`v`.`status`
+		,`vr`.`amount`
+		,`vr`.`condition_amount`
+		,`vr`.`discount_amount`
+		,`p`.`title` productName
 		FROM
-		`jphs`.`voucher` AS `v`
+		`jphs`.`voucher` AS
+		`v`
 		LEFT JOIN `jphs`.`product` AS
 		`p`
 		ON (`v`.`product_id` = `p`.`id`)
 		LEFT JOIN
 		`jphs`.`voucher_repertory` AS `vr`
-		ON (`v`.`id` = `vr`.`voucher_id`)
+		ON (`v`.`id` =
+		`vr`.`voucher_id`)
 		WHERE 1 = 1
 		<if test="id!=null">
 			AND `v`.`id` = #{id}
@@ -428,8 +487,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="type!=null">
 			AND `v`.`type` = #{type}
 		</if>
-		<if test="productName!=null">
-			AND `p`.`title` LIKE CONCAT(CONCAT('%', #{productName}),
+		<if test="productId!=null">
+			AND `v`.`product_id` LIKE CONCAT(CONCAT('%',
+			#{productId}),
+			'%')
+		</if>
+		<if test="goodsId!=null">
+			AND `v`.`goods_id` LIKE CONCAT(CONCAT('%', #{goodsId}),
 			'%')
 		</if>
 		<if test="amount!=null">
@@ -454,8 +518,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		vu.amount AS vu_amount,
 		vu.start_time AS
 		vu_start_time,
-		vu.end_time AS
-		vu_end_time,
+		vu.end_time AS vu_end_time,
 		vu.use_time AS vu_use_time,
 		vr.`no` AS vr_no,
 		vr.condition_amount AS vr_condition_amount,
@@ -468,6 +531,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		v.product_id,
 		p.title productName,
 		v.goods_id,
+		g.title,
 		v.start_time,
 		v.end_time,
 		v.days,
@@ -477,13 +541,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		v.`status`
 		FROM
 		voucher_use vu
+		LEFT JOIN voucher_repertory
+		vr ON vu.voucher_repertory_id = vr.id
+		LEFT JOIN voucher v ON
+		vr.voucher_id = v.id
+		LEFT JOIN goods g ON v.goods_id = g.id
 		LEFT JOIN
-		voucher_repertory vr ON
-		vu.voucher_repertory_id = vr.id
-		LEFT
-		JOIN
-		voucher v ON vr.voucher_id =
-		v.id
+		product p ON v.product_id=p.id
 		WHERE
 		vu.creator_id=#{userId}
 		AND
@@ -494,35 +558,98 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND
 		v.product_id =#{productId}
 		AND
-		v.goods_id=#{goodsId} OR v.goods_id IS
-		NULL
+		(v.goods_id=#{goodsId} OR v.goods_id IS
+		NULL)
+		ORDER BY vu.amount DESC , vu.end_time
 	</select>
 	<select id="getUserAllVocher" resultType="java.util.HashMap">
 		SELECT
-		vu.amount,vu.end_time,v.type,p.title,vr.condition_amount,vr.discount_amount,vu.use_time
+		vu.amount,
+		vu.end_time,
+		v.type,
+		p.title,
+		vr.condition_amount,
+		vr.discount_amount,
+		vu.use_time,
+		CASE
+		WHEN vu.use_time IS NOT NULL THEN
+		'已使用'
+		<![CDATA[
+		WHEN vu.end_time < NOW() THEN
+		]]>
+		'已过期'
+		ELSE
+		'未使用'
+		END AS `status`
 		FROM
 		voucher_use vu
-		LEFT JOIN voucher_repertory vr ON
-		vu.voucher_repertory_id = vr.id
-		LEFT JOIN voucher v ON vr.voucher_id =
-		v.id
-		LEFT JOIN product p ON v.product_id = p.id
+		LEFT JOIN
+		voucher_repertory vr ON vu.voucher_repertory_id = vr.id
+		LEFT JOIN
+		voucher v ON vr.voucher_id = v.id
+		LEFT JOIN product p ON v.product_id =
+		p.id
 		WHERE vu.creator_id
 		=#{userId}
 		<if test="type!=null">
 			<if test="type==1">
-				AND vu.use_time IS NOT NULL
+				AND v.type =1
 			</if>
 			<if test="type==2">
+				AND v.type =2
+			</if>
+			<if test="type==3">
+				AND v.type =3
+			</if>
+		</if>
+		<if test="status!=null">
+			<if test="status==3">
+				AND vu.use_time IS NOT NULL
+			</if>
+			<if test="status==2">
 				<![CDATA[
 				AND vu.end_time < NOW()
 				]]>
 			</if>
-			<if test="type==3">
+			<if test="status==1">
 				<![CDATA[
 				AND vu.end_time > NOW() AND vu.use_time IS  NULL
 				]]>
 			</if>
 		</if>
+		ORDER BY vu.create_time
+	</select>
+	<select id="getVocherByUser" resultMap="userVoucher">
+		SELECT
+		vu.id AS
+		vu_id,
+		vu.phone AS vu_phone,
+		vu.amount AS vu_amount,
+		vu.start_time AS
+		vu_start_time,
+		vu.end_time AS vu_end_time,
+		vu.use_time AS vu_use_time,
+		vr.`no` AS vr_no,
+		vr.condition_amount AS vr_condition_amount,
+		vr.amount
+		AS vr_amount,
+		vr.discount_amount AS vr_discount_amount,
+		v.id,
+		v.type,
+		v.batch_no,
+		v.product_id,
+		v.goods_id,
+		v.start_time,
+		v.end_time,
+		v.days,
+		v.creator_id,
+		v.creator_name,
+		v.create_time,
+		v.`status`
+		FROM
+		voucher_use vu
+		LEFT JOIN voucher_repertory vr ON vu.voucher_repertory_id = vr.id
+		LEFT JOIN voucher v ON vr.voucher_id = v.id
+		WHERE vu.id =#{voucherUseId}
 	</select>
 </mapper>

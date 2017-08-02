@@ -118,12 +118,12 @@ public class InformationController {
 	}
 	@ResponseBody
 	@RequestMapping(name = "资讯评价", path = "/getInformationEvaluate.json")
-	public byte[] getInformationEvaluate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String id,Integer p) {
+	public byte[] getInformationEvaluate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String id,Integer p,String userId) {
 		
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("information.getInformationDetail.json,id=" + id);
+				Util.debugLog.debug("information.getInformationEvaluate.json,id=" + id+" p="+p+" userId="+userId);
 			}
 			// 查空
 			if (StringUtils.isEmpty(id)) {
@@ -131,11 +131,11 @@ public class InformationController {
 			}
 			InformationEvaluate query = new InformationEvaluate();
 			query.setInformationId(id);
-			query.setStatus(0);
+			query.setStatus(1);
 			query.setOrderby("create_time DESC");
 			if(p==null) p=1;
-			PageHelper.startPage(p,10);
-			List<InformationEvaluate> list = informationEvaluateService.list(query);
+			PageHelper.startPage(p,5);
+			List<InformationEvaluate> list = informationEvaluateService.listInfo(query,userId);
 			PageInfo<InformationEvaluate> page = new PageInfo<>(list);
 			// 1.根据 name，password,type查询完整信息
 			// 2.错误N种情况判断及返回前端
@@ -144,7 +144,7 @@ public class InformationController {
 			return JSONUtil.toJSONResult(1, "操作成功！", page);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("information.getInformationDetail.json,id=" + id, e);
+			Util.failLog.error("information.getInformationEvaluate.json,id=" + id+" p="+p+" userId="+userId, e);
 		}
 		return null;
 	}
@@ -157,16 +157,17 @@ public class InformationController {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("information.getInformationDetail.json");
+				Util.debugLog.debug("information.sendEvaluate.json");
 			}
 			evaluate.setId(UUIDUtils.getId());
 			evaluate.setCreateTime(new Date());
+			evaluate.setStatus(0);
 			String result = informationEvaluateService.insert(evaluate);
 
 			return JSONUtil.toJSONResult(1, "操作成功！", result);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("information.getInformationDetail.json", e);
+			Util.failLog.error("information.sendEvaluate.json", e);
 		}
 		return null;
 	}

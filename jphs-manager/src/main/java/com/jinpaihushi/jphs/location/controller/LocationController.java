@@ -117,6 +117,7 @@ public class LocationController extends BaseController<Location> {
 		JSONObject message = new JSONObject();
 		try {
 			//获取所有省市区的信息
+			@SuppressWarnings("unchecked")
 			List<Location> location=(List<Location>)req.getSession().getAttribute("location");
 			List<Location> list = locationService.getEasyTreeData(location,nurseId);
 			message.put("data", list);

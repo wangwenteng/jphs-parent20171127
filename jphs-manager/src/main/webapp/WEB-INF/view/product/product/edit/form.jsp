@@ -9,11 +9,11 @@
 		<input type="hidden" id="id" name="id" value="${product.id}" />
 		<input type="hidden" id="moveid" name="moveid" value="${wap_image.id}" />
 		<input type="hidden" id="pcid" name="pcid" value="${pc_image.id}" />
-		<input type="hidden" value="0" name="status" checked="checked"/>
+		<input type="hidden" value="0" name="status"/>
 		<div class="form-group">
 
 			<!-- 文本输入 -->
-			<label class="control-label col-md-3" for="input01">品类名称：</label>
+			<label class="control-label col-md-3" for="input01">名称：</label>
 			<div class="controls col-md-6">
 				<input type="text" id="title" name="title" placeholder="请输入品类名"
 					value="${product.title}" class="form-control">
@@ -21,11 +21,13 @@
 		</div>
 
 		<div class="form-group">
-
 			<!-- 文本输入 -->
-			<label class="control-label col-md-3" for="input01">序号：</label>
+			<label class="control-label col-md-3" for="input01">排序：</label>
 			<div class="controls col-md-6">
-				<select class="form-control input-xlarge" id="sort" name="sort"
+				<input type="text" id="sort" name="sort" placeholder="排序" class="form-control" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+					onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" value="${product.sort}" />
+				
+				<%-- <select class="form-control input-xlarge" id="sort" name="sort"
 					value="${product.sort}">
 					<c:forEach var="temps" begin="1" step="1" end="30">
 						<c:if test="${temps == product.sort }">
@@ -35,7 +37,7 @@
 							<option value="${temps}">${temps}</option>
 						</c:if>
 					</c:forEach>
-				</select>
+				</select> --%>
 			</div>
 		</div>
 
@@ -44,7 +46,7 @@
 			<!-- 文件上传 -->
 			<div class="controls col-md-6">
 				<img alt="" height="200" width="200" id="moveurls"
-					src="${wap_image.url}"> <input class="input-file" type="file"
+					src="${wap_image.url}"><span>尺寸   94*94 比例（ 1:1 ）<br>*&nbsp;图片格式必须为.png格式</span> <input class="input-file" type="file"
 					name="myfiles" id="moveurl_s"
 					onchange="ajaxFileUpload('moveurl_s','moveurl');" /> <input
 					class="input-file" type="hidden" id="moveurl" name="moveurl"
@@ -56,7 +58,7 @@
 			<label class="control-label col-md-3">pc图标：</label>
 			<!-- 文件上传 -->
 			<div class="controls col-md-6">
-					<img alt="" height="200" width="200" id="pcurls" src="${pc_image.url}"> 
+					<img alt="" height="200" width="200" id="pcurls" src="${pc_image.url}"> <span>尺寸     40*40  比例(  1:1  )<br>*&nbsp;图片格式必须为.png格式</span> 
 					<input class="input-file" type="file" name="myfiles" id="pcurl_s" onchange="ajaxFileUpload('pcurl_s','pcurl');" /> 
 					<input class="input-file" type="hidden" id="pcurl" name="pcurl" value="${pc_image.url}" />
 			</div>

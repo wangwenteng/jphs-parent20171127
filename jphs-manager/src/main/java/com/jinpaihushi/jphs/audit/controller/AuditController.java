@@ -2,25 +2,18 @@ package com.jinpaihushi.jphs.audit.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
-import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.audit.model.Audit;
 import com.jinpaihushi.jphs.audit.service.AuditService;
 import com.jinpaihushi.jphs.department.model.Department;
@@ -28,9 +21,9 @@ import com.jinpaihushi.jphs.department.service.DepartmentService;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.system.model.SystemUser;
+import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
 import com.jinpaihushi.utils.UUIDUtils;
-import com.github.pagehelper.Page;
 
 /**
  * 
@@ -57,8 +50,7 @@ public class AuditController extends BaseController<Audit> {
 
 	@RequestMapping(name = "待审核护士列表页", path = "/index.jhtml")
 	public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			Nurse nurse, @RequestParam(value = "page", defaultValue = "1", required = false) Integer p,
-			@RequestParam(value = "rows", defaultValue = "10", required = false) Integer n) {
+			Nurse nurse, Integer p, Integer n) {
 		startPage(p, n);
 		nurse.setStatus(0);
 		List<Nurse> list = nurseService.getNurseDetail(nurse);
@@ -78,9 +70,9 @@ public class AuditController extends BaseController<Audit> {
 		modelMap.put("department", department);
 		Nurse result = nurseService.getNurseDetail(nurse).get(0);
 		modelMap.put("nurse", result);
-		modelMap.put("addressName", result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getAddress() == null ? "" : result.getAddress().split("-")[3]);
 		Audit audit = new Audit();
-		audit.setCreatorId(nurse.getId());
+		audit.setCreatorId(result.getUser().getId());
 		List<Audit> list = auditService.list(audit);
 		modelMap.put("audit", list);
 		return "nurse/audit/edit";

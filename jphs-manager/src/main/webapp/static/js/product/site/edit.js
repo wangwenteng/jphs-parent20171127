@@ -1,5 +1,5 @@
 $(function() {
-	var siteId =$('#id').val();
+	/*var siteId =$('#id').val();
 	$('#tt').tree({
 	    url: '/location/getAllLocation.jhtml?nurseId='+siteId,    
 	    loadFilter: function(data){
@@ -7,7 +7,10 @@ $(function() {
 	            return data.data;    
 	        }   
 	    } ,
-	}); 
+	}); */
+	$('#tt').tree({
+		data : data.treeData
+	});
 	$('#save').click(function() {
 		var name=$('#name').val();
 		if(name == null || name == ''){

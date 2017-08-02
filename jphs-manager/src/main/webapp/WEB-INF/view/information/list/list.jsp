@@ -10,8 +10,8 @@
 		<tr>
 			<th width="30"></th><!-- 
 			<th>频道id</th> -->
-			<th>标题</th>
-			<th>预览数量</th>
+			<th width="220px">标题</th>
+			<th>访问量</th>
 			<th>置顶</th>
 			<!-- <th>置顶时间</th> -->
 			<!-- <th>出处</th> -->
@@ -30,7 +30,14 @@
 					<tr class="bg_list_body">
 						<td width="30">${s.index+1}</td><%-- 
 						<td><c:out value="${e.informationChannelId}" /></td> --%>
-						<td><c:out value="${e.title}" /></td>
+						<td >
+							<c:if test="${fn:length(e.title) > 15}">
+								<c:out value="${fn:substring(e.title, 0, 14)}..." />
+							</c:if>
+							<c:if test="${fn:length(e.title) < 16}">
+								<c:out value="${e.title}" />
+							</c:if>
+						</td>
 						<td><c:out value="${e.previewNumber}" /></td>
 						<td>
 							<c:if test="${e.top == 1}">
@@ -41,48 +48,53 @@
 							</c:if>
 						</td>
 						<%-- <td><fmt:formatDate value="${e.topTime}"
-								pattern="yyyy-MM-dd HH:mm:ss" /></td> --%>
+								pattern="yy-MM-dd HH:mm" /></td> --%>
 						<%-- <td><c:out value="${e.source}" /></td> --%>
 						<td><c:out value="${e.author}" /></td>
 						<td><c:out value="${e.creatorName}" /></td>
 						<td><fmt:formatDate value="${e.createTime}"
-								pattern="yy-MM-dd HH:mm:ss" /></td>
+								pattern="yy-MM-dd HH:mm" /></td>
 								
 						<td>
-							<c:if test="${e.status == -1}">
-								已停用
-							</c:if>
 							<c:if test="${e.status == 0}">
-								使用中
+								<span style="color: #F0BB1C;">已关闭</span>
+							</c:if>
+							<c:if test="${e.status == 1}">
+								<span style="color: #34BC2C;">启用中</span>
 							</c:if>
 						</td>
 						<td>
 						<c:if test="${e.top == 1}">
 							<a onclick="stickId('${e.id}','0')">
-								<img style="width: 40px;height: 30px;" src="/static/images/cancel_stick.png">
+								<img style="width: 20px;height: 20px;" src="/static/images/xia.png">
 							</a>
 						</c:if>
 						<c:if test="${e.top == 0}">
 							<a onclick="stickId('${e.id}','1')">
-								<img style="width: 40px;height: 30px;" src="/static/images/stick.png">
+								<img style="width: 20px;height: 20px;" src="/static/images/shang.png">
 							</a>
 						</c:if>
+						
+						<c:if test="${e.status == 0}">
+								<a onclick="deleteById('${e.id}','1')"> 
+										<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
+								</a>
+							</c:if>
+							<c:if test="${e.status == 1}">
+								<a onclick="deleteById('${e.id}','0')">
+									<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
+								</a>
+							</c:if>
+						
 						<a onclick="redirectDetailPage('${e.id}')"> <img
 								src="/static/images/chakan.png">
 						</a> <a onclick="redirectUpdatePage('${e.id}')"> <img
 								src="/static/images/xiugai.png">
 						</a> 
-							<c:if test="${e.status == -1}">
-								<a onclick="deleteById('${e.id}','0')"> 
-										<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
-								</a>
-							</c:if>
-							<c:if test="${e.status == 0}">
-								<a onclick="deleteById('${e.id}','-1')">
-									<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
-								</a>
-							</c:if>
 							
+							<a onclick="deleteById('${e.id}','-1')"> 
+								<img style="width: 20px;height: 20px;" src="/static/images/shanchu.png">
+							</a>
 						</td>
 					</tr>
 				</c:forEach>

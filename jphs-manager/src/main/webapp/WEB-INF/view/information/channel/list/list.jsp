@@ -26,26 +26,31 @@
 							<td><c:out value="${e.sort}"/></td>
 							<td><c:out value="${e.creatorName}" /></td>
 						<td><fmt:formatDate value="${e.createTime}"
-								pattern="yy-MM-dd HH:mm:ss" /></td>
+								pattern="yy-MM-dd HH:mm" /></td>
 							<td>
-								<c:if test="${e.status == 0}">启用中</c:if>
-								<c:if test="${e.status == -1}">已停用</c:if>	
+								<c:if test="${e.status == 1}"><span style="color: #34BC2C;">启用中</span></c:if>
+								<c:if test="${e.status == 0}"><span style="color: #F0BB1C;">已停用</span></c:if>	
 							</td>
 							<td>
-							<a onclick="redirectUpdatePage('${e.id}')">
-								<img  src="/static/images/xiugai.png">
-							</a>
-							<c:if test="${e.status == 0}">
-								<a onclick="deleteById('${e.id}','-1')">
+							
+							<c:if test="${e.status == 1}">
+								<a onclick="deleteById('${e.id}','0')">
 									<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
 								</a>
 							</c:if>	
-							<c:if test="${e.status == -1}">
-								<a onclick="deleteById('${e.id}','0')">
+							<c:if test="${e.status == 0}">
+								<a onclick="deleteById('${e.id}','1')">
 									<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
 								</a>
-							</c:if>						
+							</c:if>	
 							
+							<a onclick="redirectUpdatePage('${e.id}')">
+								<img  src="/static/images/xiugai.png">
+							</a>
+												
+							<a onclick="deleteById('${e.id}','-1')"> 
+								<img style="width: 20px;height: 20px;" src="/static/images/shanchu.png">
+							</a>
 							</td>
 						</tr>
 					</c:forEach>

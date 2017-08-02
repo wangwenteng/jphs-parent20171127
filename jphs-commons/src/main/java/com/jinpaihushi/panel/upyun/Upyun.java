@@ -9,24 +9,32 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
-import main.java.com.UpYun;
+import main.java.com.upyun.FormUploader;
+import main.java.com.upyun.Params;
+import main.java.com.upyun.Result;
 
 public class Upyun {
 	
 	 	private static final String BUCKET_NAME = "jinpai";
-		private static final String OPERATOR_NAME = "jinpai";
-		private static final String OPERATOR_PWD = "jinpai123";
+//		private static final String OPERATOR_NAME = "jinpai";
+//		private static final String OPERATOR_PWD = "jinpai123";
 		private static final String APIKEY = "giy0MIxZ40EYXsIWh6tF2wdIqrg=";
 		private static final String UPYUN_IP="https://jinpai.b0.upaiyun.com";
 	    
 	    public static void main(String[] args) throws IOException {
+	    	// https://jinpai.b0.upaiyun.com/upload/JP20170726160830-91590.png
+	    	String url=writeFile("E://Desktop/金牌护师-微信二维码/官网/7/"
+	    			+ ".jpg");
+//	    	String url=writeFile("E://Desktop/金牌护师-微信二维码/微信图片_20170726185845.png");
+	    	// e://logo.png
+	    	System.out.println("url:"+url);
+	    	  
 	    	
-	    	/*String url=writeFile("e://logo.png");
-	    	System.out.println("url:"+url);*/
-	    	
-	    	readfile("D://WPS/img");
+	    /*	readfile("D://WPS/img");*/
 	    	/*for(int a=0;a<100;a++){
 	    		contentToTxt("D://WPS/url.java",""+a);
 	    	}*/
@@ -104,12 +112,12 @@ public class Upyun {
 	    public static String writeFile(String path)
 	    {
 	   	 // 创建实例
-	        UpYun upyun = new UpYun(BUCKET_NAME, OPERATOR_NAME,OPERATOR_PWD);
+	        /*UpYun upyun = new UpYun(BUCKET_NAME, OPERATOR_NAME,OPERATOR_PWD);
 
 	        // 可选属性1，是否开启 debug 模式，默认不开启
 	        upyun.setDebug(false);
 	        // 可选属性2，超时时间，默认 30s
-	        upyun.setTimeout(60);
+	        upyun.setTimeout(60);*/
 	        
 	        //String path="D://1.png";
 	        String suffixName = path.substring(path.lastIndexOf("."),path.length());//获取文件后缀名
@@ -117,17 +125,21 @@ public class Upyun {
 	        String saveFileName="/upload/"+getDateFormat()+suffixName;
 	        // 采用数据流模式上传文件（节省内存）,自动创建父级目录
 	    	File file = new File(path);
-	    	boolean result;
+	    	Result result = new Result();
+//	    	boolean result = true;
 	    	try {
-				upyun.setContentMD5(UpYun.md5(file));
-				result = upyun.writeFile(saveFileName, file, true);
-				System.out.println(result);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				upyun.setContentMD5(UpYun.md5(file));
+				FormUploader uploader = new FormUploader(BUCKET_NAME, APIKEY, null);
+		        final Map<String, Object> paramsMap = new HashMap<String, Object>();
+		        paramsMap.put(Params.SAVE_KEY,saveFileName);///opacity/90
+		        paramsMap.put(Params.X_GMKERL_THUMB, "/watermark/url/L3VwbG9hZC9KUDIwMTcwNzI2MTg1OTQwLTY3MjY4LnBuZw==/align/southeast/percent/20/margin/10x10");
+		        result= uploader.upload(paramsMap, file);
+//				result = upyun.writeFile(saveFileName, file, true);
+//				System.out.println(result);
+			} catch (Exception e) {
 			}
 	    	
-	    	if(result=true)
+	    	if(result.isSucceed())
 	    	{
 	    		return UPYUN_IP+saveFileName;
 	    	}else {

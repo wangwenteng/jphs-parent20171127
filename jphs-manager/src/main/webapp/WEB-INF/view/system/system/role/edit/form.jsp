@@ -13,7 +13,7 @@
 			<input type="hidden" id="id"name="id" value="${systemRole.id}">
 		<label class="control-label col-md-3" for="input01">角色名称：</label>
 			<div class="controls col-md-6">
-				<input type="text" value="${systemRole.name}" maxlength="" id="name" name="name" placeholder="请输入角色名称" class="form-control">
+				<input type="text" value="${systemRole.name}" maxlength="10" id="name" name="name" placeholder="请输入角色名称" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">

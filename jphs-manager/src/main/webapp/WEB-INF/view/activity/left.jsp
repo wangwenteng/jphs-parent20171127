@@ -3,6 +3,7 @@
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="tilesx"
 	uri="http://tiles.apache.org/tags-tiles-extras"%>
+<%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div class="common_left">
 	<div class="common_left_h">活动管理</div>
 	<dl>
@@ -11,12 +12,16 @@
 		 <i class="public-horn-135 left-mg"></i>
 		</dt>
 		<div class="public_left_list">
+			<jphs:hasPermission url="/advertising/index.jhtml">
 			<dd>
 				<a href="/advertising/index.jhtml"><img src="/static/images/Group7.png" />轮播图管理</a>
 			</dd>
+			</jphs:hasPermission>
+			<jphs:hasPermission url="/advertising/index.jhtml">
 			<dd>
 				<a href="/voucher/index.jhtml"><img src="/static/images/Group7.png" />优惠券管理</a>
 			</dd>
+			</jphs:hasPermission>
 		</div>
 	</dl>
 	

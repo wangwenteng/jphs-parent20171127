@@ -69,7 +69,7 @@ public class InformationController extends BaseController<Information> {
 			String id) {
 		
 		InformationChannel i =new InformationChannel();
-		i.setStatus(0);
+		i.setStatus(1);
 		List<InformationChannel> iarr = informationChannelService.list(i);
 		Information information = informationService.loadById(id);
 		try {
@@ -94,7 +94,7 @@ public class InformationController extends BaseController<Information> {
 	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
 	public String redirectAddPage(ModelMap modelMap) {
 		InformationChannel i =new InformationChannel();
-		i.setStatus(0);
+		i.setStatus(1);
 		List<InformationChannel> iarr = informationChannelService.list(i);
 		
 		modelMap.put("informationChannel", iarr);
@@ -140,9 +140,12 @@ public class InformationController extends BaseController<Information> {
 				} catch (ParseException e) {
 				}
 			}
-			String content = information.getContent();
-			String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
-			information.setContent(con);
+			try {
+				String content = information.getContent();
+				String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
+				information.setContent(con);
+			} catch (Exception e) {
+			}
 			boolean b = informationService.update(information);
 			if (b == false) {
 				// 跳转到错误页
@@ -150,6 +153,14 @@ public class InformationController extends BaseController<Information> {
 			}
 		} else {
 			information.setId(UUID.randomUUID().toString());
+			//	https://www.jinpaihushi.com/news/details.html?id=a11a932d-726d-4327-9ca2-0a9e29abfa7f
+			if(information.getAuthor() == null || information.getAuthor().equals("")){
+				information.setAuthor("金牌护师");
+			}
+			if(information.getSource() == null || information.getSource().equals("")){
+				information.setSource("https://www.jinpaihushi.com/news/details.html?id="+information.getId());
+			}
+			
 			if(information.getTop() == 1){
 				information.setTopTime(new Date());
 			}
@@ -159,9 +170,12 @@ public class InformationController extends BaseController<Information> {
 				information.setCreatorName(systemUser.getName());
 			} catch (Exception e) {
 			}
-			String content = information.getContent();
-			String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
-			information.setContent(con);
+			try {
+				String content = information.getContent();
+				String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
+				information.setContent(con);
+			} catch (Exception e) {
+			}
 			String result = informationService.insert(information);
 			if (result.length() <= 0) {
 				// 跳转到错误页

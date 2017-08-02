@@ -60,7 +60,7 @@
 				<a href="/custom/service/index.jhtml"><img src="/static/images/Group7.png" />定制服务</a>
 			</dd>
 		</div>
-		<dt class="public_left_active">
+		<!-- <dt class="public_left_active">
 			<span class="common_left_icon"> </span>商品订单 <i
 				class="public-horn-135 left-mg"></i>
 		</dt>
@@ -68,6 +68,6 @@
 			<dd>
 				<a href="#"><img src="/static/images/Group7.png" />订单管理</a>
 			</dd>
-		</div>
+		</div> -->
 	</dl>
 </div>

@@ -39,7 +39,7 @@
 						<td><c:out value="${e.diseasesHistory}" /></td>
 						<td><c:out value="${e.medicationRemind}" /></td>
 						<td><fmt:formatDate value="${e.appointmentTime}"
-								pattern="yyyy-MM-dd HH:mm:ss" /></td>
+								pattern="yy-MM-dd HH:mm" /></td>
 						<td><c:out value="${e.notes}" /></td>
 						<td><a onclick="redirectDetailPage('${e.id}')"> <img
 								src="/static/images/chakan.png">

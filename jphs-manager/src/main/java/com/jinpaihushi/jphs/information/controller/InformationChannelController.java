@@ -16,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.information.model.InformationChannel;
 import com.jinpaihushi.jphs.information.service.InformationChannelService;
+import com.jinpaihushi.jphs.system.model.SystemUser;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
 
@@ -81,6 +82,12 @@ public class InformationChannelController extends BaseController<InformationChan
 				return "redirect:/information/channel/err.jhtml";
 			}
 		} else {
+			try {
+				SystemUser user = (SystemUser) hs.getAttribute("session_user");
+				informationChannel.setCreatorId(user.getId());
+				informationChannel.setCreatorName(user.getName());
+			} catch (Exception e) {
+			}
 			informationChannel.setId(UUID.randomUUID().toString());
 			String result = informationChannelService.insert(informationChannel);
 			if (result.length() <= 0) {

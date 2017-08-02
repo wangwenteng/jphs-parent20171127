@@ -2,35 +2,37 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	scj
-	date	:	2017-07-19 22:47:31
-	version	:	1.0
--->
+<!-- author : scj date : 2017-07-19 22:47:31 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.information.dao.InformationEvaluateDao">
-	
+
 	<sql id="field">
-		IE.id, IE.information_id, IE.head_picture, IE.content, 
-		IE.device, IE.essence, IE.status, IE.create_time, 
-		IE.creator_id, IE.creator_name
+		IE.id, IE.information_id, IE.head_picture, IE.content,
+		IE.device, IE.essence, IE.status, IE.create_time,
+		IE.creator_id,
+		IE.creator_name
 	</sql>
 
 	<sql id="fieldGlobal">
-		IE.id IE_id, IE.information_id IE_information_id, 
-		IE.head_picture IE_head_picture, IE.content IE_content, 
-		IE.device IE_device, IE.essence IE_essence, 
-		IE.status IE_status, IE.create_time IE_create_time, 
-		IE.creator_id IE_creator_id, IE.creator_name IE_creator_name
+		IE.id IE_id, IE.information_id IE_information_id,
+		IE.head_picture IE_head_picture, IE.content IE_content,
+		IE.device
+		IE_device, IE.essence IE_essence,
+		IE.status IE_status, IE.create_time
+		IE_create_time,
+		IE.creator_id IE_creator_id, IE.creator_name
+		IE_creator_name
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		IE.id id, IE.information_id informationId, 
-		IE.head_picture headPicture, IE.content content, 
-		IE.device device, IE.essence essence, 
-		IE.status status, IE.create_time createTime, 
-		IE.creator_id creatorId, IE.creator_name creatorName
+		IE.id id, IE.information_id informationId,
+		IE.head_picture
+		headPicture, IE.content content,
+		IE.device device, IE.essence essence,
+		IE.status status, IE.create_time createTime,
+		IE.creator_id creatorId,
+		IE.creator_name creatorName
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND IE.id=#{id}
@@ -63,20 +65,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND IE.creator_name=#{creatorName}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
 				AND IE.id LIKE CONCAT('%', #{id}, '%')
 			</if>
 			<if test="informationId!=null and informationId!=''">
-				AND IE.information_id LIKE CONCAT('%', #{informationId}, '%')
+				AND IE.information_id LIKE CONCAT('%', #{informationId},
+				'%')
 			</if>
 			<if test="headPicture!=null and headPicture!=''">
 				AND IE.head_picture LIKE CONCAT('%', #{headPicture}, '%')
@@ -104,122 +107,175 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				IE.id=#{id}, 
-		   </if>
-           <if test="informationId!=null">
-				IE.information_id=#{informationId}, 
-		   </if>
-           <if test="headPicture!=null">
-				IE.head_picture=#{headPicture}, 
-		   </if>
-           <if test="content!=null">
-				IE.content=#{content}, 
-		   </if>
-           <if test="device!=null">
-				IE.device=#{device}, 
-		   </if>
-           <if test="essence!=null">
-				IE.essence=#{essence}, 
-		   </if>
-           <if test="status!=null">
-				IE.status=#{status}, 
-		   </if>
-           <if test="createTime!=null">
-				IE.create_time=#{createTime}, 
-		   </if>
-           <if test="creatorId!=null">
-				IE.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				IE.creator_name=#{creatorName}, 
-		   </if>
+			<if test="id!=null">
+				IE.id=#{id},
+			</if>
+			<if test="informationId!=null">
+				IE.information_id=#{informationId},
+			</if>
+			<if test="headPicture!=null">
+				IE.head_picture=#{headPicture},
+			</if>
+			<if test="content!=null">
+				IE.content=#{content},
+			</if>
+			<if test="device!=null">
+				IE.device=#{device},
+			</if>
+			<if test="essence!=null">
+				IE.essence=#{essence},
+			</if>
+			<if test="status!=null">
+				IE.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				IE.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				IE.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				IE.creator_name=#{creatorName},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="informationEvaluate" type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
+	<resultMap id="informationEvaluate"
+		type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="informationId" column="information_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="headPicture" column="head_picture" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="device" column="device" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="essence" column="essence" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationId" column="information_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="headPicture" column="head_picture" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="device" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="essence" column="essence" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<resultMap id="informationEvaluateup" type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
+
+	<resultMap id="informationEvaluateup"
+		type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="informationId" column="information_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="headPicture" column="head_picture" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="device" column="device" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="essence" column="essence" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		 <association property="information" javaType="com.jinpaihushi.jphs.information.model.Information">
-            <result property="id" column="information_ids" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="informationChannelId" column="information_channel_id" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="image" column="image" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="content" column="information_content" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="previewNumber" column="preview_number" javaType="Integer" jdbcType="INTEGER"></result>
-			<result property="top" column="top" javaType="Integer" jdbcType="INTEGER"></result>
-			<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
-			<result property="status" column="information_status" javaType="Integer" jdbcType="INTEGER"></result>
-			<result property="source" column="source" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="author" column="author" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="topTime" column="top_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-			<result property="createTime" column="information_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-			<result property="creatorId" column="information_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="creatorName" column="information_creator_name" javaType="String" jdbcType="VARCHAR"></result>
-        </association>
+		<result property="informationId" column="information_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="headPicture" column="head_picture" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="device" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="essence" column="essence" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<association property="information"
+			javaType="com.jinpaihushi.jphs.information.model.Information">
+			<result property="id" column="information_ids" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="informationChannelId" column="information_channel_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="title" column="title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="image" column="image" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="content" column="information_content"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="previewNumber" column="preview_number"
+				javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="top" column="top" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="type" column="type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="status" column="information_status"
+				javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="source" column="source" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="author" column="author" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="topTime" column="top_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="createTime" column="information_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="information_creator_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="information_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+		</association>
 	</resultMap>
-	
-	<resultMap id="informationEvaluateGlobal" type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
-		<result property="id" column="IE_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="informationId" column="IE_information_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="headPicture" column="IE_head_picture" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="content" column="IE_content" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="device" column="IE_device" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="essence" column="IE_essence" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="status" column="IE_status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="IE_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="IE_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="IE_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+
+	<resultMap id="informationEvaluateGlobal"
+		type="com.jinpaihushi.jphs.information.model.InformationEvaluate">
+		<result property="id" column="IE_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="informationId" column="IE_information_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="headPicture" column="IE_head_picture"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="IE_content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="device" column="IE_device" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="essence" column="IE_essence" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="IE_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="IE_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="IE_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="IE_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.information.model.InformationEvaluate">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.information.model.InformationEvaluate">
 		INSERT INTO `INFORMATION_EVALUATE`(
-			id, information_id, 
-			head_picture, content, 
-			device, essence, 
-			status, create_time, 
-			creator_id, creator_name
+		id, information_id,
+		head_picture, content,
+		device, essence,
+		status, create_time,
+		creator_id,
+		creator_name
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{informationId,jdbcType=VARCHAR}, 
-			#{headPicture,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-			#{device,jdbcType=VARCHAR}, #{essence,jdbcType=INTEGER}, 
-			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		#{id,jdbcType=VARCHAR},
+		#{informationId,jdbcType=VARCHAR},
+		#{headPicture,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{device,jdbcType=VARCHAR},
+		#{essence,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}
 		)
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `INFORMATION_EVALUATE`(
 			id, information_id, 
@@ -228,38 +284,45 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			status, create_time, 
 			creator_id, creator_name
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.informationId,jdbcType=VARCHAR}, 
-			#{item.headPicture,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR}, 
-			#{item.device,jdbcType=VARCHAR}, #{item.essence,jdbcType=INTEGER}, 
-			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			#{item.id,jdbcType=VARCHAR},
+			#{item.informationId,jdbcType=VARCHAR},
+			#{item.headPicture,jdbcType=VARCHAR},
+			#{item.content,jdbcType=VARCHAR},
+			#{item.device,jdbcType=VARCHAR},
+			#{item.essence,jdbcType=INTEGER},
+			#{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE IE FROM `INFORMATION_EVALUATE` IE WHERE IE.ID = #{id} 
+		DELETE IE FROM `INFORMATION_EVALUATE` IE WHERE IE.ID
+		= #{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `INFORMATION_EVALUATE` IE
-		SET 
+		UPDATE `INFORMATION_EVALUATE` IE
+		SET
 		IE.STATUS = -1
 		WHERE IE.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `INFORMATION_EVALUATE` IE
-		<include refid="dynamicSet" /> 
-	    WHERE IE.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE IE.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="informationEvaluate">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION_EVALUATE` IE
 		<include refid="dynamicWhere" />
 	</select>
@@ -270,49 +333,89 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="informationEvaluate">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION_EVALUATE` IE
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="informationEvaluateup">
-		SELECT 
-			IE.id, 
-			IE.information_id, 
-			IE.head_picture, 
-			IE.content, 
-			IE.device, 
-			IE.essence, 
-			IE.status, 
-			IE.create_time, 
-			IE.creator_id, 
-			IE.creator_name,
-			i.id information_ids, 
-			i.information_channel_id, 
-			i.title, 
-			i.image, 
-			i.content information_content, 
-			i.preview_number, 
-			i.top, 
-			i.type, 
-			i.status information_status, 
-			i.source, 
-			i.author, 
-			i.top_time, 
-			i.create_time information_create_time, 
-			i.creator_id information_creator_id, 
-			i.creator_name information_creator_name
+		SELECT
+		IE.id,
+		IE.information_id,
+		IE.head_picture,
+		IE.content,
+		IE.device,
+		IE.essence,
+		IE.status,
+		IE.create_time,
+		IE.creator_id,
+		IE.creator_name,
+		i.id information_ids,
+		i.information_channel_id,
+		i.title,
+		i.image,
+		i.content information_content,
+		i.preview_number,
+		i.top,
+		i.type,
+		i.status
+		information_status,
+		i.source,
+		i.author,
+		i.top_time,
+		i.create_time
+		information_create_time,
+		i.creator_id information_creator_id,
+		i.creator_name information_creator_name
 		FROM `INFORMATION_EVALUATE` IE
-		LEFT JOIN `information` i ON i.id = IE.information_id
+		LEFT JOIN
+		`information` i ON i.id = IE.information_id
 		<include refid="dynamicWhere" />
-		<include refid="orderby" />
+		ORDER BY IE.create_time desc
+		<!-- <include refid="orderby" /> -->
 	</select>
-	
+
 	<select id="loadById" resultMap="informationEvaluate">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION_EVALUATE` IE
 		WHERE IE.ID = #{id}
 	</select>
-	
+	<select id="listInfo" resultMap="informationEvaluate">
+		SELECT
+		IE.id,
+		IE.information_id,
+		ni.url head_picture,
+		IE.content,
+		IE.device,
+		IE.essence,
+		IE.create_time,
+		IE.creator_id,
+		IE.creator_name,
+		IE.`status`
+		FROM
+		information_evaluate IE
+		LEFT JOIN nurse_images ni ON
+		IE.creator_id = ni.source_id
+		<where>
+			AND IE.`status` =1
+			<if test="userId!=null and userId!=''">
+				OR (IE.creator_id =#{userId} AND IE.`status` =0)
+			</if>
+			<if test="informationEvaluate.id!=null and informationEvaluate.id!=''">
+				AND IE.id = #{informationEvaluate.id}
+			</if>
+			<if test="informationEvaluate.informationId!=null and informationEvaluate.informationId!=''">
+				AND IE.information_id LIKE CONCAT('%', #{informationEvaluate.informationId},
+				'%')
+			</if>
+			<if test="informationEvaluate.headPicture!=null and informationEvaluate.headPicture!=''">
+				AND IE.head_picture LIKE CONCAT('%', #{informationEvaluate.headPicture}, '%')
+			</if>
+		</where>
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
 </mapper>

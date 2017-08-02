@@ -28,6 +28,7 @@ import com.jinpaihushi.utils.UUIDUtils;
  * @version 1.0
  */
 @Service("systemRoleService")
+@SuppressWarnings("unchecked")
 public class SystemRoleServiceImpl extends BaseServiceImpl<SystemRole> implements SystemRoleService {
 
 	@Autowired
@@ -78,7 +79,6 @@ public class SystemRoleServiceImpl extends BaseServiceImpl<SystemRole> implement
 
 	@Override
 	public int saveRoleModule(String roleId, String moduleIds) {
-		int j = 0;
 		String[] moduleId = moduleIds.split(",");
 		// 根据角色id获取已经分配的模块
 		systemRoleModuleDao.deleteByRole(roleId);

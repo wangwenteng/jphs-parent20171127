@@ -105,7 +105,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
-				AND O.id LIKE CONCAT('%', #{id}, '%')
+				AND O.id =#{id}
 			</if>
 			<if test="orderNo!=null and orderNo!=''">
 				AND O.order_no LIKE CONCAT('%', #{orderNo}, '%')
@@ -436,6 +436,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="nurseName" column="nurseName" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="detail_address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="payPrice" column="pay_price" javaType="Double" jdbcType="DECIMAL"></result>
 		<association property="orderGoods"
 			javaType="com.jinpaihushi.jphs.order.model.OrderGoods">
 			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
@@ -530,31 +534,31 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="getList" resultMap="orderList">
 		SELECT
-		`o`.`id`
-		, `u1`.`name` userName
-		, `u1`.`phone`
-		, `g` .`title`
-		,
-		`o`.`appointment_time`
-		, `o`.`status`
-		, `u2`.`name` nurseName
-		,
-		`o`.`order_no`
-		, `o`.`schedule`
+		   `o`.`id`,
+		  `u1`.`name` userName,
+		  `u1`.`phone`,
+		  `g`.`title`,
+		  `o`.`appointment_time`,
+		  `o`.`create_time`,
+		  `o`.`status`,
+		  `u2`.`name` nurseName,
+		  `o`.`order_no`,
+		  `o`.`schedule` ,
+		  `og`.`price`,
+		  `og`.`pay_price`,
+		  `oo`.`detail_address`
 		FROM
-		`jphs`.`order` AS `o`
-		LEFT JOIN
-		`jphs`.`order_goods` AS `og`
-		ON (`o`.`order_no` = `og`.`order_id`)
-		LEFT
-		JOIN `jphs`.`user` AS `u1`
-		ON (`o`.`creator_id` = `u1`.`id`)
-		LEFT JOIN
-		`jphs`.`user` AS `u2`
-		ON (`o`.`accept_user_id` = `u2`.`id`)
-		LEFT JOIN
-		`jphs`.`goods` AS `g`
-		ON (`og`.`goods_id` = `g`.`id`)
+		  `jphs`.`order` AS `o` 
+		  LEFT JOIN `jphs`.`order_goods` AS `og` 
+		    ON (`o`.`id` = `og`.`order_id`) 
+		  LEFT JOIN `jphs`.`user` AS `u1` 
+		    ON (`o`.`creator_id` = `u1`.`id`) 
+		  LEFT JOIN `jphs`.`user` AS `u2` 
+		    ON (`o`.`accept_user_id` = `u2`.`id`) 
+		  LEFT JOIN `jphs`.`goods` AS `g` 
+		    ON (`og`.`goods_id` = `g`.`id`) 
+		  LEFT JOIN `jphs`.`order_other` AS `oo`
+		    ON (`o`.`id` = `oo`.`order_id`)
 		WHERE o.`schedule`
 		= #{schedule}
 		<if test="orderNo !=null">
@@ -588,35 +592,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		o.id,
 		o.order_no,
 		o.appointment_time,
-		g.id goods_id,
-		g.title,
+		o.create_time,
+		og.goods_id
+		goods_id,
+		og.title,
 		g.sub_title,
 		g.content,
 		si.url,
 		og.pay_price,
 		og.price,
 		t.pay_type,
-		o.SCHEDULE
+		o. SCHEDULE
 		FROM
 		`order` o
-		LEFT JOIN order_goods og ON o.id = og.order_id
+		LEFT JOIN order_goods og ON o.id =
+		og.order_id
 		LEFT JOIN goods g ON og.goods_id = g.id
-		LEFT JOIN service_images si ON
-		si.source_id = g.id
-		LEFT JOIN `transaction` t ON t.order_id = o.id
+		LEFT JOIN
+		service_images si ON o.id = si.source_id
+		LEFT JOIN `transaction` t ON
+		o.id = t.order_id
 		WHERE
 		o.creator_id = #{userId}
-		AND si.device_type = 1
-		AND t.creator_id =
-		o.creator_id
-		AND o.`status` =0
-		AND t.`status`=0
+		AND o.`status` = 0
 		<if test="schedule!=null">
-			o.schedule = #{schedule}
+			AND o.schedule = #{schedule}
 		</if>
 	</select>
 	<resultMap id="orderDetail" type="com.jinpaihushi.jphs.order.model.Order">
-		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="id" column="order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="orderNo" column="order_no" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="voucherPrice" column="voucher_price"
@@ -625,9 +630,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="platformId" column="platform_id" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="expectorId" column="expector_id" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property="acceptUserId" column="accept_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="accept_user_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nursePhone" column="nursePhone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userName" column="userName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="appointmentTime" column="appointment_time"
 			javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="acceptTime" column="accept_time" javaType="Date"
@@ -691,7 +705,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="VARCHAR"></result>
 			<result property="tool" column="oo_tool" javaType="String"
 				jdbcType="VARCHAR"></result>
-				
+
 			<result property="publicName" column="oo_public_name"
 				javaType="String" jdbcType="VARCHAR"></result>
 			<result property="publicContent" column="oo_public_content"
@@ -777,8 +791,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</association>
 	</resultMap>
 	<select id="getUserOrderDetail" resultMap="orderDetail">
-		SELECT
-		o.id,
+		SELECT DISTINCT
+		o.id order_id,
 		o.order_no,
 		o.voucher_price,
 		o.voucher_use_id,
@@ -787,7 +801,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		o.accept_user_id,
 		o.appointment_time,
 		o.accept_time,
+		u.phone nursePhone,
 		o.transaction_id,
+		os.patient_name userName,
+		os.patient_phone phone,
 		o.`schedule`,
 		o.device,
 		o.remarks,
@@ -796,25 +813,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		o.creator_id,
 		og.id AS og_id,
 		og.order_id AS og_order_id,
-		og.goods_id AS og_goods_id,
+		og.goods_id AS
+		og_goods_id,
 		og.title AS og_title,
 		og.price AS og_price,
-		og.pay_price AS og_pay_price,
+		og.pay_price AS
+		og_pay_price,
 		og.profit AS og_profit,
 		og.expector_id AS
-		of_expector_id,
+		og_expector_id,
 		og.executor_id AS og_executor_id,
 		og.`status` AS
 		og_status,
 		og.create_time AS og_create_time,
 		og.remark AS og_remark,
-		oo.id AS oo_id,
+		oo.id AS
+		oo_id,
 		oo.order_id AS oo_order_id,
 		oo.department_id AS
 		oo_department_id,
 		oo.hospital AS oo_hospital,
 		oo.address AS oo_address,
-		oo.detail_address AS oo_detail_address,
+		oo.detail_address
+		AS oo_detail_address,
 		oo.drug AS oo_drug,
 		oo.tool AS
 		oo_tool,
@@ -876,13 +897,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		order_other oo ON o.id =oo.order_id
 		LEFT JOIN goods g ON og.goods_id =
 		g.id
-		LEFT JOIN service_images si ON si.source_id = g.id
+		LEFT JOIN service_images si ON  o.id =si.source_id
+		LEFT JOIN order_service os ON o.id =os.order_id
+		LEFT JOIN `user`
+		u ON o.accept_user_id = u.id
 		LEFT JOIN
-		`transaction` t ON t.order_id = o.id
-		<where>
-			<if test="id!=null and id!=''">
-				AND o.id =#{id}
-			</if>
-		</where>
+		`transaction` t ON t.order_id =
+		o.id
+		<include refid="queryWhere" />
 	</select>
 </mapper>

@@ -4,22 +4,18 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
-<form class="form-horizontal">
+<form class="form-horizontal edit_form">
 	<fieldset>
-		<div id="legend" class="">
-			<legend class="">${systemUser.id == null?'用户添加':'用户编辑'}</legend>
-		</div>
 		<div class="form-group">
-
-			<label class="control-label col-md-3" for="input01">手机号：</label>
+			<!-- 文本输入 -->
+			<label class="control-label col-md-3" for="input01">姓名：</label>
 			<div class="controls col-md-6">
-				<input type="text" value="${systemUser.phone}" id="phone" maxlength="11" name="phone" placeholder="请输入手机号" class="form-control">
+				<input type="hidden" value ="${systemUser.id}" name ="id" id="id">
+				<input type="text" value="${systemUser.name}" maxlength="4" id="name" name="name" placeholder="请输入真实姓名" class="form-control">
 			</div>
-		</div>
-		<div class="form-group">
-
-			<!-- 后置文本 -->
-			<label class="control-label  col-md-3">邮箱地址：</label>
+		</div>		
+		<div class="form-group">			
+			<label class="control-label  col-md-3">企业邮箱：</label>
 			<div class="controls  col-md-6  ">
 				<div class="input-append input-group">
 					<input  value="${systemUser.email}" id="email" name="email" class="span2 form-control" placeholder="请输入公司邮箱" type="text">
@@ -27,15 +23,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-
-			<!-- 文本输入 -->
-			<label class="control-label col-md-3" for="input01">姓名：</label>
+			<label class="control-label col-md-3" for="input01">手机号：</label>
 			<div class="controls col-md-6">
-				<input type="text" value="${systemUser.name}" maxlength="4" id="name" name="name" placeholder="请输入真实姓名" class="form-control">
+				<input type="text" value="${systemUser.phone}" id="phone" maxlength="11" name="phone" placeholder="请输入手机号" class="form-control">
 			</div>
 		</div>
-
-		<div class="form-group">
+		<c:if test="${systemUser.id == null}">
+			<div class="form-group">
 
 			<!-- 文本输入 -->
 			<label class="control-label col-md-3" for="input01">密码：</label>
@@ -54,6 +48,6 @@
 					name="confirm_password" class="form-control">
 			</div>
 		</div>
-
+		</c:if>
 	</fieldset>
 </form>

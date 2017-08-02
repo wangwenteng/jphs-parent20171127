@@ -2,8 +2,11 @@ package com.jinpaihushi.jphs.commoms.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 
-import main.java.com.UpYun;
+import main.java.com.upyun.FormUploader;
+import main.java.com.upyun.Params;
+import main.java.com.upyun.Result;
 
 @Controller
 @RequestMapping(name = "文件上传", path = "/upload")
 public class FileUploadController {
-	private static final String URL = "http://jinpai.b0.upaiyun.com";
+	private static final String URL = "https://jinpai.b0.upaiyun.com";
 	
 	/**
 	 * 这里这里用的是MultipartFile[] myfiles参数,所以前台就要用
@@ -67,21 +72,32 @@ public class FileUploadController {
 					// dest)方法实现文件的上传
 					FileUtils.copyInputStreamToFile(myfile.getInputStream(), new File(realPath, originalFilename));
 				
-					//	--上传图片到又拍云		
+					//	--上传图片到又拍云	不加水印	
 					File fl=new File(realPath+"/"+ originalFilename);
-					System.out.println("文件路径---------"+realPath+"/"+ myfile.getName());
-					UpYun up=new UpYun("jinpai","jinpaiwechat","jinpaiwechat");
-//					String SAVE_KEY = File.separator + "WeChat" + File.separator + System.currentTimeMillis() + ".jpg";
-					String SAVE_KEY = "/WeChat/" + System.currentTimeMillis() + ".jpg";
+					/*UpYun up=new UpYun("jinpai","jinpaiwechat","jinpaiwechat");
+					String SAVE_KEY = "/jinpaihushi/" + getDateFormat() + ".jpg";
 					up.setContentMD5(UpYun.md5(fl));
 					Map<String, String> params=new HashMap<String,String>();
 					params.put("x-gmkerl-type", "fix_both");
-					/*params.put("x-gmkerl-value", "60x60");*/
-					boolean res= up.writeFile(SAVE_KEY, fl, true,params);	
-					System.out.println("上传up结果:" + res);
-					System.out.println("上传up结果:" + URL+SAVE_KEY);
-					message.put("msg", URL+SAVE_KEY);
-					message.put("resultcode", "1");
+					params.put("x-gmkerl-value", "60x60");
+					boolean result= up.writeFile(SAVE_KEY, fl, true,params);*/
+					
+					// 加水印
+					String SAVE_KEY = "/jinpaihushi/" + getDateFormat() + ".png";
+					FormUploader uploader = new FormUploader("jinpai", "giy0MIxZ40EYXsIWh6tF2wdIqrg=", null);
+			        final Map<String, Object> paramsMap = new HashMap<String, Object>();
+			        paramsMap.put(Params.SAVE_KEY,SAVE_KEY);///opacity/90
+			        paramsMap.put(Params.X_GMKERL_THUMB, "/watermark/url/L2ppbnBhaWh1c2hpLzE1MDExMTg4OTE1MTIuanBn/align/southeast/percent/10/margin/10x10");
+			        Result result= uploader.upload(paramsMap, fl);
+					
+			        if(result.isSucceed()){
+			        	message.put("msg", URL+SAVE_KEY);
+						message.put("resultcode", "1");
+			        }else{
+			        	message.put("msg", "上传失败");
+			        	message.put("resultcode", "0");
+			        }
+					
 					return message;
 					/*return new ModelAndView(customJsonView);*/
 					
@@ -107,4 +123,11 @@ public class FileUploadController {
 		message.put("resultcode", "0");
 		return message;
 	}
+	
+	public static String getDateFormat(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        Random random = new Random();  
+        int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数  
+        return "JP"+df.format(new Date())+"-"+rannum;       
+    }  
 }

@@ -48,6 +48,7 @@ public class PlatformController extends BaseController<Platform> {
 			HttpServletResponse resp, ModelMap modelMap,
 			Platform platform, Integer p, Integer n) {
 		startPage(p, n);
+		platform.setOrderby("create_time DESC");
 		Page<Platform> list = platformService.query(platform);
 		PageInfos<Platform> pageInfo = new PageInfos<Platform>(list, req);
 		modelMap.put("list", list);
@@ -116,10 +117,7 @@ public class PlatformController extends BaseController<Platform> {
 	}
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
-		Platform platform = new Platform();
-		platform.setId(id);
-		platform.setStatus(-1);
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Platform platform) {
 		boolean b =platformService.update(platform);
 		if (b == false) {
 			// 跳转到错误页

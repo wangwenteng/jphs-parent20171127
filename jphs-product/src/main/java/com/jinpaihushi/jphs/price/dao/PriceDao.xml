@@ -442,7 +442,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pr.status pr_status
 		FROM price p
 		LEFT JOIN `price_part` pr ON pr.price_id = p.id
-		WHERE pr.site_id=0 AND p.status=0 AND p.goods_id =#{id}
+		WHERE pr.site_id=0 AND p.status=1 AND p.goods_id =#{id}
 		group by p.grade order by p.grade
 	</select>
 
@@ -475,7 +475,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		price p
 		LEFT JOIN `price_part` pr ON pr.price_id = p.id
 		WHERE 
-		p.status=0 AND p.goods_id = #{goodsId} 
+		p.status=1 AND p.goods_id = #{goodsId} 
 		<if test="grade!=null">
 			AND p.grade=#{grade}
 		</if>

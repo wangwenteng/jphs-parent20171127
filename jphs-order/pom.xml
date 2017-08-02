@@ -17,6 +17,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-activity</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-product</artifactId>
 			<version>${project.version}</version>
 		</dependency>

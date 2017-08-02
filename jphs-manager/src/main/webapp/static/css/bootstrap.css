@@ -387,8 +387,11 @@ td, th {
 	background-size:100%;
 }
 
-.glyphicon-remove:before {
-	content: "\e014"
+.glyphicon-remove {
+	width: 15px;
+	height: 15px;
+	background: url("/static/img/remove.png");
+	background-size:100%;
 }
 
 .glyphicon-zoom-in:before {
@@ -691,12 +694,18 @@ td, th {
 	content: "\e090";
 }
 
-.glyphicon-arrow-left:before {
-	content: "\e091";
+.glyphicon-arrow-left{
+	width: 15px;
+	height: 15px;
+	background: url("/static/img/glyphicon-arrowleft.png");
+	background-size:100%;
 }
 
-.glyphicon-arrow-right:before {
-	content: "\e092";
+.glyphicon-arrow-right {
+	width: 15px;
+	height: 15px;
+	background: url("/static/img/glyphicon-arrowright.png");
+	background-size:100%;
 }
 
 .glyphicon-arrow-up:before {
@@ -751,8 +760,11 @@ td, th {
 	content: "\e108";
 }
 
-.glyphicon-calendar:before {
-	content: "\e109";
+.glyphicon-calendar {
+	width: 17px;
+	height: 17px;
+	background: url("/static/img/calendar.png");
+	background-size:100%;
 }
 
 .glyphicon-random:before {

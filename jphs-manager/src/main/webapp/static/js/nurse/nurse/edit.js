@@ -201,29 +201,12 @@ $(function() {
 						for (var i = 0; i < nodes.length; i++) {
 							areas += nodes[i].id + ',';
 						}
-						var num = $('#type button').length;
-						var flag = 0;
-						
-						for (var i = 0; i < num; i++) {
-							var id = $(
-									'input[id=jobtitleType' + i
-											+ '][checked]').val();
-							if (id == 'undefined') {
-								flag += 1;
-							}
-						}
-						if (flag == num) {
-							alert('没有选择职称');
-							return false;
-						} else {
-							$('#areas').val(areas);
-							alert("操作成功");
-							form.submit();
-						}
+						$('#areas').val(areas);
+						form.submit();
+						alert("操作成功");
 					}
 				}
 			});
-	var nurseId = $('#id').val();
 	$('#tt').tree({
 		data : data.treeData
 	});

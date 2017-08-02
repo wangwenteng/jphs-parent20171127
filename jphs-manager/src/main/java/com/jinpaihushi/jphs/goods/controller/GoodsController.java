@@ -52,9 +52,8 @@ public class GoodsController extends BaseController<Goods> {
 			HttpServletResponse resp, ModelMap modelMap,
 			Goods goods, Integer p, Integer n) {
 		Product pro = new Product();
-		pro.setStatus(0);
+		pro.setStatus(1);
 		Page<Product> product_list = productService.query(pro);
-		goods.setStatus(0);
 		startPage(p, n);
 		Page<Product> list = goodsService.getProductGoodsListDetail(goods);
 		PageInfos<Product> pageInfo = new PageInfos<Product>(list, req);
@@ -90,8 +89,8 @@ public class GoodsController extends BaseController<Goods> {
 		modelMap.put("wap_image", web_image);
 		modelMap.put("qt_image", qt_image);
 		Product product_f = new Product();
-		product_f.setStatus(0);
-		Page<Product> product_list = productService.query(product_f);
+		product_f.setStatus(1);
+		List<Product> product_list = productService.list(product_f);
 		modelMap.put("product_list", product_list);
 		modelMap.put("goods", goods);
 		return "product/goods/edit";
@@ -125,8 +124,8 @@ public class GoodsController extends BaseController<Goods> {
 		/**
 		 * 查询品类
 		 * */
-		product.setStatus(0);
-		Page<Product> product_list = productService.query(product);
+		product.setStatus(1);
+		List<Product> product_list = productService.list(product);
 		modelMap.put("product_list", product_list);
 		
 		return "product/goods/edit";
@@ -184,9 +183,8 @@ public class GoodsController extends BaseController<Goods> {
 	}
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id ,Goods goods) {
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,Goods goods) {
 
-		goods.setStatus(-1);
 		boolean b = goodsService.update(goods);
 		if (b == false) {
 			// 跳转到错误页

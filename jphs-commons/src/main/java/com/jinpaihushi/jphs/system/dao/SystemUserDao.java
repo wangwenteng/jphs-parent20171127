@@ -18,5 +18,7 @@ public interface SystemUserDao extends BaseDao<SystemUser> {
 	SystemUser getSystemUser(@Param("userName")String userName);
 	
 	SystemUser getUserRoleModule(SystemUser systemUser);
+
+	int chackUser(@Param("chackValue")String chackValue, @Param("userId")String userId);
 	
 }

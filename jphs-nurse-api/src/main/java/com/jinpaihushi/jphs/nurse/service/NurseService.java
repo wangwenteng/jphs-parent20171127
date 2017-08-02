@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.nurse.service;
 import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.jobtitle.model.JobtitleType;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.service.BaseService;
@@ -15,7 +16,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface NurseService extends BaseService<Nurse> {
 
-	List<Nurse> getNurseDetail(Nurse nurse);
+	Page<Nurse> getNurseDetail(Nurse nurse);
 
 	String insertNurse(Nurse nurse);
 

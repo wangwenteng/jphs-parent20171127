@@ -7,7 +7,7 @@
 <div class="common_right_title">
 	<img src="/static/images/yousanjiaox.png" />产品管理<i class="public1-horn-45"></i>服务管理 <i class="public1-horn-45"></i>品类管理 <i class="public1-horn-45"></i>${product.id == null?'添加品类':'编辑品类'}
 </div>
-<form class="form-horizontal add_body" id="productForm" method="post" data-role="validate-form" action="/product/insert.jhtml">
+<form class="form-horizontal" id="productForm" method="post" data-role="validate-form" action="/product/insert.jhtml">
 	<div class="marage_right_content">
 		<div class="clearfix">
 		<jphs:hasPermission url="/product/insert.jhtml">

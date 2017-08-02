@@ -8,9 +8,11 @@
 	response.setCharacterEncoding("utf-8");
     Uploader up = new Uploader(request);
     up.setSavePath("../../../static/upload");
-    String[] fileType = {".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp"};
+   /*  String[] fileType = {".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp"}; */
+    
+    String[] fileType = {".png" };
     up.setAllowFiles(fileType);
-    up.setMaxSize(10000); //单位KB
+    up.setMaxSize(1024); //单位KB
     up.upload();
     String callback = request.getParameter("callback");
     String nameJsp = "imageUp.jsp";

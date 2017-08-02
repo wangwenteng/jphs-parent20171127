@@ -87,6 +87,17 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 	private String beginTime;
 
 	private String stopTime;
+	private String url;
+	private String detailAddress;
+	
+	/** 销售价 */
+	private Double price;
+
+    /** 实付金额 */
+	private Double payPrice;
+	
+	private Double discountPrice;
+	
 	private List<OrderService> orderServiceList;
 	private OrderOther orderOther;
 	/** 备注 */
@@ -113,6 +124,24 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 	 */
 	public String getOrderNo() {
 		return orderNo;
+	}
+
+	
+	
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Double getPayPrice() {
+		return payPrice;
+	}
+
+	public void setPayPrice(Double payPrice) {
+		this.payPrice = payPrice;
 	}
 
 	/**
@@ -384,6 +413,34 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 
 	public void setOrderServiceList(List<OrderService> orderServiceList) {
 		this.orderServiceList = orderServiceList;
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
+	}
+	
+	
+
+	public Double getDiscountPrice() {
+		return discountPrice;
+	}
+
+	public void setDiscountPrice(Double discountPrice) {
+		this.discountPrice = discountPrice;
 	}
 
 	public String toString() {

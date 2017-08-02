@@ -32,21 +32,18 @@
 						<td><c:out value="${e.goodsName}" /></td>
 						<td><c:out value="${e.nurseName}" /></td>
 						<td><c:out value="${e.level}" /></td>
-						<td>
-							<c:if test="${fn:length(e.content)>10 }">
+						<td><c:if test="${fn:length(e.content)>10 }">
 								${fn:substring(e.content, 0, 10)}... 
-							</c:if>
-							<c:if test="${fn:length(e.content)<10 }">
+							</c:if> <c:if test="${fn:length(e.content)<10 }">
 								${e.content} 
-							</c:if>
-						</td>
+							</c:if></td>
 						<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
-						<td>
-							<a onclick="redirectDetailPage('${e.id}')"> <img
-							src="/static/images/chakan.png">
-					</a>
-						</td>
+						<td><jphs:hasPermission url="/evaluation/detail.jhtml">
+								<a onclick="redirectDetailPage('${e.id}')"> <img
+									src="/static/images/chakan.png">
+								</a>
+							</jphs:hasPermission></td>
 					</tr>
 				</c:forEach>
 			</c:when>

@@ -40,5 +40,12 @@ public class VoucherUseServiceImpl extends BaseServiceImpl<VoucherUse> implement
 		// TODO Auto-generated method stub
 		return voucherUseDao.getDetailtList(voucherUse);
 	}
+	
+	@Override
+	public VoucherUse getVoucherUse(String id) {
+		// TODO Auto-generated method stub
+		return voucherUseDao.getVoucherUse(id);
+	}
+
 
 }

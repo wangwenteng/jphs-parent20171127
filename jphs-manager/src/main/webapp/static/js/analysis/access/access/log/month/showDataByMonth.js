@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$(".form_datetime").datetimepicker({  
+	$(".form_date").datetimepicker({  
 		/*format: 'yyyy-mm',  
         weekStart: 1,  
         autoclose: true,  

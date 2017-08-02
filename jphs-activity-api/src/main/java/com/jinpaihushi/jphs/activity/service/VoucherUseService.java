@@ -16,4 +16,6 @@ public interface VoucherUseService extends BaseService<VoucherUse> {
 
 	Page<VoucherUse> getDetailtList(VoucherUse voucherUse);
 
+	VoucherUse getVoucherUse(String id);
+
 }

@@ -57,7 +57,7 @@ public class Evaluation extends BaseModel implements Predicate<Evaluation>,
 	private String title;
 	
 	private String nursePhone;
-	
+	private String headPortrait;
     /** 内容 */
 	@Length(max = 65535, message = "{evaluation.content.illegal.length}")
 	private String content;
@@ -190,14 +190,20 @@ public class Evaluation extends BaseModel implements Predicate<Evaluation>,
 		this.userPhone = userPhone;
 	}
 
-	
-	
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getHeadPortrait() {
+		return headPortrait;
+	}
+
+	public void setHeadPortrait(String headPortrait) {
+		this.headPortrait = headPortrait;
 	}
 
 	@Override

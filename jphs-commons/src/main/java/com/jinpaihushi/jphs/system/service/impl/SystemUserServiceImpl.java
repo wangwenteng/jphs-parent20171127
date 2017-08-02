@@ -75,7 +75,6 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser> implement
 	public int saveRoles(String userId, String roleIds) {
 		int j=0;
 		//按条件分割出角色id
-		String[] roleId=roleIds.split(",");
 		//根据用户id获取用户有的角色
 		//获取用户所有的角色
 		SystemUserRole query =new SystemUserRole();
@@ -84,16 +83,19 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser> implement
 		for (SystemUserRole systemUserRole : userHasRole) {
 			systemUserRoleDao.deleteById(systemUserRole.getId());
 		}
-		SystemUserRole insert =null;
-		List<SystemUserRole> list =new ArrayList<>();
-		for (int i = 0; i < roleId.length; i++) {
-			insert =new SystemUserRole();
-			insert.setSystemUserId(userId);
-			insert.setSystemRoleId(roleId[i]);
-			insert.setId(UUIDUtils.getId());
-			list.add(insert);
+		if(roleIds!=null){
+			String[] roleId=roleIds.split(",");
+			SystemUserRole insert =null;
+			List<SystemUserRole> list =new ArrayList<>();
+			for (int i = 0; i < roleId.length; i++) {
+				insert =new SystemUserRole();
+				insert.setSystemUserId(userId);
+				insert.setSystemRoleId(roleId[i]);
+				insert.setId(UUIDUtils.getId());
+				list.add(insert);
+			}
+			j=systemUserRoleDao.inserts(list);
 		}
-		j=systemUserRoleDao.inserts(list);
 		return j;
 	}
 
@@ -103,10 +105,12 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser> implement
 		SystemUser systemUser =new SystemUser();
 		systemUser.setId(userId);
 		SystemUser user = systemUserDao.getUserRoleModule(systemUser);
-		for (SystemRole role : user.getRoleList()) {
-			for (SystemModule module : role.getModuleList()) {
-				if(!list.contains(module.getUrl())){
-					list.add(module.getUrl());
+		if(user!=null){
+			for (SystemRole role : user.getRoleList()) {
+				for (SystemModule module : role.getModuleList()) {
+					if(!list.contains(module.getUrl())){
+						list.add(module.getUrl());
+					}
 				}
 			}
 		}
@@ -136,5 +140,11 @@ public class SystemUserServiceImpl extends BaseServiceImpl<SystemUser> implement
 		if(i>0) return systemUser.getId();
 		return "";
 	}
-	
+
+	@Override
+	public int chackUser(String chackValue, String userId) {
+		int count=systemUserDao.chackUser(chackValue,userId);
+		return count;
+	}
+		
 }

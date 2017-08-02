@@ -32,7 +32,7 @@ public class WechatPay {
 		System.out.println((new Double(payPrice)).in+tValue());*/
 		try {
 			JSONObject json = new JSONObject();
-			json.put("out_trade_no", "JP2017189369955");
+			json.put("out_trade_no", "JP20171893699556");
 			json.put("body", "居家康复");
 			json.put("price", "1");
 			

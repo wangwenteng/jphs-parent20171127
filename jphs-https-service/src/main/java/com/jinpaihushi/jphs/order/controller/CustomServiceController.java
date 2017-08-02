@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.custom.model.CustomService;
 import com.jinpaihushi.jphs.custom.service.CustomServiceService;
-import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.ObjectVerification;
 import com.jinpaihushi.utils.UUIDUtils;
@@ -32,20 +31,21 @@ public class CustomServiceController {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("order.createOrder.json");
+				Util.debugLog.debug("customService.createService.json");
 			}
 			if(!ObjectVerification.verification(customService)){
 				return JSONUtil.toJSONResult(0, "请核对信息后再提交", null);
 			}
 			customService.setId(UUIDUtils.getId());
 			customService.setCreateTime(new Date());
+			customService.setStatus(0);
 			String insert = customServiceService.insert(customService);
 			if(insert.length()<0){
 				return JSONUtil.toJSONResult(0, "添加失败", null);
 			}
 			return JSONUtil.toJSONResult(1, "提交成功，我们金牌护士会马上与你联系，请保持手机畅通。", customService);
 		} catch (Exception e) {
-			Util.failLog.error("order.createOrder.json", e);
+			Util.failLog.error("customService.createService.json", e);
 		}
 		return null;
 	}

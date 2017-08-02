@@ -2,7 +2,6 @@ package com.jinpaihushi.jphs.department.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.department.dao.DepartmentDao;

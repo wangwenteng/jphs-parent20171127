@@ -28,4 +28,6 @@ public interface VoucherDao extends BaseDao<Voucher> {
 	List<Voucher> getUserVocher(Map<String, Object> map);
 	
 	List<Map<String, Object>> getUserAllVocher(Map<String, Object> map);
+	
+	Voucher getVocherByUser(String voucherUseId);
 }

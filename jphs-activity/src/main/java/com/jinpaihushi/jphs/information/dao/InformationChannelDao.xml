@@ -50,11 +50,42 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND IC.creator_name=#{creatorName}
 		</if>
+		AND (IC.status=0 or IC.status=1)
+	</sql>
+	
+	<sql id="conditions">
+		<if test="id!=null and id!=''">
+			AND IC.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND IC.name=#{name}
+		</if>
+		<if test="sort!=null">
+			AND IC.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND IC.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND IC.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND IC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND IC.creator_name=#{creatorName}
+		</if>
 	</sql>
 	
 	<sql id="dynamicWhere">
 		<where>
 			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="dynamicWheres">
+		<where>
+			<include refid="conditions"/>
 		</where>
 	</sql>
 	
@@ -202,7 +233,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="list" resultMap="informationChannel">
 		SELECT <include refid="field"/>
 		FROM `INFORMATION_CHANNEL` IC
-		<include refid="dynamicWhere" />
+		<include refid="dynamicWheres" />
 		<include refid="orderby" />
 	</select>
 
@@ -210,7 +241,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT <include refid="field"/>
 		FROM `INFORMATION_CHANNEL` IC
 		<include refid="dynamicWhere" />
-		<include refid="orderby" />
+		ORDER BY IC.create_time desc
+		<!-- <include refid="orderby" /> -->
 	</select>
 	
 	<select id="loadById" resultMap="informationChannel">

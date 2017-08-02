@@ -1,24 +1,25 @@
-
-
-
 $(document).ready(function() {
+	
+	$('#tt').tree({
+		data : data.treeData
+	});
+	
 	$('.form_date').datetimepicker({
 		 format: 'yyyy-mm-dd hh:ii:ss' 
 	});
 	$("#voucherForm").validate({
 		rules : {
-			batchNo : {
-				required : true
-			},
 			startTime : {
 				required : true
 			},
 			endTime : {
 				required : true
 			},
-			days : {
-				required : true,
-				digits   : true
+			activationStartTime :{
+				required : true
+			},
+			activationEndTime :{
+				required : true
 			},
 			count : {
 				required : true,
@@ -39,15 +40,17 @@ $(document).ready(function() {
 			
 		},
 		messages : {
-			batchNo : {
-				required : "请输入批次开始号"
-			},
 			startTime : {
-				required : "请输入兑换开始时间"
+				required : "请选择兑换开始时间"
 			},
-			days : {
-				required : "请输入兑换结束时间",
-				digits   : "请输入有效时间"
+			endTime : {
+				required : "请选择兑换结束时间"
+			},
+			activationStartTime :{
+				required : "请选择激活开始时间"
+			},
+			activationEndTime :{
+				required : "请选择激活结束时间"
 			},
 			count : {
 				required : "请输入数量",
@@ -64,6 +67,25 @@ $(document).ready(function() {
 			discountAmount : {
 				required :  "请输入数值",
 				number   : "请输入数字" 
+			}
+		},
+		submitHandler : function(form) {
+			var goods = '';
+			var product = '';
+			var nodes = $('#tt').tree('getChecked');
+			for (var i = 0; i < nodes.length; i++) {
+				if (nodes[i].parentId != 0) {
+					goods += nodes[i].id + ',';
+				}
+				product += nodes[i].parentId;
+			}
+			if (goods == '') {
+				alert('请选择所提供的服务');
+				return false;
+			} else {
+				$('#goodsId').val(goods);
+				$('#productId').val(product);
+				form.submit();
 			}
 		}
 	})
@@ -87,3 +109,4 @@ function showCon() {
 	$("#con").show();
 	$("#dis").hide();
 }
+

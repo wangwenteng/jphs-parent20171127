@@ -2,9 +2,8 @@ package com.jinpaihushi.jphs.area.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;

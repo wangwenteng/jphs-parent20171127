@@ -19,4 +19,5 @@ public interface GoodsDao extends BaseDao<Goods> {
 	
 	Goods getGoodsImgDetail(@Param("id")String id);
 	
+	Goods getGoodsByPricePart(@Param("pricePartId")String pricePartId);
 }

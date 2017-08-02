@@ -24,6 +24,7 @@ import com.jinpaihushi.utils.UUIDUtils;
  * @version 1.0
  */
 @Service("systemModuleService")
+@SuppressWarnings("unchecked")
 public class SystemModuleServiceImpl extends BaseServiceImpl<SystemModule> implements SystemModuleService {
 
 	@Autowired

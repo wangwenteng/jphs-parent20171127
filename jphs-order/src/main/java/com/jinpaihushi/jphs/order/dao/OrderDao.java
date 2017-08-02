@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.order.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
@@ -30,8 +31,9 @@ public interface OrderDao extends BaseDao<Order> {
 
 	/**
 	 * 订单详情
+	 * @param deviceType 
 	 * @param id 订单id
 	 * @return
 	 */
-	Order getOrderDetail(String id);
+	Order getUserOrderDetail(Order order);
 }

@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.information.service;
 
+import java.util.List;
+
 import com.jinpaihushi.jphs.information.model.InformationEvaluate;
 import com.jinpaihushi.service.BaseService;
 
@@ -10,6 +12,8 @@ import com.jinpaihushi.service.BaseService;
  * @version 1.0
  */
 public interface InformationEvaluateService extends BaseService<InformationEvaluate> {
+
+	List<InformationEvaluate> listInfo(InformationEvaluate query,String userId);
 
 	
 

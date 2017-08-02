@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,9 +23,7 @@ import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.access.model.AccessLog;
 import com.jinpaihushi.jphs.access.model.AccessLogSpread;
 import com.jinpaihushi.jphs.access.service.AccessLogService;
-import com.jinpaihushi.jphs.system.service.SystemModuleService;
 import com.jinpaihushi.service.BaseService;
-import com.jinpaihushi.util.GetRequestMappingName;
 import com.jinpaihushi.utils.CycleTimeUtils;
 
 /**
@@ -37,6 +34,7 @@ import com.jinpaihushi.utils.CycleTimeUtils;
  */
 @Controller
 @RequestMapping(name = "访问量统计", path = "/access/log")
+@SuppressWarnings("unchecked")
 public class AccessLogController extends BaseController<AccessLog> {
 
 	@Autowired
@@ -90,7 +88,7 @@ public class AccessLogController extends BaseController<AccessLog> {
     	String[] totalPv = new String [accessLog.size()];
     	String[] totalUv = new String [accessLog.size()];
         for (int i = 0; i < accessLog.size(); i++) {
-            List<AccessLogSpread> list = (List<AccessLogSpread>) accessLog.get(i)
+			List<AccessLogSpread> list = (List<AccessLogSpread>) accessLog.get(i)
                     .get(platformName[i].replaceAll("'", ""));
             int[] pvNum = new int[list.size()];
             int[] uvNum = new int[list.size()];

@@ -25,7 +25,10 @@ import com.jinpaihushi.jphs.goods.model.GoodsDetail;
 import com.jinpaihushi.jphs.goods.service.GoodsService;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
+import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.service.BaseService;
+import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -37,37 +40,43 @@ import com.jinpaihushi.utils.Util;
  */
 @Controller
 @RequestMapping(name = "Goods", path = "/goods")
-public class GoodsController extends BaseController<Goods>{
+public class GoodsController extends BaseController<Goods> {
 
 	@Autowired
 	private GoodsService goodsService;
-	
+
 	@Autowired
 	private EvaluationService evaluationService;
 	@Autowired
 	private OrderGoodsService orderGoodsService;
+	@Autowired
+	private UserService userService;
+
 	@Override
 	protected BaseService<Goods> getService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@ResponseBody
 	@RequestMapping(name = "服务基本信息", path = "/getOneGoodsDetail.json")
-	public byte[] getOneGoodsDetail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String siteId, String goodsId,Integer deviceType) {
-		
+	public byte[] getOneGoodsDetail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String siteId,
+			String goodsId, Integer deviceType) {
+
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("goods.getSiteList.json,goodsId="+goodsId+" siteId="+siteId+" deviceType="+deviceType);
+				Util.debugLog.debug("goods.getOneGoodsDetail.json,goodsId=" + goodsId + " siteId=" + siteId
+						+ " deviceType=" + deviceType);
 			}
 			// 查空
-			if(StringUtils.isEmpty(goodsId)||StringUtils.isEmpty(siteId)||deviceType==null){
+			if (StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(siteId) || deviceType == null) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			Map<String, Object> data = new HashMap<>();
-			//商品的详情
-			GoodsDetail goods = goodsService.getOneGoodsDetail(goodsId,siteId,deviceType);
-			if(goods==null){
+			// 商品的详情
+			GoodsDetail goods = goodsService.getOneGoodsDetail(goodsId, siteId, deviceType);
+			if (goods == null) {
 				return JSONUtil.toJSONResult(0, "此商品该站点还没有设置销售价", null);
 			}
 			OrderGoods orderGoods = new OrderGoods();
@@ -77,7 +86,7 @@ public class GoodsController extends BaseController<Goods>{
 			goods.setOrderNumer(orderNumber);
 			Integer level = evaluationService.getGoodLevel(goodsId);
 			goods.setLevel(level);
-			//商品的评价
+			// 商品的评价
 			data.put("goods", goods);
 			// 1.根据 name，password,type查询完整信息
 			// 2.错误N种情况判断及返回前端
@@ -86,7 +95,8 @@ public class GoodsController extends BaseController<Goods>{
 			return JSONUtil.toJSONResult(1, "操作成功！", data);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("goods.getSiteList.json,goodsId="+goodsId+" siteId="+siteId+" deviceType="+deviceType, e);
+			Util.failLog.error("goods.getOneGoodsDetail.json,goodsId=" + goodsId + " siteId=" + siteId + " deviceType="
+					+ deviceType, e);
 			try {
 				return JSONUtil.toJSONResult(0, "非法请求", null);
 			} catch (IOException e1) {
@@ -96,39 +106,41 @@ public class GoodsController extends BaseController<Goods>{
 		}
 		return null;
 	}
+
 	@ResponseBody
 	@RequestMapping(name = "服务评价", path = "/getGoodsEvaluation.json")
-	public byte[] getGoodsEvaluation(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsId,Integer p) {
-		
+	public byte[] getGoodsEvaluation(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsId,
+			Integer p) {
+
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("goods.getSiteList.json,goodsId="+goodsId+" p="+p);
+				Util.debugLog.debug("goods.getGoodsEvaluation.json,goodsId=" + goodsId + " p=" + p);
 			}
 			// 查空
-			if(StringUtils.isEmpty(goodsId)){
+			if (StringUtils.isEmpty(goodsId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			//商品的评价
+			// 商品的评价
 			Evaluation evaluation = new Evaluation();
 			evaluation.setGoodsId(goodsId);
 			evaluation.setStatus(0);
 			evaluation.setOrderby("create_time desc");
-			if(p==null) p=1;
+			if (p == null)
+				p = 1;
 			PageHelper.startPage(p, 10);
-			List<Evaluation> evaluationList = evaluationService.list(evaluation);
+			List<Evaluation> evaluationList = evaluationService.listInfo(evaluation);
 			PageInfo<Evaluation> list = new PageInfo<>(evaluationList);
 			// 1.根据 name，password,type查询完整信息
 			// 2.错误N种情况判断及返回前端
 			// 3.信息无误，封装信息以及生成token，返回前端
-			
+
 			return JSONUtil.toJSONResult(1, "操作成功！", list);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("goods.getSiteList.json,goodsId="+goodsId+" p="+p, e);
+			Util.failLog.error("goods.getGoodsEvaluation.json,goodsId=" + goodsId + " p=" + p, e);
 		}
 		return null;
 	}
-
 
 }

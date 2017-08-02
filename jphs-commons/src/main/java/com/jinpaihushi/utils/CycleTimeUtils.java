@@ -35,7 +35,7 @@ public class CycleTimeUtils {
 
     public static List<String> getAllDaysMonthByDate(Date d)//根据传入的日期获取所在月份所有日期  
     {
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         Date date = getMonthStart(d);
         Date monthEnd = getMonthEnd(d);
         while (!date.after(monthEnd)) {
@@ -68,7 +68,7 @@ public class CycleTimeUtils {
     }
 
     public static List<String> getAllDaysMonth() {
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         Date d = new Date();
         Date date = getMonthStart(d);
         Date monthEnd = getMonthEnd(d);
@@ -105,7 +105,7 @@ public class CycleTimeUtils {
 
     public static String getWeekStartDay(Date d) {//根据日期来获取一周的第一天  
         Calendar c = Calendar.getInstance();
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         c.setTime(d);
         setToFirstDay(c);
         for (int i = 0; i < 7; i++) {
@@ -118,7 +118,7 @@ public class CycleTimeUtils {
 
     public static String getWeekEndtDay(Date d) {//根据日期来获取一周的最后一天  
         Calendar c = Calendar.getInstance();
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         c.setTime(d);
         setToFirstDay(c);
         for (int i = 0; i < 7; i++) {
@@ -131,7 +131,7 @@ public class CycleTimeUtils {
 
     public static List<String> getAllweekDays(Date d) {//根据日期来获取其所在周的每一天  
         Calendar c = Calendar.getInstance();
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         c.setTime(d);
         setToFirstDay(c);
         for (int i = 0; i < 7; i++) {
@@ -143,7 +143,7 @@ public class CycleTimeUtils {
     }
 
     public static List<String> getALlweekDays() {
-        List<String> lst = new ArrayList();
+        List<String> lst = new ArrayList<String>();
         Calendar calendar = Calendar.getInstance();
         setToFirstDay(calendar);
         for (int i = 0; i < 7; i++) {

@@ -4,6 +4,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
+<%
+	int i = 1;
+%>
+<script type="text/javascript">
+	var data = ${data };
+</script>
 <form class="form-horizontal">
 	<fieldset>
 		<input type="hidden" id="id" name="id" value="${site.id}" />
@@ -109,7 +115,7 @@
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.priceId" value="${priceOne.id }"/>
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.siteId" value="${priceOne.pricePart.siteId }"/>
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.status" value="${priceOne.status }"/>
-											${priceStatus.index+1 }
+											<%=i++%>
 										</td>
 										<td>${goodsOne.title }</td>
 										<td>${priceOne.grade }
@@ -153,7 +159,7 @@
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.siteId" value="${priceOne.pricePart.siteId }"/>
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.priceId" value="${priceOne.id }"/>
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.status" value="${priceOne.pricePart.status }"/>
-											${priceStatus.index+1 }
+											<%=i++%>
 										</td>
 										<td>${goodsOne.title }</td>
 										<td>${priceOne.grade }</td>

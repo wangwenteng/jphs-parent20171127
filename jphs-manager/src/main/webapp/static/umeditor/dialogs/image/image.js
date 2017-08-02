@@ -205,7 +205,9 @@
                     return;
                 }
 
-                $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
+               $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
+            	   
+            	   
                     var r = this.contentWindow.document.body.innerHTML;
                     if(r == '')return;
                     me.uploadComplete(r);
@@ -442,4 +444,3 @@
         Base.callback(editor, $w, url, state)
     })
 })();
-

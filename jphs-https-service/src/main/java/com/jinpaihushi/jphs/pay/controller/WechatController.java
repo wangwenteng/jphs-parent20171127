@@ -30,9 +30,12 @@ import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.transaction.service.TransactionService;
+import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.pay.wechatpay.WechatPay;
 import com.jinpaihushi.pay.wechatpay.utils.PayCommonUtil;
 import com.jinpaihushi.pay.wechatpay.utils.XMLUtil;
+import com.jinpaihushi.tools.DoPostSms;
 import com.jinpaihushi.util.PropertiesUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -47,6 +50,9 @@ public class WechatController {
 	
 	@Autowired
 	private OrderGoodsService orderGoodsService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private TransactionService transactionService;
@@ -202,6 +208,23 @@ public class WechatController {
 									orderUp.setId(orders.getId());
 									orderUp.setSchedule(1);
 									boolean orderUpbool=orderService.update(orderUp);
+									try {
+										User user = new User();
+										user.setId(orders.getCreatorId());
+										user.setStatus(0);
+										User orderUser = userService.load(user);
+										// 记录日志-debug
+										if (Util.debugLog.isDebugEnabled()) {
+											Util.debugLog.debug("alipay.notify.json;订单用户信息orderUser="+JSONObject.fromObject(orderUser).toString());
+										}
+										if(orderUser != null){
+											// 发送验证码
+											DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的您的订单：" + out_trade_no + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + out_trade_no + "\"}");
+										}
+										
+									} catch (Exception e) {
+									}
+									
 									if(!orderUpbool){
 										i=0;
 									}

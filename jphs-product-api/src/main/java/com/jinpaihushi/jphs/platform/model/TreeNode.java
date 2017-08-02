@@ -8,7 +8,7 @@ public class TreeNode extends BaseModel{
 	private String id;
 	private String parentId;
 	private String text;
-	private String state ="open"; 
+	private String state ="closed"; 
 	private Boolean checked =false;
 	private List<TreeNode> children;
 	public String getId() {

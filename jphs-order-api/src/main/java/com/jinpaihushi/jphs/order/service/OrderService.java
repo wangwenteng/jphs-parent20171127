@@ -38,8 +38,17 @@ public interface OrderService extends BaseService<Order> {
 	/**
 	 * 查询订单详情
 	 * @param userId 用户id
+	 * @param deviceType 
 	 * @return
 	 */
-	Order getUserOrderDetail (String userId);
+	Order getUserOrderDetail (String orderId, Integer deviceType);
+
+	/**
+	 * 验证支付金额
+	 * @param orderNo
+	 * @param payParice
+	 * @return
+	 */
+	boolean checkPrice(String orderNo, Double payParice);
 
 }

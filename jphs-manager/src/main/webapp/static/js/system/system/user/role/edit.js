@@ -10,7 +10,6 @@ $(function() {
 			}
 		}
 		$('#roleIds').val(roleIds);
-		alert($('#roleIds').val());
 		 document.nurseForm.submit();
 	});
 });

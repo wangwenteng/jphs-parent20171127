@@ -237,7 +237,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT
 		<include refid="field" />
 		FROM `JOBTITLE_TYPE` JT
-		<include refid="queryWhere" />
+		<where>
+			AND (JT.status=0 OR JT.status=1)
+			<if test="name!=null and name!=''">
+				AND JT.name LIKE CONCAT(#{name}, '%')
+			</if>
+		</where>
 		<include refid="orderby" />
 	</select>
 
@@ -261,18 +266,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		jobtitle_type jt
 		LEFT JOIN jobtitle j ON j.jobtitle_type_id = jt.id
 		<where>
-			jt.`status` = 0
-			AND j.`status` = 0
+			jt.`status` = 1
+			AND (j.`status` = 0 OR j.`status` = 1)
 			<if test="jobtitle!=null">
 				<if test="jobtitle.name!=null and jobtitle.name!=''">
 					AND j.`name` LIKE CONCAT('%', #{jobtitle.name},
 					'%')
 				</if>
 				<if test="jobtitle.jobtitleTypeId!=null and jobtitle.jobtitleTypeId!=''">
-					AND j.jobtitle_type_id LIKE CONCAT('%', #{jobtitle.jobtitleTypeId},
-					'%')
+					AND j.jobtitle_type_id = #{jobtitle.jobtitleTypeId}
+
 				</if>
 			</if>
 		</where>
+		ORDER BY j.create_time
 	</select>
 </mapper>

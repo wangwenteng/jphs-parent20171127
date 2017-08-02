@@ -32,6 +32,37 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 	
 	<sql id="condition">
+		P.status=0 or P.status=1  
+		<if test="id!=null and id!=''">
+			AND P.id=#{id}
+		</if>
+		<if test="platformId!=null and platformId!=''">
+			AND P.platform_id=#{platformId}
+		</if>
+		<if test="title!=null and title!=''">
+			AND P.title=#{title}
+		</if>
+		<if test="sort!=null">
+			AND P.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND P.status=#{status}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND P.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND P.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND P.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND P.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="conditions">
 		<if test="id!=null and id!=''">
 			AND P.id=#{id}
 		</if>
@@ -64,6 +95,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="dynamicWhere">
 		<where>
 			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="dynamicWheres">
+		<where>
+			<include refid="conditions"/>
 		</where>
 	</sql>
 	
@@ -375,7 +412,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="list" resultMap="product">
 		SELECT <include refid="field"/>
 		FROM `PRODUCT` P
-		<include refid="dynamicWhere" />
+		<include refid="dynamicWheres" />
 		<include refid="orderby" />
 	</select>
 
@@ -383,7 +420,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT <include refid="field"/>
 		FROM `PRODUCT` P
 		<include refid="dynamicWhere" />
-		<include refid="orderby" />
+		ORDER BY P.create_time desc
+		<!-- <include refid="orderby" /> -->
 	</select>
 	
 	<select id="loadById" resultMap="product">
@@ -504,7 +542,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="creatorName!=null and creatorName!=''">
 				AND G.creator_name LIKE CONCAT('%', #{creatorName}, '%')
 			</if>
-			AND p.status=0 AND G.status=0 ORDER BY  G.create_time desc
+			AND p.status=1 AND (G.status=0 or G.status=1) ORDER BY  G.create_time desc
 		</where>
 	</sql>
 	
@@ -613,7 +651,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        LEFT JOIN `price` e ON e.id = pr.price_id
        LEFT JOIN `goods` s ON s.id = e.goods_id
        LEFT JOIN `product` p ON p.id = s.product_id
-        WHERE (site_id=#{id} OR price_id NOT IN (SELECT price_id FROM price_part WHERE site_id=#{id} )) AND p.status=0 AND e.status=0 AND s.status=0 ORDER BY e.create_time
+        WHERE (site_id=#{id} OR price_id NOT IN (SELECT price_id FROM price_part WHERE site_id=#{id} )) AND p.status=1 AND e.status=1 AND s.status=1 ORDER BY e.create_time
 	</select>
 	<!-- <select id="getProductGoodsDetail" resultMap="getSiteGoodsDetail">
 		SELECT 

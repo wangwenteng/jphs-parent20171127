@@ -13,7 +13,7 @@
 
 <div class="marage_right_content">
 	<!-- 左对齐按钮 -->
-	<!-- <button type="button" class="btn btn-info public_btn">导出</button> -->	
+	<button type="button" class="btn btn-info public_btn" onclick = "getExcel()">导出</button>	
 	<!-- 右对齐按钮 -->
 	<jsp:include page="list.jsp"></jsp:include>
 

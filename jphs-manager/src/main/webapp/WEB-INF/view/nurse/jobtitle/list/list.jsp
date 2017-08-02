@@ -4,7 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
-<% int i=1; %>
+<%
+	int i = 1;
+%>
 <table id="dateTable" cellpadding="0" cellspacing="0"
 	class="text-center">
 	<thead>
@@ -26,21 +28,33 @@
 						<c:when test="${fn:length(e.jobtitle) >0}">
 							<c:forEach items="${e.jobtitle}" var="f" varStatus="t">
 								<tr class="bg_list_body">
-									<td width="30"><%=i++ %></td>
+									<td width="30"><%=i++%></td>
 									<td><c:out value="${e.name}" /></td>
 									<td><c:out value="${f.name}" /></td>
 									<td><c:out value="${f.creatorName}" /></td>
 									<td><fmt:formatDate value="${f.createTime}"
 											pattern="yy-MM-dd HH:mm" /></td>
-									<td><c:if test="${f.status==0}">使用中</c:if> <c:if
-											test="${f.status==-1}">已停用</c:if></td>
-									<td><jphs:hasPermission
-											url="/jobtitle/redirectUpdate.jhtml">
+									<td><c:if test="${f.status==1}"><span style="color: #34BC2C;">使用中</span></c:if> <c:if
+											test="${f.status==0}"><span style="color: #F0BB1C;">待开启</span></c:if></td>
+									<td><jphs:hasPermission url="/jobtitle/delete.jhtml">
+											<c:if test="${f.status == 1}">
+												<a onclick="deleteById('${f.id}','0')" title="取消发布"> <img
+													style="width: 20px; height: 20px;"
+													src="/static/images/blockup.png">
+												</a>
+											</c:if>
+											<c:if test="${f.status == 0}">
+												<a onclick="deleteById('${f.id}','1')" title="发布"> <img
+													style="width: 20px; height: 20px;"
+													src="/static/images/startup.png">
+												</a>
+											</c:if>
+										</jphs:hasPermission> <jphs:hasPermission url="/jobtitle/redirectUpdate.jhtml">
 											<a onclick="redirectUpdatePage('${f.id}')" title="编辑"> <img
 												src="/static/images/xiugai.png">
 											</a>
 										</jphs:hasPermission> <jphs:hasPermission url="/jobtitle/delete.jhtml">
-											<a onclick="deleteById('${f.id}')" title="删除"> <img
+											<a onclick="deleteById('${f.id}','-1')" title="删除"> <img
 												src="/static/images/shanchu.png">
 											</a>
 										</jphs:hasPermission></td>

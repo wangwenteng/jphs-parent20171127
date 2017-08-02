@@ -150,7 +150,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="auditForm" method="post" class="form-horizontal" action="/audit/insert.jhtml">
-					<input type="hidden" id="creatorId" name="creatorId" value="${nurse.id}" /> 
+					<input type="hidden" id="creatorId" name="creatorId" value="${nurse.user.id}" /> 
 					<input type="hidden" id="creatorName" name="creatorName" value="${nurse.user.name}" />
 					<div class="form-group">
 						<label class="control-label col-md-3">审核意见</label>

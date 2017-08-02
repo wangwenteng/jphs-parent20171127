@@ -1,25 +1,21 @@
 package com.jinpaihushi.jphs.activity.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
-import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.activity.model.VoucherUse;
 import com.jinpaihushi.jphs.activity.service.VoucherUseService;
+import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
-import com.github.pagehelper.Page;
 
 /**
  * 
@@ -56,6 +52,7 @@ public class VoucherUseController extends BaseController<VoucherUse> {
 	public String detail(HttpSession hs, HttpServletRequest req,
 			HttpServletResponse resp, ModelMap modelMap, String id) {
 		VoucherUse voucherUse = voucherUseService.loadById(id);
+		modelMap.put("voucherUse", voucherUse);
 		return "voucher/voucher/use/detail/index";
 	}
 	

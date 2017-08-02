@@ -39,6 +39,13 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 	/** 兑换结束时间 */
 	private Date endTime;
 
+	/** 兑换开始时间 */
+	private Date activationStartTime;
+
+	/** 兑换结束时间 */
+	private Date activationEndTime;
+	
+	
 	/** 激活后有效时长 */
 	private Integer days;
 
@@ -56,7 +63,9 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 
 	/** 满xx折 */
 	private Double discountAmount;
-
+	
+	private String goodsName;
+	
 	private VoucherRepertory voucherRepertory;
 	private VoucherUse voucherUse;
 
@@ -213,6 +222,33 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 
 	public void setVoucherUse(VoucherUse voucherUse) {
 		this.voucherUse = voucherUse;
+	}
+	
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	
+	
+	
+	public Date getActivationStartTime() {
+		return activationStartTime;
+	}
+
+	public void setActivationStartTime(Date activationStartTime) {
+		this.activationStartTime = activationStartTime;
+	}
+
+	public Date getActivationEndTime() {
+		return activationEndTime;
+	}
+
+	public void setActivationEndTime(Date activationEndTime) {
+		this.activationEndTime = activationEndTime;
 	}
 
 	public String toString() {

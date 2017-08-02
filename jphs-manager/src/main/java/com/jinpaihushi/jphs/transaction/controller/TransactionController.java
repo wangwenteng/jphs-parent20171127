@@ -26,7 +26,7 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "Transaction", path = "/transaction")
+@RequestMapping(name = "交易记录", path = "/transaction")
 public class TransactionController extends BaseController<Transaction> {
 
 	@Autowired
@@ -42,6 +42,7 @@ public class TransactionController extends BaseController<Transaction> {
 			HttpServletResponse resp, ModelMap modelMap,
 			Transaction transaction, Integer p, Integer n) {
 		startPage(p, n);
+		transaction.setOrderby("t.create_time DESC");
 		Page<Transaction> list = transactionService.getUserInfo(transaction);
 		PageInfos<Transaction> pageInfo = new PageInfos<Transaction>(list, req);
 		modelMap.put("list", list);

@@ -16,19 +16,22 @@ var uvtext='uv';
 		<img src="/static/images/yousanjiaox.png" /> 数据统计 <i class="public1-horn-45"></i>
 		访问量统计 <i class="public1-horn-45"></i> 年访问量
 	</div>
+	<div class="marage_right_title">
 	<div class="form-group" style="background: #fff">
-		<div class="input-group date form_datetime col-md-3" data-date=""
-			data-date-format="yyyy" data-link-field="dtp_input1">
-			<input class="form-control" size="16" id="year" type="text" value="" readonly>
+		<div class="input-group date form_date col-md-3" style="float: left;" data-date=""
+			data-date-format="yyyy-mm-dd" data-link-field="dtp_input1"
+			data-link-format="yyyy-mm-dd">
+			<input class="form-control" id="year" size="16" placeholder="请选择查询日期" type="text" value="" readonly>
 			<span class="input-group-addon"><span
-				class="glyphicon glyphicon-remove"></span></span> <span
+				class="glyphicon glyphicon-remove" title="清空"></span></span> <span
 				class="input-group-addon"><span
-				class="glyphicon glyphicon-th"></span></span>
-			<input type="hidden" id="dtp_input1" value="" /><br />
+				class="glyphicon glyphicon-calendar" title="选择日期"></span></span> <input type="hidden"
+				id="dtp_input1" value="" />
 		</div>
-		<input type="button" class="btn" id="search" value="搜索" />
+		<button class="btn"  id="search" style="margin-left: 10px" >搜索</button>
 		<button id="last-year" class="btn"  >上一年</button>
 		<button id="next-year" class="btn"  >下一年</button>
+	</div>
 	</div>
 	<div class="marage_right_content">
 		<!-- ECharts单文件引入 -->

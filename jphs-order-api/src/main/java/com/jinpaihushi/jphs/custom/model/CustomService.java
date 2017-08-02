@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.function.Predicate;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -52,7 +53,8 @@ public class CustomService extends BaseModel implements Predicate<CustomService>
     /**  */
 	@Length(max = 65535, message = "{customService.remark.illegal.length}")
 	private String remark;
-
+	private Date beginTime;
+	private Date stopTime;
 	public CustomService(){}
 
 	public CustomService(String id){
@@ -156,8 +158,24 @@ public class CustomService extends BaseModel implements Predicate<CustomService>
 	public void setRemark(String remark) {
     	this.remark = remark;
     }
+	
+    public Date getBeginTime() {
+		return beginTime;
+	}
 
-    public String toString() {
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(Date stopTime) {
+		this.stopTime = stopTime;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("CustomService{").
 			append("id=").append(id).
 			append(",name=").append(name).

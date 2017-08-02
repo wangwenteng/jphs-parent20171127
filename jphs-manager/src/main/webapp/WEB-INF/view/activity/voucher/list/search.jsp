@@ -12,7 +12,42 @@
 			<td width="200">
 				<input type="text" name="batchNo" id="batchNo" value="${voucher.batchNo}" />
 			</td>
-			<td>优惠券类型：</td>
+			<td>支持 品类 ：</td>
+			<td width="200">
+			
+				<select class="form-control input-xlarge" id="productId"
+					name="productId" value="" onchange="change(this.options[this.options.selectedIndex].value)">
+					<option >请选择</option>
+				
+					<c:forEach items="${productList}" var="e" varStatus="s">
+						<option value="${e.id }"
+						<c:if test="${voucher.productId==e.id}">selected="selected"</c:if>>${e.title }</option>
+					</c:forEach>
+				</select>
+				
+			<select class="form-control input-xlarge" id="goodsId"
+					name="goodsId" >
+					<option value="" >请选择</option>
+					<c:forEach items="${goodsList}" var="e" varStatus="s">
+						<option value="${e.id }"
+						<c:if test="${voucher.goodsId==e.id}">selected="selected"</c:if>>${e.title }</option>
+					</c:forEach>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>当前状态：</td>
+			<td width="200">
+				<select class="form-control input-xlarge" id="status"
+					name="status">
+					<option value="">请选择</option>
+					<option value="0"
+						<c:if test="${voucher.status==0}">selected="selected"</c:if>>生效</option>
+					<option value="-1"
+						<c:if test="${voucher.status==-1}">selected="selected"</c:if>>暂停</option>
+				</select>
+			</td>
+				<td>优惠券类型：</td>
 			<td width="200">
 				<select class="form-control input-xlarge" id="type"
 					name="type">
@@ -23,23 +58,6 @@
 						<c:if test="${voucher.batchNo==2}">selected="selected"</c:if>>满减券</option>
 					<option value="3"
 						<c:if test="${voucher.batchNo==3}">selected="selected"</c:if>>折扣券</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>支持品类：</td>
-			<td width="200">
-				<input type="text" name="productName" id="productName" value="${voucher.productName}" />
-			</td>
-			<td>状态：</td>
-			<td width="200">
-				<select class="form-control input-xlarge" id="status"
-					name="status">
-					<option value="">请选择</option>
-					<option value="0"
-						<c:if test="${voucher.status==0}">selected="selected"</c:if>>生效</option>
-					<option value="-1"
-						<c:if test="${voucher.status==-1}">selected="selected"</c:if>>暂停</option>
 				</select>
 			</td>
 		</tr>

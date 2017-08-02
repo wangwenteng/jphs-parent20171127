@@ -150,7 +150,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.system.model.SystemRole">
 		INSERT INTO `SYSTEM_ROLE`(
 			id, name, 
-			describe, status, 
+			`describe`, status, 
 			creator_id, creator_name, 
 			create_time, type
 		)VALUES(
@@ -166,7 +166,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <![CDATA[
         INSERT INTO `SYSTEM_ROLE`(
 			id, name, 
-			describe, status, 
+			`describe`, status, 
 			creator_id, creator_name, 
 			create_time, type
         )]]>

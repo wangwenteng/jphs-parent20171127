@@ -32,10 +32,14 @@ public class Information extends BaseModel implements Predicate<Information>,
     /** 频道id，多个以逗号隔开 */
 	@Length(max = 500, message = "{information.informationChannelId.illegal.length}")
 	private String informationChannelId;
-
+	
     /** 题标 */
 	@Length(max = 255, message = "{information.title.illegal.length}")
 	private String title;
+	
+	/** 简介 */
+	@Length(max = 255, message = "{information.brief.illegal.length}")
+	private String brief;
 
     /** 标题图片，多个以逗号隔开 */
 	@Length(max = 255, message = "{information.image.illegal.length}")
@@ -97,6 +101,20 @@ public class Information extends BaseModel implements Predicate<Information>,
 	 */
 	public void setTitle(String title) {
     	this.title = title;
+    }
+	
+	/**
+	 * 获取简介
+	 */
+	public String getBrief() {
+    	return brief;
+    }
+  	
+	/**
+	 * 设置简介
+	 */
+	public void setBrief(String brief) {
+    	this.brief = brief;
     }
 
 	/**

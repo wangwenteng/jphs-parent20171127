@@ -15,9 +15,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="getProduct" resultMap="treeNode">
-		SELECT id,0 as parentId,title text FROM product  WHERE `status`=0 ;
+		SELECT id,0 as parentId,title text FROM product  WHERE `status`=1 ;
 	</select>
 	<select id="getGoods" resultMap="treeNode">
-		SELECT id,product_id parentId,title text FROM goods  WHERE `status`=0 ;
+		SELECT id,product_id parentId,title text FROM goods  WHERE `status`=1 ;
 	</select>
 </mapper>

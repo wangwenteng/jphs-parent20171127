@@ -38,7 +38,13 @@
 			<artifactId>jphs-user-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+			
+			<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.14</version>
+		</dependency>
+			
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-commons</artifactId>

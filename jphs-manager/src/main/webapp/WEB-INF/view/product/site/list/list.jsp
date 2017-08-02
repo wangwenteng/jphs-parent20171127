@@ -33,20 +33,43 @@
 						<td><c:out value="${e.creatorName}"/></td>
 							<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
-								<td><c:if test="${e.status == 0}">
-									<c:out value="使用中" />
-								</c:if> <c:if test="${e.status != 0}">
-									<c:out value="已停用" />
+								<td><c:if test="${e.status == 1}">
+									<span style="color: #34BC2C;"><c:out value="使用中" /></span>
+								</c:if> <c:if test="${e.status == 0}">
+									<span style="color: #F0BB1C;"><c:out value="已停用" /></span>
 								</c:if></td>
 						<%-- <td><c:out value="${e.locationId}" /></td> --%>
 						
-						<td><a onclick="redirectDetailPage('${e.id}')"> <img
+						<td>
+							<jphs:hasPermission url="/site/delete.jhtml">	
+								<c:if test="${e.status == 0}">
+									<a onclick="deleteById('${e.id}','1')"> 
+										<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
+									</a>
+								</c:if>
+								<c:if test="${e.status == 1}">
+									<a onclick="deleteById('${e.id}','0')">
+										<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
+									</a>
+								</c:if>
+							</jphs:hasPermission>
+						<jphs:hasPermission url="/site/detail.jhtml">
+						<a onclick="redirectDetailPage('${e.id}')"> <img
 								src="/static/images/chakan.png">
-						</a> <a onclick="redirectUpdatePage('${e.id}')"> <img
+						</a>
+						</jphs:hasPermission>
+						<jphs:hasPermission url="/site/redirectUpdate.jhtml">
+						 <a onclick="redirectUpdatePage('${e.id}')"> <img
 								src="/static/images/xiugai.png">
-						</a> <a onclick="deleteById('${e.id}')"> <img
+						</a> 
+						</jphs:hasPermission>
+						<jphs:hasPermission url="/site/delete.jhtml">	
+						<a onclick="deleteById('${e.id}','-1')"> <img
 								src="/static/images/shanchu.png">
-						</a></td>
+						</a>
+						</jphs:hasPermission>
+						
+						</td>
 					</tr>
 				</c:forEach>
 			</c:when>

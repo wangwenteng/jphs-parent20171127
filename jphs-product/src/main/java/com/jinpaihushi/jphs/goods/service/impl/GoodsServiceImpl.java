@@ -77,7 +77,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 		List<com.jinpaihushi.jphs.price.model.Jobtitle> jobList = new ArrayList<com.jinpaihushi.jphs.price.model.Jobtitle>();
 		
 		Jobtitle jobtitle = new Jobtitle();
-		jobtitle.setStatus(0);
+		jobtitle.setStatus(1);
 		List<Jobtitle> jobtitleList = jobtitleDao.list(jobtitle);
 		for(int v=0;v<jobtitleList.size();v++){
 			com.jinpaihushi.jphs.price.model.Jobtitle jobOne = new com.jinpaihushi.jphs.price.model.Jobtitle();
@@ -136,15 +136,18 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 	public int insertGoodsAndImg(Goods goods, ImageType imageType, ListPrice listPrice) {
 		String ida = sequenceDao.getCurrentVal("goods");
 		goods.setId(ida);
-		String content = goods.getContent();
-		String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
-		goods.setContent(con);
+		try {
+			String content = goods.getContent();
+			String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
+			goods.setContent(con);
+		} catch (Exception e1) {
+		}
 		int result = goodsDao.insert(goods);
 		if (result > 0) {
 			ServiceImages serviceImages = new ServiceImages();
 			serviceImages.setSourceId(ida);
 			serviceImages.setSort(goods.getSort());
-			serviceImages.setStatus(goods.getStatus());
+			serviceImages.setStatus(1);
 			serviceImages.setType(1);
 			try {
 				serviceImages.setCreatorId(goods.getCreatorId());
@@ -183,7 +186,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 											priceOne.setGoodsId(ida);
 											priceOne.setGrade(priceGradeOne.getGrade());
 											priceOne.setGradeName(priceGradeOne.getGradeName());
-											priceOne.setStatus(0);
+											priceOne.setStatus(1);
 											try {
 												priceOne.setCreatorId(goods.getCreatorId());
 												priceOne.setCreatorName(goods.getCreatorName());
@@ -194,7 +197,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 											pricePart.setSiteId("0");
 											pricePart.setId(UUID.randomUUID().toString());
 											pricePart.setPriceId(priceOne.getId());
-											pricePart.setStatus(priceOne.getStatus());
+											pricePart.setStatus(1);
 											pricePart.setOldPrice(priceOne.getOldPrice());
 											pricePart.setPrice(priceOne.getPrice());
 											pricePart.setAptitudeIdArr(priceOne.getAptitudeIdArr());
@@ -257,9 +260,12 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 	public boolean updateGoods(Goods goods, ListPrice listPrice, ImageType imageType) {
 		boolean falg = true;
 		
-		String content = goods.getContent();
-		String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
-		goods.setContent(con);
+		try {
+			String content = goods.getContent();
+			String con = content.replace("＜", "<").replace("＞", ">").replace("＆quot;", "");
+			goods.setContent(con);
+		} catch (Exception e) {
+		}
 		int b = goodsDao.update(goods);
 
 		if (b > 0) {
@@ -267,7 +273,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 				ServiceImages serviceImages = new ServiceImages();
 				serviceImages.setSourceId(goods.getId());
 				serviceImages.setSort(goods.getSort());
-				serviceImages.setStatus(goods.getStatus());
+				serviceImages.setStatus(1);
 				serviceImages.setType(1);
 				/* pc图片信息 */
 				serviceImages.setId(imageType.getPcid());
@@ -339,7 +345,7 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 											pricePart.setSiteId("0");
 											pricePart.setId(UUID.randomUUID().toString());
 											pricePart.setPriceId(priceList.get(a).getId());
-											pricePart.setStatus(priceList.get(a).getStatus());
+											pricePart.setStatus(1);
 											/*pricePart.setOldPrice(listPrice.getPrice().get(a).getOldPrice());
 											pricePart.setPrice(listPrice.getPrice().get(a).getPrice());*/
 											pricePart.setCostPrice(priceList.get(a).getCostPrice());

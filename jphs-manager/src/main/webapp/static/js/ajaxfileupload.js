@@ -27,7 +27,7 @@ jQuery.extend({
 
             return io			
     },
-    createUploadForm: function(id, fileElementId)
+    createUploadForm: function(id, fileElementId,postData)
 	{
 		//create form	
 		var formId = 'jUploadForm' + id;
@@ -38,6 +38,21 @@ jQuery.extend({
 		$(oldElement).attr('id', fileId);
 		$(oldElement).before(newElement);
 		$(oldElement).appendTo(form);
+		//添加自定义参数  
+        if (postData) {  
+            //递归遍历JSON所有键值  
+            function recurJson(json) {  
+                for (var i in json) {  
+                    //alert(i+"="+json[i])  
+                    $("<input name='" + i + "' id='" + i + "' value='" + json[i] + "' />").appendTo(form);  
+                    if (typeof json[i] == "object") {  
+                        recurJson(json[i]);  
+                    }  
+                }  
+            }  
+            recurJson(postData);  
+        }  
+		
 		//set attributes
 		$(form).css('position', 'absolute');
 		$(form).css('top', '-1200px');
@@ -48,9 +63,55 @@ jQuery.extend({
 
     ajaxFileUpload: function(s) {
         // TODO introduce global settings, allowing the client to modify them for all requests, not only timeout		
-        s = jQuery.extend({}, jQuery.ajaxSettings, s);
+       /* s = jQuery.extend({}, jQuery.ajaxSettings, s);*/
+        s = jQuery.extend({fileFilter:"",fileSize:1}, jQuery.ajaxSettings, s);  
+      //文件格式限制  
+        var fileName = $('#' + s.fileElementId).val();  
+        if(fileName == undefined || fileName == null || fileName == ""){  
+            return;  
+        }  
+        var extention = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();  
+        
+        if (s.fileFilter && s.fileFilter.indexOf(extention) < 0) {  
+            alert("不支持 " + extention + " 为后缀名的文件!");  
+            $('#' + s.fileElementId).val("");  
+            return;  
+        } 
+        
+        if ("png".indexOf(extention) < 0) {  
+            alert("不支持 " + extention + " 为后缀名的文件!");  
+            $('#' + s.fileElementId).val("");  
+            return;  
+        }
+        //文件大小限制  
+        if (s.fileSize > 0) {  
+            var fs = 0;  
+            try {  
+                if (window.ActiveXObject) {  
+                    //IE浏览器  
+                    var image = new Image();  
+                    image.dynsrc = fileName;  
+                    fs = image.fileSize;  
+                } else {  
+                    fs = $('#' + s.fileElementId)[0].files[0].size;  
+                }  
+            } catch(e) {  
+            }
+            fs = fs/1024/1024;
+            if (fs > s.fileSize) {
+            	if(fs.toString().indexOf('.') > 0 ){
+            		fs = fs.toString().substring(0,fs.toString().indexOf('.')+2);
+            	}
+                /*fs = fs/1024; */ 
+                /*fs = fs.toString().substring(0,4);  */
+                alert("当前文件大小 " + fs + "MB 超过允许的限制值 " + s.fileSize +"MB！");  
+                $('#' + s.fileElementId).val("");  
+                return;  
+            }  
+        }  
+        
         var id = s.fileElementId;        
-		var form = jQuery.createUploadForm(id, s.fileElementId);
+		var form = jQuery.createUploadForm(id, s.fileElementId,s.data);
 		var io = jQuery.createUploadIframe(id, s.secureuri);
 		var frameId = 'jUploadFrame' + id;
 		var formId = 'jUploadForm' + id;		

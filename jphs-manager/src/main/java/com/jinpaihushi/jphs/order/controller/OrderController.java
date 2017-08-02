@@ -1,6 +1,10 @@
 package com.jinpaihushi.jphs.order.controller;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alipay.api.domain.Voucher;
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.evaluation.model.Evaluation;
@@ -34,6 +41,7 @@ import com.jinpaihushi.jphs.transaction.service.TransactionService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.service.BaseService;
+import com.jinpaihushi.util.ExcelUtil;
 import com.jinpaihushi.utils.PageInfos;
 
 /**
@@ -312,6 +320,48 @@ public class OrderController extends BaseController<Order> {
 	}
 	
 	
- 
+	@RequestMapping(name = "生成订单Excel", path = "/getExcel.jhtml")
+	@ResponseBody
+	public void getExcel(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			 Order order) {
+
+
+		 Page<Order> list = orderService.getList(order);
+
+			int count = list.size();
+			Order o = new Order();
+			JSONArray ja = new JSONArray();
+		 
+				for(int i=0;i<list.size();i++){
+					
+					o.setId(list.get(i).getId());
+					
+					o.setDiscountPrice(list.get(i).getPrice() - list.get(i).getPayPrice());
+					o.setPrice(list.get(i).getPrice());
+					o.setPayPrice(list.get(i).getPayPrice());
+					o.setUserName(list.get(i).getUserName());
+					o.setPhone(list.get(i).getPhone());
+					o.setDetailAddress(list.get(i).getDetailAddress());
+					o.setCreateTime(list.get(i).getCreateTime());
+					ja.add(o);
+				}
+			 
+	        
+	        Map<String,String> headMap = new LinkedHashMap<String,String>();
+	        headMap.put("id","订单编号");
+	        headMap.put("price","订单金额");
+	        headMap.put("discountPrice","优惠金额");
+	        headMap.put("payPrice","实付金额");
+	        headMap.put("userName","下单人姓名");
+	        headMap.put("phone","电话");
+			headMap.put("detailAddress","地址");
+			headMap.put("createTime","下单时间");
+
+	        String title = "订单信息";
+			
+
+         ExcelUtil.downloadExcelFile(title,headMap,ja,resp);
+	}
+	
 	
 }

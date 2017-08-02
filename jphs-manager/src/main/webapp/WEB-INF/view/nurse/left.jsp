@@ -44,9 +44,9 @@
 				</dd>
 			</jphs:hasPermission>
 			
-			<dd >
+			<!-- <dd >
 				<a href="#"><img src="/static/images/Group7.png" />店铺管理</a>
-			</dd>
+			</dd> -->
 		</div>
 
 	</dl>

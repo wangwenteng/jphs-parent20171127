@@ -1,6 +1,7 @@
 package com.jinpaihushi.utils;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class Common {
 	public static final int DEFAULT_BULLETIN = 5;
 	
 	public static DateFormat fd =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
+	public static DecimalFormat df= new DecimalFormat("#.00");
 	//判断输入String时间是否早于当前
 	public static int beforeNow(String datetime){
 		Date date = new Date();
@@ -155,6 +156,5 @@ public class Common {
 		  time+=day; 
 		  return new Date(time);
 		  }
-	
 	
 }

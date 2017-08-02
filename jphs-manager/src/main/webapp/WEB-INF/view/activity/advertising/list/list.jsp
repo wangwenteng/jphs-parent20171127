@@ -26,7 +26,7 @@
 							<td width="30">${s.index+1}</td>
 							<td><img alt="" src="${e.image}" width="150" height="100"></td>
 							<td><c:out value="${e.link}"/></td>
-							<td><fmt:formatDate value="${e.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<td><fmt:formatDate value="${e.createTime}" pattern="yy-MM-dd HH:mm" /></td>
 							<td>
 								<c:if test="${e.type==1}">
 									<c:out value="app护士端"/>
@@ -43,12 +43,16 @@
 							<%-- <a href="/advertising/insert.jhtml?id=${e.id}">修改</a>&nbsp;|&nbsp;								
 							<a href="/advertising/detail.jhtml?id=${e.id}">查看</a>&nbsp;|&nbsp;								
 							<a href="/advertising/delete.jhtml?id=${e.id}">删除</a> --%>
+							<jphs:hasPermission url="/advertising/detail.jhtml">
 							<a onclick="redirectDetailPage('${e.id}')">
 								<img src="/static/images/chakan.png">
 							</a>								
+							</jphs:hasPermission>
+							<jphs:hasPermission url="/advertising/redirectUpdate.jhtml">
 							<a onclick="redirectUpdatePage('${e.id}')">
 								<img  src="/static/images/xiugai.png">
 							</a>									
+							</jphs:hasPermission>
 							<%-- <a onclick="deleteById('${e.id}')">
 								<img src="/static/images/shanchu.png">
 							</a> --%>

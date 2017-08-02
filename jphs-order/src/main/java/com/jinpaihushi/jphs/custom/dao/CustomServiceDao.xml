@@ -331,6 +331,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="stopTime!=null">
 			     AND `create_time` &lt;= #{stopTime}
 			</if>
+			ORDER BY `create_time` DESC
 	</select>
 	
 </mapper>

@@ -2,51 +2,46 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	scj
-	date	:	2017-07-19 15:01:20
-	version	:	1.0
--->
+<!-- author : scj date : 2017-07-19 15:01:20 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.information.dao.InformationDao">
-	
+
 	<sql id="field">
-		I.id, I.information_channel_id, I.title, I.image, 
-		I.content, I.preview_number, I.top, I.type, 
-		I.status, I.source, I.author, I.top_time, 
-		I.create_time, I.creator_id, I.creator_name
+		I.id, I.information_channel_id, I.title, I.brief,I.image,
+		I.content, I.preview_number, I.top, I.type, I.status, I.source,
+		I.author, I.top_time, I.create_time, I.creator_id, I.creator_name
 	</sql>
 
 	<sql id="fieldGlobal">
-		I.id I_id, I.information_channel_id I_information_channel_id, 
-		I.title I_title, I.image I_image, 
-		I.content I_content, I.preview_number I_preview_number, 
-		I.top I_top, I.type I_type, 
-		I.status I_status, I.source I_source, 
-		I.author I_author, I.top_time I_top_time, 
-		I.create_time I_create_time, I.creator_id I_creator_id, 
-		I.creator_name I_creator_name
+		I.id I_id, I.information_channel_id
+		I_information_channel_id, I.title I_title,I.brief I_brief, I.image
+		I_image, I.content I_content, I.preview_number I_preview_number, I.top
+		I_top, I.type I_type, I.status I_status, I.source I_source, I.author
+		I_author, I.top_time I_top_time, I.create_time I_create_time,
+		I.creator_id I_creator_id, I.creator_name I_creator_name
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		I.id id, I.information_channel_id informationChannelId, 
-		I.title title, I.image image, 
-		I.content content, I.preview_number previewNumber, 
-		I.top top, I.type type, 
-		I.status status, I.source source, 
-		I.author author, I.top_time topTime, 
-		I.create_time createTime, I.creator_id creatorId, 
-		I.creator_name creatorName
+		I.id id, I.information_channel_id informationChannelId,
+		I.title title,I.brief brief, I.image image, I.content content,
+		I.preview_number previewNumber, I.top top, I.type type, I.status
+		status, I.source source, I.author author, I.top_time topTime,
+		I.create_time createTime, I.creator_id creatorId, I.creator_name
+		creatorName
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND I.id=#{id}
 		</if>
 		<if test="informationChannelId!=null and informationChannelId!=''">
-			AND FIND_IN_SET(#{informationChannelId},information_channel_id)
+			AND
+			FIND_IN_SET(#{informationChannelId},information_channel_id)
 		</if>
 		<if test="title!=null and title!=''">
 			AND I.title=#{title}
+		</if>
+		<if test="brief!=null and brief!=''">
+			AND I.brief=#{brief}
 		</if>
 		<if test="image!=null and image!=''">
 			AND I.image=#{image}
@@ -84,24 +79,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND I.creator_name=#{creatorName}
 		</if>
+		AND (I.status=0 or I.status=1)
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
 				AND I.id LIKE CONCAT('%', #{id}, '%')
 			</if>
 			<if test="informationChannelId!=null and informationChannelId!=''">
-				AND I.information_channel_id LIKE CONCAT('%', #{informationChannelId}, '%')
+				AND I.information_channel_id LIKE CONCAT('%',
+				#{informationChannelId}, '%')
 			</if>
 			<if test="title!=null and title!=''">
 				AND I.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="brief!=null and brief!=''">
+				AND I.brief LIKE CONCAT('%', #{brief}, '%')
 			</if>
 			<if test="image!=null and image!=''">
 				AND I.image LIKE CONCAT('%', #{image}, '%')
@@ -141,127 +141,157 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				I.id=#{id}, 
-		   </if>
-           <if test="informationChannelId!=null">
-				I.information_channel_id=#{informationChannelId}, 
-		   </if>
-           <if test="title!=null">
-				I.title=#{title}, 
-		   </if>
-           <if test="image!=null">
-				I.image=#{image}, 
-		   </if>
-           <if test="content!=null">
-				I.content=#{content}, 
-		   </if>
-           <if test="previewNumber!=null">
-				I.preview_number=#{previewNumber}, 
-		   </if>
-           <if test="top!=null">
-				I.top=#{top}, 
-		   </if>
-           <if test="type!=null">
-				I.type=#{type}, 
-		   </if>
-           <if test="status!=null">
-				I.status=#{status}, 
-		   </if>
-           <if test="source!=null">
-				I.source=#{source}, 
-		   </if>
-           <if test="author!=null">
-				I.author=#{author}, 
-		   </if>
-           <if test="topTime!=null">
-				I.top_time=#{topTime}, 
-		   </if>
-           <if test="createTime!=null">
-				I.create_time=#{createTime}, 
-		   </if>
-           <if test="creatorId!=null">
-				I.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				I.creator_name=#{creatorName}, 
-		   </if>
+			<if test="id!=null">
+				I.id=#{id},
+			</if>
+			<if test="informationChannelId!=null">
+				I.information_channel_id=#{informationChannelId},
+			</if>
+			<if test="title!=null">
+				I.title=#{title},
+			</if>
+			<if test="brief!=null">
+				I.brief=#{brief},
+			</if>
+			<if test="image!=null">
+				I.image=#{image},
+			</if>
+			<if test="content!=null">
+				I.content=#{content},
+			</if>
+			<if test="previewNumber!=null">
+				I.preview_number=#{previewNumber},
+			</if>
+			<if test="top!=null">
+				I.top=#{top},
+			</if>
+			<if test="type!=null">
+				I.type=#{type},
+			</if>
+			<if test="status!=null">
+				I.status=#{status},
+			</if>
+			<if test="source!=null">
+				I.source=#{source},
+			</if>
+			<if test="author!=null">
+				I.author=#{author},
+			</if>
+			<if test="topTime!=null">
+				I.top_time=#{topTime},
+			</if>
+			<if test="createTime!=null">
+				I.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				I.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				I.creator_name=#{creatorName},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="information" type="com.jinpaihushi.jphs.information.model.Information">
+	<resultMap id="information"
+		type="com.jinpaihushi.jphs.information.model.Information">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="informationChannelId" column="information_channel_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="image" column="image" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="previewNumber" column="preview_number" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="top" column="top" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="source" column="source" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="author" column="author" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="topTime" column="top_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationChannelId" column="information_channel_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="brief" column="brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="image" column="image" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="previewNumber" column="preview_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="top" column="top" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="source" column="source" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="author" column="author" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="topTime" column="top_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<resultMap id="informationGlobal" type="com.jinpaihushi.jphs.information.model.Information">
+
+	<resultMap id="informationGlobal"
+		type="com.jinpaihushi.jphs.information.model.Information">
 		<result property="id" column="I_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="informationChannelId" column="I_information_channel_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="title" column="I_title" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="image" column="I_image" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="content" column="I_content" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="previewNumber" column="I_preview_number" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="top" column="I_top" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="type" column="I_type" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="status" column="I_status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="source" column="I_source" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="author" column="I_author" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="topTime" column="I_top_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="createTime" column="I_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="I_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="I_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="informationChannelId" column="I_information_channel_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="brief" column="I_brief" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="I_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="image" column="I_image" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="I_content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="previewNumber" column="I_preview_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="top" column="I_top" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="I_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="I_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="source" column="I_source" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="author" column="I_author" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="topTime" column="I_top_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="createTime" column="I_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="I_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="I_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.information.model.Information">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.information.model.Information">
 		INSERT INTO `INFORMATION`(
-			id, information_channel_id, 
-			title, image, 
-			content, preview_number, 
-			top, type, 
-			status, source, 
-			author, top_time, 
-			create_time, creator_id, 
-			creator_name
-		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{informationChannelId,jdbcType=VARCHAR}, 
-			#{title,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, 
-			#{content,jdbcType=VARCHAR}, #{previewNumber,jdbcType=INTEGER}, 
-			#{top,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
-			#{status,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, 
-			#{author,jdbcType=VARCHAR}, #{topTime,jdbcType=TIMESTAMP}, 
-			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
-			#{creatorName,jdbcType=VARCHAR}
-		)
+		id, information_channel_id, title,brief, image, content, preview_number,
+		top, type, status, source, author, top_time, create_time, creator_id,
+		creator_name )VALUES(
+		#{id,jdbcType=VARCHAR}, #{informationChannelId,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},#{brief,jdbcType=VARCHAR},
+		#{image,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+		#{previewNumber,jdbcType=INTEGER}, #{top,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{source,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR},
+		#{topTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR} )
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `INFORMATION`(
 			id, information_channel_id, 
-			title, image, 
+			title,brief, image, 
 			content, preview_number, 
 			top, type, 
 			status, source, 
@@ -269,41 +299,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			create_time, creator_id, 
 			creator_name
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.informationChannelId,jdbcType=VARCHAR}, 
-			#{item.title,jdbcType=VARCHAR}, #{item.image,jdbcType=VARCHAR}, 
-			#{item.content,jdbcType=VARCHAR}, #{item.previewNumber,jdbcType=INTEGER}, 
-			#{item.top,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, 
-			#{item.status,jdbcType=INTEGER}, #{item.source,jdbcType=VARCHAR}, 
-			#{item.author,jdbcType=VARCHAR}, #{item.topTime,jdbcType=TIMESTAMP}, 
-			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
-			#{item.creatorName,jdbcType=VARCHAR}
-			)
+			#{item.id,jdbcType=VARCHAR},
+			#{item.informationChannelId,jdbcType=VARCHAR},
+			#{item.title,jdbcType=VARCHAR},#{item.brief,jdbcType=VARCHAR},
+			#{item.image,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR},
+			#{item.previewNumber,jdbcType=INTEGER}, #{item.top,jdbcType=INTEGER},
+			#{item.type,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+			#{item.source,jdbcType=VARCHAR}, #{item.author,jdbcType=VARCHAR},
+			#{item.topTime,jdbcType=TIMESTAMP},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR} )
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE I FROM `INFORMATION` I WHERE I.ID = #{id} 
+		DELETE I FROM `INFORMATION` I WHERE I.ID = #{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `INFORMATION` I
-		SET 
+		UPDATE `INFORMATION` I
+		SET
 		I.STATUS = -1
 		WHERE I.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `INFORMATION` I
-		<include refid="dynamicSet" /> 
-	    WHERE I.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE I.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="information">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION` I
 		<include refid="dynamicWhere" />
 	</select>
@@ -314,34 +347,39 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="information">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION` I
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="information">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION` I
 		<include refid="dynamicWhere" />
-		<include refid="orderby" />
+		ORDER BY I.create_time desc
+		<!-- <include refid="orderby" /> -->
 	</select>
-	
+
 	<select id="loadById" resultMap="information">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `INFORMATION` I
 		WHERE I.ID = #{id}
 	</select>
 	<select id="queryOrderBy" resultMap="information">
-		SELECT * FROM information WHERE  find_in_set(#{channelId}, information_channel_id ) 
-			AND `status` =0
+		SELECT * FROM information WHERE find_in_set(#{channelId},
+		information_channel_id )
+		AND `status` =1
 		<if test="top!=null">
 			AND top =#{top}
-		 ORDER BY top_time DESC 
+			ORDER BY top_time DESC
 		</if>
 		<if test="top==null">
-			 ORDER BY create_time DESC 
+			ORDER BY create_time DESC
 		</if>
-		 LIMIT #{num}
+		LIMIT #{num}
 	</select>
 </mapper>

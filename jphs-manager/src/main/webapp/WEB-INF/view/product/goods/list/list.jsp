@@ -4,6 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
+<%
+	int i = 1;
+%>
 <table  id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
 	<thead>
 		<tr>
@@ -25,7 +28,7 @@
 				<c:forEach items="${list}" var="e" varStatus="s">
 					<c:forEach items="${e.goodsList}" var="goodsOne" varStatus="status">
 						<tr class="bg_list_body">
-							<td width="30">${status.index+1}</td>							
+							<td width="30"><%=i++%></td>							
 							<td style="text-align: left;"><c:out value="${goodsOne.title}" /></td>
 							<td><c:out value="${e.title}" /></td>
 							<%-- <td><c:out value="${goodsOne.subTitle}" /></td> --%>
@@ -47,20 +50,41 @@
 								<td><c:out value="${goodsOne.creatorName}"/></td>
 							<td><fmt:formatDate value="${goodsOne.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
-								<td><c:if test="${goodsOne.status == 0}">
-									<c:out value="使用中" />
-								</c:if> <c:if test="${goodsOne.status != 0}">
-									<c:out value="已停用" />
+								<td><c:if test="${goodsOne.status == 1}">
+									<span style="color: #34BC2C;"><c:out value="使用中" /></span>
+								</c:if> <c:if test="${goodsOne.status == 0}">
+									<span style="color: #F0BB1C;"><c:out value="已停用" /></span>
 								</c:if></td>
-							<td><a onclick="redirectDetailPage('${goodsOne.id}')"> <img
-									src="/static/images/chakan.png">
-							</a> <a onclick="redirectUpdatePage('${goodsOne.id}')"> <img
-									src="/static/images/xiugai.png">
-							</a>
-							 <a onclick="deleteById('${goodsOne.id}')"> 
-							</a> <a onclick="deleteById('${goodsOne.id}')"> <img
-									src="/static/images/shanchu.png">
-							</a></td>
+							<td>
+							
+								<jphs:hasPermission url="/goods/delete.jhtml">	
+									<c:if test="${goodsOne.status == 0}">
+										<a onclick="deleteById('${goodsOne.id}','1')"> 
+											<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
+										</a>
+									</c:if>
+									<c:if test="${goodsOne.status == 1}">
+										<a onclick="deleteById('${goodsOne.id}','0')">
+											<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
+										</a>
+									</c:if>
+								</jphs:hasPermission>
+								<jphs:hasPermission url="/site/detail.jhtml">
+								<a onclick="redirectDetailPage('${goodsOne.id}')">
+									<img src="/static/images/chakan.png">
+								</a>
+								</jphs:hasPermission>
+								<jphs:hasPermission url="/site/redirectUpdate.jhtml">
+								<a onclick="redirectUpdatePage('${goodsOne.id}')">
+									<img src="/static/images/xiugai.png">
+								</a>
+								</jphs:hasPermission>
+								<jphs:hasPermission url="/goods/delete.jhtml">	
+								<a onclick="deleteById('${goodsOne.id}','-1')">
+									<img src="/static/images/shanchu.png">
+								</a>
+								</jphs:hasPermission>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:forEach>

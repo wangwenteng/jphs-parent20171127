@@ -14,17 +14,17 @@
 			<!-- 文本输入 -->
 			<label class="control-label col-md-3" for="input01">服务名称：</label>
 			<div class="controls col-md-6">
-				<input type="text" id="title" name="title" value="${goods.title}"
+				<input type="text" id="title" name="title" maxlength="12" value="${goods.title}"
 					placeholder="名称" class="form-control" />
 			</div>
 		</div>
 
 		<div class="form-group">
 			<!-- 文本输入 -->
-			<label class="control-label col-md-3" for="input01">服务别名：</label>
-			<div class="controls col-md-6">
-				<input type="text" id="subTitle" name="subTitle"
-					value="${goods.subTitle}" placeholder="说明" class="form-control" />
+			<label class="control-label col-md-3" for="input01">服务简介：</label>
+			<div class="controls col-md-6">				
+				<textarea id="subTitle" name="subTitle" placeholder="服务简介" cols="" rows="6"
+						class="form-control">${goods.subTitle}</textarea>
 			</div>
 		</div>
 
@@ -129,7 +129,10 @@
 			<!-- 下拉列表 -->
 			<label class="control-label col-md-3">排序：</label>
 			<div class="controls col-md-6">
-				<select class="form-control input-xlarge" id="sort" name="sort" >
+
+				<input type="text" id="sort" name="sort" placeholder="排序" class="form-control" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+					onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" value="${goods.sort}" />
+				<%-- <select class="form-control input-xlarge" id="sort" name="sort" >
 					<c:forEach var="temps" begin="1" step="1" end="30">
 						<c:if test="${temps == goods.sort }">
 							<option value="${goods.sort}" selected="selected">${goods.sort}</option>
@@ -138,7 +141,7 @@
 							<option value="${temps}">${temps}</option>
 						</c:if>
 					</c:forEach>
-				</select>
+				</select> --%>
 			</div>
 		</div>
 
@@ -146,7 +149,7 @@
 			<label class="control-label col-md-3">服务手机端logo：</label>
 			<!-- 文件上传 -->
 			<div class="controls col-md-6">
-				<img alt="" height="200" width="200" id="moveurls" src="${wap_image.url}" />
+				<img alt="" height="200" width="200" id="moveurls" src="${wap_image.url}" /><span>尺寸  140*140 比例（1：1）<br>*&nbsp;图片格式必须为.png格式</span>
 				<input class="input-file" type="file" name="myfiles" id="moveurl_s" onchange="ajaxFileUpload('moveurl_s','moveurl');" />
 				<input class="input-file" type="hidden" id="moveurl" name="moveurl" value="${wap_image.url}" />
 			</div>
@@ -156,7 +159,7 @@
 			<label class="control-label col-md-3">服务PC端图片：</label>
 			<!-- 文件上传 -->
 			<div class="controls col-md-6">
-				<img alt="" height="200" width="200" id="pcurls" src="${pc_image.url}" />
+				<img alt="" height="200" width="200" id="pcurls" src="${pc_image.url}" /><span>尺寸 360*350 <br>*&nbsp;图片格式必须为.png格式 </span>
 				<input class="input-file" type="file" name="myfiles" id="pcurl_s" onchange="ajaxFileUpload('pcurl_s','pcurl');" />
 				<input class="input-file" type="hidden" id="pcurl" name="pcurl" value="${pc_image.url}" />
 			</div>
@@ -286,10 +289,15 @@
 													</select>
 												</td>
 												<td>
-													<button type="button" class="public-info public_btn public_btn_center" data-toggle="modal" onclick="setJobtitle('${priceOne.id }');" data-target="#myModal" >修改</button>
+													<%-- <button type="button" class="public-info public_btn public_btn_center" data-toggle="modal" onclick="setJobtitle('${priceOne.id }');" data-target="#myModal" >修改</button> --%>
+												
+													<img style="width: 20px;height: 20px;" src="https://jinpai.b0.upaiyun.com/jinpaihushi/JP20170802114112-25444.png" data-toggle="modal" onclick="setJobtitle('${priceOne.id }');" data-target="#myModal" />
 													<input type="hidden" id="aptitudeIdArr${priceOne.id }" name="priceGrade[${status_g.index }].price[${status.index }].aptitudeIdArr" value="${priceOne.aptitudeIdArr }"/>
 												</td>
-												<td><input type="button" style="width:100%" class="form-control" value="删除" id="delete${status_g.index }${status.index }"  onclick="deleteTr('${status_g.index }${status.index }');"  /></td>
+												<td>
+													<img style="width: 20px;height: 20px;" src="/static/images/shanchu.png"  id="delete${status_g.index }${status.index }"  onclick="deleteTr('${status_g.index }${status.index }');">
+												<%-- <input type="button" style="width:100%" class="form-control" value="删除" id="delete${status_g.index }${status.index }"  onclick="deleteTr('${status_g.index }${status.index }');"  />
+												 --%></td>
 											</tr>
 									</c:forEach>
 								</tbody>
@@ -303,24 +311,29 @@
 			<c:otherwise>
 			<div class="norm_service" <%-- style="display: ${goods.gradeType == 0 || goods.gradeType == null ?'block':'none'};" --%> >
 			<div class="price_gradeAdd">
-			<span class="price_add_title">
-				<input style="width: 200px;" type="text" id="priceGrade0" name="priceGrade[0].gradeName" />
-				<input type="hidden" id="grade0" name="priceGrade[0].grade" value="0" />
+			<span class="price_add_title" style="margin-left: 10px;">	
+				<table cellpadding="0" cellspacing="0" style="border:none;">
+					<tr>
+						<td width="80">级别名称：</td>
+						<td><input type="text" id="priceGrade0" name="priceGrade[0].gradeName"  class="form-control"/></td>
+					</tr>
+				</table>	
+				<input type="hidden" id="grade0" name="priceGrade[0].grade" value="0" />				
 			</span>
 				<div class="marage_right_content"  style="margin-top:0;padding-top:0">
 					<table id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
 						<tbody id="addtrprice0">
 							<tr class="headClass">
-								<td width="100px">标--题</td>
-								<td width="60px">服务次数</td>
+								<td width="100">名称</td>
+								<td width="60">服务次数</td>
 								<!-- <td width="60px" >销售价格</td> -->
-								<td width="60px" >成本价</td>
-								<td width="60px" >利润</td>
-								<td width="60px" >时长</td>
-								<td width="60px" >单位</td>
-								<td width="60px" >排序</td>
-								<td width="60px" >授权</td>
-								<td width="60px" >操作</td>
+								<td width="60" >成本价</td>
+								<td width="60" >利润</td>
+								<td width="60" >时长</td>
+								<td width="60" >单位</td>
+								<td width="60" >排序</td>
+								<td width="60" >授权</td>
+								<td width="60" >操作</td>
 							</tr>
 						</tbody>
 					</table>

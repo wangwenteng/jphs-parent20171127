@@ -20,6 +20,12 @@
           ${voucher.productName }
           </div>
         </div>
+         <div class="form-group">
+          <label class="control-label col-md-3" for="input01">支持品类：</label>
+          <div class="controls col-md-6">
+          ${voucher.goodsName }
+          </div>
+        </div>
           <div class="form-group">
           <label class="control-label col-md-3" for="input01">批次号：</label>
           <div class="controls col-md-6">
@@ -75,7 +81,7 @@
             <div class="form-group">
 	          <label class="control-label col-md-3" for="input01">折扣券：</label>
 	          <div class="controls col-md-6">
-	         	 消费满${voucher.discountAmount }打${voucher.amount }折
+	         	 打${voucher.amount }折
 	          </div>
 	        </div>
         </c:if>
@@ -109,9 +115,8 @@
 							<c:forEach items="${list}" var="e" varStatus="s">
 								<tr>
 									<td>${voucher.id}</td>
-									<td>${e.voucherRepertoryId}</td>
 									<td> <fmt:formatDate value="${e.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-									<td>${e.creatorName}</td>
+									<td>${e.userName}</td>
 									<td>${e.status}</td>
 								<tr>
 							</c:forEach>

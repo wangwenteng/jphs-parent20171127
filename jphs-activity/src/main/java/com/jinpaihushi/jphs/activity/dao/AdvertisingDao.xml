@@ -2,33 +2,32 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	zhangzd
-	date	:	2017-06-27 10:35:22
-	version	:	1.0
--->
+<!-- author : zhangzd date : 2017-06-27 10:35:22 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.activity.dao.AdvertisingDao">
-	
-	
+
+
 	<sql id="field">
-		A.id, A.type, A.link, A.sort, 
-		A.create_time, A.creator_id, A.creator_name, A.status
+		A.id, A.type, A.link, A.sort,
+		A.create_time, A.creator_id,
+		A.creator_name, A.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		A.id A_id, A.type A_type, 
-		A.link A_link, A.sort A_sort, 
-		A.create_time A_create_time, A.creator_id A_creator_id, 
-		A.creator_name A_creator_name, A.status A_status
+		A.id A_id, A.type A_type,
+		A.link A_link, A.sort A_sort,
+		A.create_time A_create_time, A.creator_id A_creator_id,
+		A.creator_name
+		A_creator_name, A.status A_status
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		A.id id, A.type type, 
-		A.link link, A.sort sort, 
-		A.create_time createTime, A.creator_id creatorId, 
-		A.creator_name creatorName, A.status status
+		A.id id, A.type type,
+		A.link link, A.sort sort,
+		A.create_time createTime, A.creator_id creatorId,
+		A.creator_name
+		creatorName, A.status status
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND A.id=#{id}
@@ -55,13 +54,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND A.status=#{status}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
@@ -90,90 +89,115 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				A.id=#{id}, 
-		   </if>
-           <if test="type!=null">
-				A.type=#{type}, 
-		   </if>
-           <if test="link!=null">
-				A.link=#{link}, 
-		   </if>
-           <if test="sort!=null">
-				A.sort=#{sort}, 
-		   </if>
-           <if test="createTime!=null">
-				A.create_time=#{createTime}, 
-		   </if>
-           <if test="creatorId!=null">
-				A.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				A.creator_name=#{creatorName}, 
-		   </if>
-           <if test="status!=null">
-				A.status=#{status}, 
-		   </if>
+			<if test="id!=null">
+				A.id=#{id},
+			</if>
+			<if test="type!=null">
+				A.type=#{type},
+			</if>
+			<if test="link!=null">
+				A.link=#{link},
+			</if>
+			<if test="sort!=null">
+				A.sort=#{sort},
+			</if>
+			<if test="createTime!=null">
+				A.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				A.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				A.creator_name=#{creatorName},
+			</if>
+			<if test="status!=null">
+				A.status=#{status},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="advertising" type="com.jinpaihushi.jphs.activity.model.Advertising">
+	<resultMap id="advertising"
+		type="com.jinpaihushi.jphs.activity.model.Advertising">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="link" column="link" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="link" column="link" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<resultMap id="advertisingGlobal" type="com.jinpaihushi.jphs.activity.model.Advertising">
+
+	<resultMap id="advertisingGlobal"
+		type="com.jinpaihushi.jphs.activity.model.Advertising">
 		<result property="id" column="A_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="A_type" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="link" column="A_link" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="sort" column="A_sort" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="A_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="A_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="A_creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="A_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="A_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="link" column="A_link" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="A_sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="A_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="A_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="A_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="A_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	<resultMap id="advertisingDetail" type="com.jinpaihushi.jphs.activity.model.Advertising">
+	<resultMap id="advertisingDetail"
+		type="com.jinpaihushi.jphs.activity.model.Advertising">
 		<result property="id" column="id" javaType="String" jdbcType="INTEGER"></result>
-		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="link" column="link" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="image" column="image" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="bgImage" column="bgImage" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="link" column="link" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="image" column="image" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="bgImage" column="bgImage" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.activity.model.Advertising">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.activity.model.Advertising">
 		INSERT INTO `ADVERTISING`(
-			id, type, 
-			link, sort, 
-			create_time, creator_id, 
-			creator_name, status
+		id, type,
+		link, sort,
+		create_time, creator_id,
+		creator_name, status
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-			#{link,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
-			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
-			#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+		#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+		#{link,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
 		)
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `ADVERTISING`(
 			id, type, 
@@ -181,37 +205,42 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			create_time, creator_id, 
 			creator_name, status
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
-			#{item.link,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER}, 
-			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.id,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.link,jdbcType=VARCHAR},
+			#{item.sort,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE A FROM `ADVERTISING` A WHERE A.ID = #{id} 
+		DELETE A FROM `ADVERTISING` A WHERE A.ID = #{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `ADVERTISING` A
-		SET 
+		UPDATE `ADVERTISING` A
+		SET
 		A.STATUS = -1
-		WHERE A.ID = #{id}
+		WHERE A.ID =
+		#{id}
 	</update>
 
 	<update id="update">
 		UPDATE `ADVERTISING` A
-		<include refid="dynamicSet" /> 
-	    WHERE A.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE A.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="advertising">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `ADVERTISING` A
 		<include refid="dynamicWhere" />
 	</select>
@@ -222,82 +251,86 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="advertising">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `ADVERTISING` A
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
-	<!-- <select id="query" resultMap="advertising">
-		SELECT <include refid="field"/>
-		FROM `ADVERTISING` A
-		<include refid="dynamicWhere" />
-		<include refid="orderby" />
-	</select> -->
-	
-	<!-- <select id="loadById" resultMap="advertising">
-		SELECT <include refid="field"/>
-		FROM `ADVERTISING` A
-		WHERE A.ID = #{id}
-	</select> -->
-	
+	<!-- <select id="query" resultMap="advertising"> SELECT <include refid="field"/> 
+		FROM `ADVERTISING` A <include refid="dynamicWhere" /> <include refid="orderby" 
+		/> </select> -->
+
+	<!-- <select id="loadById" resultMap="advertising"> SELECT <include refid="field"/> 
+		FROM `ADVERTISING` A WHERE A.ID = #{id} </select> -->
+
 	<select id="query" resultMap="advertisingDetail">
-		SELECT <include refid="field"/>,
+		SELECT
+		<include refid="field" />
+		,
 		(
-				SELECT
-					url
-				FROM
-					service_images
-				WHERE
-					source_id = A.id
-				AND type = 1
-			) AS image,
+		SELECT
+		url
+		FROM
+		service_images
+		WHERE
+		source_id = A.id
+		AND type = 1
+		) AS
+		image,
 		(
-				SELECT
-					url
-				FROM
-					service_images
-				WHERE
-					source_id = A.id
-				AND type = 2
-			) AS bgImage
+		SELECT
+		url
+		FROM
+		service_images
+		WHERE
+		source_id = A.id
+		AND type = 2
+		)
+		AS bgImage
 		FROM `ADVERTISING` A
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 	<select id="loadById" resultMap="advertisingDetail">
-		SELECT <include refid="field"/>,
+		SELECT
+		<include refid="field" />
+		,
 		(
-				SELECT
-					url
-				FROM
-					service_images
-				WHERE
-					source_id = A.id
-				AND type = 1
-			) AS image,
+		SELECT
+		url
+		FROM
+		service_images
+		WHERE
+		source_id = A.id
+		AND type = 1
+		) AS
+		image,
 		(
-				SELECT
-					url
-				FROM
-					service_images
-				WHERE
-					source_id = A.id
-				AND type = 2
-			) AS bgImage
+		SELECT
+		url
+		FROM
+		service_images
+		WHERE
+		source_id = A.id
+		AND type = 2
+		)
+		AS bgImage
 		FROM `ADVERTISING` A
 		WHERE A.ID = #{id}
 	</select>
 	<select id="getCarouselFigure" resultType="java.util.HashMap">
 		SELECT
-			a.id,
-			a.link,
-			si.url,
-			a.sort
+		a.id,
+		a.link,
+		si.url,
+		a.sort
 		FROM
-			advertising a
-		LEFT JOIN service_images si ON a.id = si.source_id
+		advertising a
+		LEFT JOIN service_images si ON a.id =
+		si.source_id
 		WHERE
-			a.type = #{type};
+		a.type = #{type} AND a.status =1;
 	</select>
 </mapper>

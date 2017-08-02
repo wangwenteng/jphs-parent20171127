@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.person.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
+import com.jinpaihushi.jphs.nurse.model.NurseImages;
+import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.jphs.verification.model.Verification;
@@ -33,12 +36,14 @@ public class LoginController {
 	@Autowired
 	private VerificationService verificationService;
 	@Autowired
-	private  AccountService accountService;
-	
+	private AccountService accountService;
+	@Autowired
+	private NurseImagesService nurseImagesService;
+
 	@ResponseBody
 	@RequestMapping(name = "登录", path = "/login.json")
-	public byte[] login(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
-			String password, String type) {
+	public byte[] login(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone, String password,
+			String type) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
@@ -86,30 +91,38 @@ public class LoginController {
 	 * @param hs
 	 * @param req
 	 * @param resp
-	 * @param phone 手机号
-	 * @param validateCode 图片验证码
-	 * @param smsCode 短信验证码
-	 * @param type 类型 1、用户 2 护士
+	 * @param phone
+	 *            手机号
+	 * @param validateCode
+	 *            图片验证码
+	 * @param smsCode
+	 *            短信验证码
+	 * @param type
+	 *            类型 1、用户 2 护士
 	 * @return
 	 * @author: wangwt
 	 */
 	@ResponseBody
 	@RequestMapping(name = "快捷登录", path = "/quickLogin.json")
-	public byte[] quickLogin(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String validateCode,String smsCode, String phone, String type) {
+	public byte[] quickLogin(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String validateCode,
+			String smsCode, String phone, String type) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("login.quickLogin.json,phone=" + phone + " type=" + type+ " smsCode=" + smsCode+ " verifyCode=" + validateCode);
+				Util.debugLog.debug("login.quickLogin.json,phone=" + phone + " type=" + type + " smsCode=" + smsCode
+						+ " verifyCode=" + validateCode);
 			}
-			//如果session中没有图片验证码并且请求的验证码数据存在 ---非法请求
-			if((null == req.getSession().getAttribute("validateCode") || StringUtils.isEmpty(req.getSession().getAttribute("validateCode").toString()))&&StringUtils.isNotEmpty(validateCode)){
+			// 如果session中没有图片验证码并且请求的验证码数据存在 ---非法请求
+			if ((null == req.getSession().getAttribute("validateCode")
+					|| StringUtils.isEmpty(req.getSession().getAttribute("validateCode").toString()))
+					&& StringUtils.isNotEmpty(validateCode)) {
 				return JSONUtil.toJSONResult(0, "非法请求", null);
-			}
-			else if(StringUtils.isNotEmpty(validateCode)&&!validateCode.equalsIgnoreCase(req.getSession().getAttribute("validateCode").toString())) {
+			} else if (StringUtils.isNotEmpty(validateCode)
+					&& !validateCode.equalsIgnoreCase(req.getSession().getAttribute("validateCode").toString())) {
 				return JSONUtil.toJSONResult(0, "图片验证码错误", null);
 			}
 			// 查空
-			if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(type)||StringUtils.isEmpty(smsCode)) {
+			if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(type) || StringUtils.isEmpty(smsCode)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			int tid = 0; // type
@@ -120,10 +133,10 @@ public class LoginController {
 			}
 			// 获取该手机号最新一条短信
 			Verification vc = verificationService.getLastRecordByPhone(phone);
-			if(vc==null){
+			if (vc == null) {
 				return JSONUtil.toJSONResult(0, "非法请求", null);
-				
-			}else{
+
+			} else {
 				if (!smsCode.equals(vc.getCode())) {
 					// 验证码不对
 					return JSONUtil.toJSONResult(0, "短信验证码不正确", null);
@@ -142,14 +155,14 @@ public class LoginController {
 			user.setType(tid);
 			// 1.根据 name，password,type查询完整信息
 			user = userService.findUser(user);
-			
+			NurseImages img = null;
 			// 2.错误N种情况判断及返回前端
 			if (user == null) {
-				//如果不存在给用户注册信息
+				// 如果不存在给用户注册信息
 				user = new User();
 				user.setPhone(phone);
 				user.setType(tid);
-				//设置默认密码为手机号
+				// 设置默认密码为手机号
 				user.setPassword(MD5.md5crypt(MD5.md5crypt(phone)));
 				// 设置用户的注册端
 				user.setDevice(5);
@@ -158,13 +171,24 @@ public class LoginController {
 					user.setName(user.getPhone());
 				}
 				user.setStatus(0);
-				
-				//写入数据
+
+				// 写入数据
 				String userId = userService.insertUser(user);
-				if(userId.length()<0){
+				if (userId.length() < 0) {
 					return JSONUtil.toJSONResult(0, "注册失败", null);
 				}
-				//给用户创建相应的account账户
+				// 设置默认头像
+				img = new NurseImages();
+				img.setId(UUID.randomUUID().toString());
+				img.setSourceId(user.getId());
+				img.setUrl("https://resource.jinpaihushi.com/images/default_head/yonghu_nan.jpg");
+				img.setCreateTime(new Date());
+				img.setType(1);
+				img.setCreatorId(user.getId());
+				img.setCreatorName(user.getName());
+				nurseImagesService.insert(img);
+
+				// 给用户创建相应的account账户
 				Account account = new Account();
 				account.setId(UUIDUtils.getId());
 				account.setBalance(0.0);
@@ -174,19 +198,46 @@ public class LoginController {
 				account.setStatus(0);
 				accountService.insert(account);
 			}
+			if (img == null) {
+				img = new NurseImages();
+				img.setSourceId(user.getId());
+				img.setType(1);
+				img = nurseImagesService.load(img);
+			}
+			if (img != null)
+				user.setHeadPicture(img.getUrl());
 			// 设置token
 			String token = "";
-			token = Common.getToken(phone, smsCode);// 生成token
+			token = Common.getToken(phone, user.getPassword());// 生成token
 			user.setToken(token);
 			// 3.信息无误，封装信息以及生成token，返回前端
-			//将用户信息放到session中
+			// 将用户信息放到session中
 			req.getSession().setAttribute("user", user);
+			req.getSession().setAttribute("token", token);
 			return JSONUtil.toJSONResult(1, "登录成功！", user);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("login.quickLogin.json,phone=" + phone + " type=" + type+ " smsCode=" + smsCode+ " verifyCode=" + validateCode,e);
+			Util.failLog.error("login.quickLogin.json,phone=" + phone + " type=" + type + " smsCode=" + smsCode
+					+ " verifyCode=" + validateCode, e);
 		}
 		return null;
 	}
+	@ResponseBody
+	@RequestMapping(name = "退出", path = "/loginOut.json")
+	public byte[] loginOut(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone, String password,
+			String type) {
+		try {
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("login.loginOut.json");
+			}
+			hs.invalidate();
 
+			return JSONUtil.toJSONResult(1, "已成功退出，欢迎下次登录", null);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.debugLog.debug("login.loginOut.json",e);
+		}
+		return null;
+	}
 }

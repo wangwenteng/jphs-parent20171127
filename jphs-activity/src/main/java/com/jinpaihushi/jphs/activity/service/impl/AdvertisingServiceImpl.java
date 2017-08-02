@@ -129,7 +129,7 @@ public class AdvertisingServiceImpl extends BaseServiceImpl<Advertising> impleme
 	 * @author: wangwt
 	 */
 	@Override
-	public List<Map<String, Object>> getCarouselFigure(Map map) {
+	public List<Map<String, Object>> getCarouselFigure(Map<String, Object> map) {
 		List<Map<String,Object>> list = advertisingDao.getCarouselFigure(map);
 		
 		return list;

@@ -37,6 +37,7 @@ public class SafetyFilter extends HandlerInterceptorAdapter {
 		} else {
 			if ((SystemUser) request.getSession().getAttribute("session_user") != null) {
 				List<String> list = (List<String>) request.getSession().getAttribute("session_url");
+				if(url.endsWith(".json")) return true;
 				if (url.equals("/welcome/index.jhtml")) {
 
 					return true;

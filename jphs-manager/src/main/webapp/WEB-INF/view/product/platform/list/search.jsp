@@ -15,10 +15,15 @@
 					value="${platform.company}" placeholder="请输入搜索公司名称" /></td>
 			</tr>
 			<tr>
+				
+				<td>联系人姓名：</td>
+				<td width="200"><input type="text" name="contactsName"
+					id="contactsName" value="${platform.contactsName}"
+					placeholder="请输入搜索联系人姓名" /></td>
 				<td>渠道：</td>
 				<td>
 					<div class="controls col-md-6">
-						<select class="marage_select" style="width: 100px;"
+						<select class="marage_select" style="width: 100px; margin-left: -15px;"
 							id="channel" name="channel">
 							<option value="">全部</option>
 							<option  value="1" <c:if test="${platform.channel==1 }">selected="selected"</c:if> >微信</option>
@@ -28,21 +33,16 @@
 						</select>
 					</div>
 				</td>
-				<td>联系人姓名：</td>
-				<td width="200"><input type="text" name="contactsName"
-					id="contactsName" value="${platform.contactsName}"
-					placeholder="请输入搜索联系人姓名" /></td>
-				<!--<td><button class="input-group-addon btn btn-primary search_btn">搜索</button></td>-->
 			</tr>
 			<tr>
 				<td>联系人手机号：</td>
 				<td width="200"><input type="text" name="contactsPhone"
 					id="contactsPhone" value="${platform.contactsPhone}"
 					placeholder="请输入搜索联系人手机号" /></td>
-				<td>公司地址：</td>
+				<%-- <td>公司地址：</td>
 				<td width="200"><input type="text" name="companyAddress"
 					id="companyAddress" value="${platform.companyAddress}"
-					placeholder="请输入搜索公司地址" /></td>
+					placeholder="请输入搜索公司地址" /></td> --%>
 				<!--<td><button class="input-group-addon btn btn-primary search_btn">搜索</button></td>-->
 			</tr>
 		</table>

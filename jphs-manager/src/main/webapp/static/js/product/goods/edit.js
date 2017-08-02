@@ -4,7 +4,7 @@ window.onload=function(){
 		/*alert(trlength);*/
 		var a='<div class="price_gradeAdd"><span class="price_add_title">'
 				+'		<input type="hidden" id="grade'+trlength+'" name="priceGrade['+trlength+'].grade" value="'+trlength+'" />'
-				+'<input style="width: 200px;" type="text" id="gradeName'+trlength+'" name="priceGrade['+trlength+'].gradeName" /></span>'
+				+'等级名称：<input style="width: 200px;" type="text" id="gradeName'+trlength+'" name="priceGrade['+trlength+'].gradeName" /></span>'
 				+'	<div class="marage_right_content" style="margin-top: 0; padding-top: 0">'
 				+'<table id="dateTable" cellpadding="0" cellspacing="0" class="text-center">'
 				+'<tbody id="addtrprice'+trlength+'"> <tr class="headClass">'
@@ -159,7 +159,7 @@ function addTd(id){
 	 * Number($('.headClass').length);
 	 */
 		var trlength = Number($('.addClassprice').length);
-		var tr = '<tr class="addClassprice" id="delete'+trlength+'"><td><input style="width:100%" class="form-control" id="title'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].title" /></td>'
+		var tr = '<tr class="addClassprice" id="delete'+trlength+'"><td><input style="width:100%" class="form-control" id="title'+trlength+'" name="priceGrade['+id+'].price['+trlength+'].title" /></td>'
 				+'		<td><input style="width:100%" class="form-control" id="service_number'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].serviceNumber" /></td>'
 				+'		<td><input style="width:100%" class="form-control" id="price'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].costPrice"  /></td>'
 				+'		<td><input style="width:100%" class="form-control" id="profit'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].profit" /></td>'
@@ -183,15 +183,20 @@ function addTd(id){
 				+'			<select style="width: 100%;" class="form-control input-xlarge" id="sort'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].sort">'
 				+				number
 				+'			</select>'
-				+'		</td>'
-				+'	<td><button type="button" class="public-info public_btn public_btn_center" data-toggle="modal" onclick="setJobtitle(\''+id+''+trlength+'\');" data-target="#myModal" >修改</button>'
+				+'		</td><td>'
+				+'<img style="width: 20px;height: 20px;" src="https://jinpai.b0.upaiyun.com/jinpaihushi/JP20170802114112-25444.png" data-toggle="modal" onclick="setJobtitle(\''+id+''+trlength+'\');" data-target="#myModal" />'
 				+'<input type="hidden" id="aptitudeIdArr'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].aptitudeIdArr" value=""/>'
 				+'</td>'
-				+'		<td><input type="button" style="width:100%" class="form-control" value="删除" id="delete'+id+''+trlength+'"  onclick="deleteTr('+id+''+trlength+');"  />'
-				+'		<input type="hidden" id="grade'+id+''+trlength+'" name="priceGrade['+id+'].price['+trlength+'].grade" value="'+id+'" />'
+				+'<td>'
+				+'	<img style="width: 20px;height: 20px;" src="/static/images/shanchu.png" id="delete'+id+''+trlength+'" onclick="deleteTr('+trlength+');">'
+				+'</td>'
+				+'	<input type="hidden" id="grade'+trlength+'" name="priceGrade['+id+'].price['+trlength+'].grade" value="'+id+'" />'
 				+'	</tr>';
 		$("#addtrprice"+id).append(tr);
-}
+		/*<img style="width: 20px;height: 20px;" src="https://jinpai.b0.upaiyun.com/jinpaihushi/JP20170802114112-25444.png" data-toggle="modal" onclick="setJobtitle('${priceOne.id }');" data-target="#myModal" />
+		*//*<input type="button" style="width:100%" class="form-control" value="删除" id="delete'+id+''+trlength+'"  onclick="deleteTr('+trlength+');"  />
+		*<button type="button" class="public-info public_btn public_btn_center" data-toggle="modal" onclick="setJobtitle(\''+id+''+trlength+'\');" data-target="#myModal" >修改</button>
+*/}
 //data-target="#myModal"
 function setJobtitle(id){
 	var aptitudeIdArr = $('#aptitudeIdArr'+id).val();

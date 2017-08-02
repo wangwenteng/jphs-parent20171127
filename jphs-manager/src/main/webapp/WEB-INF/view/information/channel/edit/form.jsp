@@ -10,6 +10,7 @@
 
 		<div class="form-group">
 
+
 			<!-- 文本输入 -->
 			<label class="control-label col-md-3" for="input01">名称：</label>
 			<div class="controls col-md-6">
@@ -21,7 +22,10 @@
 			<!-- 下拉列表 -->
 			<label class="control-label col-md-3">排序：</label>
 			<div class="controls col-md-6">
-				<select class="form-control input-xlarge" name="sort">
+			<input type="text" id="sort" name="sort" placeholder="排序" class="form-control" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+					onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" value="${informationChannel.sort}" />
+				
+				<%-- <select class="form-control input-xlarge" name="sort">
 				      <c:forEach var="temps" begin="1" step="1" end="30">
 						<c:if test="${temps == product.sort }">
 							<option value="${product.sort}" selected="selected">${product.sort}</option>
@@ -30,7 +34,7 @@
 							<option value="${temps}">${temps}</option>
 						</c:if>
 					</c:forEach>
-				 </select>
+				 </select> --%>
 			</div>
 
 		</div>

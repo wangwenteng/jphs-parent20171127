@@ -17,6 +17,9 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
+	 <session-config> 
+           <session-timeout>60</session-timeout> 
+      </session-config> 
 	<!-- 配置springmvc -->
 	<servlet>
 		<servlet-name>controller</servlet-name>

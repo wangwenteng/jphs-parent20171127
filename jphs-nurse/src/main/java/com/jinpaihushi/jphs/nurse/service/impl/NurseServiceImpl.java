@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.area.dao.AreaDao;
 import com.jinpaihushi.jphs.area.model.Area;
@@ -56,8 +57,8 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 	}
 
 	@Override
-	public List<Nurse> getNurseDetail(Nurse nurse) {
-		List<Nurse> nurseList = (List<Nurse>) nurseDao.getNurseDetail(nurse);
+	public Page<Nurse> getNurseDetail(Nurse nurse) {
+		Page<Nurse> nurseList = (Page<Nurse>) nurseDao.getNurseDetail(nurse);
 		return nurseList;
 	}
 
@@ -86,7 +87,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					nurseImages = new NurseImages();
 					nurseImages.setCreatorId(user.getId());
 					nurseImages.setCreatorName(user.getName());
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					nurseImages.setCreateTime(new Date());
 					nurseImages.setStatus(0);
 					// 头像
@@ -124,7 +125,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						area.setCreatorName(user.getName());
 						area.setCreateTime(new Date());
 						area.setType(1);
-						area.setSourceId(nurse.getId());
+						area.setSourceId(nurse.getUser().getId());
 						area.setLocation(areas[k]);
 						area.setStatus(0);
 						areaDao.insert(area);
@@ -149,7 +150,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 				int j = nurseDao.update(nurse);
 				if (j > 0) {
 					nurseImages = new NurseImages();
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					// 头像
 					nurseImages.setType(1);
 					nurseImages = nurseImagesDao.load(nurseImages);
@@ -159,7 +160,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 
 					} else {
 						nurseImages = new NurseImages();
-						nurseImages.setSourceId(nurse.getId());
+						nurseImages.setSourceId(nurse.getUser().getId());
 						// 头像
 						nurseImages.setType(1);
 						nurseImages.setUrl(nurse.getHead_portrait());
@@ -172,7 +173,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					}
 					// 护士资格证正面
 					nurseImages = new NurseImages();
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					nurseImages.setType(2);
 					nurseImages = nurseImagesDao.load(nurseImages);
 					if (nurseImages != null) {
@@ -180,7 +181,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						j = nurseImagesDao.update(nurseImages);
 					} else {
 						nurseImages = new NurseImages();
-						nurseImages.setSourceId(nurse.getId());
+						nurseImages.setSourceId(nurse.getUser().getId());
 						// 护士资格证正面
 						nurseImages.setType(2);
 						nurseImages.setUrl(nurse.getAptitude_positive());
@@ -193,7 +194,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					}
 					// 护士资格证反面
 					nurseImages = new NurseImages();
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					nurseImages.setType(3);
 					nurseImages = nurseImagesDao.load(nurseImages);
 					if (nurseImages != null) {
@@ -201,7 +202,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						j = nurseImagesDao.update(nurseImages);
 					} else {
 						nurseImages = new NurseImages();
-						nurseImages.setSourceId(nurse.getId());
+						nurseImages.setSourceId(nurse.getUser().getId());
 						// 护士资格证正面
 						nurseImages.setType(3);
 						nurseImages.setUrl(nurse.getAptitude_negative());
@@ -214,7 +215,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					}
 					// 身份证正面
 					nurseImages = new NurseImages();
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					nurseImages.setType(4);
 					nurseImages = nurseImagesDao.load(nurseImages);
 					if (nurseImages != null) {
@@ -222,7 +223,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						j = nurseImagesDao.update(nurseImages);
 					} else {
 						nurseImages = new NurseImages();
-						nurseImages.setSourceId(nurse.getId());
+						nurseImages.setSourceId(nurse.getUser().getId());
 						// 护士资格证正面
 						nurseImages.setType(4);
 						nurseImages.setUrl(nurse.getId_positive());
@@ -235,7 +236,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					}
 					// 身份证反面
 					nurseImages = new NurseImages();
-					nurseImages.setSourceId(nurse.getId());
+					nurseImages.setSourceId(nurse.getUser().getId());
 					nurseImages.setType(5);
 					nurseImages = nurseImagesDao.load(nurseImages);
 					if (nurseImages != null) {
@@ -243,7 +244,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						j = nurseImagesDao.update(nurseImages);
 					} else {
 						nurseImages = new NurseImages();
-						nurseImages.setSourceId(nurse.getId());
+						nurseImages.setSourceId(nurse.getUser().getId());
 						// 护士资格证正面
 						nurseImages.setType(4);
 						nurseImages.setUrl(nurse.getId_negative());
@@ -257,7 +258,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					// 先删除原有的服务区域信息
 					Area area = null;
 					area = new Area();
-					area.setSourceId(nurse.getId());
+					area.setSourceId(nurse.getUser().getId());
 					area.setStatus(-1);
 					List<Area> list = areaDao.list(area);
 					for (Area area2 : list) {
@@ -272,7 +273,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 						area.setCreatorName(user.getName());
 						area.setCreateTime(new Date());
 						area.setType(1);
-						area.setSourceId(nurse.getId());
+						area.setSourceId(nurse.getUser().getId());
 						area.setLocation(areas[k]);
 						area.setStatus(0);
 						areaDao.insert(area);

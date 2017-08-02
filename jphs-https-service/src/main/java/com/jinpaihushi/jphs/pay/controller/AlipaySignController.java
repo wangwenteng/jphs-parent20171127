@@ -23,8 +23,11 @@ import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.transaction.service.TransactionService;
+import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.pay.alipay.AlipaySign;
 import com.jinpaihushi.pay.alipay.util.AlipayNotify;
+import com.jinpaihushi.tools.DoPostSms;
 import com.jinpaihushi.utils.Util;
 
 import net.sf.json.JSONObject;
@@ -39,6 +42,9 @@ public class AlipaySignController {
 	
 	@Autowired
 	private OrderGoodsService orderGoodsService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private TransactionService transactionService;
@@ -200,6 +206,23 @@ public class AlipaySignController {
 												orderUp.setId(orders.getId());
 												orderUp.setSchedule(1);
 												boolean orderUpbool=orderService.update(orderUp);
+												try {
+													User user = new User();
+													user.setId(orders.getCreatorId());
+													user.setStatus(0);
+													User orderUser = userService.load(user);
+													// 记录日志-debug
+													if (Util.debugLog.isDebugEnabled()) {
+														Util.debugLog.debug("alipay.notify.json;订单用户信息orderUser="+JSONObject.fromObject(orderUser).toString());
+													}
+													if(orderUser != null){
+														// 发送验证码
+														DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的您的订单：" + no + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + no + "\"}");
+													}
+													
+												} catch (Exception e) {
+												}
+												
 												if(!orderUpbool){
 													i=0;
 												}

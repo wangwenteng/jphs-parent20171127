@@ -15,8 +15,19 @@ function redirectUpdatePage(id) {
 function redirectDetailPage(id) {
 	window.location.href = "/product/detail.jhtml?id=" + id;
 }
-function deleteById(id) {
-	if(confirm('确实要删除吗？')){
-		window.location.href = "/product/delete.jhtml?id=" + id;
+function deleteById(id,status) {
+	if(status == -1){
+		if(confirm('确认要删除吗？')){
+			window.location.href = "/product/delete.jhtml?id=" + id+"&status="+status;
+		}
+	}else if(status == 1){
+		if(confirm('确认要启用吗？')){
+			window.location.href = "/product/delete.jhtml?id=" + id+"&status="+status;
+		}
+	}else{
+		if(confirm('确认要停用吗？')){
+			window.location.href = "/product/delete.jhtml?id=" + id+"&status="+status;
+		}
 	}
+	
 }

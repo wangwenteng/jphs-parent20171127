@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.evaluation.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
@@ -21,6 +23,6 @@ public interface EvaluationDao extends BaseDao<Evaluation> {
 
 	int getGoodsLevel(String goodsId);
 	
-	
+	List<Evaluation> listInfo(Evaluation evaluation);
 	
 }

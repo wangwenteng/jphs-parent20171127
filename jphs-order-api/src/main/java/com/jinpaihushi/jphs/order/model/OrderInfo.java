@@ -46,11 +46,11 @@ public class OrderInfo extends BaseModel {
 
 	/** 是否有药品 */
 	@Length(max = 50, message = "{orderOther.drug.illegal.length}")
-	private String drug;
+	private String drug="";
 
 	/** 是否有工具 */
 	@Length(max = 50, message = "{orderOther.tool.illegal.length}")
-	private String tool;
+	private String tool="";
 	/** 备注 */
 	@Length(max = 500, message = "{order.remarks.illegal.length}")
 	private String remarks;
@@ -83,6 +83,7 @@ public class OrderInfo extends BaseModel {
 	private String name;
 	//身份证号
 	private String sfz;
+	private String pricePartId;
 	/**保险 */
 	@Length(max = 500, message = "{order.remarks.illegal.length}")
 	private String remark;
@@ -259,6 +260,12 @@ public class OrderInfo extends BaseModel {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getPricePartId() {
+		return pricePartId;
+	}
+	public void setPricePartId(String pricePartId) {
+		this.pricePartId = pricePartId;
 	}
 		
 	

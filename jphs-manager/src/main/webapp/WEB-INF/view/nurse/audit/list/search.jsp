@@ -4,7 +4,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<form method="get" action="/audit/index.jhtml" style="margin-top: -31px; ">
+<form method="get" action="/audit/index.jhtml" id="serach-form"
+	style="margin-top: -31px;">
 	<div class="clearfix">
 		<table class="text-right ">
 			<tr>
@@ -14,8 +15,7 @@
 				<td>参加工作时间：</td>
 				<td width="200">
 					<div class="form-group">
-						<div
-							style="width: 130%;margin-top: -23px;margin-bottom: -40px;"
+						<div style="width: 130%; margin-top: -23px; margin-bottom: -40px;"
 							class="input-group date form_date col-md-3" data-date=""
 							data-date-format="yyyy-mm-dd" data-link-field="workYears"
 							data-link-format="yyyy-mm-dd">
@@ -23,18 +23,23 @@
 								value="<fmt:formatDate value="${nurse.workYears}" type="both" pattern="yyyy-MM-dd" />"
 								size="14" placeholder="请选择开始工作时间" type="text" value="" readonly>
 							<span class="input-group-addon"><span
-								class="glyphicon glyphicon-remove"></span></span> <span
+								class="glyphicon glyphicon-remove" title="清空"></span></span> <span
 								class="input-group-addon"><span
-								class="glyphicon glyphicon-calendar"></span></span> <input
+								class="glyphicon glyphicon-calendar" title="选择日期"></span></span> <input
 								type="hidden" name="workYears" id="workYears" value="" />
 						</div>
 					</div>
 				</td>
 			</tr>
 			<tr>
+
+				<td>姓名：</td>
+				<td width="200"><input type="text" name="user.name"
+					id="user.name" value="${nurse.user.name}" placeholder="请输入搜索联系人姓名" /></td>
 				<td>所属科室：</td>
 				<td>
-					<div class="controls col-md-6"    style=" width: 70%;margin-left: -15px;" >
+					<div class="controls col-md-6"
+						style="width: 70%; margin-left: -15px;">
 						<select class="marage_select" id="departmentId"
 							name="departmentId">
 							<option value="">全部</option>
@@ -45,10 +50,6 @@
 						</select>
 					</div>
 				</td>
-				<td>姓名：</td>
-				<td width="200"><input type="text" name="user.name"
-					id="user.name" value="${nurse.user.name}"
-					placeholder="请输入搜索联系人姓名" /></td>
 				<!--<td><button class="input-group-addon btn btn-primary search_btn">搜索</button></td>-->
 			</tr>
 			<tr>
@@ -56,10 +57,10 @@
 				<td width="200"><input type="text" name="user.phone"
 					id="user.phone" value="${nurse.user.phone}"
 					placeholder="请输入搜索联系人手机号" /></td>
-				<td>联系地址：</td>
+				<%-- <td>联系地址：</td>
 				<td width="200"><input type="text" name="address"
 					id="address" value="${nurse.address}"
-					placeholder="请输入搜索公司地址" /></td>
+					placeholder="请输入搜索公司地址" /></td> --%>
 				<!--<td><button class="input-group-addon btn btn-primary search_btn">搜索</button></td>-->
 			</tr>
 			<%-- <tr>

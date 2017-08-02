@@ -48,7 +48,7 @@ public class JobtitleController extends BaseController<Jobtitle> {
 		startPage(p, n);
 		List<JobtitleType> list=jobtitleTypeService.queryDetail(jobtitle);
 		PageInfos<JobtitleType> pageInfo = new PageInfos<JobtitleType>(list, req);
-		List<JobtitleType>  typeList = jobtitleTypeService.list(null);
+		List<JobtitleType>  typeList = jobtitleTypeService.query(null);
 		modelMap.put("list", list);
 		modelMap.put("typeList", typeList);
 		modelMap.put("pageInfo", pageInfo);
@@ -105,10 +105,7 @@ public class JobtitleController extends BaseController<Jobtitle> {
 	}
 
 	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
-		Jobtitle jobtitle =new Jobtitle();
-		jobtitle.setStatus(-1);
-		jobtitle.setId(id);
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Jobtitle jobtitle ) {
 		boolean b = jobtitleService.update(jobtitle);
 		if (b == false) {
 			// 跳转到错误页

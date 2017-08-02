@@ -26,14 +26,27 @@
 						<td><c:out value="${e.creatorName}" /></td>
 						<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
-						<td><c:if test="${e.status==0}">使用中</c:if> <c:if
-								test="${e.status==-1}">已停用</c:if></td>
-						<td><jphs:hasPermission url="/jobtitle/type/detail.jhtml">
-								<a onclick="redirectUpdatePage('${e.id}')"> <img
+						<td><c:if test="${e.status==1}"><span style="color: #34BC2C;">使用中</span></c:if> <c:if
+								test="${e.status==0}"><span style="color: #F0BB1C;">已停用</span></c:if></td>
+						<td><jphs:hasPermission url="/jobtitle/type/delete.jhtml">
+								<c:if test="${e.status == 1}">
+									<a onclick="deleteById('${e.id}','0')" title="取消发布"> <img
+										style="width: 20px; height: 20px;"
+										src="/static/images/blockup.png">
+									</a>
+								</c:if>
+								<c:if test="${e.status == 0}">
+									<a onclick="deleteById('${e.id}','1')" title="发布"> <img
+										style="width: 20px; height: 20px;"
+										src="/static/images/startup.png">
+									</a>
+								</c:if>
+							</jphs:hasPermission> <jphs:hasPermission url="/jobtitle/type/detail.jhtml">
+								<a onclick="redirectUpdatePage('${e.id}')" title="修改"> <img
 									src="/static/images/xiugai.png">
 								</a>
 							</jphs:hasPermission> <jphs:hasPermission url="/jobtitle/type/delete.jhtml">
-								<a onclick="deleteById('${e.id}')"> <img
+								<a onclick="deleteById('${e.id}','-1')" title="删除"> <img
 									src="/static/images/shanchu.png">
 								</a>
 							</jphs:hasPermission></td>

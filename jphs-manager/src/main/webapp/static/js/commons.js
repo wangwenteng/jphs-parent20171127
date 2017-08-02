@@ -3,6 +3,34 @@ function gotoPage(url, p) {
 	$("#serach-form").append(input_p);
 	$("#serach-form").submit();
 }
+//序列化提交
+function httpRequest(httpUrl, httpParam, httpType,async) {
+	var reqResult = {"result":0,"message":"没有请求服务器或接受到返回值"};
+	$.ajax({
+		url : httpUrl, 
+		type : httpType,
+		async : async,
+		data: httpParam,
+		dataType : 'json',
+		success : function(msg) {
+			if (msg.result == 0) {
+				alert(msg.message);
+				return false;
+			}
+			reqResult = msg;
+			return msg;
+		},
+		error : function(data) {
+			/**
+			 * 此处应为弹出公共提示信息窗口
+			 * 提示错误信息
+			 * 并返回登录页面
+			return false;*/
+			alert("系统错误，"+data.status);
+		}
+	});
+	return reqResult;
+}
 jQuery.validator
 .addMethod(
 		"isMobile",
@@ -15,12 +43,31 @@ jQuery.validator
 jQuery.validator.addMethod("isIdCardNo", function(value, element) {
 	return this.optional(element) || idCardNoUtil.checkIdCardNo(value);
 }, "请正确输入您的身份证号码");
-jQuery.validator.addMethod("accept", function(value, element) {
-	var suffix="@goldnurse.com";
+jQuery.validator.addMethod("accept", function(value, element,param) {
 	var index =value.lastIndexOf("@");
 	var ext = value.substr(index);
-	return this.optional(element)||(suffix==ext);
+	return this.optional(element)||(param==ext);
 }, "请输入带有公司后缀的邮箱");
+jQuery.validator.addMethod("isTrue", function(value, element,userId) {
+	var otype = "post";
+	var osync = false;
+	var param = {
+		chackValue: value,
+		userId:userId,
+	};
+	var result=httpRequest("/system/user/chackUser.json", param, otype, osync);
+	return this.optional(element)||(result==0);
+}, "此名称已被使用！！！");
+jQuery.validator.addMethod("checkPassword", function(value, element,userId) {
+	var otype = "post";
+	var osync = false;
+	var param = {
+		password: value,
+		userId:userId,
+	};
+	var result=httpRequest("/system/user/checkPassword.json", param, otype, osync);
+	return this.optional(element)||(result);
+}, "此名称已被使用！！！");
 jQuery.validator.addMethod("isChinese", function(value, element) {
 	var chinese=/^[\u4e00-\u9fa5]+$/;
 	return this.optional(element)||(chinese.test(value));

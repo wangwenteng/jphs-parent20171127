@@ -37,12 +37,12 @@
 							<td><c:out value="${e.patientPhone}"/></td>
 							<td><c:out value="${e.expectorDoctor}"/></td>
 							<td><c:out value="${e.schedule}"/></td>
-							<td><fmt:formatDate value="${e.appointmentTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.setoutTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.startServiceTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.endServiceTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.remindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-							<td><fmt:formatDate value="${e.confirmTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td><fmt:formatDate value="${e.appointmentTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.setoutTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.startServiceTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.endServiceTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.remindTime}" pattern="yy-MM-dd HH:mm"/></td>
+							<td><fmt:formatDate value="${e.confirmTime}" pattern="yy-MM-dd HH:mm"/></td>
 							<td>
 							<a onclick="redirectDetailPage('${e.id}')">
 								<img src="/static/images/chakan.png">

@@ -20,8 +20,7 @@ version="2.0">
 	    <name>hasPermission</name>
 	    <tag-class>com.jinpaihushi.taglib.HasUrlTag</tag-class>
 	    <body-content>JSP</body-content>
-	    <description>根据用户的信息判断用户是否有标签内部指向的地址，来判断是否展示按钮
-	    </description>
+	    <!-- <description>根据用户的信息判断用户是否有标签内部指向的地址，来判断是否展示按钮</description> -->
 	    <attribute>
 	      <name>url</name>
 	      <required>true</required>

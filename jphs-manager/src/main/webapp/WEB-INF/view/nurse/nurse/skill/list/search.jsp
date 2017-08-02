@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<form id="serach-form" method="get" action="/nurse/skill/index.jhtml">
+<form id="serach-form" method="get" id="serach-form" action="/nurse/skill/index.jhtml">
 	<div class="clearfix">
 		<table class="text-right ">
 			<tr>

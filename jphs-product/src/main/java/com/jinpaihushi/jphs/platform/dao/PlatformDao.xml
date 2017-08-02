@@ -83,6 +83,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND P.creator_name=#{creatorName}
 		</if>
+		AND (P.status=0 OR P.status=1)
 	</sql>
 
 	<sql id="dynamicWhere">
@@ -373,6 +374,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pg.platform_id = #{platformId}
 		AND
 		si.device_type = #{deviceType}
+		AND p.status = 1
+		ORDER BY p.sort
 	</select>
 
 	<select id="getAllGoods" resultType="java.util.HashMap">
@@ -380,15 +383,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		g.*,si.url
 		FROM
 		platform_goods pg
-		LEFT JOIN goods g ON pg.goods_id = g.id
+		LEFT JOIN goods g ON
+		pg.goods_id = g.id
 		LEFT JOIN product p ON g.product_id = p.id
-		LEFT JOIN service_images si ON si.source_id =g.id
+		LEFT JOIN
+		service_images si ON si.source_id =g.id
 		WHERE
-		pg.platform_id = #{platformId}
+		pg.platform_id =
+		#{platformId}
 		AND si.device_type = #{deviceType}
 		<if test="productId!=null">
-		AND	g.product_id =#{productId}
+			AND g.product_id =#{productId}
 		</if>
+		AND p.status = 1
+		ORDER BY p.sort
 		;
 	</select>
 </mapper>

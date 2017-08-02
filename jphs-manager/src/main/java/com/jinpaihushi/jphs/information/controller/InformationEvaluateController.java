@@ -18,6 +18,7 @@ import com.jinpaihushi.jphs.information.model.Information;
 import com.jinpaihushi.jphs.information.model.InformationEvaluate;
 import com.jinpaihushi.jphs.information.service.InformationEvaluateService;
 import com.jinpaihushi.jphs.information.service.InformationService;
+import com.jinpaihushi.jphs.system.model.SystemUser;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
 
@@ -118,6 +119,13 @@ public class InformationEvaluateController extends BaseController<InformationEva
 				}
 				return "redirect:/information/evaluate/index.jhtml";
 			}else{
+				
+				try {
+					SystemUser user = (SystemUser) hs.getAttribute("session_user");
+					informationEvaluate.setCreatorId(user.getId());
+					informationEvaluate.setCreatorName(user.getName());
+				} catch (Exception e) {
+				}
 				informationEvaluate.setId(UUID.randomUUID().toString());
 				String result = informationEvaluateService.insert(informationEvaluate);
 				if (result.length() <= 0) {

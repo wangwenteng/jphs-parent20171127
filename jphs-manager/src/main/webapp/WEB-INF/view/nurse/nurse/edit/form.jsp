@@ -75,9 +75,9 @@
 						value="<fmt:formatDate value="${nurse.workYears}"  type="both" pattern="yyyy-MM-dd" />"
 						size="14" placeholder="请选择开始工作时间" type="text" value="" readonly>
 					<span class="input-group-addon"><span
-						class="glyphicon glyphicon-remove"></span></span> <span
+						class="glyphicon glyphicon-remove" title="清空"></span></span> <span
 						class="input-group-addon"><span
-						class="glyphicon glyphicon-calendar"></span></span> <input type="hidden"
+						class="glyphicon glyphicon-calendar" title="选择日期"></span></span> <input type="hidden"
 						name="workYears" id="workYears" value="${nurse.workYears}" />
 				</div>
 			</div>
@@ -134,8 +134,7 @@
 		<div class="form-group">
 			<label class="control-label col-md-3">服务区域：</label>
 			<div class="controls  col-md-6">
-				<ul id="tt" class="easyui-tree edit_tree" checkbox="true"
-					data-options="animate:true"
+				<ul id="tt" class="easyui-tree edit_tree" checkbox="true" data-options="animate:true"
 					style="margin-top: 10px; height: 540px; overflow-y: auto;">
 				</ul>
 			</div>
@@ -241,7 +240,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
+		<%-- <div class="form-group">
 			<label class="control-label col-md-3">职称</label>
 			<div id="type" class="clearfix">
 				<c:forEach items="${list }" var="e" varStatus="s">
@@ -282,6 +281,6 @@
 					</c:forEach>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 	</fieldset>
 </form>

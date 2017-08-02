@@ -26,3 +26,24 @@ function redirectDetailPage(id) {
 function deleteById(id) {
 	window.location.href = "/voucher/delete.jhtml?id=" + id;
 }
+function change(id){
+	document.getElementById("goodsId").innerHTML=""; 
+	if(id != ""){
+		$.ajax({
+			type: "get",
+			url: "/voucher/getGoodsList.jhtml",
+			data: {id:id},
+			dataType: "json",
+			success: function(data) {
+				var goodsList = data.goodsList;
+				$("#goodsId").append("<option value=''>请选择</option>");
+				 for(var i = 0;i<goodsList.length;i++ ){
+				 $("#goodsId").append("<option value='"+goodsList[i].id+"' >"+goodsList[i].title+"</option>");
+				 };
+			}
+		});
+	}else{
+		$("#goodsId").append("<option value=''>请选择</option>");
+	}
+
+}

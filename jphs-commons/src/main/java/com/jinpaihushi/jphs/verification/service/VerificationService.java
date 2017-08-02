@@ -1,7 +1,5 @@
 package com.jinpaihushi.jphs.verification.service;
 
-import java.util.List;
-
 import com.jinpaihushi.jphs.verification.model.Verification;
 import com.jinpaihushi.service.BaseService;
 

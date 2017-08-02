@@ -408,6 +408,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		
 		 GROUP BY  `user`.`id`
+		 ORDER BY `user`.create_time DESC 
 	</select>
 		<select id="findUser" resultMap="userDetail">
 		select * from user where status=0 and phone=#{phone}  and type=#{type}

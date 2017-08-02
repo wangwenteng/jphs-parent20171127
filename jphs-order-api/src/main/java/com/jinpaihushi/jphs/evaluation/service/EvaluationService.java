@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.evaluation.service;
 
+import java.util.List;
+
 import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.evaluation.model.Evaluation;
 import com.jinpaihushi.service.BaseService;
@@ -17,5 +19,7 @@ public interface EvaluationService extends BaseService<Evaluation> {
 	Page<Evaluation> getList(Evaluation evaluation);
 
 	Integer getGoodLevel(String goodsId);
+
+	List<Evaluation> listInfo(Evaluation evaluation);
 
 }

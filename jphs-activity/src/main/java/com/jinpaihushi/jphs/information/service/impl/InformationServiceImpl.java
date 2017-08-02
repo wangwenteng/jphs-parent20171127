@@ -38,7 +38,7 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 	public Map<String, Object> getHomeInformation(String channelId) {
 		Map<String, Object> result = new HashMap<>();
 		Map<String, Object> query = new HashMap<>();
-		query.put("num", 6);
+		query.put("num", 5);
 		query.put("channelId", channelId);
 		List<Information> top = informationDao.queryOrderBy(query);
 		result.put("top", top);
@@ -99,11 +99,11 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 			}
 			result.put("top", top);
 		}
-		information.setTop(0);
 		information.setInformationChannelId(channelId);
+		information.setStatus(0);
 		information.setOrderby("create_time DESC");
 		if(page==null)page =1;
-		PageHelper.startPage(page, 2);
+		PageHelper.startPage(page, 5);
 		Page<Information> list = informationDao.query(information);
 		for (Information informations : list) {
 			String[] strings = informations.getImage().split(",");

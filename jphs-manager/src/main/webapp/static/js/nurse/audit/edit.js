@@ -1,6 +1,5 @@
 $(function() {
 	$('#save').click(function() {
-		alert($('#remark').val());
 		if ($('#audit').val() == 1) {
 			if (confirm('您确定要对该护士通过审核吗？')) {
 				$("#auditForm").submit();
