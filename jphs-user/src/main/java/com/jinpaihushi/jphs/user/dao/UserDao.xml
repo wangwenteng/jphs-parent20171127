@@ -6,22 +6,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.user.dao.UserDao">
 
 	<sql id="field">
-		U.id, U.type, U.name, U.sex, U.phone, U.password, U.brief,
-		U.open_id, U.device,U.address, U.recommend_id, U.create_time, U.status
+		U.id, U.type, U.name, U.sex,
+		U.phone, U.password, U.brief, U.open_id,
+		U.device, U.birthday, U.address, U.recommend_id,
+		U.create_time, U.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		U.id U_id, U.type U_type, U.name U_name, U.sex U_sex,
-		U.phone U_phone, U.password U_password, U.brief U_brief, U.open_id
-		U_open_id, U.device U_device,U.address U_address, U.recommend_id U_recommend_id,
+		U.id U_id, U.type U_type,
+		U.name U_name, U.sex U_sex,
+		U.phone U_phone, U.password U_password,
+		U.brief U_brief, U.open_id U_open_id,
+		U.device U_device, U.birthday U_birthday,
+		U.address U_address, U.recommend_id U_recommend_id,
 		U.create_time U_create_time, U.status U_status
 	</sql>
 
 	<sql id="fieldWithAlias">
-		U.id id, U.type type, U.name name, U.sex sex, U.phone
-		phone, U.password password, U.brief brief, U.open_id openId, U.device
-		device,U.address address, U.recommend_id recommendId, U.create_time createTime, U.status
-		status
+		U.id id, U.type type,
+		U.name name, U.sex sex,
+		U.phone phone, U.password password,
+		U.brief brief, U.open_id openId,
+		U.device device, U.birthday birthday,
+		U.address address, U.recommend_id recommendId,
+		U.create_time createTime, U.status status
 	</sql>
 
 	<sql id="condition">
@@ -32,13 +40,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND U.type=#{type}
 		</if>
 		<if test="name!=null and name!=''">
-			AND U.name LIKE CONCAT(CONCAT('%', #{name}), '%')
+			AND U.name=#{name}
 		</if>
 		<if test="sex!=null">
 			AND U.sex=#{sex}
 		</if>
 		<if test="phone!=null and phone!=''">
-			AND U.phone LIKE CONCAT(CONCAT('%', #{phone}), '%')
+			AND U.phone=#{phone}
 		</if>
 		<if test="password!=null and password!=''">
 			AND U.password=#{password}
@@ -52,11 +60,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="device!=null">
 			AND U.device=#{device}
 		</if>
-		<if test="recommendId!=null and recommendId!=''">
-			AND U.recommend_id=#{recommendId}
+		<if test="birthday!=null and birthday!=''">
+			AND U.birthday=#{birthday}
 		</if>
 		<if test="address!=null and address!=''">
 			AND U.address=#{address}
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			AND U.recommend_id=#{recommendId}
 		</if>
 		<if test="createTime!=null">
 			AND U.create_time=#{createTime}
@@ -100,6 +111,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="device!=null">
 				AND U.device=#{device}
+			</if>
+			<if test="birthday!=null and birthday!=''">
+				AND U.birthday LIKE CONCAT('%', #{birthday}, '%')
 			</if>
 			<if test="address!=null and address!=''">
 				AND U.address LIKE CONCAT('%', #{address}, '%')
@@ -145,6 +159,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="device!=null">
 				U.device=#{device},
 			</if>
+			<if test="birthday!=null">
+				U.birthday=#{birthday},
+			</if>
 			<if test="address!=null">
 				U.address=#{address},
 			</if>
@@ -175,6 +192,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="sex" column="sex" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="birthday" column="birthday" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="password" column="password" javaType="String"
 			jdbcType="VARCHAR"></result>
@@ -212,6 +231,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="device" column="U_device" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="birthday" column="U_birthday" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="address" column="U_address" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="recommendId" column="U_recommend_id"
@@ -225,21 +245,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.user.model.User">
 		INSERT INTO `USER`(
-		id, type, name, sex, phone, password,
-		brief, open_id, device,address,
-		recommend_id, create_time, status )VALUES(
-		#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
-		#{name,jdbcType=VARCHAR},
-		#{sex,jdbcType=INTEGER},
-		#{phone,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{brief,jdbcType=VARCHAR},
-		#{openId,jdbcType=VARCHAR},
-		#{device,jdbcType=INTEGER},
-		#{address,jdbcType=VARCHAR},
-		#{recommendId,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP},
-		#{status,jdbcType=INTEGER} )
+			id, type, 
+			name, sex, 
+			phone, password, 
+			brief, open_id, 
+			device, birthday, 
+			address, recommend_id, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+			#{phone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+			#{brief,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
+			#{device,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, 
+			#{address,jdbcType=VARCHAR}, #{recommendId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
 	</insert>
 
 	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
@@ -249,22 +270,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			name, sex, 
 			phone, password, 
 			brief, open_id, 
-			device, address,recommend_id, 
+			device, birthday, 
+			address, recommend_id, 
 			create_time, status
         )]]>
-		VALUES
+       	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR},
-			#{item.type,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR},
-			#{item.sex,jdbcType=INTEGER}, #{item.phone,jdbcType=VARCHAR},
-			#{item.password,jdbcType=VARCHAR}, #{item.brief,jdbcType=VARCHAR},
-			#{item.openId,jdbcType=VARCHAR}, #{item.device,jdbcType=INTEGER},
-			#{item.address,jdbcType=VARCHAR},
-			#{item.recommendId,jdbcType=VARCHAR},
-			#{item.createTime,jdbcType=TIMESTAMP},
-			#{item.status,jdbcType=INTEGER} )
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.sex,jdbcType=INTEGER}, 
+			#{item.phone,jdbcType=VARCHAR}, #{item.password,jdbcType=VARCHAR}, 
+			#{item.brief,jdbcType=VARCHAR}, #{item.openId,jdbcType=VARCHAR}, 
+			#{item.device,jdbcType=INTEGER}, #{item.birthday,jdbcType=VARCHAR}, 
+			#{item.address,jdbcType=VARCHAR}, #{item.recommendId,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
 		</foreach>
 	</insert>
 
@@ -338,6 +359,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="device" column="device" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="birthday" column="birthday" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="recommendId" column="recommend_id" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date"

@@ -47,7 +47,7 @@ public class GoodsController extends BaseController<Goods> {
 	private EvaluationService evaluationService;
 	@Autowired
 	private OrderGoodsService orderGoodsService;
-	
+
 	@Override
 	protected BaseService<Goods> getService() {
 		// TODO Auto-generated method stub
@@ -165,4 +165,39 @@ public class GoodsController extends BaseController<Goods> {
 		return null;
 	}
 
+	@ResponseBody
+	@RequestMapping(name = "热门服务", path = "/hostService.json")
+	public byte[] hostService(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, Integer deviceType,
+			String columnId, String siteId) {
+
+		try {
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("goods.hostService.json,deviceType=" + deviceType + " siteId=" + siteId + " columnId="
+						+ columnId);
+			}
+			// 查空
+			if (StringUtils.isEmpty(columnId) || StringUtils.isEmpty(siteId) || deviceType == null) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+
+			// 热门服务
+			Map<String, Object> map_columnId = new HashMap<String, Object>();
+			map_columnId.put("columnId", columnId);
+			map_columnId.put("siteId", siteId);
+			map_columnId.put("deviceType", deviceType);
+			List<Map<String, Object>> columnGoodsList = goodsService.getColumnGoods(map_columnId);
+
+			// 1.根据 name，password,type查询完整信息
+			// 2.错误N种情况判断及返回前端
+			// 3.信息无误，封装信息以及生成token，返回前端
+
+			return JSONUtil.toJSONResult(1, "操作成功！", columnGoodsList);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.failLog.error(
+					"goods.hostService.json,deviceType=" + deviceType + " siteId=" + siteId + " columnId=" + columnId, e);
+		}
+		return null;
+	}
 }

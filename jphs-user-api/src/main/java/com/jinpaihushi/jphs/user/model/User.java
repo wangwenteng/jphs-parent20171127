@@ -92,6 +92,7 @@ public class User extends BaseModel implements Predicate<User>,
 	private String token;
 	private String headPicture;
 	private String address;//区域信息
+	private String birthday;
 	public User(){}
 
 	public User(String id){
@@ -349,6 +350,14 @@ public class User extends BaseModel implements Predicate<User>,
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 
 	public String toString() {

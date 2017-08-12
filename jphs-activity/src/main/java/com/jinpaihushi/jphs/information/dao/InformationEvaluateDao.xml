@@ -393,31 +393,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		IE.essence,
 		IE.create_time,
 		IE.creator_id,
-		REPLACE(u.phone,SUBSTR(IE.creator_name,4,4),'****') creator_name,
+		REPLACE(IE.creator_name,SUBSTR(IE.creator_name,4,4),'****')
+		creator_name,
 		IE.`status`
 		FROM
 		information_evaluate IE
-		LEFT JOIN nurse_images ni ON
+		LEFT JOIN
+		nurse_images ni ON
 		IE.creator_id = ni.source_id
 		<where>
-			AND IE.`status` =1
 			<if test="informationEvaluate!=null">
-				<if test="informationEvaluate.id!=null and informationEvaluate.id!=''">
-					AND IE.id = #{informationEvaluate.id}
-				</if>
 				<if
 					test="informationEvaluate.informationId!=null and informationEvaluate.informationId!=''">
-					AND IE.information_id  =
+					AND IE.information_id =
 					#{informationEvaluate.informationId}
 				</if>
-				<if
-					test="informationEvaluate.headPicture!=null and informationEvaluate.headPicture!=''">
-					AND IE.head_picture LIKE CONCAT('%',
-					#{informationEvaluate.headPicture}, '%')
-				</if>
+				( IE.`status` =1
 				<if test="userId!=null and userId!=''">
-				OR (IE.creator_id =#{userId} AND IE.`status` =0)
-			</if>
+					OR(IE.creator_id=#{userId} OR IE.status =0)
+				</if>
+				)
 			</if>
 		</where>
 		<if test="informationEvaluate.orderby != null">

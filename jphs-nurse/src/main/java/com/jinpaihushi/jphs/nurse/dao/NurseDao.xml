@@ -12,7 +12,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		N.department_id,
 		N.creator_id, N.creator_name,
 		N.create_time, N.active,
-		N.address, N.status
+		 N.status
 	</sql>
 
 	<sql id="fieldGlobal">
@@ -28,7 +28,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		N.create_time
 		N_create_time, N.active
 		N_active,
-		N.address N_address, N.status N_status
+		 N.status N_status
 	</sql>
 
 	<sql id="fieldWithAlias">
@@ -43,7 +43,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		N.create_time
 		createTime,
 		N.active active,
-		N.address address, N.status
+		 N.status
 		status
 	</sql>
 
@@ -77,9 +77,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="active!=null">
 			AND N.active=#{active}
-		</if>
-		<if test="address!=null and address!=''">
-			AND N.address=#{address}
 		</if>
 		<if test="status!=null">
 			AND N.status=#{status}
@@ -125,9 +122,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="active!=null">
 				AND N.active=#{active}
 			</if>
-			<if test="address!=null and address!=''">
-				AND N.address LIKE CONCAT('%', #{address}, '%')
-			</if>
 			<if test="status!=null">
 				AND N.status=#{status}
 			</if>
@@ -166,9 +160,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="active!=null">
 				N.active=#{active},
 			</if>
-			<if test="address!=null">
-				N.address=#{address},
-			</if>
 			<if test="status!=null">
 				N.status=#{status},
 			</if>
@@ -183,8 +174,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="nurse" type="com.jinpaihushi.jphs.nurse.model.Nurse">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="type" javaType="Integer"
-			jdbcType="INTEGER"></result>
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="workYears" column="work_years" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
@@ -207,8 +196,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<resultMap id="nurseDetail" type="com.jinpaihushi.jphs.nurse.model.Nurse">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="type" javaType="Integer"
-			jdbcType="INTEGER"></result>
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="workYears" column="work_years" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
@@ -279,8 +266,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<resultMap id="nurseGlobal" type="com.jinpaihushi.jphs.nurse.model.Nurse">
 		<result property="id" column="N_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="N_type" javaType="Integer"
-			jdbcType="INTEGER"></result>
 		<result property="sfz" column="N_sfz" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="workYears" column="N_work_years" javaType="Date"
@@ -305,7 +290,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
 		INSERT INTO `NURSE`(
-		id, type,
+		id, 
 		sfz, work_years,
 		details,
 		hospital, department_id,
@@ -315,7 +300,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		status
 		)VALUES(
 		#{id,jdbcType=VARCHAR},
-		#{type,jdbcType=INTEGER},
+		
 		#{sfz,jdbcType=VARCHAR},
 		#{workYears,jdbcType=TIMESTAMP},
 		#{details,jdbcType=VARCHAR},
@@ -331,7 +316,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `NURSE`(
-			id, type, 
+			id,  
 			sfz, work_years, 
 			 details, 
 			hospital, department_id, 
@@ -344,7 +329,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR},
-			#{item.type,jdbcType=INTEGER},
 			#{item.sfz,jdbcType=VARCHAR},
 			#{item.workYears,jdbcType=TIMESTAMP},
 			#{item.details,jdbcType=VARCHAR},

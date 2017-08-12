@@ -20,14 +20,14 @@ public interface InformationService extends BaseService<Information> {
 	 * @param page 页数
 	 * @return
 	 */
-	Map<String, Object> getTopList(String channelId,Integer page);
+	List<Map<String, Object>> getTopList(String channelId,Integer page);
 
 	/**
 	 * 获取置顶的资讯
 	 * @param information
 	 * @return
 	 */
-	List<Information> getLatestformation(String channelId,Integer num);
+	List<Map<String, Object>> getLatestformation(String channelId,Integer num);
 
 	/**
 	 * 资讯详情 
@@ -39,5 +39,5 @@ public interface InformationService extends BaseService<Information> {
 	List<Map<String,Object>> listapp(Map<String, Object> query);
 
 	List<Map<String, Object>> getCollection(String userId);
-
+	int deleteCollection(String userId, String inforationIds);
 }

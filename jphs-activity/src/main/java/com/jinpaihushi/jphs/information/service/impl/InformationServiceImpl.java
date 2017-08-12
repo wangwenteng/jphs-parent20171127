@@ -1,6 +1,5 @@
 package com.jinpaihushi.jphs.information.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.information.dao.InformationDao;
 import com.jinpaihushi.jphs.information.model.Information;
@@ -35,13 +31,11 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 	}
 
 	@Override
-	public List<Information> getLatestformation(String channelId, Integer num) {
-		Map<String, Object> result = new HashMap<>();
+	public List<Map<String, Object>> getLatestformation(String channelId, Integer num) {
 		Map<String, Object> query = new HashMap<>();
 		query.put("num", num);
 		query.put("channelId", channelId);
-		List<Information> latestformation = informationDao.queryOrderBy(query);
-		result.put("top", latestformation);
+		List<Map<String, Object>> latestformation = informationDao.queryOrderBy(query);
 		return latestformation;
 	}
 
@@ -55,23 +49,21 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 	 * @return
 	 */
 	@Override
-	public Map<String, Object> getTopList(String channelId, Integer num) {
-		Map<String, Object> result = new HashMap<>();
+	public List<Map<String, Object>> getTopList(String channelId, Integer num) {
 		Map<String, Object> query = new HashMap<>();
 		query.put("top", 1);
-		query.put("num", 3);
+		query.put("num", num);
 		query.put("channelId", channelId);
-		List<Information> top = informationDao.queryOrderBy(query);
-		for (Information information2 : top) {
-			String[] strings = information2.getImage().split(",");
+		List<Map<String, Object>> top = informationDao.queryOrderBy(query);
+		for (Map<String, Object> map : top) {
+			String[] strings = ((String) map.get("image")).split(",");
 			if (strings.length > 0) {
-				information2.setImage(strings[0]);
+				map.put("image", strings[0]);
 			} else {
-				information2.setImage("");
+				map.put("image", "");
 			}
 		}
-		result.put("top", top);
-		return result;
+		return top;
 	}
 
 	@Override
@@ -113,4 +105,13 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 		return list;
 	}
 
+	@Override
+	public int deleteCollection(String inforationIds, String userId) {
+		String[] informationId = inforationIds.split(",");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ids", informationId);
+		params.put("userId", userId);
+		int i = informationDao.deleteCollection(params);
+		return i;
+	}
 }

@@ -69,6 +69,7 @@ public class Information extends BaseModel implements Predicate<Information>,
 	 * 资讯评价
 	 */
 	private List<InformationEvaluate> informationEvaluate;
+	private Boolean collection =false;
 	public Information(){}
 
 	public Information(String id){
@@ -221,6 +222,14 @@ public class Information extends BaseModel implements Predicate<Information>,
 
 	public void setInformationEvaluate(List<InformationEvaluate> informationEvaluate) {
 		this.informationEvaluate = informationEvaluate;
+	}
+	
+	public Boolean getCollection() {
+		return collection;
+	}
+
+	public void setCollection(Boolean collection) {
+		this.collection = collection;
 	}
 
 	public String toString() {

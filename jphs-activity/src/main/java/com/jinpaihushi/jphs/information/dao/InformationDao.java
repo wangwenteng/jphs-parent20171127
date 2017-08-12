@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.information.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -21,7 +22,7 @@ public interface InformationDao extends BaseDao<Information> {
 	 * 查询置顶的列表
 	 * @return
 	 */
-	List<Information> queryOrderBy(Map<String, Object> map);
+	List<Map<String, Object>> queryOrderBy(Map<String, Object> map);
 	
 	List<Map<String,Object>> listapp(Map<String, Object> query);
 
@@ -31,5 +32,7 @@ public interface InformationDao extends BaseDao<Information> {
 	 * @return
 	 */
 	List<Map<String, Object>> getCollection(String userId);
+
+	int deleteCollection(Map<String, Object> params);
 	
 }

@@ -59,7 +59,7 @@ public class AdvertisingController extends BaseController<Advertising> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			if (type == 1) {
 				map.put("atype", 2);
-			} else {
+			} else if (type == 2) {
 				map.put("atype", 1);
 			}
 			map.put("stype", 1);

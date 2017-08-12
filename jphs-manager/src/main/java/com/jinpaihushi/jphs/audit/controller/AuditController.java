@@ -70,7 +70,7 @@ public class AuditController extends BaseController<Audit> {
 		modelMap.put("department", department);
 		Nurse result = nurseService.getNurseDetail(nurse).get(0);
 		modelMap.put("nurse", result);
-		modelMap.put("addressName", result.getAddress() == null ? "" : result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getUser().getAddress() == null ? "" : result.getUser().getAddress().split("-")[3]);
 		Audit audit = new Audit();
 		audit.setCreatorId(result.getUser().getId());
 		List<Audit> list = auditService.list(audit);
@@ -91,7 +91,7 @@ public class AuditController extends BaseController<Audit> {
 		modelMap.put("department", department);
 		Nurse result = nurseService.getNurseDetail(nurse).get(0);
 		modelMap.put("nurse", result);
-		modelMap.put("addressName", result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getUser().getAddress() == null ? "" : result.getUser().getAddress().split("-")[3]);
 		// Audit audit = auditService.loadById(id);
 		// modelMap.put("audit", audit);
 		return "nurse/audit/detail";

@@ -24,9 +24,10 @@ public class ObjectVerification {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			String name = field.getName();
-			if (name.equals("id") || name.equals("createTime"))
+			if (name.equals("id")||name.equals("status") || name.equals("createTime"))
 				continue;
 			if (field.get(object) == null) {
+				System.out.println(name);
 				return false;
 			}
 		}

@@ -201,17 +201,17 @@ public class UserController {
 		}
 		return null;
 	}
-	@RequestMapping(path = "/getCollection.json", name = "选择上门时间")
+	@RequestMapping(path = "/getCollection.json", name = "我的收藏")
 	@ResponseBody
 	public byte[] getCollection(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("user.findWorkTime.json userId=" + userId);
+				Util.debugLog.debug("user.getCollection.json userId=" + userId);
 			}
 			if (StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			String token = req.getHeader("token");
+			/*String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
 				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
@@ -222,14 +222,51 @@ public class UserController {
 			if (!flag) {
 				// 身份认证失败,返回错误信息
 				return JSONUtil.toJSONResult(2, "身份认证失败", null);
-			} 
+			} */
 			List<Map<String,Object>> informationList = informationService.getCollection(userId);
 			return JSONUtil.toJSONResult(1, "操作成功！", informationList);
 		} catch (Exception e) {
-			Util.failLog.error("user.findWorkTime.json userId=" + userId, e);
+			Util.failLog.error("user.getCollection.json userId=" + userId, e);
 		}
 		return null;
 	}
+	
+	@RequestMapping(path = "/deleteCollection.json", name = "删除我的收藏")
+	@ResponseBody
+	public byte[] deleteCollection(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
+			String informationIds, String userId) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("user.deleteCollection.json informationIds=" + informationIds+" userId="+userId);
+			}
+			if (StringUtils.isEmpty(informationIds)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+
+			// String token = req.getHeader("token");
+			// if (StringUtils.isEmpty(token)) {
+			// return JSONUtil.toJSONResult(3, "非法请求", null);
+			// }
+			// User user = (User) req.getSession().getAttribute("user");
+			// if (user == null)
+			// user = userService.loadById(userId);
+			// boolean flag = Common.CheckPerson(user.getPhone(),
+			// user.getPassword(), token);
+			// if (!flag) { // 身份认证失败,返回错误信息
+			// return JSONUtil.toJSONResult(2, "身份认证失败", null);
+			// }
+
+			int i = informationService.deleteCollection(informationIds, userId);
+			if (i < 1) {
+				return JSONUtil.toJSONResult(0, "操作失败！", i);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", i);
+		} catch (Exception e) {
+			Util.failLog.error("user.deleteCollection.json informationIds=" + informationIds+" userId="+userId, e);
+		}
+		return null;
+	}
+	
 	@RequestMapping(path = "/getReceiveAddress.json", name = "查询收货地址")
 	@ResponseBody
 	public byte[] getReceiveAddress(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,Integer defaultAddress) {

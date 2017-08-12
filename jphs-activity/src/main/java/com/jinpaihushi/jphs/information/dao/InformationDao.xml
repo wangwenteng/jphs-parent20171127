@@ -399,14 +399,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `INFORMATION` I
 		WHERE I.ID = #{id}
 	</select>
-	<select id="queryOrderBy" resultMap="information">
+	<select id="queryOrderBy" resultType="java.util.HashMap">
 		SELECT 
-		I.id,
-		IFNULL(I.title,'') title,
-		IFNULL(I.brief,'') brief,
-		IFNULL(I.image,'') image,
-		IFNULL(I.source,'') source,
-		I.create_time
+		id,
+		IFNULL(title,'') title,
+		IFNULL(brief,'') brief,
+		IFNULL(image,'') image,
+		IFNULL(source,'') source,
+		create_time
 		FROM information WHERE find_in_set(#{channelId},
 		information_channel_id )
 		AND `status` =1
@@ -422,14 +422,34 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="getCollection" resultType="java.util.HashMap">
 		SELECT
 		I.id,
-		I.title,
-		I.brief,
-		I.image
+		IFNULL(I.title,'') title,
+		IFNULL(I.brief,'') brief,
+		IFNULL(I.image,'') image,
+		IFNULL(I.source,'') source,
+		I.create_time
 		FROM
 		information_collection ic
 		LEFT JOIN information i ON
 		ic.information_id = i.id
 		WHERE
-		ic.creator_id = #{userId}
+		ic.creator_id = #{userId} and ic.status =0
 	</select>
+	<update id="deleteCollection" parameterType="java.util.Map">
+		UPDATE
+		information_collection ic
+		SET
+		ic.`status` =-1
+		<where>
+			<if test="ids!=null and ids!=''">
+			AND	ic.id
+				<foreach collection="ids" item="id" open="in (" close=")"
+					separator=",">
+					#{id}
+				</foreach>
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND ic.creator_id =#{userId}
+			</if>
+		</where>
+	</update>
 </mapper>
