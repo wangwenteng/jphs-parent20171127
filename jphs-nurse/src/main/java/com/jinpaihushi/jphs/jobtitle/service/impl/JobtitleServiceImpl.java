@@ -26,4 +26,9 @@ public class JobtitleServiceImpl extends BaseServiceImpl<Jobtitle> implements Jo
 		return jobtitleDao;
 	}
 
+	@Override
+	public int checkName(Jobtitle jobtitle) {
+		return jobtitleDao.checkName(jobtitle);
+	}
+	
 }

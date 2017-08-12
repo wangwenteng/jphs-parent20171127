@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
+import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 import com.jinpaihushi.jphs.system.model.SystemModule;
 import com.jinpaihushi.jphs.system.model.SystemRole;
 import com.jinpaihushi.jphs.system.model.SystemUser;
@@ -132,6 +134,11 @@ public class SystemRoleController extends BaseController<SystemRole> {
 
 		return "redirect:/system/role/index.jhtml";
 	}
-	
+	@ResponseBody
+	@RequestMapping(name = "验证名称", path = "/checkName.json")
+	public int checkName(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, SystemRole role ) {
+		int b = systemRoleService.checkName(role);
+		return b;
+	}
 
 }

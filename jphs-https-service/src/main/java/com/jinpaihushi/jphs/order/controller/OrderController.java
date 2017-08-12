@@ -24,6 +24,7 @@ import com.jinpaihushi.jphs.voucher.service.VoucherService;
 import com.jinpaihushi.pay.alipay.AlipaySign;
 import com.jinpaihushi.pay.wechatpay.WechatPay;
 import com.jinpaihushi.utils.Common;
+import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.ObjectVerification;
 import com.jinpaihushi.utils.Util;
@@ -44,6 +45,7 @@ public class OrderController {
 	public byte[] createOrder(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, OrderInfo orderInfo,
 			String authCode) {
 		try {
+			boolean flag=false;
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("order.createOrder.json");
@@ -51,18 +53,30 @@ public class OrderController {
 			if(!ObjectVerification.verification(orderInfo)){
 				return JSONUtil.toJSONResult(0, "请核对参数信息", null);
 			}
+			/*String token = req.getHeader("token");
+			if (StringUtils.isEmpty(token)) {
+				return JSONUtil.toJSONResult(3, "非法请求", null);
+			}
+			User user = (User) req.getSession().getAttribute("user");
+			if (user == null)
+				user = userService.loadById(orderInfo.getCreatorId());
+			boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+			if (!flag) {
+				// 身份认证失败,返回错误信息
+				return JSONUtil.toJSONResult(2, "身份认证失败", null);
+			}*/
 			//对订单信息进行验证
 			//首先判断优惠券的信息 如果用户使用优惠券
-			if(orderInfo.getVoucherUseId()!=null){
+			if(StringUtils.isNotEmpty(orderInfo.getVoucherUseId())){
 				//验证该用户是否拥有改优惠券
-				boolean flag = voucherService.isHaveVoucher(orderInfo.getVoucherUseId(), orderInfo.getCreatorId());
+				flag = voucherService.isHaveVoucher(orderInfo.getVoucherUseId(), orderInfo.getCreatorId());
 				if(!flag){
 					return JSONUtil.toJSONResult(0, "非法请求！", null);
 				}
 			}
 			//对订单的价格进行验证
 			Double price = voucherService.getGoodsPrice(orderInfo.getVoucherUseId(), orderInfo.getPricePartId());
-			if(price!=orderInfo.getPayPrice()){
+			if(DoubleUtils.sub(price, orderInfo.getPayPrice())!=0){
 				return JSONUtil.toJSONResult(0, "非法请求！", null);
 			}
 			Map<String, Object> result = orderService.createOrder(orderInfo);
@@ -91,7 +105,7 @@ public class OrderController {
 			}
 			String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
-				return JSONUtil.toJSONResult(0, "token不能为空", null);
+				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
 			User user = (User) req.getSession().getAttribute("user");
 			if (user == null)
@@ -114,38 +128,50 @@ public class OrderController {
 
 	@RequestMapping(path = "/getUserOrderDetail.json", name = "订单详情")
 	@ResponseBody
-	public byte[] getUserOrderDetail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String orderId,Integer deviceType) {
+	public byte[] getUserOrderDetail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String orderId, String userId,Integer deviceType) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("order.getUserOrderDetail.json orderId="+orderId+" deviceType="+deviceType);
+				Util.debugLog.debug("order.getUserOrderDetail.json orderId="+orderId+" deviceType="+deviceType+" userId="+userId);
 			}
-			if (StringUtils.isEmpty(orderId)||deviceType==null) {
+			if (StringUtils.isEmpty(orderId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
+			/*String token = req.getHeader("token");
+			if (StringUtils.isEmpty(token)) {
+				return JSONUtil.toJSONResult(3, "非法请求", null);
+			}
+			User user = (User) req.getSession().getAttribute("user");
+			if (user == null)
+				user = userService.loadById(userId);
+			boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+			if (!flag) {
+				// 身份认证失败,返回错误信息
+				return JSONUtil.toJSONResult(2, "身份认证失败", null);
+			}*/
 			Order result = orderService.getUserOrderDetail(orderId,deviceType);
 			if(result==null){
 				return JSONUtil.toJSONResult(0, "非法请求", null);
 			}
 			return JSONUtil.toJSONResult(1, "操作成功！", result);
 		} catch (Exception e) {
-			Util.failLog.error("order.getUserOrderDetail.json orderId="+orderId+" deviceType="+deviceType, e);
+			Util.failLog.error("order.getUserOrderDetail.json orderId="+orderId+" deviceType="+deviceType+" userId="+userId, e);
 		}
 		return null;
-	}@RequestMapping(path = "/getUserOrderStatus.json", name = "订单详情")
+	}@RequestMapping(path = "/getUserOrderStatus.json", name = "订单状态")
 	@ResponseBody
 	public byte[] getUserOrderStatus(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String orderId,String userId) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("order.getUserOrderDetail.json orderId="+orderId);
+				Util.debugLog.debug("order.getUserOrderDetail.json orderId="+orderId+" userId="+userId);
 			}
 			if (StringUtils.isEmpty(orderId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
-				return JSONUtil.toJSONResult(0, "token不能为空", null);
+				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
 			User user = (User) req.getSession().getAttribute("user");
 			if (user == null)
@@ -158,7 +184,7 @@ public class OrderController {
 			Order result = orderService.loadById(orderId);
 			return JSONUtil.toJSONResult(1, "操作成功！", result.getSchedule());
 		} catch (Exception e) {
-			Util.failLog.error("order.getUserOrderDetail.json orderId="+orderId, e);
+			Util.failLog.error("order.getUserOrderDetail.json orderId="+orderId+" userId="+userId, e);
 		}
 		return null;
 	}
@@ -166,7 +192,7 @@ public class OrderController {
 	@RequestMapping(path = "/orderPay.json", name = "订单支付")
 	@ResponseBody
 	public byte[] orderPay(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsName,
-			String orderNo, String return_url, Double payParice,Integer type) {
+			String orderNo, String return_url, Double payParice,Integer type,String userId) {
 		try {
 				if(type == null){
 					return JSONUtil.toJSONResult(0, "参数不能为空", null);
@@ -175,8 +201,20 @@ public class OrderController {
 				if (Util.debugLog.isDebugEnabled()) {
 					Util.debugLog.debug("order.orderPay.json goodsName="+goodsName +" orderNo="+orderNo+" return_url="+return_url+" payParice="+payParice+" type="+type);
 				}
+				String token = req.getHeader("token");
+				if (StringUtils.isEmpty(token)) {
+					return JSONUtil.toJSONResult(3, "非法请求", null);
+				}
+				User user = (User) req.getSession().getAttribute("user");
+				if (user == null)
+					user = userService.loadById(userId);
+				boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+				if (!flag) {
+					// 身份认证失败,返回错误信息
+					return JSONUtil.toJSONResult(2, "身份认证失败", null);
+				}
 				//判断支付金额
-				boolean flag=orderService.checkPrice(orderNo,payParice);
+				flag=orderService.checkPrice(orderNo,payParice);
 				if(!flag){
 					return JSONUtil.toJSONResult(2, "非法请求！！", null);
 				}

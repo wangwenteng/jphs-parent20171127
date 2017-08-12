@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.activity.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,8 +16,10 @@ import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.activity.model.Advertising;
 import com.jinpaihushi.jphs.activity.service.AdvertisingService;
+import com.jinpaihushi.jphs.system.model.SystemUser;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
+import com.jinpaihushi.utils.UUIDUtils;
 
 /**
  * 
@@ -73,7 +77,7 @@ public class AdvertisingController extends BaseController<Advertising> {
 
 	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
 	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Advertising advertising) {
-
+		SystemUser session_user = (SystemUser) req.getSession().getAttribute("session_user");
 		if (advertising.getId() != null && !advertising.getId().equals("")) {
 			String result= advertisingService.updateAdvertising(advertising);
 			if (result.length() <= 0) {
@@ -81,6 +85,11 @@ public class AdvertisingController extends BaseController<Advertising> {
 				return "redirect:/advertising/err.jhtml";
 			}
 		} else {
+			advertising.setId(UUIDUtils.getId());
+			advertising.setCreateTime(new Date());
+			advertising.setCreatorId(session_user.getId());
+			advertising.setCreatorName(session_user.getName());
+			advertising.setStatus(0);
 			String result = advertisingService.insertAdvertising(advertising);
 			if (result.length() <= 0) {
 				// 跳转到错误页

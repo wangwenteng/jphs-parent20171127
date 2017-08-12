@@ -58,7 +58,6 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 			Area area = null;
 			area = new Area();
 			area.setSourceId(siteID);
-			area.setStatus(-1);
 			List<Area> list = areaDao.list(area);
 			for (Area area2 : list) {
 				areaDao.deleteById(area2.getId());
@@ -93,6 +92,12 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 									for(int c=0;c<priceList.size();c++){
 										// 价格明细
 										PricePart pricePart = priceList.get(c).getPricePart();
+										try {
+											pricePart.setCreatorId(site.getCreatorId());
+											pricePart.setCreatorName(site.getCreatorName());
+										} catch (Exception e) {
+										}
+										
 										if(pricePart.getId() != null && !"".equals(pricePart.getId())){
 											// siteID位0 则是新添加商品价格明细，需新添加到自己站点内
 											if(pricePart.getSiteId().equals("0") && pricePart.getPrice() != null 
@@ -100,7 +105,7 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 													&& !"".equals(pricePart.getOldPrice())){
 												pricePart.setId(UUID.randomUUID().toString());
 												pricePart.setSiteId(siteID);
-												pricePart.setStatus(0);
+												pricePart.setStatus(1);
 												pricePartDao.insert(pricePart);
 											}else{
 												pricePartDao.update(pricePart);
@@ -148,7 +153,7 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 					area.setType(0);
 					area.setSourceId(siteId);
 					area.setLocation(areas[k]);
-					area.setStatus(0);
+					area.setStatus(1);
 					areaDao.insert(area);
 				}
 			}
@@ -168,17 +173,22 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 									for(int c=0;c<priceList.size();c++){
 										// 价格明细
 										PricePart pricePart = priceList.get(c).getPricePart();
-										pricePart.setId(UUID.randomUUID().toString());
-										pricePart.setSiteId(siteId);
-										try {
-											pricePart.setCreatorId(site.getCreatorId());
-											pricePart.setCreatorName(site.getCreatorName());
-										} catch (Exception e) {
-										}
-										int pp=pricePartDao.insert(pricePart);
-										if(pp <= 0){
-											falg = false;
-											return false;
+										// 如果没对价格明细进行修改，则该站点没有数据
+										if(pricePart.getOldPrice() != null && !pricePart.getOldPrice().equals("")
+												&& pricePart.getPrice() !=null && !pricePart.getPrice().equals("")){
+											pricePart.setId(UUID.randomUUID().toString());
+											pricePart.setSiteId(siteId);
+											pricePart.setStatus(1);
+											try {
+												pricePart.setCreatorId(site.getCreatorId());
+												pricePart.setCreatorName(site.getCreatorName());
+											} catch (Exception e) {
+											}
+											int pp=pricePartDao.insert(pricePart);
+											if(pp <= 0){
+												falg = false;
+												return false;
+											}
 										}
 									}
 								}

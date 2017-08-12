@@ -49,9 +49,6 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 	/** 封号标识 */
 	private Integer active;
 
-	/** 联系地址 */
-	@Length(max = 200, message = "{nurse.address.illegal.length}")
-	private String address;
 	/**
 	 * 护士相关图片字段开始
 	 */
@@ -190,19 +187,6 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 		this.active = active;
 	}
 
-	/**
-	 * 获取联系地址
-	 */
-	public String getAddress() {
-		return address;
-	}
-
-	/**
-	 * 设置联系地址
-	 */
-	public void setAddress(String address) {
-		this.address = address;
-	}
 		
 	public int getAge() {
 		return age;
@@ -291,7 +275,7 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 				.append(",details=").append(details).append(",hospital=").append(hospital).append(",departmentId=")
 				.append(departmentId).append(",creatorId=").append(creatorId).append(",creatorName=")
 				.append(creatorName).append(",createTime=").append(createTime).append(",active=").append(active)
-				.append(",address=").append(address).append(",status=").append(status).append('}').toString();
+				.append(",status=").append(status).append('}').toString();
 	}
 
 	/**
@@ -312,7 +296,6 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 		nurse.creatorName = this.creatorName;
 		nurse.createTime = this.createTime;
 		nurse.active = this.active;
-		nurse.address = this.address;
 		nurse.status = this.status;
 		return nurse;
 	}
@@ -336,7 +319,6 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 				&& (this.creatorName == null || this.creatorName.equals(t.creatorName))
 				&& (this.createTime == null || this.createTime.equals(t.createTime))
 				&& (this.active == null || this.active.equals(t.active))
-				&& (this.address == null || this.address.equals(t.address))
 				&& (this.status == null || this.status.equals(t.status));
 	}
 
@@ -379,9 +361,6 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 		}
 		if (this.active != null) {
 			element.active = this.active;
-		}
-		if (this.address != null && !this.address.isEmpty()) {
-			element.address = this.address;
 		}
 		if (this.status != null) {
 			element.status = this.status;

@@ -274,8 +274,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.information.model.Information">
 		INSERT INTO `INFORMATION`(
-		id, information_channel_id, title,brief, image, content, preview_number,
-		top, type, status, source, author, top_time, create_time, creator_id,
+		id, information_channel_id,
+		title,brief, image, content, preview_number,
+		top, type, status, source,
+		author, top_time, create_time, creator_id,
 		creator_name )VALUES(
 		#{id,jdbcType=VARCHAR}, #{informationChannelId,jdbcType=VARCHAR},
 		#{title,jdbcType=VARCHAR},#{brief,jdbcType=VARCHAR},
@@ -325,7 +327,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		UPDATE `INFORMATION` I
 		SET
 		I.STATUS = -1
-		WHERE I.ID = #{id}
+		WHERE I.ID =
+		#{id}
 	</update>
 
 	<update id="update">
@@ -354,6 +357,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<include refid="orderby" />
 	</select>
 
+	<select id="listapp" resultType="java.util.HashMap">
+		SELECT
+		I.id,
+		IFNULL(I.title,'') title,
+		IFNULL(I.brief,'') brief,
+		IFNULL(I.image,'') image,
+		IFNULL(I.source,'') source,
+		I.create_time
+		FROM `INFORMATION` I
+		LEFT JOIN
+		`information_channel` ic ON
+		I.information_channel_id = ic.id
+		WHERE
+		find_in_set(#{channelId},
+		information_channel_id )
+		AND I.`status` =1
+		<if test="top!=null">
+			AND top =#{top}
+			ORDER BY I.top_time DESC
+			LIMIT #{num}
+		</if>
+		<if test="top==null">
+			ORDER BY I.create_time DESC
+		</if>
+
+	</select>
+
 	<select id="query" resultMap="information">
 		SELECT
 		<include refid="field" />
@@ -370,16 +400,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE I.ID = #{id}
 	</select>
 	<select id="queryOrderBy" resultMap="information">
-		SELECT * FROM information WHERE find_in_set(#{channelId},
+		SELECT 
+		I.id,
+		IFNULL(I.title,'') title,
+		IFNULL(I.brief,'') brief,
+		IFNULL(I.image,'') image,
+		IFNULL(I.source,'') source,
+		I.create_time
+		FROM information WHERE find_in_set(#{channelId},
 		information_channel_id )
 		AND `status` =1
 		<if test="top!=null">
 			AND top =#{top}
 			ORDER BY top_time DESC
+			LIMIT #{num}
 		</if>
 		<if test="top==null">
 			ORDER BY create_time DESC
 		</if>
-		LIMIT #{num}
+	</select>
+	<select id="getCollection" resultType="java.util.HashMap">
+		SELECT
+		I.id,
+		I.title,
+		I.brief,
+		I.image
+		FROM
+		information_collection ic
+		LEFT JOIN information i ON
+		ic.information_id = i.id
+		WHERE
+		ic.creator_id = #{userId}
 	</select>
 </mapper>

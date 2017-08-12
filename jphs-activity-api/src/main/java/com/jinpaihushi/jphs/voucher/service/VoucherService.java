@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.voucher.model.Voucher;
+import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
 import com.jinpaihushi.service.BaseService;
 
 /**
@@ -24,7 +25,7 @@ public interface VoucherService extends BaseService<Voucher> {
 	 * @param userId 用户id
 	 * @return
 	 */
-	List<Voucher> getUservoucher(String pricePartId, String goodsId, String userId);
+	List<Map<String, Object>> getUservoucher(String pricePartId, String goodsId, String userId);
 
 	/**
 	 * 个人中心所有优惠券

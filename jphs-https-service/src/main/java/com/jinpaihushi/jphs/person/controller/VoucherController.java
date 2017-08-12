@@ -13,11 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
-import com.jinpaihushi.jphs.voucher.model.Voucher;
+import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
-import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -42,9 +40,9 @@ public class VoucherController {
 			if (StringUtils.isEmpty(pricePartId) || StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			String token = req.getHeader("token");
+			/*String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
-				return JSONUtil.toJSONResult(0, "token不能为空", null);
+				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
 			User user = (User) req.getSession().getAttribute("user");
 			if (user == null)
@@ -53,8 +51,8 @@ public class VoucherController {
 			if (!flag) {
 				// 身份认证失败,返回错误信息
 				return JSONUtil.toJSONResult(2, "身份认证失败", null);
-			}
-			List<Voucher> list = voucherService.getUservoucher(pricePartId, goodsId, userId);
+			}*/
+			List<Map<String, Object>> list = voucherService.getUservoucher(pricePartId, goodsId, userId);
 			if (list == null) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}
@@ -79,9 +77,9 @@ public class VoucherController {
 			if (StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			String token = req.getHeader("token");
+			/*String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
-				return JSONUtil.toJSONResult(0, "token不能为空", null);
+				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
 			User user = (User) req.getSession().getAttribute("user");
 			if (user == null)
@@ -90,7 +88,7 @@ public class VoucherController {
 			if (!flag) {
 				// 身份认证失败,返回错误信息
 				return JSONUtil.toJSONResult(2, "身份认证失败", null);
-			}
+			}*/
 			List<Map<String, Object>> list = voucherService.getUserAllvoucher(userId, type, status);
 			return JSONUtil.toJSONResult(1, "操作成功！", list);
 		} catch (Exception e) {
@@ -108,15 +106,15 @@ public class VoucherController {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("计算使用优惠券之后的商品价格 ---goods.getGoodsPrice.json,voucherUseId=" + voucherUseId
+				Util.debugLog.debug("计算使用优惠券之后的商品价格 ---voucher.getGoodsPrice.json,voucherUseId=" + voucherUseId
 						+ " pricePartId=" + pricePartId + " userId=" + userId);
 			}
 			if (StringUtils.isEmpty(voucherUseId) || StringUtils.isEmpty(pricePartId) || StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			String token = req.getHeader("token");
+			/*String token = req.getHeader("token");
 			if (StringUtils.isEmpty(token)) {
-				return JSONUtil.toJSONResult(0, "token不能为空", null);
+				return JSONUtil.toJSONResult(3, "非法请求", null);
 			}
 			User user = (User) req.getSession().getAttribute("user");
 			if (user == null)
@@ -125,9 +123,9 @@ public class VoucherController {
 			if (!flag) {
 				// 身份认证失败,返回错误信息
 				return JSONUtil.toJSONResult(2, "身份认证失败", null);
-			}
+			}*/
 			// 判断该用户是否拥有此优惠券
-			flag = voucherService.isHaveVoucher(voucherUseId, userId);
+			boolean flag = voucherService.isHaveVoucher(voucherUseId, userId);
 			if (!flag) {
 				return JSONUtil.toJSONResult(2, "该用户没有改优惠券", null);
 			}
@@ -140,7 +138,7 @@ public class VoucherController {
 
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("计算使用优惠券之后的商品价格 ---goods.getGoodsPrice.json,voucherUseId=" + voucherUseId
+			Util.failLog.error("计算使用优惠券之后的商品价格 ---voucher.getGoodsPrice.json,voucherUseId=" + voucherUseId
 					+ " pricePartId=" + pricePartId + " userId=" + userId, e);
 		}
 		return null;

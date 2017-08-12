@@ -8,9 +8,9 @@
 	<table class="text-right ">
 		<tr>
 			<td>站点名称：</td>
-			<td width="200"><input type="text" id="name" name="name" value="${site.name}" placeholder="请输入搜索品类" /></td>
+			<td width="200"><input type="text" id="name" name="name" value="${site.name}" placeholder="请输入搜索名称" /></td>
 			<td>站点域名：</td>
-			<td width="200"><input type="text" id="url" name="url" value="${site.url}"  placeholder="请输入搜索品类" /></td>
+			<td width="200"><input type="text" id="url" name="url" value="${site.url}"  placeholder="请输入搜索域名" /></td>
 			<!--<td><button class="input-group-addon btn btn-primary search_btn">搜索</button></td>-->
 		</tr>
 		<!-- <tr>

@@ -86,14 +86,21 @@ public class NurseController extends BaseController<Nurse> {
 		modelMap.put("data", message);
 		modelMap.put("nurse", result);
 		modelMap.put("list", list);
-		modelMap.put("addressName", result.getAddress()==null?"":result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getUser().getAddress()==null?"":result.getUser().getAddress().split("-")[3]);
 		return "nurse/nurse/edit";
 	}
-	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+	public String redirectAddPage(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap) {
 		List<Department> department = departmentService.query(null);
+		JSONObject message = new JSONObject();
 		modelMap.put("department", department);
+		//获取护士的职称
+		List<Location> location=(List<Location>)req.getSession().getAttribute("location");
+		List<Location> locationList = locationService.getEasyTreeData(location,null);
+		modelMap.put("department", department);
+		message.put("treeData", locationList);
+		modelMap.put("data", message);
 		return "nurse/nurse/edit";
 	}
 	
@@ -108,7 +115,7 @@ public class NurseController extends BaseController<Nurse> {
 		List<NurseSkill> skillList = nurseSkillService.queryDetail(query);
 		modelMap.put("nurse", result);
 		modelMap.put("skillList", skillList);
-		modelMap.put("addressName", result.getAddress()==null?"":result.getAddress().split("-")[3]);
+		modelMap.put("addressName", result.getUser().getAddress()==null?"":result.getUser().getAddress().split("-")[3]);
 		return "nurse/nurse/detail";
 	}
 

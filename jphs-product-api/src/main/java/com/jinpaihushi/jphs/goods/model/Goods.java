@@ -70,6 +70,9 @@ public class Goods extends BaseModel implements Predicate<Goods>,
 	
     /** 排序 */
 	private Integer sort;
+	
+	/** 是否有背景图 */
+	private Integer isBg;
 
     /** 备注 */
 	@Length(max = 255, message = "{goods.remark.illegal.length}")
@@ -299,6 +302,20 @@ public class Goods extends BaseModel implements Predicate<Goods>,
 	 */
 	public void setSort(Integer sort) {
     	this.sort = sort;
+    }
+	
+	/**
+	 * 获取是否有背景图标识
+	 */
+	public Integer getIsBg() {
+    	return isBg;
+    }
+  	
+	/**
+	 * 设置是否有背景图标识
+	 */
+	public void setIsBg(Integer isBg) {
+    	this.isBg = isBg;
     }
 
 	/**

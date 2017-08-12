@@ -15,6 +15,8 @@ import com.jinpaihushi.service.BaseService;
 public interface JobtitleTypeService extends BaseService<JobtitleType> {
 
 	List<JobtitleType> queryDetail(Jobtitle jobtitle);
+
+	int checkName(JobtitleType jobtitleType);
 	
 
 }

@@ -10,24 +10,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.user.dao.UserAddressDao">
 	
 	<sql id="field">
-		UA.id, UA.title, UA.province, UA.city, 
+		UA.id, UA.default_address, UA.title, UA.province, UA.city, 
 		UA.area, UA.detailAddress, UA.create_time, UA.creator_id, 
+		UA.name,UA.phone, 
 		UA.creator_name, UA.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		UA.id UA_id, UA.title UA_title, 
+		UA.id UA_id,UA.default_address UA_default_address,
+		UA.title UA_title, 
 		UA.province UA_province, UA.city UA_city, 
 		UA.area UA_area, UA.detailAddress UA_detailAddress, 
-		UA.create_time UA_create_time, UA.creator_id UA_creator_id, 
+		UA.create_time UA_create_time, UA.creator_id UA_creator_id,
+		UA.name UA_name,UA.phone UA_phone,
 		UA.creator_name UA_creator_name, UA.status UA_status
 	</sql>
 	
 	<sql id="fieldWithAlias">
-		UA.id id, UA.title title, 
+		UA.id id,UA.default_address defaultAddress, UA.title title, 
 		UA.province province, UA.city city, 
 		UA.area area, UA.detailAddress detailaddress, 
-		UA.create_time createTime, UA.creator_id creatorId, 
+		UA.create_time createTime, UA.creator_id creatorId,
+		UA.name name,UA.phone phone, 
 		UA.creator_name creatorName, UA.status status
 	</sql>
 	
@@ -37,6 +41,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="title!=null and title!=''">
 			AND UA.title=#{title}
+		</if>
+		<if test="defaultAddress!=null and defaultAddress!=''">
+			AND UA.default_address=#{defaultAddress}
 		</if>
 		<if test="province!=null and province!=''">
 			AND UA.province=#{province}
@@ -56,6 +63,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorId!=null and creatorId!=''">
 			AND UA.creator_id=#{creatorId}
 		</if>
+		<if test="name!=null and name!=''">
+			AND UA.name=#{name}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND UA.phone=#{phone}
+		</if>
 		<if test="creatorName!=null and creatorName!=''">
 			AND UA.creator_name=#{creatorName}
 		</if>
@@ -74,6 +87,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<where>
 			<if test="id!=null and id!=''">
 				AND UA.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="defaultAddress!=null and defaultAddress!=''">
+				AND UA.default_address LIKE CONCAT('%', #{defaultAddress}, '%')
 			</if>
 			<if test="title!=null and title!=''">
 				AND UA.title LIKE CONCAT('%', #{title}, '%')
@@ -96,6 +112,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="creatorId!=null and creatorId!=''">
 				AND UA.creator_id LIKE CONCAT('%', #{creatorId}, '%')
 			</if>
+			<if test="name!=null and name!=''">
+				AND UA.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND UA.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND UA.creator_name LIKE CONCAT('%', #{creatorName}, '%')
 			</if>
@@ -110,7 +132,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="id!=null">
 				UA.id=#{id}, 
 		   </if>
-           <if test="title!=null">
+           <if test="defaultAddress!=null">
+				UA.default_address=#{defaultAddress}, 
+		   </if>
+		   <if test="title!=null">
 				UA.title=#{title}, 
 		   </if>
            <if test="province!=null">
@@ -130,6 +155,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		   </if>
            <if test="creatorId!=null">
 				UA.creator_id=#{creatorId}, 
+		   </if>
+		   <if test="name!=null">
+				UA.name=#{name}, 
+		   </if>
+		   <if test="phone!=null">
+				UA.phone=#{phone}, 
 		   </if>
            <if test="creatorName!=null">
 				UA.creator_name=#{creatorName}, 
@@ -157,6 +188,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="defaultAddress" column="default_address" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<resultMap id="userAddressGlobal" type="com.jinpaihushi.jphs.user.model.UserAddress">
@@ -170,20 +204,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="creatorId" column="UA_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="UA_creator_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="UA_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="defaultAddress" column="UA_default_address" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="UA_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="UA_name" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.user.model.UserAddress">
 		INSERT INTO `USER_ADDRESS`(
-			id, title, 
+			id, default_address,title, 
 			province, city, 
 			area, detailAddress, 
-			create_time, creator_id, 
+			create_time, creator_id,name,phone,
 			creator_name, status
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+			#{id,jdbcType=VARCHAR},#{defaultAddress,jdbcType=INTEGER},
+			#{title,jdbcType=VARCHAR}, 
 			#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
 			#{area,jdbcType=VARCHAR}, #{detailaddress,jdbcType=VARCHAR}, 
-			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},
 			#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
 		)
 	</insert>
@@ -192,20 +231,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		parameterType="list">
         <![CDATA[
         INSERT INTO `USER_ADDRESS`(
-			id, title, 
+			id,default_address, title, 
 			province, city, 
 			area, detailAddress, 
-			create_time, creator_id, 
+			create_time, creator_id,name, phone,
 			creator_name, status
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, 
+			#{item.id,jdbcType=VARCHAR}, #{item.defaultAddress,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, 
 			#{item.province,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR}, 
 			#{item.area,jdbcType=VARCHAR}, #{item.detailaddress,jdbcType=VARCHAR}, 
 			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
 			)
 		</foreach>
@@ -257,6 +297,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT <include refid="field"/>
 		FROM `USER_ADDRESS` UA
 		WHERE UA.ID = #{id}
+	</select>
+	
+	<select id="getReceiveAddress" resultMap="userAddress">
+		SELECT
+			ua.id,
+			ua.default_address,
+			ua.title,
+			ua.province,
+			ua.city,
+			ua.area,
+			ua.detailAddress,
+			ua.phone
+		FROM
+			user_address ua
+		WHERE
+			ua.`status` = 0
+		AND ua.creator_id = #{creatorId} 
+			<if test="defaultAddress!=null ">
+		  AND ua.default_address = #{defaultAddress}
+		    </if>
+		 ORDER BY ua.default_address DESC,ua.create_time DESC
 	</select>
 	
 </mapper>

@@ -42,5 +42,5 @@ public interface PlatformService extends BaseService<Platform> {
 	 */
 	List<Map<String, Object>> getProductList(String platformId, Integer deviceType);
 
-	List<Map<String, Object>> getGoodsList(String platformId, String productId, Integer deviceType);
+	List<Map<String, Object>> getGoodsList(String platformId, String productId, Integer deviceType,String siteId);
 }

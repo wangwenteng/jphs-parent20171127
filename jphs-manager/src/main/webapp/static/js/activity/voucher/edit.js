@@ -5,7 +5,8 @@ $(document).ready(function() {
 	});
 	
 	$('.form_date').datetimepicker({
-		 format: 'yyyy-mm-dd hh:ii:ss' 
+		 format: 'yyyy-mm-dd',
+		 minView: 2
 	});
 	$("#voucherForm").validate({
 		rules : {
@@ -76,15 +77,23 @@ $(document).ready(function() {
 			for (var i = 0; i < nodes.length; i++) {
 				if (nodes[i].parentId != 0) {
 					goods += nodes[i].id + ',';
+				}else{
+					product += ','+ nodes[i].id;
 				}
-				product += nodes[i].parentId;
+				
 			}
+			
 			if (goods == '') {
 				alert('请选择所提供的服务');
 				return false;
 			} else {
-				$('#goodsId').val(goods);
-				$('#productId').val(product);
+				if(product!=''){
+					$('#productId').val(product);
+					$('#goodsId').val('');
+				}else{
+					$('#goodsId').val(goods);
+					$('#productId').val('');
+				}
 				form.submit();
 			}
 		}

@@ -8,7 +8,9 @@
 		<img src="/static/images/yousanjiaox.png" />活动管理<i class="public1-horn-45"></i>活动管理<i class="public1-horn-45"></i>优惠券管理
 	<i class="public1-horn-45"></i>优惠券详情
 </div>
-
+<div class="marage_right_title" style="display: none">
+	<jsp:include page="search.jsp"></jsp:include>
+</div>
 
 <form class="form-horizontal add_body" id="platformForm" method="post"
 	data-role="validate-form" >

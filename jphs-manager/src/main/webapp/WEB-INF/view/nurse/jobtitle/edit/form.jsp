@@ -6,9 +6,6 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <form class="form-horizontal">
 	<fieldset>
-		<div id="legend" class="">
-			<legend class="">${jobtitle.id == null?'添加职称':'编辑职称'}</legend>
-		</div>
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" value="${jobtitle.id}" />
 			<!-- 文本输入 -->

@@ -104,5 +104,10 @@ public class OrderEvaluationController extends BaseController<Evaluation> {
 	}
 	
 	
+	@RequestMapping(name = "修改状态", path = "/updateStatus.jhtml")
+	public String updateStatus(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Evaluation evaluation) {
 
+		 evaluationService.update(evaluation);
+		return "redirect:/order/evaluation/index.jhtml";
+	}
 }

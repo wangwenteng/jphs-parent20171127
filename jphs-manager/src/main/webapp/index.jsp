@@ -6,6 +6,7 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <html>
 <head>
+<title>后台管理系统</title>
 <link href="../static/css/build/build_standalone.less" rel="stylesheet" type="text/css" />
 <link href="../static/css/build/build.less" rel="stylesheet" type="text/css" />
 <link href="../static/css/less/datetimepicker.less" rel="stylesheet" type="text/css" />

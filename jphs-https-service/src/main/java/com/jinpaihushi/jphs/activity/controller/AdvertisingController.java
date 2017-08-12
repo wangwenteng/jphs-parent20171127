@@ -34,27 +34,40 @@ public class AdvertisingController extends BaseController<Advertising> {
 		return advertisingService;
 	}
 
+	/**
+	 * type 1用户端 2护士端
+	 * 
+	 * @param type
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(name = "获取官网轮播图", path = "/getAdvertising.json")
-	public byte[] getAdvertising() {
+	@RequestMapping(name = "获取轮播图", path = "/getAdvertising.json")
+	public byte[] getAdvertising(Integer type) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("advertising.getAdvertising.json" );
+				Util.debugLog.debug("advertising.getAdvertising.json");
 			}
 			// 查空
 			// 1.根据 name，password,type查询完整信息
 			// 2.错误N种情况判断及返回前端
 			// 3.信息无误，封装信息以及生成token，返回前端
-			
-			
-			Map<String, Object> map = new HashMap<>();
-			map.put("type", 3);
-			List<Map<String, Object>> list = advertisingService.getCarouselFigure(map);
-			return JSONUtil.toJSONResult(1, "操作成功！", list);
+			if (type == null) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			// 轮播图集合
+			Map<String, Object> map = new HashMap<String, Object>();
+			if (type == 1) {
+				map.put("atype", 2);
+			} else {
+				map.put("atype", 1);
+			}
+			map.put("stype", 1);
+			List<Advertising> advertisingList = advertisingService.getCarouselFigure(map);
+			return JSONUtil.toJSONResult(1, "操作成功！", advertisingList);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("advertising.getAdvertising.json" , e);
+			Util.failLog.error("advertising.getAdvertising.json", e);
 
 		}
 		return null;

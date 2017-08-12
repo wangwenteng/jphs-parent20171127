@@ -55,6 +55,11 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 	
 	private String userName;
 	
+	private String repertoryId;
+	
+	private String grantName;
+	
+	
 	public Integer getType() {
 		return type;
 	}
@@ -179,11 +184,24 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 		this.userName = userName;
 	}
 
-	@Override
-	public String toString() {
-		return "VoucherUse [voucherRepertoryId=" + voucherRepertoryId + ", phone=" + phone + ", amount=" + amount
-				+ ", startTime=" + startTime + ", endTime=" + endTime + ", useTime=" + useTime + ", beginTime="
-				+ beginTime + ", stopTime=" + stopTime + ", type=" + type + "]";
+	
+	
+	public String getRepertoryId() {
+		return repertoryId;
+	}
+
+	public void setRepertoryId(String repertoryId) {
+		this.repertoryId = repertoryId;
+	}
+
+	 
+
+	public String getGrantName() {
+		return grantName;
+	}
+
+	public void setGrantName(String grantName) {
+		this.grantName = grantName;
 	}
 
 	/**
@@ -208,6 +226,14 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 		return voucherUse;
 	}
 	
+	@Override
+	public String toString() {
+		return "VoucherUse [voucherRepertoryId=" + voucherRepertoryId + ", phone=" + phone + ", amount=" + amount
+				+ ", startTime=" + startTime + ", endTime=" + endTime + ", useTime=" + useTime + ", beginTime="
+				+ beginTime + ", stopTime=" + stopTime + ", type=" + type + ", userName=" + userName + ", repertoryId="
+				+ repertoryId + "]";
+	}
+
 	/**
 	 * 比较字段：
 	 * id, voucherRepertoryId, phone, amount, 
@@ -269,4 +295,6 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 			element.status = this.status;
 		}
 	}
+
+	 
 }

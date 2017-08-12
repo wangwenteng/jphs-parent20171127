@@ -15,8 +15,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="fieldGlobal">
 		V.id V_id, V.type V_type, V.batch_no V_batch_no,
 		V.product_id V_product_id, V.goods_id V_goods_id,
-		V.start_time V_start_time, V.end_time V_end_time,
-		V.activation_start_time V_activation_start_time,
+		V.start_time
+		V_start_time, V.end_time V_end_time,
+		V.activation_start_time
+		V_activation_start_time,
 		V.activation_end_time V_activation_end_time,
 		V.days V_days, V.creator_id
 		V_creator_id, V.creator_name
@@ -27,13 +29,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="fieldWithAlias">
 		V.id id, V.type type, V.batch_no batchNo, V.product_id
 		productId, V.goods_id goodsId,
-		V.start_time startTime, V.end_time endTime,
+		V.start_time startTime, V.end_time
+		endTime,
 		V.activation_start_time activationStartTime,
 		V.activation_end_time activationEndTime,
 		V.days
-		days, V.creator_id creatorId, V.creator_name
+		days, V.creator_id
+		creatorId, V.creator_name
 		creatorName, V.create_time
-		createTime, V.status status
+		createTime,
+		V.status status
 	</sql>
 
 	<sql id="condition">
@@ -226,6 +231,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="discountAmount" column="discount_amount"
 			javaType="Double" jdbcType="DECIMAL"></result>
 	</resultMap>
+
+	<resultMap id="voucherGlobal" type="com.jinpaihushi.jphs.voucher.model.Voucher">
+		<result property="id" column="V_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="V_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="batchNo" column="V_batch_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productId" column="V_product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="V_goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="startTime" column="V_start_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="V_end_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="V_activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="V_activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="days" column="V_days" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="V_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="V_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="V_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="V_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
 	<resultMap id="userVoucher" type="com.jinpaihushi.jphs.voucher.model.Voucher">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="type" column="type" javaType="Integer"
@@ -307,37 +342,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="INTEGER"></result>
 		</association>
 	</resultMap>
-
-	<resultMap id="voucherGlobal" type="com.jinpaihushi.jphs.voucher.model.Voucher">
-		<result property="id" column="V_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="type" column="V_type" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="batchNo" column="V_batch_no" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="productId" column="V_product_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="goodsId" column="V_goods_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="startTime" column="V_start_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="endTime" column="V_end_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="activationStartTime" column="V_activation_start_time"
-			javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="activationEndTime" column="V_activation_end_time"
-			javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="days" column="V_days" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="creatorId" column="V_creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="V_creator_name"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="V_create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="status" column="V_status" javaType="Integer"
-			jdbcType="INTEGER"></result>
-	</resultMap>
-
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.voucher.model.Voucher">
 		INSERT INTO `VOUCHER`(
@@ -458,14 +462,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		,`v`.`days`
 		,`v`.`creator_id`
 		,`v`.`creator_name`
-		,`v`.`product_id`
-		,`v`.`goods_id`
+		,`v`.`product_id` productId
+		,`v`.`goods_id` goodsId
 		,`v`.`create_time`
 		,`v`.`status`
 		,`vr`.`amount`
 		,`vr`.`condition_amount`
 		,`vr`.`discount_amount`
-		,`p`.`title` productName
+		,`p`.`title`
+		productName
 		FROM
 		`jphs`.`voucher` AS
 		`v`
@@ -473,7 +478,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		`p`
 		ON (`v`.`product_id` = `p`.`id`)
 		LEFT JOIN
-		`jphs`.`voucher_repertory` AS `vr`
+		`jphs`.`voucher_repertory` AS
+		`vr`
 		ON (`v`.`id` =
 		`vr`.`voucher_id`)
 		WHERE 1 = 1
@@ -510,69 +516,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		GROUP BY `v`.`batch_no`
 	</select>
-	<select id="getUserVocher" resultMap="userVoucher">
-		SELECT DISTINCT
-		vu.id AS
-		vu_id,
-		vu.phone AS vu_phone,
-		vu.amount AS vu_amount,
-		vu.start_time AS
-		vu_start_time,
-		vu.end_time AS vu_end_time,
-		vu.use_time AS vu_use_time,
-		vr.`no` AS vr_no,
-		vr.condition_amount AS vr_condition_amount,
-		vr.amount
-		AS vr_amount,
-		vr.discount_amount AS vr_discount_amount,
-		v.id,
-		v.type,
-		v.batch_no,
-		v.product_id,
-		p.title productName,
-		v.goods_id,
-		g.title,
-		v.start_time,
-		v.end_time,
-		v.days,
-		v.creator_id,
-		v.creator_name,
-		v.create_time,
-		v.`status`
-		FROM
-		voucher_use vu
-		LEFT JOIN voucher_repertory
-		vr ON vu.voucher_repertory_id = vr.id
-		LEFT JOIN voucher v ON
-		vr.voucher_id = v.id
-		LEFT JOIN goods g ON v.goods_id = g.id
-		LEFT JOIN
-		product p ON v.product_id=p.id
-		WHERE
-		vu.creator_id=#{userId}
-		AND
-		vu.end_time > NOW()
-		AND vu.`status`
-		= 0
-		AND vu.use_time IS NULL
-		AND
-		v.product_id =#{productId}
-		AND
-		(v.goods_id=#{goodsId} OR v.goods_id IS
-		NULL)
-		ORDER BY vu.amount DESC , vu.end_time
-	</select>
 	<select id="getUserAllVocher" resultType="java.util.HashMap">
 		SELECT
 		vu.amount,
 		vu.end_time,
 		v.type,
-		p.title,
+		v.product_id,
+		v.goods_id,
 		vr.condition_amount,
 		vr.discount_amount,
 		vu.use_time,
 		CASE
-		WHEN vu.use_time IS NOT NULL THEN
+		WHEN
+		vu.use_time IS NOT NULL THEN
 		'已使用'
 		<![CDATA[
 		WHEN vu.end_time < NOW() THEN
@@ -617,7 +573,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				]]>
 			</if>
 		</if>
-		ORDER BY vu.create_time
+		ORDER BY vu.use_time, vu.create_time DESC
 	</select>
 	<select id="getVocherByUser" resultMap="userVoucher">
 		SELECT
@@ -649,7 +605,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM
 		voucher_use vu
 		LEFT JOIN voucher_repertory vr ON vu.voucher_repertory_id = vr.id
-		LEFT JOIN voucher v ON vr.voucher_id = v.id
+		LEFT
+		JOIN voucher v ON vr.voucher_id = v.id
 		WHERE vu.id =#{voucherUseId}
 	</select>
 </mapper>

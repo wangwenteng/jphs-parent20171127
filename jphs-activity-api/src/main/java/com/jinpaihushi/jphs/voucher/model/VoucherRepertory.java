@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.*;
 
 import com.jinpaihushi.function.Updator;
+import com.jinpaihushi.jphs.activity.model.VoucherUse;
 import com.jinpaihushi.model.BaseModel;
 
 /**
@@ -45,7 +46,7 @@ public class VoucherRepertory extends BaseModel implements Predicate<VoucherRepe
 
     /** 满xx折 */
 	private Double discountAmount;
-
+	private VoucherUse voucherUse;
 	public VoucherRepertory(){}
 
 	public VoucherRepertory(String id){
@@ -135,8 +136,16 @@ public class VoucherRepertory extends BaseModel implements Predicate<VoucherRepe
 	public void setDiscountAmount(Double discountAmount) {
     	this.discountAmount = discountAmount;
     }
+	
+    public VoucherUse getVoucherUse() {
+		return voucherUse;
+	}
 
-    public String toString() {
+	public void setVoucherUse(VoucherUse voucherUse) {
+		this.voucherUse = voucherUse;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("VoucherRepertory{").
 			append("id=").append(id).
 			append(",voucherId=").append(voucherId).

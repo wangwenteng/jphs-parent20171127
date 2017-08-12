@@ -26,7 +26,13 @@
 			<c:if test="${nurse.user.sex==1}">女</c:if>
 		</p>
 		<p>
-			<span>年龄：</span>24
+			<span>年龄：</span><c:if test="${fn:length(nurse.sfz)>0 }">
+								<c:set var="idcard" value="${fn:substring(nurse.sfz,6,10) }" />
+								<jsp:useBean id="nowDate" class="java.util.Date" />
+								<fmt:formatDate var="nowStr" value="${nowDate}" pattern="yyyy" />
+								<c:if test="${nowStr-idcard==0 }">1</c:if>
+								<c:if test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if>
+							</c:if>
 		</p>
 		<p>
 			<span>手机号：</span>${nurse.user.phone}</p>
@@ -48,7 +54,7 @@
 		</p>
 		<p>
 			<span>注册时间：</span>
-			<fmt:formatDate value="${nurse.createTime}" pattern="yyyy-mm-dd" />
+			<fmt:formatDate value="${nurse.createTime}" pattern="yyyy-MM-dd" />
 		</p>
 		<p>
 			<span>个人简介：</span>${fn:escapeXml(nurse.brief)}</p>
@@ -63,7 +69,7 @@
 		<p>
 			<span>工作时间：</span>
 			<fmt:formatDate value="${nurse.workYears}" type="both"
-				pattern="yyyy-mm-dd" />
+				pattern="yyyy-MM-dd" />
 		</p>
 		<p>
 			<span>在职医院：</span>${nurse.hospital}</p>
@@ -153,7 +159,7 @@
 					<input type="hidden" id="creatorId" name="creatorId" value="${nurse.user.id}" /> 
 					<input type="hidden" id="creatorName" name="creatorName" value="${nurse.user.name}" />
 					<div class="form-group">
-						<label class="control-label col-md-3">审核意见</label>
+						<label class="control-label col-md-3">审核结果</label>
 						<div class="controls  col-md-6">
 							<!-- 单行单选项目 -->
 							<label class="radio radio-inline"> <input type="radio"
@@ -165,7 +171,7 @@
 					</div>
 					<div class="form-group">
 						<!-- 文本区域 -->
-						<label class="control-label col-md-3">审核结果</label>
+						<label class="control-label col-md-3">审核意见</label>
 						<div class="controls col-md-6">
 							<div class="textarea">
 								<textarea type="" id="remark" name="remark" class="form-control"></textarea>

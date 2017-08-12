@@ -65,7 +65,7 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 	private OrderGoods orderGoods;
 
 	private OrderService orderService;
-
+	
 	private User user;
 
 	private Goods goods;
@@ -90,6 +90,8 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 	private String url;
 	private String detailAddress;
 	
+	private Integer orderServiceNumber;
+	
 	/** 销售价 */
 	private Double price;
 
@@ -103,6 +105,15 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 	/** 备注 */
 	@Length(max = 500, message = "{order.remarks.illegal.length}")
 	private String remarks;
+	
+	
+	public Integer getOrderServiceNumber() {
+		return orderServiceNumber;
+	}
+
+	public void setOrderServiceNumber(Integer orderServiceNumber) {
+		this.orderServiceNumber = orderServiceNumber;
+	}
 	
 	public OrderOther getOrderOther() {
 		return orderOther;

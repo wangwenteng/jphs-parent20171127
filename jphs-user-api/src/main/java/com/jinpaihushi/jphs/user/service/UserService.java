@@ -21,7 +21,8 @@ public interface UserService extends BaseService<User> {
 	 * @return
 	 */
 	User findUser(User user);
-
+	
+	User queryUser(User user);
 	String insertUser(User user);
 
 }

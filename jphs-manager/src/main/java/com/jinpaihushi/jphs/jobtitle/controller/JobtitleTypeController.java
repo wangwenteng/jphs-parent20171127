@@ -7,14 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
+import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 import com.jinpaihushi.jphs.jobtitle.model.JobtitleType;
 import com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService;
 import com.jinpaihushi.jphs.system.model.SystemUser;
@@ -111,6 +114,11 @@ public class JobtitleTypeController extends BaseController<JobtitleType> {
 		return "redirect:/jobtitle/type/index.jhtml";
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(name = "验证名称", path = "/checkName.json")
+	public int checkName(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, JobtitleType jobtitleType ) {
+		int b = jobtitleTypeService.checkName(jobtitleType);
+		return b;
+	}
 
 }

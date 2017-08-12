@@ -10,14 +10,14 @@
 		<tr>
 			<th width="30"></th>
 			<th>订单编号</th>
-			<th>昵称</th>
+			<th>用户昵称</th>
 			<th>手机号</th>
 			<th>商品名称</th>
-			<th>护士名称</th>
+			<th>护士昵称</th>
 			<th>星级</th>
 			<th>内容</th>
 			<th>创建时间</th>
-			<th>状态</th>
+			<th>详情</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,7 +27,7 @@
 					<tr class="bg_list_body">
 						<td width="30">${s.index+1}</td>
 						<td><c:out value="${e.orderId}" /></td>
-						<td><c:out value="${e.creatorName}" /></td>
+						<td><c:out value="${e.userName}" /></td>
 						<td><c:out value="${e.userPhone}" /></td>
 						<td><c:out value="${e.goodsName}" /></td>
 						<td><c:out value="${e.nurseName}" /></td>

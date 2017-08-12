@@ -22,13 +22,11 @@ import com.jinpaihushi.jphs.evaluation.model.Evaluation;
 import com.jinpaihushi.jphs.evaluation.service.EvaluationService;
 import com.jinpaihushi.jphs.goods.model.Goods;
 import com.jinpaihushi.jphs.goods.model.GoodsDetail;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.goods.service.GoodsService;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
-import com.jinpaihushi.jphs.user.model.User;
-import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.service.BaseService;
-import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -49,9 +47,7 @@ public class GoodsController extends BaseController<Goods> {
 	private EvaluationService evaluationService;
 	@Autowired
 	private OrderGoodsService orderGoodsService;
-	@Autowired
-	private UserService userService;
-
+	
 	@Override
 	protected BaseService<Goods> getService() {
 		// TODO Auto-generated method stub
@@ -139,6 +135,32 @@ public class GoodsController extends BaseController<Goods> {
 		} catch (Exception e) {
 			// 记录日志-fail
 			Util.failLog.error("goods.getGoodsEvaluation.json,goodsId=" + goodsId + " p=" + p, e);
+		}
+		return null;
+	}
+
+	@ResponseBody
+	@RequestMapping(name = "服务价格", path = "/getGoodsAllPrice.json")
+	public byte[] getGoodsAllPrice(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsId,
+			String siteId) {
+
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("goods.getGoodsAllPrice.json,goodsId=" + goodsId + " siteId=" + siteId);
+			}
+			// 查空
+			if (StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(siteId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			List<Grade> goods = goodsService.getGoodsAllPrice(goodsId, siteId);
+			// 1.根据 name，password,type查询完整信息
+			// 2.错误N种情况判断及返回前端
+			// 3.信息无误，封装信息以及生成token，返回前端
+
+			return JSONUtil.toJSONResult(1, "操作成功！", goods);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.failLog.error("goods.getGoodsAllPrice.json,goodsId=" + goodsId + " siteId=" + siteId, e);
 		}
 		return null;
 	}

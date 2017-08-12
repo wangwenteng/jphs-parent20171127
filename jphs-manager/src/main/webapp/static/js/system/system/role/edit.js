@@ -1,9 +1,11 @@
 $(function() {
+	var id =$('#id').val();
 	$("#systemRoleForm").validate({
 		rules : {
 			name : {
 				required : true,
-				minlength : 2
+				minlength : 2,
+				roleName:id,
 			},
 			describe : {
 				required : true,
@@ -12,7 +14,9 @@ $(function() {
 		messages : {
 			name : {
 				required : "请输入角色名称",
-				minlength : "请输入最少两位"
+				minlength : "请输入最少两位",
+				roleName:"角色名称已被占用"
+				
 			},
 			describe : {
 				required : "请输入角色描述"

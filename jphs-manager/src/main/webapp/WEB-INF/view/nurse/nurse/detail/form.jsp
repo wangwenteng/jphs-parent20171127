@@ -31,7 +31,7 @@
 		<p><span>身份证号：</span>${nurse.sfz}</p>
 		<p><span>联系地址：</span>${nurse.address}</p>
 		<p><span>推荐人：</span>${nurse.recommendName}</p>
-		<p><span>注册时间：</span><fmt:formatDate value="${nurse.createTime}" pattern="yyyy-mm-dd"/></p>
+		<p><span>注册时间：</span><fmt:formatDate value="${nurse.createTime}" pattern="yyyy-MM-dd"/></p>
 		<p><span>个人简介：</span>${fn:escapeXml(nurse.user.brief)}</p>
 		<p><span>备注：</span>${fn:escapeXml(nurse.details)}</p>
 		

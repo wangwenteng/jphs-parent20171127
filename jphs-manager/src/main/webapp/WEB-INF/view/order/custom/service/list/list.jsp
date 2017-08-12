@@ -38,8 +38,8 @@
 							<td><c:out value="${e.visitor}"/></td>
 							<td><fmt:formatDate value="${e.visitTime}" pattern="yy-MM-dd HH:mm"/></td>
 							<td>
-								<c:if test="${e.status==0 }">待回访</c:if>
-								<c:if test="${e.status==1 }">已回访</c:if>
+								<c:if test="${e.status==0 }"><span style="color: #F0BB1C;">待回访</span></c:if>
+								<c:if test="${e.status==1 }"><span style="color: #34BC2C;">已回访</span></c:if>
 							</td>
 							<td>
 								<jphs:hasPermission url="/custom/service/detail.jhtml">

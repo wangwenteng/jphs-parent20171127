@@ -7,9 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Properties;
-
-import org.springframework.beans.factory.annotation.Value;
 
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -40,11 +37,14 @@ public  class DoPostSms {
 	public static String secret_="b7d482c09e2b3b744a33c24aab97213f";
 	
 	public static void main(String[] args) {
-		String titles="家庭护士";
+
+		String titles="金牌护师";
 		String dbname="杨松";
-		String dbphone="1513518025";
+		String dbphone="13341181592";
 		String dbnames=dbname+":"+dbphone;
-		sendSms("15135158025", "【金牌护士】系统自动为您签约一名[家庭护士]客户,客户信息(xx:15210452542),请尽快与客户取得联系","SMS_69255031","{\"titles\":\""+titles+"\",\"dbnames\":\""+dbnames+"\"}");
+		
+		String orderID = "JP1234567890";
+		sendSms("13341181592", "【金牌护士】您的订单"+orderID+"支付成功。关注微信公众号“金牌护师”，时时查看订单状态。","SMS_69255031","{\"titles\":\""+titles+"\",\"dbnames\":\""+dbnames+"\"}");
 	}
 	
 	public static void sendSms(String mobile,String content,String contentCode,String param) {
@@ -60,7 +60,7 @@ public  class DoPostSms {
 			//1.天下畅通平台，2.阿里大于
 //			int messageId=Integer.valueOf(pps.getProperty("Message").trim());
 			
-			int messageId =2;
+			int messageId =1;
 			if(messageId==1)
 			{
 				try {

@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-08 16:01:40
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.tijian.dao.TijianHospitalDao">
+	
+	<sql id="field">
+		TH.id, TH.name, TH.price, TH.imageUrl, 
+		TH.detail_imageUrl, TH.grade_name, TH.address, TH.create_time, 
+		TH.creator_id, TH.creator_name, TH.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		TH.id TH_id, TH.name TH_name, 
+		TH.price TH_price, TH.imageUrl TH_imageUrl, 
+		TH.detail_imageUrl TH_detail_imageUrl, TH.grade_name TH_grade_name, 
+		TH.address TH_address, TH.create_time TH_create_time, 
+		TH.creator_id TH_creator_id, TH.creator_name TH_creator_name, 
+		TH.status TH_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		TH.id id, TH.name name, 
+		TH.price price, TH.imageUrl imageurl, 
+		TH.detail_imageUrl detailImageurl, TH.grade_name gradeName, 
+		TH.address address, TH.create_time createTime, 
+		TH.creator_id creatorId, TH.creator_name creatorName, 
+		TH.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND TH.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND TH.name=#{name}
+		</if>
+		<if test="price!=null">
+			AND TH.price=#{price}
+		</if>
+		<if test="imageurl!=null and imageurl!=''">
+			AND TH.imageUrl=#{imageurl}
+		</if>
+		<if test="detailImageurl!=null and detailImageurl!=''">
+			AND TH.detail_imageUrl=#{detailImageurl}
+		</if>
+		<if test="gradeName!=null and gradeName!=''">
+			AND TH.grade_name=#{gradeName}
+		</if>
+		<if test="address!=null and address!=''">
+			AND TH.address=#{address}
+		</if>
+		<if test="createTime!=null">
+			AND TH.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND TH.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND TH.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND TH.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND TH.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND TH.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="price!=null">
+				AND TH.price=#{price}
+			</if>
+			<if test="imageurl!=null and imageurl!=''">
+				AND TH.imageUrl LIKE CONCAT('%', #{imageurl}, '%')
+			</if>
+			<if test="detailImageurl!=null and detailImageurl!=''">
+				AND TH.detail_imageUrl LIKE CONCAT('%', #{detailImageurl}, '%')
+			</if>
+			<if test="gradeName!=null and gradeName!=''">
+				AND TH.grade_name LIKE CONCAT('%', #{gradeName}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND TH.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND TH.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND TH.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND TH.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND TH.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				TH.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				TH.name=#{name}, 
+		   </if>
+           <if test="price!=null">
+				TH.price=#{price}, 
+		   </if>
+           <if test="imageurl!=null">
+				TH.imageUrl=#{imageurl}, 
+		   </if>
+           <if test="detailImageurl!=null">
+				TH.detail_imageUrl=#{detailImageurl}, 
+		   </if>
+           <if test="gradeName!=null">
+				TH.grade_name=#{gradeName}, 
+		   </if>
+           <if test="address!=null">
+				TH.address=#{address}, 
+		   </if>
+           <if test="createTime!=null">
+				TH.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				TH.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				TH.creator_name=#{creatorName}, 
+		   </if>
+           <if test="status!=null">
+				TH.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="tijianHospital" type="com.jinpaihushi.jphs.tijian.model.TijianHospital">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="imageurl" column="imageUrl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailImageurl" column="detail_imageUrl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="gradeName" column="grade_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="tijianHospitalGlobal" type="com.jinpaihushi.jphs.tijian.model.TijianHospital">
+		<result property="id" column="TH_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="TH_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="TH_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="imageurl" column="TH_imageUrl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailImageurl" column="TH_detail_imageUrl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="gradeName" column="TH_grade_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="TH_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="TH_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="TH_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="TH_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="TH_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.tijian.model.TijianHospital">
+		INSERT INTO `TIJIAN_HOSPITAL`(
+			id, name, 
+			price, imageUrl, 
+			detail_imageUrl, grade_name, 
+			address, create_time, 
+			creator_id, creator_name, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{price,jdbcType=DECIMAL}, #{imageurl,jdbcType=VARCHAR}, 
+			#{detailImageurl,jdbcType=VARCHAR}, #{gradeName,jdbcType=VARCHAR}, 
+			#{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `TIJIAN_HOSPITAL`(
+			id, name, 
+			price, imageUrl, 
+			detail_imageUrl, grade_name, 
+			address, create_time, 
+			creator_id, creator_name, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.imageurl,jdbcType=VARCHAR}, 
+			#{item.detailImageurl,jdbcType=VARCHAR}, #{item.gradeName,jdbcType=VARCHAR}, 
+			#{item.address,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE TH FROM `TIJIAN_HOSPITAL` TH WHERE TH.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `TIJIAN_HOSPITAL` TH
+		SET 
+		TH.STATUS = -1
+		WHERE TH.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `TIJIAN_HOSPITAL` TH
+		<include refid="dynamicSet" /> 
+	    WHERE TH.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="tijianHospital">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_HOSPITAL` TH
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `TIJIAN_HOSPITAL` TH
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="tijianHospital">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_HOSPITAL` TH
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="tijianHospital">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_HOSPITAL` TH
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="tijianHospital">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_HOSPITAL` TH
+		WHERE TH.ID = #{id}
+	</select>
+	
+	
+	<select id="getAllHospital" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		TH.*
+		FROM  tijian_hospital TH 
+		LEFT JOIN goods g ON g.tijian_hospital_id = th.`id`
+		LEFT JOIN platform_goods pg ON g.`id`=  pg.`goods_id` 
+		WHERE pg.platform_id =#{platformId}
+		AND TH.status=1
+		AND G.status=1
+		AND pg.status=1
+		ORDER BY g.sort ;
+	</select>
+	
+</mapper>

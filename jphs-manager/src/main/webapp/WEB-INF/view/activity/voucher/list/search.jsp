@@ -10,7 +10,7 @@
 		<tr>
 			<td>批次编号：</td>
 			<td width="200">
-				<input type="text" name="batchNo" id="batchNo" value="${voucher.batchNo}" />
+				<input type="text" style="width: 250px" name="batchNo" id="batchNo" value="${voucher.batchNo}" />
 			</td>
 			<td>支持 品类 ：</td>
 			<td width="200">
@@ -24,7 +24,7 @@
 						<c:if test="${voucher.productId==e.id}">selected="selected"</c:if>>${e.title }</option>
 					</c:forEach>
 				</select>
-				
+			</td><td>	
 			<select class="form-control input-xlarge" id="goodsId"
 					name="goodsId" >
 					<option value="" >请选择</option>
@@ -64,7 +64,7 @@
 		<tr>
 			
 			 <td>注册时间：</td>
-				<td width="200"><div class="form-group">
+				<td width="250"><div class="form-group">
 						<div style="width: 120%;"
 							class="input-group date form_date col-md-3" data-date=""
 							data-date-format="yyyy-mm-dd" data-link-field="workYears"
@@ -79,8 +79,8 @@
 								class="glyphicon glyphicon-calendar"></span></span> 
 						</div>
 						</td><td>-
-							</td><td>
-						<div style="width: 100%;"
+							</td><td    width="250">
+						<div style="width: 110%;"
 							class="input-group date form_date col-md-3" data-date=""
 							data-date-format="yyyy-mm-dd" data-link-field="workYears"
 							data-link-format="yyyy-mm-dd">

@@ -36,4 +36,15 @@
 		</put-list-attribute>
 	</definition>
 	
+		<definition name="activity/voucher/detail/addUser" extends="default.layout">
+		<put-attribute type="string" name="title" value="详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/activity/voucher/detail/index2.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/activity/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/activity/voucher/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
 </tiles-definitions>

@@ -58,5 +58,10 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 		}
 		return "";
 	}
+
+	@Override
+	public User queryUser(User user) {
+		return userDao.queryUser(user);
+	}
 	
 }

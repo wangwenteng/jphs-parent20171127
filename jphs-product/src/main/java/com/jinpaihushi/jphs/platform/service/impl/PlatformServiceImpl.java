@@ -250,11 +250,12 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
 	}
 	
 	@Override
-	public List<Map<String, Object>> getGoodsList(String platformId, String productId, Integer deviceType) {
+	public List<Map<String, Object>> getGoodsList(String platformId, String productId, Integer deviceType,String siteId) {
 		Map<String, Object> query = new HashMap<>();
 		query.put("platformId", platformId);
 		query.put("productId", productId);
 		query.put("deviceType", deviceType);
+		query.put("siteId", siteId);
 		List<Map<String, Object>> goodsList = platformDao.getAllGoods(query);
 		return goodsList;
 	}

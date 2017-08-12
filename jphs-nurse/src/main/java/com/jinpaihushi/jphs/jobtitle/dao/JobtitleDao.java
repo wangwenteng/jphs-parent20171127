@@ -13,6 +13,8 @@ import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
  */
 @Repository("jobtitleDao")
 public interface JobtitleDao extends BaseDao<Jobtitle> {
+
+	int checkName(Jobtitle jobtitle);
 	
 	
 	

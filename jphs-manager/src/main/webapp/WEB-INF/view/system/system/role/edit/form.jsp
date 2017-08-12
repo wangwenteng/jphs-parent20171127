@@ -6,9 +6,6 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <form class="form-horizontal">
 	<fieldset>
-		<div id="legend" class="">
-			<legend class="">${systemRole.id == null?'角色表添加':'角色表编辑'}</legend>
-		</div>
 		<div class="form-group">
 			<input type="hidden" id="id"name="id" value="${systemRole.id}">
 		<label class="control-label col-md-3" for="input01">角色名称：</label>

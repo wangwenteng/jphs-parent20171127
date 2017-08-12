@@ -11,6 +11,8 @@ import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.model.BaseModel;
 
+import net.sf.json.JSONObject;
+
 /**
  * USER 
  * 继承自父类的字段:
@@ -59,6 +61,8 @@ public class User extends BaseModel implements Predicate<User>,
 	@Length(max = 50, message = "{user.recommendId.illegal.length}")
 	private String recommendId;
 
+	private JSONObject nurse;
+	
 	private User user;
 	
 	private Account account;
@@ -87,11 +91,26 @@ public class User extends BaseModel implements Predicate<User>,
 	
 	private String token;
 	private String headPicture;
+	private String address;//区域信息
 	public User(){}
 
 	public User(String id){
 		this.id = id;
 	}
+	
+	/**
+	 * 获取nurse数据
+	 */
+	public JSONObject getNurse() {
+    	return nurse;
+    }
+  	
+	/**
+	 * 设置nurse数据
+	 */
+	public void setNurse(JSONObject nurse) {
+    	this.nurse = nurse;
+    }
 
 	/**
 	 * 获取姓名
@@ -322,6 +341,14 @@ public class User extends BaseModel implements Predicate<User>,
 
 	public void setHeadPicture(String headPicture) {
 		this.headPicture = headPicture;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String toString() {

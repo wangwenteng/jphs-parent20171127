@@ -24,5 +24,5 @@ public interface JobtitleTypeDao extends BaseDao<JobtitleType> {
 	 * @return
 	 */
 	List<JobtitleType> getJobtitleDetail(@Param("jobtitle")Jobtitle jobtitle);
-	
+	int checkName(JobtitleType jobtitleType);
 }

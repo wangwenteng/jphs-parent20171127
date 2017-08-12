@@ -7,30 +7,40 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<sql id="field">
 		G.id, G.product_id, G.title, G.sub_title,
-		G.content, G.tijian_type_id, G.tijian_hospital_id, G.tool,
-		G.insurance, G.must, G.type, G.grade_type, G.sort, G.remark,
-		G.status, G.create_time, G.creator_id, G.creator_name
+		G.content,
+		G.tijian_type_id, G.tijian_hospital_id, G.tool,
+		G.insurance, G.must,
+		G.type, G.grade_type, G.sort,G.is_bg, G.remark,
+		G.status, G.create_time,
+		G.creator_id, G.creator_name
 	</sql>
 
 	<sql id="fieldGlobal">
 		G.id G_id, G.product_id G_product_id,
-		G.title G_title, G.sub_title G_sub_title,
-		G.content G_content, G.tijian_type_id G_tijian_type_id,
-		G.tijian_hospital_id G_tijian_hospital_id, G.tool G_tool,
-		G.insurance G_insurance,G.must G_must, G.type G_type, G.grade_type G_grade_type,
-		G.sort G_sort, G.remark G_remark,
-		G.status G_status, G.create_time G_create_time,
-		G.creator_id G_creator_id, G.creator_name G_creator_name
+		G.title G_title,
+		G.sub_title G_sub_title,
+		G.content G_content, G.tijian_type_id
+		G_tijian_type_id,
+		G.tijian_hospital_id G_tijian_hospital_id, G.tool
+		G_tool,
+		G.insurance G_insurance,G.must G_must, G.type G_type,
+		G.grade_type G_grade_type,
+		G.sort G_sort,G.is_bg G_is_bg, G.remark G_remark,
+		G.status
+		G_status, G.create_time G_create_time,
+		G.creator_id G_creator_id,
+		G.creator_name G_creator_name
 	</sql>
 
 	<sql id="fieldWithAlias">
 		G.id id, G.product_id productId,
-		G.title title, G.sub_title subTitle,
+		G.title title, G.sub_title
+		subTitle,
 		G.content content, G.tijian_type_id tijianTypeId,
 		G.tijian_hospital_id tijianHospitalId, G.tool tool,
-		G.insurance insurance,G.must must, G.type type, G.grade_type gradeType,
-		G.sort
-		sort, G.remark remark,
+		G.insurance
+		insurance,G.must must, G.type type, G.grade_type gradeType,
+		G.sort sort,G.is_bg is_bg, G.remark remark,
 		G.status status, G.create_time createTime,
 		G.creator_id creatorId, G.creator_name creatorName
 	</sql>
@@ -71,6 +81,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="gradeType!=null">
 			AND G.grade_type=#{gradeType}
+		</if>
+		<if test="isBg!=null">
+			AND G.is_bg=#{isBg}
 		</if>
 		<if test="sort!=null">
 			AND G.sort=#{sort}
@@ -138,6 +151,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="gradeType!=null">
 				AND G.grade_type=#{gradeType}
 			</if>
+			<if test="isBg!=null">
+				AND G.isBg=#{isBg}
+			</if>
 			<if test="sort!=null">
 				AND G.sort=#{sort}
 			</if>
@@ -197,6 +213,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="gradeType!=null">
 				G.grade_type=#{gradeType},
 			</if>
+			<if test="isBg!=null">
+				G.isBg=#{isBg},
+			</if>
 			<if test="sort!=null">
 				G.sort=#{sort},
 			</if>
@@ -248,6 +267,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="gradeType" column="gradeType" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isBg" column="is_bg" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="sort" column="sort" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="remark" column="remark" javaType="String"
@@ -287,6 +308,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="gradeType" column="grade_type" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isBg" column="is_bg" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="remark" column="remark" javaType="String"
 			jdbcType="VARCHAR"></result>
@@ -366,6 +389,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="sort" column="sort" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isBg" column="is_bg" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="remark" column="remark" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer"
@@ -431,6 +456,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="sort" column="G_sort" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isBg" column="G.is_bg" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="remark" column="G_remark" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="status" column="G_status" javaType="Integer"
@@ -450,8 +477,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		title, sub_title,
 		content, tijian_type_id,
 		tijian_hospital_id, tool,
-		insurance,must, type, grade_type,
-		sort, remark,
+		insurance,must, type,
+		grade_type,
+		sort, is_bg,remark,
 		status, create_time,
 		creator_id, creator_name
 		)VALUES(
@@ -461,9 +489,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{tijianHospitalId,jdbcType=VARCHAR}, #{tool,jdbcType=INTEGER},
 		#{insurance,jdbcType=INTEGER},#{must,jdbcType=INTEGER},
 		#{type,jdbcType=INTEGER}, #{gradeType,jdbcType=INTEGER},
-		#{sort,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+		#{sort,jdbcType=INTEGER},#{isBg,jdbcType=INTEGER},  #{remark,jdbcType=VARCHAR},
 		#{status,jdbcType=INTEGER}, now(),
-		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -475,7 +504,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			content, tijian_type_id, 
 			tijian_hospital_id, tool, 
 			insurance, must,type, grade_type,
-			sort, remark, 
+			sort,is_bg, remark, 
 			status, create_time, 
 			creator_id, creator_name
         )]]>
@@ -485,13 +514,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			(
 			#{item.id,jdbcType=VARCHAR},
 			#{item.productId,jdbcType=VARCHAR},
-			#{item.title,jdbcType=VARCHAR}, #{item.subTitle,jdbcType=VARCHAR},
-			#{item.content,jdbcType=VARCHAR}, #{item.tijianTypeId,jdbcType=VARCHAR},
+			#{item.title,jdbcType=VARCHAR},
+			#{item.subTitle,jdbcType=VARCHAR},
+			#{item.content,jdbcType=VARCHAR},
+			#{item.tijianTypeId,jdbcType=VARCHAR},
 			#{item.tijianHospitalId,jdbcType=VARCHAR},
 			#{item.tool,jdbcType=INTEGER},
 			#{item.insurance,jdbcType=INTEGER},#{item.must,jdbcType=INTEGER},
 			#{item.type,jdbcType=INTEGER},#{item.gradeType,jdbcType=INTEGER},
-			#{item.sort,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR},
+			#{item.sort,jdbcType=INTEGER},#{item.isBg,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR},
 			#{item.status,jdbcType=INTEGER},
 			#{item.createTime,jdbcType=TIMESTAMP},
 			#{item.creatorId,jdbcType=VARCHAR},
@@ -567,7 +598,60 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.type,
 		s.grade_type,
 		s.sort,
+		s.is_bg,
 		s.status,
+		s.remark,
+		s.create_time,
+		s.creator_id,
+		s.creator_name,
+		i.id service_id,
+		i.source_id,
+		i.url,
+		i.path,
+		i.device_type,
+		i.type
+		service_type,
+		i.sort service_sort,
+		i.remarks service_remark,
+		i.status
+		service_status,
+		i.create_time service_create_time,
+		i.creator_id
+		service_creator_id,
+		i.creator_name service_creator_name,
+		p.id
+		product_id,
+		p.title product_title,
+		p.sort product_sort,
+		p.status
+		product_status,
+		p.remark product_remark
+		FROM
+		goods s
+		LEFT JOIN
+		`service_images` i ON i.source_id = s.id
+		LEFT JOIN `product` p ON p.id
+		= s.product_id
+		WHERE s.id = #{id} ORDER BY s.sort;
+	</select>
+
+	<select id="getColumnGoods" resultType="java.util.HashMap">
+		SELECT
+		s.id,
+		s.title,
+		s.sub_title,
+		s.product_id,
+		s.content,
+		s.tool,
+		s.insurance,
+		s.tijian_type_id,
+		s.tijian_hospital_id,
+		s.must,
+		s.type,
+		s.grade_type,
+		s.sort,
+		s.is_bg,
+		s.STATUS,
 		s.remark,
 		s.create_time,
 		s.creator_id,
@@ -580,20 +664,39 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		i.type service_type,
 		i.sort service_sort,
 		i.remarks service_remark,
-		i.status service_status,
+		i. STATUS service_status,
 		i.create_time service_create_time,
 		i.creator_id service_creator_id,
 		i.creator_name service_creator_name,
 		p.id product_id,
 		p.title product_title,
 		p.sort product_sort,
-		p.status product_status,
-		p.remark product_remark
-		FROM
-		goods s
+		p. STATUS product_status,
+		p.remark product_remark,
+		t.price,
+		t.service_number,
+		t.service_time,
+		t.unit,
+		t.grade_name,
+		t.old_price,
+		(SELECT COUNT(id) numberLen FROM order_goods og WHERE og.goods_id = s.id ) numberLen
+		FROM goods s
 		LEFT JOIN `service_images` i ON i.source_id = s.id
 		LEFT JOIN `product` p ON p.id = s.product_id
-		WHERE s.id = #{id} ORDER BY s.sort;
+		LEFT JOIN ( SELECT p.goods_id id, pp.price price,
+			pp.old_price old_price,
+			p.service_number,
+			p.service_time,
+			p.grade_name,
+			p.unit
+			FROM
+			price p
+		LEFT JOIN price_part pp ON p.id = pp.price_id
+		WHERE
+		pp.site_id =#{siteId} ORDER BY pp.price ) t ON t.id = s.id
+		WHERE
+		s.id IN ( SELECT link FROM column_service CE WHERE CE.column_id = #{columnId} )
+		AND i.device_type =#{deviceType} AND s.STATUS = 1 AND p.STATUS = 1 GROUP BY s.id ORDER BY s.sort;
 	</select>
 
 	<select id="getGoodsImgDetail" resultMap="goodsImgDetail">
@@ -611,7 +714,51 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.type,
 		s.grade_type,
 		s.sort,
+		s.is_bg,
 		s.status,
+		s.remark,
+		s.create_time,
+		s.creator_id,
+		s.creator_name,
+		i.id service_id,
+		i.source_id,
+		i.url,
+		i.path,
+		i.device_type,
+		i.type
+		service_type,
+		i.sort service_sort,
+		i.remarks service_remark,
+		i.status
+		service_status,
+		i.create_time service_create_time,
+		i.creator_id
+		service_creator_id,
+		i.creator_name service_creator_name,
+		FROM
+		goods s
+		LEFT JOIN `service_images` i ON i.source_id = s.id
+		WHERE
+		s.id = #{id}
+		ORDER BY s.create_time desc;
+	</select>
+	
+	<select id="getHospitalGoods" resultType="java.util.HashMap" >
+		SELECT
+		s.id,
+		s.title,
+		s.sub_title,
+		s.product_id,
+		s.content,
+		s.tool,
+		s.insurance,
+		s.tijian_type_id,
+		s.tijian_hospital_id,
+		s.must,
+		s.type,
+		s.grade_type,
+		s.sort,s.is_bg,
+		s. STATUS,
 		s.remark,
 		s.create_time,
 		s.creator_id,
@@ -624,23 +771,48 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		i.type service_type,
 		i.sort service_sort,
 		i.remarks service_remark,
-		i.status service_status,
+		i. STATUS service_status,
 		i.create_time service_create_time,
 		i.creator_id service_creator_id,
 		i.creator_name service_creator_name,
-		FROM
-		goods s
+		TH.id th_id,
+		TH.name th_name,
+		TH.imageUrl th_imageUrl,
+		t.id t_id,
+		t.price,
+		t.service_number,
+		t.service_time,
+		t.unit,
+		t.grade_name,
+		t.old_price,
+		(SELECT COUNT(id) numberLen FROM order_goods og WHERE og.goods_id = s.id) numberLen
+		FROM goods s
 		LEFT JOIN `service_images` i ON i.source_id = s.id
+		LEFT JOIN tijian_hospital TH ON TH.id = s.tijian_hospital_id
+		LEFT JOIN ( SELECT p.goods_id id, pp.price price,
+			pp.old_price old_price,
+			p.service_number,
+			p.service_time,
+			p.grade_name,
+			p.unit
+			FROM
+			price p
+		LEFT JOIN price_part pp ON p.id = pp.price_id
 		WHERE
-		s.id = #{id} ORDER BY s.create_time desc;
+		pp.site_id =#{siteId} ORDER BY pp.price ) t ON t.id = s.id
+		WHERE
+		s.id IN (SELECT CE.goods_id FROM platform_goods CE WHERE CE.platform_id =#{platformId} AND CE.status=1)
+		AND t.id IS NOT NULL AND i.device_type =#{deviceType} AND s.STATUS = 1 AND TH.id=#{hospitalId} AND TH.STATUS = 1 GROUP BY s.id ORDER BY s.sort;
 	</select>
+	
 	<select id="getGoodsByPricePart" resultMap="goods">
 		SELECT
 		g.*
 		FROM
 		price_part pp
 		LEFT JOIN price p ON pp.price_id = p.id
-		LEFT JOIN goods g ON p.goods_id =g.id
+		LEFT JOIN goods g
+		ON p.goods_id =g.id
 		WHERE pp.id = #{pricePartId}
 	</select>
 </mapper>

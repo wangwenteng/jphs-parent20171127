@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.site.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,14 +64,13 @@ public class SiteController extends BaseController<Site> {
 		return "product/site/list";
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
 	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
 			String id) {
 		JSONObject message = new JSONObject();
 		Site site = siteService.loadById(id);
 		List<Product> listProduct = productService.getProductGoodsDetail(id);
-		List<Location> location=(List<Location>)req.getSession().getAttribute("location");
+		List<Location> location=locationService.list(null);
 		List<Location> locationList = locationService.getEasyTreeData(location,id);
 		message.put("treeData", locationList);
 		modelMap.put("data", message);
@@ -110,7 +110,12 @@ public class SiteController extends BaseController<Site> {
 
 	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
 	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Site site,ProductList productList) {
-
+		try {
+			SystemUser systemUser = (SystemUser) hs.getAttribute("session_user");
+			site.setCreatorId(systemUser.getId());
+			site.setCreatorName(systemUser.getName());
+		} catch (Exception e) {
+		}
 		if (site.getId() != null && !site.getId().equals("")) {
 			boolean b = siteService.update(site,productList);
 			if (b == false) {
@@ -118,12 +123,7 @@ public class SiteController extends BaseController<Site> {
 				return "redirect:/site/err.jhtml";
 			}
 		} else {
-			try {
-				SystemUser systemUser = (SystemUser) hs.getAttribute("session_user");
-				site.setCreatorId(systemUser.getId());
-				site.setCreatorName(systemUser.getName());
-			} catch (Exception e) {
-			}
+			
 			boolean result = siteService.insert(site,productList);
 			if (result == false) {
 				// 跳转到错误页

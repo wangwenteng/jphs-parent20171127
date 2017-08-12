@@ -13,6 +13,8 @@ import com.jinpaihushi.jphs.system.model.SystemRole;
  */
 @Repository("systemRoleDao")
 public interface SystemRoleDao extends BaseDao<SystemRole> {
+
+	int checkName(SystemRole role);
 	
 	
 	

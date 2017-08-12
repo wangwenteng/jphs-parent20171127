@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.user.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,12 @@ public class UserAddressServiceImpl extends BaseServiceImpl<UserAddress> impleme
 	@Override
 	protected BaseDao<UserAddress> getDao(){
 		return userAddressDao;
+	}
+
+	@Override
+	public List<UserAddress> getReceiveAddress(UserAddress userAddress) {
+		// TODO Auto-generated method stub
+		return userAddressDao.getReceiveAddress(userAddress);
 	}
 
 }

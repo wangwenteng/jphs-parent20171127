@@ -20,12 +20,6 @@ public interface VoucherDao extends BaseDao<Voucher> {
 
 	Page<Voucher> getList(Voucher voucher);
 
-	/**  
-	 * 根据用户下单的商品获取用户可用的优惠券
-	 * @param map 用户id 品类id 商品的id
-	 * @return
-	 */
-	List<Voucher> getUserVocher(Map<String, Object> map);
 	
 	List<Map<String, Object>> getUserAllVocher(Map<String, Object> map);
 	

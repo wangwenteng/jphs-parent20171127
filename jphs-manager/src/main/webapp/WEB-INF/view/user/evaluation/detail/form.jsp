@@ -16,7 +16,7 @@
         </div>
           <div class="form-group">
           <!-- 文本输入 -->
-          <label class="control-label col-md-3" for="input01">昵称：</label>
+          <label class="control-label col-md-3" for="input01">用户昵称：</label>
           <div class="controls col-md-6">
             ${evaluation.creatorName}
           </div>

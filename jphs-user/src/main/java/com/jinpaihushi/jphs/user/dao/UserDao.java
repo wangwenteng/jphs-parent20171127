@@ -16,11 +16,13 @@ import com.jinpaihushi.jphs.user.model.User;
  */
 @Repository("userDao")
 public interface UserDao extends BaseDao<User> {
-	
-	 User getUserDetail(@Param("id")String id);
-	 
-	 Page<User> userList(User user);
-	 
-	 User findUser(User user);
-	 
+
+	User getUserDetail(@Param("id") String id);
+
+	Page<User> userList(User user);
+
+	User findUser(User user);
+
+	User queryUser(User user);
+
 }

@@ -202,8 +202,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="TIMESTAMP"></result>
 		<result property="active" column="active" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="address" column="address" javaType="String"
-			jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
 	</resultMap>
@@ -240,8 +238,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="TIMESTAMP"></result>
 		<result property="active" column="active" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="address" column="address" javaType="String"
-			jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<association property="user"
@@ -263,6 +259,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<result property="device" column="user_device" javaType="Integer"
 				jdbcType="INTEGER"></result>
 			<result property="brief" column="user_brief" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="address" column="user_address" javaType="String"
 				jdbcType="VARCHAR"></result>
 			<result property="recommendId" column="user_recommend_id"
 				javaType="String" jdbcType="VARCHAR"></result>
@@ -301,8 +299,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="TIMESTAMP"></result>
 		<result property="active" column="N_active" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="address" column="N_address" javaType="String"
-			jdbcType="VARCHAR"></result>
 		<result property="status" column="N_status" javaType="Integer"
 			jdbcType="INTEGER"></result>
 	</resultMap>
@@ -316,7 +312,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		creator_id, creator_name,
 		create_time,
 		active,
-		address, status
+		status
 		)VALUES(
 		#{id,jdbcType=VARCHAR},
 		#{type,jdbcType=INTEGER},
@@ -329,7 +325,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{creatorName,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
 		#{active,jdbcType=INTEGER},
-		#{address,jdbcType=VARCHAR},
 		#{status,jdbcType=INTEGER}
 		)
 	</insert>
@@ -342,7 +337,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			hospital, department_id, 
 			creator_id, creator_name, 
 			create_time, active, 
-			address, status
+			 status
         )]]>
 		VALUES
 		<foreach collection="list" item="item" index="index"
@@ -359,7 +354,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.creatorName,jdbcType=VARCHAR},
 			#{item.createTime,jdbcType=TIMESTAMP},
 			#{item.active,jdbcType=INTEGER},
-			#{item.address,jdbcType=VARCHAR},
 			#{item.status,jdbcType=INTEGER}
 			)
 		</foreach>
@@ -425,7 +419,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		user_name,
 		n.work_years,
 		n.hospital,
-		n.address,
+		u.address user_address,
 		n.department_id,
 		<if test="nurse.id!=null and nurse.id!=''">
 			u.sex
@@ -450,7 +444,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			WHERE
 			source_id = u.id
 			AND type = 2
-			) AS aptitude_positive,
+			) AS
+			aptitude_positive,
 			(
 			SELECT
 			url
@@ -458,7 +453,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			nurse_images
 			WHERE
 			source_id = u.id
-			AND type = 3
+			AND
+			type = 3
 			) AS aptitude_negative,
 			(
 			SELECT
@@ -478,7 +474,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			source_id = u.id
 			AND type = 5
 			) AS id_negative,
-			t.id location_id,
+			t.id
+			location_id,
 			t.content location_content,
 		</if>
 		n.create_time
@@ -545,9 +542,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				<if test="nurse.active!=null">
 					AND N.active=#{nurse.active}
 				</if>
-				<if test="nurse.address!=null and nurse.address!=''">
-					AND N.address LIKE CONCAT('%', #{nurse.address}, '%')
-				</if>
 				<if test="nurse.status!=null">
 					AND N.status=#{nurse.status}
 				</if>
@@ -557,6 +551,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					</if>
 					<if test="nurse.user.name!=null and nurse.user.name!=''">
 						AND u.name LIKE CONCAT('%', #{nurse.user.name}, '%')
+					</if>
+					<if test="nurse.user.address!=null and nurse.user.address!=''">
+						AND u.address LIKE CONCAT('%', #{nurse.user.address}, '%')
 					</if>
 				</if>
 			</if>
@@ -601,8 +598,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="active!=null">
 				AND N.active=#{active}
 			</if>
-			<if test="address!=null and address!=''">
-				AND N.address LIKE CONCAT('%', #{address}, '%')
+			<if test="nurse.user!=null ">
+				<if test="nurse.user.address!=null and nurse.user.address!=''">
+					AND u.address LIKE CONCAT('%', #{nurse.user.address},
+					'%')
+				</if>
 			</if>
 			<if test="status!=null">
 				AND N.status=#{status}

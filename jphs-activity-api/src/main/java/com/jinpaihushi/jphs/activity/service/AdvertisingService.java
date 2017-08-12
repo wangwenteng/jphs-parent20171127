@@ -37,6 +37,6 @@ public interface AdvertisingService extends BaseService<Advertising> {
 	 * @return
 	 * @author: wangwt
 	 */
-	List<Map<String, Object>> getCarouselFigure(Map<String, Object> map); 
+	List<Advertising> getCarouselFigure(Map<String, Object> map); 
 
 }

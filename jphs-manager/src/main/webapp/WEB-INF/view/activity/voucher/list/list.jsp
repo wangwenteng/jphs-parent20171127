@@ -10,8 +10,7 @@
 			<th width="30"></th>
 			<th>批次编号</th>
 			<th>优惠券类型</th>
-			<th>支持品类</th>
-			<th>支持服务</th>
+			<th>支持品类/服务</th>
 			<th>面值</th>
 			<th>兑换开始时间</th>
 			<th>兑换结束时间</th>
@@ -36,9 +35,7 @@
 									${fn:substring(e.productName, 0, 10)}... 
 								</c:if> <c:if test="${fn:length(e.productName)<10 }">
 									${e.productName} 
-								</c:if>
-							</td>
-							<td> 
+								</c:if> 
 								<c:if test="${fn:length(e.goodsName)>10 }">
 									${fn:substring(e.goodsName, 0, 10)}... 
 								</c:if> <c:if test="${fn:length(e.goodsName)<10 }">
@@ -49,13 +46,15 @@
 							<td><fmt:formatDate value="${e.startTime}" pattern="yy-MM-dd HH:mm"/></td>
 							<td><fmt:formatDate value="${e.endTime}" pattern="yy-MM-dd HH:mm"/></td>
 							<td>
-								<c:if test="${e.status ==0 }">生效</c:if>
-								<c:if test="${e.status ==-1 }">停用</c:if>
+								<c:if test="${e.status ==0 }"><span style="color: #34BC2C;">生效</span></c:if>
+								<c:if test="${e.status ==-1 }"><span style="color: #F0BB1C;">停用</span></c:if>
 							</td>
 							<td>
+							<jphs:hasPermission url="/voucher/detail.jhtml">
 							<a onclick="redirectDetailPage('${e.id}')">
 								<img src="/static/images/chakan.png">
-							</a>								
+							</a>
+							</jphs:hasPermission>								
 							</td>
 						</tr>
 					</c:forEach>

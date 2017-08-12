@@ -380,23 +380,57 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="getAllGoods" resultType="java.util.HashMap">
 		SELECT DISTINCT
-		g.*,si.url
+		g.*,si.url,
+		(SELECT url FROM service_images ss WHERE ss.source_id =g.id AND ss.device_type=3) background,
+		t.price,
+		t.service_number,
+		t.service_time,
+		t.unit,
+		t.grade_name,
+		t.old_price,
+		(SELECT COUNT(id) numberLen FROM
+		order_goods og WHERE og.goods_id=g.id
+		) numberLen
 		FROM
 		platform_goods pg
 		LEFT JOIN goods g ON
 		pg.goods_id = g.id
-		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN product p ON
+		g.product_id = p.id
 		LEFT JOIN
-		service_images si ON si.source_id =g.id
+		service_images si
+		ON si.source_id =g.id
+		LEFT JOIN (
+		SELECT
+		p.goods_id id,
+		pp.price price,
+		pp.old_price old_price,
+		p.service_number,
+		p.service_time,
+		p.grade_name,
+		p.unit
+		FROM
+		price p
+		LEFT
+		JOIN price_part pp ON p.id = pp.price_id
+		WHERE
+		pp.site_id = #{siteId}
+		ORDER BY
+		pp.price
+		) t ON t.id = g.id
 		WHERE
 		pg.platform_id =
 		#{platformId}
-		AND si.device_type = #{deviceType}
+		AND
+		si.device_type =
+		#{deviceType}
 		<if test="productId!=null">
 			AND g.product_id =#{productId}
 		</if>
 		AND p.status = 1
+		GROUP BY g.id
 		ORDER BY p.sort
 		;
 	</select>
+
 </mapper>

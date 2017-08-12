@@ -23,4 +23,13 @@ public interface InformationDao extends BaseDao<Information> {
 	 */
 	List<Information> queryOrderBy(Map<String, Object> map);
 	
+	List<Map<String,Object>> listapp(Map<String, Object> query);
+
+	/**
+	 * 查询用户收藏的资讯
+	 * @param userId
+	 * @return
+	 */
+	List<Map<String, Object>> getCollection(String userId);
+	
 }

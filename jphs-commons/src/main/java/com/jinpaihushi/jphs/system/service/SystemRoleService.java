@@ -20,4 +20,6 @@ public interface SystemRoleService extends BaseService<SystemRole> {
 
 	String initSystemRole(String userId);
 
+	int checkName(SystemRole role);
+
 }

@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-08 20:24:03
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao">
+	
+	<sql id="field">
+		CI.id, CI.source_id, CI.url, CI.path, 
+		CI.device_type, CI.type, CI.sort, CI.remarks, 
+		CI.status, CI.create_time, CI.creator_id, CI.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		CI.id CI_id, CI.source_id CI_source_id, 
+		CI.url CI_url, CI.path CI_path, 
+		CI.device_type CI_device_type, CI.type CI_type, 
+		CI.sort CI_sort, CI.remarks CI_remarks, 
+		CI.status CI_status, CI.create_time CI_create_time, 
+		CI.creator_id CI_creator_id, CI.creator_name CI_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CI.id id, CI.source_id sourceId, 
+		CI.url url, CI.path path, 
+		CI.device_type deviceType, CI.type type, 
+		CI.sort sort, CI.remarks remarks, 
+		CI.status status, CI.create_time createTime, 
+		CI.creator_id creatorId, CI.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CI.id=#{id}
+		</if>
+		<if test="sourceId!=null and sourceId!=''">
+			AND CI.source_id=#{sourceId}
+		</if>
+		<if test="url!=null and url!=''">
+			AND CI.url=#{url}
+		</if>
+		<if test="path!=null and path!=''">
+			AND CI.path=#{path}
+		</if>
+		<if test="deviceType!=null">
+			AND CI.device_type=#{deviceType}
+		</if>
+		<if test="type!=null">
+			AND CI.type=#{type}
+		</if>
+		<if test="sort!=null">
+			AND CI.sort=#{sort}
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			AND CI.remarks=#{remarks}
+		</if>
+		<if test="status!=null">
+			AND CI.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CI.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CI.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CI.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CI.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="sourceId!=null and sourceId!=''">
+				AND CI.source_id LIKE CONCAT('%', #{sourceId}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND CI.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="path!=null and path!=''">
+				AND CI.path LIKE CONCAT('%', #{path}, '%')
+			</if>
+			<if test="deviceType!=null">
+				AND CI.device_type=#{deviceType}
+			</if>
+			<if test="type!=null">
+				AND CI.type=#{type}
+			</if>
+			<if test="sort!=null">
+				AND CI.sort=#{sort}
+			</if>
+			<if test="remarks!=null and remarks!=''">
+				AND CI.remarks LIKE CONCAT('%', #{remarks}, '%')
+			</if>
+			<if test="status!=null">
+				AND CI.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CI.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CI.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CI.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CI.id=#{id}, 
+		   </if>
+           <if test="sourceId!=null">
+				CI.source_id=#{sourceId}, 
+		   </if>
+           <if test="url!=null">
+				CI.url=#{url}, 
+		   </if>
+           <if test="path!=null">
+				CI.path=#{path}, 
+		   </if>
+           <if test="deviceType!=null">
+				CI.device_type=#{deviceType}, 
+		   </if>
+           <if test="type!=null">
+				CI.type=#{type}, 
+		   </if>
+           <if test="sort!=null">
+				CI.sort=#{sort}, 
+		   </if>
+           <if test="remarks!=null">
+				CI.remarks=#{remarks}, 
+		   </if>
+           <if test="status!=null">
+				CI.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				CI.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				CI.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CI.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityImages" type="com.jinpaihushi.jphs.commodity.model.CommodityImages">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="deviceType" column="device_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityImagesGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityImages">
+		<result property="id" column="CI_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="CI_source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="CI_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="CI_path" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="deviceType" column="CI_device_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="CI_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="CI_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="CI_remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="CI_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="CI_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CI_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CI_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityImages">
+		INSERT INTO `COMMODITY_IMAGES`(
+			id, source_id, 
+			url, path, 
+			device_type, type, 
+			sort, remarks, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+			#{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+			#{deviceType,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+			#{sort,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_IMAGES`(
+			id, source_id, 
+			url, path, 
+			device_type, type, 
+			sort, remarks, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.sourceId,jdbcType=VARCHAR}, 
+			#{item.url,jdbcType=VARCHAR}, #{item.path,jdbcType=VARCHAR}, 
+			#{item.deviceType,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, 
+			#{item.sort,jdbcType=INTEGER}, #{item.remarks,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CI FROM `COMMODITY_IMAGES` CI WHERE CI.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `COMMODITY_IMAGES` CI
+		SET 
+		CI.STATUS = -1
+		WHERE CI.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_IMAGES` CI
+		<include refid="dynamicSet" /> 
+	    WHERE CI.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityImages">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_IMAGES` CI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_IMAGES` CI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityImages">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_IMAGES` CI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityImages">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_IMAGES` CI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="commodityImages">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_IMAGES` CI
+		WHERE CI.ID = #{id}
+	</select>
+	
+</mapper>

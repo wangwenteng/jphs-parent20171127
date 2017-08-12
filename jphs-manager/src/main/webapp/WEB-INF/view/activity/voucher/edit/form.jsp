@@ -10,6 +10,8 @@
 
 <div class="form-horizontal" >
 	<div class="title_defalt"></div>
+		<input type="hidden" id="goodsId" name="goodsId">
+			<input type="hidden" id="productId" name="productId">
 		<div class="form-group">
 			   <label class="control-label col-md-3">优惠券类型：</label>
           <div class="controls  col-md-6">
@@ -41,8 +43,6 @@
 					style="margin-top: 10px; height: 540px; overflow-y: auto;">
 				</ul>
 			</div>
-			<input type="hidden" id="goodsId" name="goodsId">
-			<input type="hidden" id="productId" name="productId">
 		</div>
         
        <%--  <div class="form-group">
@@ -156,13 +156,14 @@
 	        </div>
             <div class="form-group" id="con" style="display: none">
 	          <label class="control-label col-md-3" for="input01">满减券：</label>
-	          	消费满<input type="text" name="conditionAmount">元减<input type="text" name="amount">元
+	          	消费满<input type="text" name="conditionAmount">元减
+	          	<input type="text" name="CAmount">元
 	        </div>
             <div class="form-group" id="dis" style="display: none">
 	          <label class="control-label col-md-3" for="input01">折扣券：</label>
 	         	 <input type="text" name="discountAmount" style="display: none" value="0" >
 	         	 <div class="controls col-md-6">
-	        	  <input type="text"  class="form-control" name="amount">折
+	        	  <input type="text"  class="form-control" name="DAmount">折
 	          </div>
 </div>
 

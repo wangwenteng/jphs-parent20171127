@@ -14,8 +14,10 @@ import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.goods.dao.GoodsDao;
 import com.jinpaihushi.jphs.goods.dao.GoodsDetailDao;
+import com.jinpaihushi.jphs.goods.dao.GradeDao;
 import com.jinpaihushi.jphs.goods.model.Goods;
 import com.jinpaihushi.jphs.goods.model.GoodsDetail;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.goods.model.ImageType;
 import com.jinpaihushi.jphs.goods.model.ListPrice;
 import com.jinpaihushi.jphs.goods.service.GoodsService;
@@ -62,6 +64,8 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 	private GoodsDetailDao goodsDetailDao;
 	@Autowired
 	private ProductDao productDao;
+	@Autowired
+	private GradeDao gradeDao;
 	@Override
 	protected BaseDao<Goods> getDao() {
 		return goodsDao;
@@ -198,8 +202,8 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 											pricePart.setId(UUID.randomUUID().toString());
 											pricePart.setPriceId(priceOne.getId());
 											pricePart.setStatus(1);
-											pricePart.setOldPrice(priceOne.getOldPrice());
-											pricePart.setPrice(priceOne.getPrice());
+											// pricePart.setOldPrice(priceOne.getOldPrice());
+											// pricePart.setPrice(priceOne.getPrice());
 											pricePart.setAptitudeIdArr(priceOne.getAptitudeIdArr());
 											pricePart.setCostPrice(priceOne.getCostPrice());
 											pricePart.setProfit(priceOne.getProfit());
@@ -364,6 +368,11 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 		}
 		return falg;
 	}
+	
+	public List<Map<String,Object>> getHospitalGoods(Map<String,Object> map){
+		return goodsDao.getHospitalGoods(map);
+	}
+	
 	/**
 	 * {获取服务的详情}
 	 * 
@@ -384,4 +393,18 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 		}
 		return goodsDetail;
 	}
+	
+	public List<Map<String,Object>> getColumnGoods(Map<String,Object> map){
+		List<Map<String,Object>> goodsColumn = goodsDao.getColumnGoods(map);
+		return goodsColumn;
+	}
+
+	@Override
+	public List<Grade> getGoodsAllPrice(String goodsId, String siteId) {
+		Map<String, Object> query = new HashMap<>();
+		query.put("goodsId", goodsId);
+		query.put("siteId", siteId);
+		return gradeDao.getGoodsPrice(query);
+	}
+	
 }

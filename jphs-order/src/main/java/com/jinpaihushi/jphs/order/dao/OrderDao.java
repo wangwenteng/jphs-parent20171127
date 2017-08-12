@@ -3,7 +3,6 @@ package com.jinpaihushi.jphs.order.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
@@ -36,4 +35,33 @@ public interface OrderDao extends BaseDao<Order> {
 	 * @return
 	 */
 	Order getUserOrderDetail(Order order);
+	
+	/**
+	 * 查询护士最新即将执行的订单
+	 * @param map
+	 * @return
+	 */
+	List<Map<String , Object>> getUptoDataGoods(Map<String,Object> map);
+	
+	/**
+	 * 待接单订单列表
+	 * @param map
+	 * @return
+	 */
+	List<Map<String , Object>> orderNotList(Map<String,Object> map);
+	
+	/**
+	 * 护士已接单列表
+	 * @param map
+	 * @return
+	 */
+	List<Map<String , Object>> nurseOrderList(Map<String,Object> map);
+	
+	/**
+	 * 订单详情
+	 * @param order
+	 * @return
+	 */
+	Order nurseOrderDetails(Order order);
+	
 }

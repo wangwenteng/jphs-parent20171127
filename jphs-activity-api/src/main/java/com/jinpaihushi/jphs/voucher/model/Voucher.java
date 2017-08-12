@@ -1,6 +1,7 @@
 package com.jinpaihushi.jphs.voucher.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.hibernate.validator.constraints.Length;
@@ -68,7 +69,6 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 	
 	private VoucherRepertory voucherRepertory;
 	private VoucherUse voucherUse;
-
 	public Voucher() {
 	}
 
@@ -208,6 +208,15 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 		this.discountAmount = discountAmount;
 	}
 
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	
 	public VoucherRepertory getVoucherRepertory() {
 		return voucherRepertory;
 	}
@@ -223,18 +232,7 @@ public class Voucher extends BaseModel implements Predicate<Voucher>, Updator<Vo
 	public void setVoucherUse(VoucherUse voucherUse) {
 		this.voucherUse = voucherUse;
 	}
-	
-	public String getGoodsName() {
-		return goodsName;
-	}
 
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-
-	
-	
-	
 	public Date getActivationStartTime() {
 		return activationStartTime;
 	}

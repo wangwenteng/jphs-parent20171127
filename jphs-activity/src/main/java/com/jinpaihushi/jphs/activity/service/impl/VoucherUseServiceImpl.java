@@ -36,9 +36,13 @@ public class VoucherUseServiceImpl extends BaseServiceImpl<VoucherUse> implement
 	}
 
 	@Override
-	public Page<VoucherUse> getDetailtList(VoucherUse voucherUse) {
+	public Page<VoucherUse> getDetailList(String id) {
 		// TODO Auto-generated method stub
-		return voucherUseDao.getDetailtList(voucherUse);
+		Page<VoucherUse> list = voucherUseDao.getDetailList(id);
+		/*for (int i = 0;list.size();i++ ){
+			System.out.println(list.get(i).toString());
+		}*/
+		return list;
 	}
 	
 	@Override
@@ -46,6 +50,5 @@ public class VoucherUseServiceImpl extends BaseServiceImpl<VoucherUse> implement
 		// TODO Auto-generated method stub
 		return voucherUseDao.getVoucherUse(id);
 	}
-
 
 }

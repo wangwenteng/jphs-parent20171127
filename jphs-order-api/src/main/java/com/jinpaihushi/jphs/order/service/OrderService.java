@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
-import com.jinpaihushi.jphs.insurance.model.Insurance;
 import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderInfo;
-import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
 
 /**
@@ -50,5 +48,14 @@ public interface OrderService extends BaseService<Order> {
 	 * @return
 	 */
 	boolean checkPrice(String orderNo, Double payParice);
-
+	
+	List<Map<String , Object>> getUptoDataGoods(Map<String,Object> map);
+	List<Map<String , Object>> getOrderGoodsList(Map<String,Object> map);
+	List<Map<String , Object>> nurseOrderList(Map<String,Object> map);
+	/**
+	 * 订单详情
+	 * @param order
+	 * @return
+	 */
+	Order nurseOrderDetails(Order order);
 }

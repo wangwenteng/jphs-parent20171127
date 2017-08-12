@@ -2,9 +2,7 @@ package com.jinpaihushi.jphs.user.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -47,6 +45,12 @@ public class UserAddress extends BaseModel implements Predicate<UserAddress>,
     /** 详细地址 */
 	@Length(max = 500, message = "{userAddress.detailaddress.illegal.length}")
 	private String detailaddress;
+	
+	private Integer defaultAddress;
+	
+	private String phone;
+	
+	private String name;
 
 	public UserAddress(){}
 
@@ -123,8 +127,36 @@ public class UserAddress extends BaseModel implements Predicate<UserAddress>,
 	public void setDetailaddress(String detailaddress) {
     	this.detailaddress = detailaddress;
     }
+	
+	
 
-    public String toString() {
+    public Integer getDefaultAddress() {
+		return defaultAddress;
+	}
+
+	public void setDefaultAddress(Integer defaultAddress) {
+		this.defaultAddress = defaultAddress;
+	}
+
+	
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("UserAddress{").
 			append("id=").append(id).
 			append(",title=").append(title).

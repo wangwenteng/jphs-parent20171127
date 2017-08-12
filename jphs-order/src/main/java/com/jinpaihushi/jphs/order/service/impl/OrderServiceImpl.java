@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.activity.dao.VoucherUseDao;
 import com.jinpaihushi.jphs.activity.model.VoucherUse;
 import com.jinpaihushi.jphs.goods.dao.GoodsDao;
+import com.jinpaihushi.jphs.goods.model.Goods;
 import com.jinpaihushi.jphs.insurance.dao.InsuranceDao;
 import com.jinpaihushi.jphs.insurance.model.Insurance;
 import com.jinpaihushi.jphs.order.dao.OrderDao;
@@ -30,8 +32,6 @@ import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.order.service.OrderServiceService;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.service.service.ServiceImagesService;
-import com.jinpaihushi.jphs.voucher.dao.VoucherDao;
-import com.jinpaihushi.jphs.voucher.service.VoucherService;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.UUIDUtils;
@@ -59,12 +59,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 	private InsuranceDao insuranceDao;
 	@Autowired
 	private VoucherUseDao voucherUseDao;
+	@Autowired
+	private GoodsDao goodsDao;
+
 	@Override
 	protected BaseDao<Order> getDao() {
 		return orderDao;
 	}
 
-	
 	@Override
 	public Page<Order> getList(Order order) {
 		return orderDao.getList(order);
@@ -80,7 +82,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Map<String, Object> createOrder(OrderInfo orderInfo) {
 		Map<String, Object> result = new HashMap<>();
 		try {
@@ -112,14 +114,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 					orderOther.setCreateTime(new Date());
 					orderOther.setOrderId(order.getId());
 					i = orderOtherDao.insert(orderOther);
-					//插入图片
-					ServiceImages serviceImages= new ServiceImages();
+					// 插入图片
+					ServiceImages serviceImages = new ServiceImages();
 					serviceImages.setUrl(orderInfo.getOrder_img());
 					serviceImages.setId(UUID.randomUUID().toString());
 					serviceImages.setCreatorId(order.getCreatorId());
 					serviceImages.setCreatorName(order.getCreatorName());
 					serviceImages.setCreateTime(new Date());
-					//暂时写死，后期下单的时候带过来
+					// 暂时写死，后期下单的时候带过来
 					serviceImages.setDevice_type(1);
 					serviceImages.setSourceId(order.getId());
 					serviceImagesService.insert(serviceImages);
@@ -136,20 +138,25 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 							orderService.setStatus(0);
 							orderServiceService.insert(orderService);
 						}
-						//添加保险信息
-						Insurance  insurance = new Insurance();
-						BeanUtils.copyProperties(insurance, orderInfo);
-						insurance.setOrderId(order.getId());
-						insurance.setId(UUIDUtils.getId());
-						insurance.setStatus(0);
-						insurance.setCreateTime(new Date());
-						insuranceDao.insert(insurance);
-						//修改优惠券的状态
-						VoucherUse use = new VoucherUse();
-						use.setId(orderInfo.getVoucherUseId());
-						use.setStatus(1);
-						use.setUseTime(new Date());
-						voucherUseDao.update(use);
+						// 添加保险信息
+						Goods goods = goodsDao.loadById(orderInfo.getGoodsId());
+						if (goods.getInsurance() == 1) {
+							Insurance insurance = new Insurance();
+							BeanUtils.copyProperties(insurance, orderInfo);
+							insurance.setOrderId(order.getId());
+							insurance.setId(UUIDUtils.getId());
+							insurance.setStatus(0);
+							insurance.setCreateTime(new Date());
+							insuranceDao.insert(insurance);
+						}
+						if(StringUtils.isNotEmpty(orderInfo.getVoucherUseId())){
+							// 修改优惠券的状态
+							VoucherUse use = new VoucherUse();
+							use.setId(orderInfo.getVoucherUseId());
+							use.setStatus(1);
+							use.setUseTime(new Date());
+							voucherUseDao.update(use);
+						}
 						result.put("orderId", order.getId());
 						result.put("orderNo", order.getOrderNo());
 						result.put("payParice", orderGoods.getPayPrice());
@@ -199,18 +206,41 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 		orderService.setOrderId(orderId);
 		orderService.setStatus(0);
 		List<com.jinpaihushi.jphs.order.model.OrderService> serviceList = orderServiceService.list(orderService);
-		if(orderDetail!=null)orderDetail.setOrderServiceList(serviceList);
+		if (orderDetail != null)
+			orderDetail.setOrderServiceList(serviceList);
 		return orderDetail;
 	}
-
 
 	@Override
 	public boolean checkPrice(String orderNo, Double payParice) {
 		Order order = new Order();
 		order.setOrderNo(orderNo);
 		Order orderDetail = orderDao.getUserOrderDetail(order);
-		if(orderDetail.getOrderGoods().getPayPrice()==payParice) return true;
+		if (orderDetail.getOrderGoods().getPayPrice() == payParice)
+			return true;
 		return false;
+	}
+
+	
+	public List<Map<String , Object>> getUptoDataGoods(Map<String,Object> map){
+		return orderDao.getUptoDataGoods(map);
+	}
+	
+	public List<Map<String , Object>> getOrderGoodsList(Map<String,Object> map){
+		return orderDao.orderNotList(map);
+	}
+	
+	public List<Map<String , Object>> nurseOrderList(Map<String,Object> map){
+		return orderDao.nurseOrderList(map);
+	}
+	
+	/**
+	 * 订单详情
+	 * @param order
+	 * @return
+	 */
+	public Order nurseOrderDetails(Order order){
+		return orderDao.nurseOrderDetails(order);
 	}
 	
 }

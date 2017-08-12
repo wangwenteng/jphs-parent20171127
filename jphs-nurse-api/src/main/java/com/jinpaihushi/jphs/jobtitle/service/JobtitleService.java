@@ -11,6 +11,8 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface JobtitleService extends BaseService<Jobtitle> {
 
+	int checkName(Jobtitle jobtitle);
+
 	
 
 }

@@ -38,6 +38,11 @@
 			<artifactId>jphs-user-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+			<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-shop-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>

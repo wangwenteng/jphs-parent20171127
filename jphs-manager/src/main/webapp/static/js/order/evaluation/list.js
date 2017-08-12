@@ -19,6 +19,6 @@ function deleteById(id) {
 	window.location.href = "/order/evaluation/delete.jhtml?id=" + id;
 }
 
-function UpdateStatus(id,status) {
-	window.location.href = "/order/evaluation/UpdateStatus.jhtml?id=" + id +"&status="+status;
+function updateStatus(id,status) {
+	window.location.href = "/order/evaluation/updateStatus.jhtml?id=" + id +"&status="+status;
 }

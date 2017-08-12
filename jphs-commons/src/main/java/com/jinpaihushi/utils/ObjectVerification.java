@@ -11,7 +11,9 @@ import java.lang.reflect.Field;
 public class ObjectVerification {
 	/**
 	 * 判断对象的必填字段是否为空
-	 * @param object 对象
+	 * 
+	 * @param object
+	 *            对象
 	 * @return true or false
 	 * @throws Exception
 	 */
@@ -22,10 +24,8 @@ public class ObjectVerification {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			String name = field.getName();
-			if(name.equals("id")||name.equals("createTime"))continue;
-//			if(name.equals("address")){
-//				if(field.get(object).equals("省份,地级市,市、县级市"))return false;
-//			}
+			if (name.equals("id") || name.equals("createTime"))
+				continue;
 			if (field.get(object) == null) {
 				return false;
 			}

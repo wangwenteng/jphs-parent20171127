@@ -74,7 +74,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pd.id product_id,
 		pd.title product_name,
 		g.content,
-		si.id si_id,
 		si.url,
 		si.device_type,
 		p.grade,

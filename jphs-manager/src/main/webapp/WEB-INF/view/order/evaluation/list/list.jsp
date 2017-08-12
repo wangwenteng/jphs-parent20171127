@@ -39,17 +39,17 @@
 							<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
 							<td> 
-								<c:if test="${e.status ==-1 }">审核不通过</c:if>
-								<c:if test="${e.status ==0 }">未审核</c:if>
-								<c:if test="${e.status ==1 }">审核通过</c:if>
+								<c:if test="${e.status ==-1 }"><img src="/static/img/notPass.png"></c:if>
+								<c:if test="${e.status ==0 }"><img src="/static/img/examine.png"></c:if>
+								<c:if test="${e.status ==1 }"><img src="/static/img/pass.png"></c:if>
 							</td>
 							<td>
 							<c:if test="${e.status ==0 }">
-								<a onclick="UpdateStatus('${e.id}','-1')">
-								审核不通过
+								<a onclick="updateStatus('${e.id}','-1')">
+								<img src="/static/img/notPass.png">
 							</a>								
-							<a onclick="UpdateStatus('${e.id}','1')">
-								审核通过
+							<a onclick="updateStatus('${e.id}','1')">
+								<img src="/static/img/pass.png">
 							</a>
 							</c:if>
 								<c:if test="${e.status !=0 }">已审核</c:if>

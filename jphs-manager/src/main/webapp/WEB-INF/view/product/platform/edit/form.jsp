@@ -9,9 +9,6 @@
 </script>
 <form class="form-horizontal">
 	<fieldset>
-		<div id="legend" class="">
-			<legend class="">${platform.id == null?'添加平台':'编辑平台'}</legend>
-		</div>
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" value="${platform.id}" />
 			<!-- 文本输入 -->

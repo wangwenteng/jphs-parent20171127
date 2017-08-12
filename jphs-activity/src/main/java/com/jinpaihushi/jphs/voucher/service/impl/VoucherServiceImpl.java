@@ -1,6 +1,6 @@
 package com.jinpaihushi.jphs.voucher.service.impl;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +17,15 @@ import com.jinpaihushi.jphs.goods.dao.GoodsDao;
 import com.jinpaihushi.jphs.goods.model.Goods;
 import com.jinpaihushi.jphs.price.dao.PricePartDao;
 import com.jinpaihushi.jphs.price.model.PricePart;
+import com.jinpaihushi.jphs.product.dao.ProductDao;
+import com.jinpaihushi.jphs.product.model.Product;
 import com.jinpaihushi.jphs.voucher.dao.VoucherDao;
+import com.jinpaihushi.jphs.voucher.dao.VoucherRepertoryDao;
 import com.jinpaihushi.jphs.voucher.model.Voucher;
 import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
-import com.jinpaihushi.utils.Common;
+import com.jinpaihushi.utils.CollectionShort;
 import com.jinpaihushi.utils.DoubleUtils;
 
 /**
@@ -41,7 +44,10 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 	private PricePartDao pricePartDao;
 	@Autowired
 	private VoucherUseDao voucherUseDao;
-
+	@Autowired
+	private VoucherRepertoryDao voucherRepertoryDao;
+	@Autowired
+	private ProductDao productDao;
 	@Override
 	protected BaseDao<Voucher> getDao() {
 		return voucherDao;
@@ -66,7 +72,7 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public List<Voucher> getUservoucher(String pricePartId, String goodsId, String userId) {
+	public List<Map<String, Object>> getUservoucher(String pricePartId, String goodsId, String userId) {
 		// 根据商品id获取商品的信息
 		Goods goods = goodsDao.loadById(goodsId);
 		// 根据pricePartId 下单商品的价格
@@ -79,26 +85,27 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 		map.put("goodsId", goodsId);
 		map.put("productId", goods.getProductId());
 		if (goods != null) {
-			List<Voucher> vocherList = voucherDao.getUserVocher(map);
+			List<Map<String, Object>> vocherList = voucherRepertoryDao.getUserVocher(map);
 			for (int i = 0; i < vocherList.size(); i++) {
+				BigDecimal bg = null; 
 				// 优惠券的现金券是所有商品可用
-				if (vocherList.get(i).getType() != 1) {
 					// 如果是满减券
-					if (vocherList.get(i).getType() == 2) {
+					if (((Integer)vocherList.get(i).get("type"))==2) {
+						bg = (BigDecimal)vocherList.get(i).get("condition_amount");
 						// 判断需要满足的金额是否达到要求
-						if (vocherList.get(i).getVoucherRepertory().getConditionAmount() > salePrice) {
+						if (bg.doubleValue()> salePrice) {
 							// 不满足要求移除改优惠券
 							vocherList.remove(i);
 						}
 					}
-					if (vocherList.get(i).getType() == 3) {
-						if (vocherList.get(i).getVoucherRepertory().getDiscountAmount() > salePrice) {
+					if (((Integer)vocherList.get(i).get("type"))==3) {
+						bg = (BigDecimal)vocherList.get(i).get("discount_amount");
+						if (bg.doubleValue()> salePrice) {
 							// 不满足要求移除改优惠券
 							vocherList.remove(i);
 						}
 					}
 				}
-			}
 			return vocherList;
 		}
 		return null;
@@ -111,6 +118,33 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 		map.put("type", type);
 		map.put("status", status);
 		List<Map<String, Object>> list = voucherDao.getUserAllVocher(map);
+		for (Map<String, Object> map2 : list) {
+			String productName = "";
+			String productIds = (String) map2.get("product_id");
+			if (productIds!=null){
+				String[] productId = productIds.split(",");
+				for (int i = 0;i<productId.length ;i++ ){
+					Product product = productDao.loadById(productId[i]);
+					if(product!=null){
+						productName += "、" + product.getTitle();
+					}
+				}
+				productName+=productName+"类";
+			}
+			
+			String goodsIds = (String) map2.get("goods_id");
+			if (goodsIds!=null){
+				String[] goodsId = goodsIds.split(",");
+				for(int j = 0;j<goodsId.length;j++){
+					Goods goods = goodsDao.loadById(goodsId[j]);
+					if(goods!=null){
+						productName += "、" + goods.getTitle(); 
+					}	
+				}
+			}
+			map2.put("productName",productName.substring(1));
+		}
+		list = CollectionShort.testMapOrder(list, "status");
 		return list;
 	}
 
@@ -120,17 +154,17 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 		PricePart pricePart = pricePartDao.loadById(pricePartId);
 		// 获取优惠券的信息
 		Voucher voucher = voucherDao.getVocherByUser(voucherUseId);
-		//判断优惠券类型
-		if(voucher!=null){
+		// 判断优惠券类型
+		if (voucher != null) {
 			VoucherRepertory repertory = voucher.getVoucherRepertory();
-			if(voucher.getType()==1){
+			if (voucher.getType() == 1) {
 				return DoubleUtils.sub(pricePart.getPrice(), repertory.getAmount());
-			}else if(voucher.getType()==2){
-				if(pricePart.getPrice()>repertory.getAmount()){
+			} else if (voucher.getType() == 2) {
+				if (pricePart.getPrice() > repertory.getAmount()) {
 					return DoubleUtils.sub(pricePart.getPrice(), repertory.getAmount());
 				}
-			}else if(voucher.getType()==3){
-				if(pricePart.getPrice()>repertory.getAmount()){
+			} else if (voucher.getType() == 3) {
+				if (pricePart.getPrice() > repertory.getAmount()) {
 					return DoubleUtils.mul(pricePart.getPrice(), repertory.getAmount());
 				}
 			}

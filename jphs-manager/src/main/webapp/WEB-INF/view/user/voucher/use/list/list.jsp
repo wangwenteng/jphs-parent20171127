@@ -42,8 +42,8 @@
 						<td><fmt:formatDate value="${e.useTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
 						<td>
-							<c:if test="${e.status ==0 }">未使用</c:if>
-							<c:if test="${e.status ==1 }">已使用</c:if>
+							<c:if test="${e.status ==0 }"><span style="color: #F0BB1C;">未使用</span></c:if>
+							<c:if test="${e.status ==1 }"><span style="color: #34BC2C;">已使用</span></c:if>
 						</td>
 					</tr>
 				</c:forEach>

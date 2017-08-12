@@ -17,8 +17,6 @@ import com.jinpaihushi.jphs.activity.model.Advertising;
 @Repository("advertisingDao")
 public interface AdvertisingDao extends BaseDao<Advertising> {
 
-	List<Map<String, Object>> getCarouselFigure(Map map);
-	
-	
+	List<Advertising> getCarouselFigure(Map<String ,Object> map);
 	
 }

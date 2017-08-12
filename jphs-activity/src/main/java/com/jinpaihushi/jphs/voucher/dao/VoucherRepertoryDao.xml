@@ -2,32 +2,27 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	yangsong
-	date	:	2017-07-14 14:35:45
-	version	:	1.0
--->
+<!-- author : yangsong date : 2017-07-14 14:35:45 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.voucher.dao.VoucherRepertoryDao">
-	
+
 	<sql id="field">
-		VR.id, VR.voucher_id, VR.no, VR.code, 
-		VR.amount, VR.condition_amount, VR.discount_amount, VR.status
+		VR.id, VR.voucher_id, VR.no, VR.code, VR.amount,
+		VR.condition_amount, VR.discount_amount, VR.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		VR.id VR_id, VR.voucher_id VR_voucher_id, 
-		VR.no VR_no, VR.code VR_code, 
-		VR.amount VR_amount, VR.condition_amount VR_condition_amount, 
-		VR.discount_amount VR_discount_amount, VR.status VR_status
+		VR.id VR_id, VR.voucher_id VR_voucher_id, VR.no VR_no,
+		VR.code VR_code, VR.amount VR_amount, VR.condition_amount
+		VR_condition_amount, VR.discount_amount VR_discount_amount, VR.status
+		VR_status
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		VR.id id, VR.voucher_id voucherId, 
-		VR.no no, VR.code code, 
-		VR.amount amount, VR.condition_amount conditionAmount, 
+		VR.id id, VR.voucher_id voucherId, VR.no no, VR.code code,
+		VR.amount amount, VR.condition_amount conditionAmount,
 		VR.discount_amount discountAmount, VR.status status
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND VR.id=#{id}
@@ -54,13 +49,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND VR.status=#{status}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
@@ -89,80 +84,143 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				VR.id=#{id}, 
-		   </if>
-           <if test="voucherId!=null">
-				VR.voucher_id=#{voucherId}, 
-		   </if>
-           <if test="no!=null">
-				VR.no=#{no}, 
-		   </if>
-           <if test="code!=null">
-				VR.code=#{code}, 
-		   </if>
-           <if test="amount!=null">
-				VR.amount=#{amount}, 
-		   </if>
-           <if test="conditionAmount!=null">
-				VR.condition_amount=#{conditionAmount}, 
-		   </if>
-           <if test="discountAmount!=null">
-				VR.discount_amount=#{discountAmount}, 
-		   </if>
-           <if test="status!=null">
-				VR.status=#{status}, 
-		   </if>
+			<if test="id!=null">
+				VR.id=#{id},
+			</if>
+			<if test="voucherId!=null">
+				VR.voucher_id=#{voucherId},
+			</if>
+			<if test="no!=null">
+				VR.no=#{no},
+			</if>
+			<if test="code!=null">
+				VR.code=#{code},
+			</if>
+			<if test="amount!=null">
+				VR.amount=#{amount},
+			</if>
+			<if test="conditionAmount!=null">
+				VR.condition_amount=#{conditionAmount},
+			</if>
+			<if test="discountAmount!=null">
+				VR.discount_amount=#{discountAmount},
+			</if>
+			<if test="status!=null">
+				VR.status=#{status},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="voucherRepertory" type="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
+	<resultMap id="voucherRepertory"
+		type="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="voucherId" column="voucher_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherId" column="voucher_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="amount" column="amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="conditionAmount" column="condition_amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="discountAmount" column="discount_amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="code" column="code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="conditionAmount" column="condition_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="discountAmount" column="discount_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<resultMap id="voucherRepertoryGlobal" type="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
-		<result property="id" column="VR_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="voucherId" column="VR_voucher_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="no" column="VR_no" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="code" column="VR_code" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="amount" column="VR_amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="conditionAmount" column="VR_condition_amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="discountAmount" column="VR_discount_amount" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="status" column="VR_status" javaType="Integer" jdbcType="INTEGER"></result>
+	<resultMap id="userVoucherList"
+		type="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherId" column="voucher_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="conditionAmount" column="condition_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="discountAmount" column="discount_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<association property="voucherUse"
+			javaType="com.jinpaihushi.jphs.activity.model.VoucherUse">
+			<result property="id" column="vu_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="voucherRepertoryId" column="vu_voucher_repertory_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="phone" column="vu_phone" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="amount" column="vu_amount" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="startTime" column="vu_start_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="endTime" column="vu_end_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="activationStartTime" column="vu_activation_start_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="activationEndTime" column="vu_activation_end_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="useTime" column="vu_use_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="vu_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="vu_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="vu_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="vu_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
+
+	<resultMap id="voucherRepertoryGlobal"
+		type="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
+		<result property="id" column="VR_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="voucherId" column="VR_voucher_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="no" column="VR_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="code" column="VR_code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="amount" column="VR_amount" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="conditionAmount" column="VR_condition_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="discountAmount" column="VR_discount_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="status" column="VR_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
 		INSERT INTO `VOUCHER_REPERTORY`(
-			id, voucher_id, 
-			no, code, 
-			amount, condition_amount, 
-			discount_amount, status
-		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{voucherId,jdbcType=VARCHAR}, 
-			#{no,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
-			#{amount,jdbcType=DECIMAL}, #{conditionAmount,jdbcType=DECIMAL}, 
-			#{discountAmount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}
-		)
+		id, voucher_id, no,
+		code, amount, condition_amount, discount_amount,
+		status )VALUES(
+		#{id,jdbcType=VARCHAR}, #{voucherId,jdbcType=VARCHAR},
+		#{no,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL},
+		#{conditionAmount,jdbcType=DECIMAL},
+		#{discountAmount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER} )
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `VOUCHER_REPERTORY`(
 			id, voucher_id, 
@@ -170,37 +228,41 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			amount, condition_amount, 
 			discount_amount, status
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.voucherId,jdbcType=VARCHAR}, 
-			#{item.no,jdbcType=VARCHAR}, #{item.code,jdbcType=VARCHAR}, 
-			#{item.amount,jdbcType=DECIMAL}, #{item.conditionAmount,jdbcType=DECIMAL}, 
-			#{item.discountAmount,jdbcType=DECIMAL}, #{item.status,jdbcType=INTEGER}
-			)
+			#{item.id,jdbcType=VARCHAR},
+			#{item.voucherId,jdbcType=VARCHAR}, #{item.no,jdbcType=VARCHAR},
+			#{item.code,jdbcType=VARCHAR}, #{item.amount,jdbcType=DECIMAL},
+			#{item.conditionAmount,jdbcType=DECIMAL},
+			#{item.discountAmount,jdbcType=DECIMAL},
+			#{item.status,jdbcType=INTEGER} )
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE VR FROM `VOUCHER_REPERTORY` VR WHERE VR.ID = #{id} 
+		DELETE VR FROM `VOUCHER_REPERTORY` VR WHERE VR.ID =
+		#{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `VOUCHER_REPERTORY` VR
-		SET 
+		UPDATE `VOUCHER_REPERTORY` VR
+		SET
 		VR.STATUS = -1
-		WHERE VR.ID = #{id}
+		WHERE
+		VR.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `VOUCHER_REPERTORY` VR
-		<include refid="dynamicSet" /> 
-	    WHERE VR.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE VR.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="voucherRepertory">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `VOUCHER_REPERTORY` VR
 		<include refid="dynamicWhere" />
 	</select>
@@ -211,23 +273,63 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="voucherRepertory">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `VOUCHER_REPERTORY` VR
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="voucherRepertory">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `VOUCHER_REPERTORY` VR
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-	
+
 	<select id="loadById" resultMap="voucherRepertory">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `VOUCHER_REPERTORY` VR
 		WHERE VR.ID = #{id}
 	</select>
-	
+	<select id="getUserVocher" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		vu.id AS
+		vu_id,
+		vu.phone AS vu_phone,
+		vu.amount AS vu_amount,
+		vu.start_time AS
+		vu_start_time,
+		vu.end_time AS vu_end_time,
+		vu.use_time AS vu_use_time,
+		vr.`no`,
+		vr.condition_amount ,
+		vr.amount,
+		vr.discount_amount,
+		vr.id,
+		v.type
+
+		FROM
+		voucher_use vu
+		LEFT JOIN voucher_repertory vr ON
+		vu.voucher_repertory_id = vr.id
+		LEFT JOIN voucher v ON vr.voucher_id =
+		v.id
+		WHERE
+		vu.creator_id = #{userId} AND
+		vu.end_time &gt; NOW()
+		AND
+		vu.start_time &lt; NOW()
+		AND vu.`status` = 0
+		AND vu.use_time IS NULL
+		AND
+		(find_in_set(#{productId}, v.product_id)
+		OR find_in_set(#{goodsId},
+		v.goods_id))
+		ORDER BY
+		vu.amount DESC,
+		vu.end_time
+	</select>
 </mapper>

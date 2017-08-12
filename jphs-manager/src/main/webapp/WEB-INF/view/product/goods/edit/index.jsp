@@ -16,5 +16,8 @@
 		</div>
 			<hr class="mt-5" />
 		<jsp:include page="form.jsp"></jsp:include>
+		<div style="padding-bottom:50px">
+		<button id="save" class="public-info public_btn public_btn_right" data-role="save-btn" style="margin-right:50px;">保存</button>
+	    </div>
 	</div>
 </form>

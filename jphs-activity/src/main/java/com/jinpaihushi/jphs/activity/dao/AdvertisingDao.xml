@@ -320,17 +320,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `ADVERTISING` A
 		WHERE A.ID = #{id}
 	</select>
-	<select id="getCarouselFigure" resultType="java.util.HashMap">
+	<select id="getCarouselFigure" resultMap="advertisingS">
 		SELECT
 		a.id,
+		a.type,
 		a.link,
-		si.url,
-		a.sort
-		FROM
-		advertising a
-		LEFT JOIN service_images si ON a.id =
-		si.source_id
-		WHERE
-		a.type = #{type} AND a.status =1;
+		a.sort,
+		a.create_time,
+		a.creator_id,
+		a.creator_name,
+		si.url image
+		FROM advertising a
+		LEFT JOIN service_images si ON a.id = si.source_id
+		WHERE a.type = #{atype} and si.type = #{stype} AND a.status = 1;
 	</select>
+	
+	<resultMap id="advertisingS" type="com.jinpaihushi.jphs.activity.model.Advertising">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="link" column="link" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="image" column="image" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
 </mapper>

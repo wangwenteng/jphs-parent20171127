@@ -2,32 +2,26 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	wangwt
-	date	:	2017-07-13 13:43:00
-	version	:	1.0
--->
+<!-- author : wangwt date : 2017-07-13 13:43:00 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.jobtitle.dao.JobtitleDao">
-	
+
 	<sql id="field">
-		J.id, J.name, J.jobtitle_type_id, J.creator_id, 
+		J.id, J.name, J.jobtitle_type_id, J.creator_id,
 		J.creator_name, J.create_time, J.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		J.id J_id, J.name J_name, 
-		J.jobtitle_type_id J_jobtitle_type_id, J.creator_id J_creator_id, 
-		J.creator_name J_creator_name, J.create_time J_create_time, 
-		J.status J_status
+		J.id J_id, J.name J_name, J.jobtitle_type_id
+		J_jobtitle_type_id, J.creator_id J_creator_id, J.creator_name
+		J_creator_name, J.create_time J_create_time, J.status J_status
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		J.id id, J.name name, 
-		J.jobtitle_type_id jobtitleTypeId, J.creator_id creatorId, 
-		J.creator_name creatorName, J.create_time createTime, 
-		J.status status
+		J.id id, J.name name, J.jobtitle_type_id jobtitleTypeId,
+		J.creator_id creatorId, J.creator_name creatorName, J.create_time
+		createTime, J.status status
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND J.id=#{id}
@@ -51,13 +45,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND J.status=#{status}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
@@ -67,7 +61,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND J.name LIKE CONCAT('%', #{name}, '%')
 			</if>
 			<if test="jobtitleTypeId!=null and jobtitleTypeId!=''">
-				AND J.jobtitle_type_id LIKE CONCAT('%', #{jobtitleTypeId}, '%')
+				AND J.jobtitle_type_id LIKE CONCAT('%',
+				#{jobtitleTypeId}, '%')
 			</if>
 			<if test="creatorId!=null and creatorId!=''">
 				AND J.creator_id LIKE CONCAT('%', #{creatorId}, '%')
@@ -83,33 +78,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				J.id=#{id}, 
-		   </if>
-           <if test="name!=null">
-				J.name=#{name}, 
-		   </if>
-           <if test="jobtitleTypeId!=null">
-				J.jobtitle_type_id=#{jobtitleTypeId}, 
-		   </if>
-           <if test="creatorId!=null">
-				J.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				J.creator_name=#{creatorName}, 
-		   </if>
-           <if test="createTime!=null">
-				J.create_time=#{createTime}, 
-		   </if>
-           <if test="status!=null">
-				J.status=#{status}, 
-		   </if>
+			<if test="id!=null">
+				J.id=#{id},
+			</if>
+			<if test="name!=null">
+				J.name=#{name},
+			</if>
+			<if test="jobtitleTypeId!=null">
+				J.jobtitle_type_id=#{jobtitleTypeId},
+			</if>
+			<if test="creatorId!=null">
+				J.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				J.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				J.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				J.status=#{status},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
@@ -118,40 +113,51 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="jobtitle" type="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="jobtitleTypeId" column="jobtitle_type_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="jobtitleTypeId" column="jobtitle_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
+
 	<resultMap id="jobtitleGlobal" type="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
 		<result property="id" column="J_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="name" column="J_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="jobtitleTypeId" column="J_jobtitle_type_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="J_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="J_creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="J_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="status" column="J_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="name" column="J_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="jobtitleTypeId" column="J_jobtitle_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="J_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="J_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="J_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="J_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
 		INSERT INTO `JOBTITLE`(
-			id, name, 
-			jobtitle_type_id, creator_id, 
-			creator_name, create_time, 
-			status
+		id, name, jobtitle_type_id,
+		creator_id, creator_name, create_time, status
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-			#{jobtitleTypeId,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
-			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{status,jdbcType=INTEGER}
-		)
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{jobtitleTypeId,jdbcType=VARCHAR},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER} )
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `JOBTITLE`(
 			id, name, 
@@ -159,37 +165,40 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			creator_name, create_time, 
 			status
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-			#{item.jobtitleTypeId,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
-			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.status,jdbcType=INTEGER}
-			)
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.jobtitleTypeId,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE J FROM `JOBTITLE` J WHERE J.ID = #{id} 
+		DELETE J FROM `JOBTITLE` J WHERE J.ID = #{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `JOBTITLE` J
-		SET 
+		UPDATE `JOBTITLE` J
+		SET
 		J.STATUS = -1
 		WHERE J.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `JOBTITLE` J
-		<include refid="dynamicSet" /> 
-	    WHERE J.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE J.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="jobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `JOBTITLE` J
 		<include refid="dynamicWhere" />
 	</select>
@@ -200,23 +209,54 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="jobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `JOBTITLE` J
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="jobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `JOBTITLE` J
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-	
+
 	<select id="loadById" resultMap="jobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `JOBTITLE` J
 		WHERE J.ID = #{id}
 	</select>
-	
+	<select id="checkName" resultType="java.lang.Integer">
+		SELECT
+		count(J.name)
+		FROM
+		jobtitle J
+		<where>
+			<if test="id!=null and id!=''">
+				AND J.id !=#{id}
+			</if>
+			<if test="name!=null and name!=''">
+				AND J.name=#{name}
+			</if>
+			<if test="jobtitleTypeId!=null and jobtitleTypeId!=''">
+				AND J.jobtitle_type_id=#{jobtitleTypeId}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND J.creator_id=#{creatorId}
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND J.creator_name=#{creatorName}
+			</if>
+			<if test="createTime!=null">
+				AND J.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND J.status=#{status}
+			</if>
+		</where>
+	</select>
 </mapper>

@@ -393,7 +393,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		IE.essence,
 		IE.create_time,
 		IE.creator_id,
-		IE.creator_name,
+		REPLACE(u.phone,SUBSTR(IE.creator_name,4,4),'****') creator_name,
 		IE.`status`
 		FROM
 		information_evaluate IE
@@ -401,21 +401,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		IE.creator_id = ni.source_id
 		<where>
 			AND IE.`status` =1
-			<if test="userId!=null and userId!=''">
+			<if test="informationEvaluate!=null">
+				<if test="informationEvaluate.id!=null and informationEvaluate.id!=''">
+					AND IE.id = #{informationEvaluate.id}
+				</if>
+				<if
+					test="informationEvaluate.informationId!=null and informationEvaluate.informationId!=''">
+					AND IE.information_id  =
+					#{informationEvaluate.informationId}
+				</if>
+				<if
+					test="informationEvaluate.headPicture!=null and informationEvaluate.headPicture!=''">
+					AND IE.head_picture LIKE CONCAT('%',
+					#{informationEvaluate.headPicture}, '%')
+				</if>
+				<if test="userId!=null and userId!=''">
 				OR (IE.creator_id =#{userId} AND IE.`status` =0)
 			</if>
-			<if test="informationEvaluate.id!=null and informationEvaluate.id!=''">
-				AND IE.id = #{informationEvaluate.id}
-			</if>
-			<if test="informationEvaluate.informationId!=null and informationEvaluate.informationId!=''">
-				AND IE.information_id LIKE CONCAT('%', #{informationEvaluate.informationId},
-				'%')
-			</if>
-			<if test="informationEvaluate.headPicture!=null and informationEvaluate.headPicture!=''">
-				AND IE.head_picture LIKE CONCAT('%', #{informationEvaluate.headPicture}, '%')
 			</if>
 		</where>
-		<include refid="queryWhere" />
-		<include refid="orderby" />
+		<if test="informationEvaluate.orderby != null">
+			ORDER BY ${informationEvaluate.orderby}
+		</if>
 	</select>
 </mapper>

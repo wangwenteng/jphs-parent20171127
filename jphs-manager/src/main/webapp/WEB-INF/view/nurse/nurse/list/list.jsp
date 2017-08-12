@@ -28,11 +28,13 @@
 						<td width="30">${s.index+1}</td>
 						<td><c:out value="${e.user.name}" /></td>
 						<td><c:out value="${e.user.phone}" /></td>
-						<td><c:set var="idcard" value="${fn:substring(e.sfz,6,10) }" />
-							<jsp:useBean id="nowDate" class="java.util.Date" /> <fmt:formatDate
-								var="nowStr" value="${nowDate}" pattern="yyyy" />
-							<c:if test="${nowStr-idcard==0 }">1</c:if> <c:if
-								test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if></td>
+						<td><c:if test="${fn:length(e.sfz)>0 }">
+								<c:set var="idcard" value="${fn:substring(e.sfz,6,10) }" />
+								<jsp:useBean id="nowDate" class="java.util.Date" />
+								<fmt:formatDate var="nowStr" value="${nowDate}" pattern="yyyy" />
+								<c:if test="${nowStr-idcard==0 }">1</c:if>
+								<c:if test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if>
+							</c:if></td>
 						<td><fmt:formatDate var="str" value="${e.workYears}"
 								pattern="yyyy" /> <fmt:formatDate var="nowStr"
 								value="${nowDate}" pattern="yyyy" /> <c:if
@@ -42,22 +44,18 @@
 						<td><c:forEach items="${department}" var="d">
 								<c:if test="${e.departmentId==d.id}">${d.name }</c:if>
 							</c:forEach></td>
-						<td><fmt:formatDate value="${e.createTime}" pattern="yyyy-MM-dd"/></td>
-						<td>
-							<c:if test="${e.status==1 }">已认证</c:if>
-						</td>
-						<td>
-							<jphs:hasPermission url="/nurse/detail.jhtml">
-								<a onclick="redirectDetailPage('${e.id}')" title="详情">
-									<img src="/static/images/chakan.png">
-								</a> 
-							</jphs:hasPermission>
-							<jphs:hasPermission url="/nurse/redirectUpdate.jhtml">
+						<td><fmt:formatDate value="${e.createTime}"
+								pattern="yyyy-MM-dd" /></td>
+						<td><c:if test="${e.status==1 }">已认证</c:if></td>
+						<td><jphs:hasPermission url="/nurse/detail.jhtml">
+								<a onclick="redirectDetailPage('${e.id}')" title="详情"> <img
+									src="/static/images/chakan.png">
+								</a>
+							</jphs:hasPermission> <jphs:hasPermission url="/nurse/redirectUpdate.jhtml">
 								<a onclick="redirectUpdatePage('${e.id}')" title="编辑"> <img
 									src="/static/images/xiugai.png">
 								</a>
-							</jphs:hasPermission>
-								<%-- <a onclick="deleteById('${e.id}')" title="删除"> <img
+							</jphs:hasPermission> <%-- <a onclick="deleteById('${e.id}')" title="删除"> <img
 								src="/static/images/shanchu.png">
 						</a> --%></td>
 					</tr>

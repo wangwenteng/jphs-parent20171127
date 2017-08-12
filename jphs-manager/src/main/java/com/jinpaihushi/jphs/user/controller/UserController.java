@@ -1,7 +1,7 @@
 package com.jinpaihushi.jphs.user.controller;
 
 import java.util.UUID;
-
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +22,8 @@ import com.jinpaihushi.jphs.user.service.UserAddressService;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
-
+import com.jinpaihushi.jphs.account.model.Account;
+import com.jinpaihushi.jphs.account.service.AccountService;
 /**
  * 
  * @author yangsong
@@ -39,6 +40,8 @@ public class UserController extends BaseController<User> {
 	private UserAddressService userAddressService;
 	@Autowired
 	private NurseImagesService nurseImagesService;
+	@Autowired
+	private AccountService accountService;
 
 	@Override
 	protected BaseService<User> getService() {
@@ -50,13 +53,36 @@ public class UserController extends BaseController<User> {
 			HttpServletResponse resp, ModelMap modelMap,
 			User user, Integer p, Integer n) {
 		startPage(p, n);
-		//只查询用户
+		//只查询用户 
 		user.setType(1);
 		user.setStatus(0);
-		Page<User> list = userService.userList(user);
-		PageInfos<User> pageInfo = new PageInfos<User>(list, req);
+		Page<User> list = userService.query(user);
+		for (int i = 0; i<list.size();i++ ){
+			String id = list.get(i).getId();
+			UserAddress userAddress = new UserAddress();
+			Account account = new Account();
+			account.setCreatorId(id);
+			userAddress.setCreatorId(id);
+			Page<UserAddress> addresslist = userAddressService.query(userAddress);
+			if(addresslist.size()>0){
+				list.get(i).setProvince(addresslist.get(0).getProvince());
+				list.get(i).setCity(addresslist.get(0).getCity());
+				list.get(i).setArea(addresslist.get(0).getArea());
+				list.get(i).setDetailaddress(addresslist.get(0).getDetailaddress());
+			}
+
+			Page<Account> accountlist = accountService.query(account);
+			if(accountlist.size()>0){
+				list.get(i).setBalance(accountlist.get(0).getBalance());
+				list.get(i).setScore(accountlist.get(0).getScore());
+				 
+			}
+		}
+		
+		PageInfos<User> pageInfo = new PageInfos<User>(list, req); 
 		modelMap.put("list", list);
 		modelMap.put("pageInfo", pageInfo);
+		
 		return "user/user/list";
 	}
 

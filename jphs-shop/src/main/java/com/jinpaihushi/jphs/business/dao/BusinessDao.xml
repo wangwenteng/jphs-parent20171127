@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-08 17:44:48
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.business.dao.BusinessDao">
+	
+	<sql id="field">
+		B.id, B.name, B.address, B.contacts_name, 
+		B.contacts_phone, B.settlement_cycle, B.bank, B.openingBank, 
+		B.cardNumber, B.status, B.remark, B.create_time, 
+		B.creator_id, B.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		B.id B_id, B.name B_name, 
+		B.address B_address, B.contacts_name B_contacts_name, 
+		B.contacts_phone B_contacts_phone, B.settlement_cycle B_settlement_cycle, 
+		B.bank B_bank, B.openingBank B_openingBank, 
+		B.cardNumber B_cardNumber, B.status B_status, 
+		B.remark B_remark, B.create_time B_create_time, 
+		B.creator_id B_creator_id, B.creator_name B_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		B.id id, B.name name, 
+		B.address address, B.contacts_name contactsName, 
+		B.contacts_phone contactsPhone, B.settlement_cycle settlementCycle, 
+		B.bank bank, B.openingBank openingbank, 
+		B.cardNumber cardnumber, B.status status, 
+		B.remark remark, B.create_time createTime, 
+		B.creator_id creatorId, B.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND B.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND B.name=#{name}
+		</if>
+		<if test="address!=null and address!=''">
+			AND B.address=#{address}
+		</if>
+		<if test="contactsName!=null and contactsName!=''">
+			AND B.contacts_name=#{contactsName}
+		</if>
+		<if test="contactsPhone!=null and contactsPhone!=''">
+			AND B.contacts_phone=#{contactsPhone}
+		</if>
+		<if test="settlementCycle!=null and settlementCycle!=''">
+			AND B.settlement_cycle=#{settlementCycle}
+		</if>
+		<if test="bank!=null and bank!=''">
+			AND B.bank=#{bank}
+		</if>
+		<if test="openingbank!=null and openingbank!=''">
+			AND B.openingBank=#{openingbank}
+		</if>
+		<if test="cardnumber!=null and cardnumber!=''">
+			AND B.cardNumber=#{cardnumber}
+		</if>
+		<if test="status!=null">
+			AND B.status=#{status}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND B.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND B.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND B.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND B.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND B.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND B.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND B.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="contactsName!=null and contactsName!=''">
+				AND B.contacts_name LIKE CONCAT('%', #{contactsName}, '%')
+			</if>
+			<if test="contactsPhone!=null and contactsPhone!=''">
+				AND B.contacts_phone LIKE CONCAT('%', #{contactsPhone}, '%')
+			</if>
+			<if test="settlementCycle!=null and settlementCycle!=''">
+				AND B.settlement_cycle LIKE CONCAT('%', #{settlementCycle}, '%')
+			</if>
+			<if test="bank!=null and bank!=''">
+				AND B.bank LIKE CONCAT('%', #{bank}, '%')
+			</if>
+			<if test="openingbank!=null and openingbank!=''">
+				AND B.openingBank LIKE CONCAT('%', #{openingbank}, '%')
+			</if>
+			<if test="cardnumber!=null and cardnumber!=''">
+				AND B.cardNumber LIKE CONCAT('%', #{cardnumber}, '%')
+			</if>
+			<if test="status!=null">
+				AND B.status=#{status}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND B.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND B.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND B.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND B.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				B.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				B.name=#{name}, 
+		   </if>
+           <if test="address!=null">
+				B.address=#{address}, 
+		   </if>
+           <if test="contactsName!=null">
+				B.contacts_name=#{contactsName}, 
+		   </if>
+           <if test="contactsPhone!=null">
+				B.contacts_phone=#{contactsPhone}, 
+		   </if>
+           <if test="settlementCycle!=null">
+				B.settlement_cycle=#{settlementCycle}, 
+		   </if>
+           <if test="bank!=null">
+				B.bank=#{bank}, 
+		   </if>
+           <if test="openingbank!=null">
+				B.openingBank=#{openingbank}, 
+		   </if>
+           <if test="cardnumber!=null">
+				B.cardNumber=#{cardnumber}, 
+		   </if>
+           <if test="status!=null">
+				B.status=#{status}, 
+		   </if>
+           <if test="remark!=null">
+				B.remark=#{remark}, 
+		   </if>
+           <if test="createTime!=null">
+				B.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				B.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				B.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="business" type="com.jinpaihushi.jphs.business.model.Business">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="contacts_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="settlementCycle" column="settlement_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="bank" column="bank" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openingbank" column="openingBank" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardnumber" column="cardNumber" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="businessGlobal" type="com.jinpaihushi.jphs.business.model.Business">
+		<result property="id" column="B_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="B_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="B_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="B_contacts_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="B_contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="settlementCycle" column="B_settlement_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="bank" column="B_bank" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openingbank" column="B_openingBank" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardnumber" column="B_cardNumber" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="B_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="B_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="B_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="B_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="B_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.business.model.Business">
+		INSERT INTO `BUSINESS`(
+			id, name, 
+			address, contacts_name, 
+			contacts_phone, settlement_cycle, 
+			bank, openingBank, 
+			cardNumber, status, 
+			remark, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{address,jdbcType=VARCHAR}, #{contactsName,jdbcType=VARCHAR}, 
+			#{contactsPhone,jdbcType=VARCHAR}, #{settlementCycle,jdbcType=VARCHAR}, 
+			#{bank,jdbcType=VARCHAR}, #{openingbank,jdbcType=VARCHAR}, 
+			#{cardnumber,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `BUSINESS`(
+			id, name, 
+			address, contacts_name, 
+			contacts_phone, settlement_cycle, 
+			bank, openingBank, 
+			cardNumber, status, 
+			remark, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.address,jdbcType=VARCHAR}, #{item.contactsName,jdbcType=VARCHAR}, 
+			#{item.contactsPhone,jdbcType=VARCHAR}, #{item.settlementCycle,jdbcType=VARCHAR}, 
+			#{item.bank,jdbcType=VARCHAR}, #{item.openingbank,jdbcType=VARCHAR}, 
+			#{item.cardnumber,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE B FROM `BUSINESS` B WHERE B.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `BUSINESS` B
+		SET 
+		B.STATUS = -1
+		WHERE B.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `BUSINESS` B
+		<include refid="dynamicSet" /> 
+	    WHERE B.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="business">
+		SELECT <include refid="field"/>
+		FROM `BUSINESS` B
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `BUSINESS` B
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="business">
+		SELECT <include refid="field"/>
+		FROM `BUSINESS` B
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="business">
+		SELECT <include refid="field"/>
+		FROM `BUSINESS` B
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="business">
+		SELECT <include refid="field"/>
+		FROM `BUSINESS` B
+		WHERE B.ID = #{id}
+	</select>
+	
+</mapper>

@@ -106,7 +106,7 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<%-- <div class="form-group">
 
 			<!-- 文本区域 -->
 			<label class="control-label col-md-3">文字介绍：</label>
@@ -115,6 +115,13 @@
 					<textarea id="content" name="content" readonly="readonly"  class="form-control">${goods.content}</textarea>
 				</div>
 			</div>
+		</div> --%>
+		
+		<div class="public_editor">
+			<h5>服务详情：</h5>
+			<p>
+				<textarea name="content" id="myEditor"  class="form-control" style="width:805px;height:500px;">${goods.content}</textarea>
+			</p>
 		</div>
 
 		<div class="form-group">

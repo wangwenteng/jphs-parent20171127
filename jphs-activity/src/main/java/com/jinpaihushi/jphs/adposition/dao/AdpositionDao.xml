@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-07 11:47:31
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.adposition.dao.AdpositionDao">
+	
+	<sql id="field">
+		A.id, A.name, A.link, A.sort, 
+		A.status, A.creator_id, A.creator_name, A.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		A.id A_id, A.name A_name, 
+		A.link A_link, A.sort A_sort, 
+		A.status A_status, A.creator_id A_creator_id, 
+		A.creator_name A_creator_name, A.create_time A_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		A.id id, A.name name, 
+		A.link link, A.sort sort, 
+		A.status status, A.creator_id creatorId, 
+		A.creator_name creatorName, A.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND A.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND A.name=#{name}
+		</if>
+		<if test="link!=null and link!=''">
+			AND A.link=#{link}
+		</if>
+		<if test="sort!=null">
+			AND A.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND A.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND A.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND A.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND A.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND A.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND A.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="link!=null and link!=''">
+				AND A.link LIKE CONCAT('%', #{link}, '%')
+			</if>
+			<if test="sort!=null">
+				AND A.sort=#{sort}
+			</if>
+			<if test="status!=null">
+				AND A.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND A.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND A.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND A.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				A.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				A.name=#{name}, 
+		   </if>
+           <if test="link!=null">
+				A.link=#{link}, 
+		   </if>
+           <if test="sort!=null">
+				A.sort=#{sort}, 
+		   </if>
+           <if test="status!=null">
+				A.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				A.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				A.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				A.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="adposition" type="com.jinpaihushi.jphs.adposition.model.Adposition">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="link" column="link" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="adpositionGlobal" type="com.jinpaihushi.jphs.adposition.model.Adposition">
+		<result property="id" column="A_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="A_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="link" column="A_link" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="A_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="A_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="A_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="A_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="A_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.adposition.model.Adposition">
+		INSERT INTO `ADPOSITION`(
+			id, name, 
+			link, sort, 
+			status, creator_id, 
+			creator_name, create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{link,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+			#{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `ADPOSITION`(
+			id, name, 
+			link, sort, 
+			status, creator_id, 
+			creator_name, create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.link,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER}, 
+			#{item.status,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE A FROM `ADPOSITION` A WHERE A.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `ADPOSITION` A
+		SET 
+		A.STATUS = -1
+		WHERE A.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ADPOSITION` A
+		<include refid="dynamicSet" /> 
+	    WHERE A.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="adposition">
+		SELECT <include refid="field"/>
+		FROM `ADPOSITION` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ADPOSITION` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="adposition">
+		SELECT <include refid="field"/>
+		FROM `ADPOSITION` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="adposition">
+		SELECT <include refid="field"/>
+		FROM `ADPOSITION` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="adposition">
+		SELECT <include refid="field"/>
+		FROM `ADPOSITION` A
+		WHERE A.ID = #{id}
+	</select>
+	
+	<select id="getAppindex" resultType="java.util.HashMap">
+		SELECT
+		A.id,
+		A.name,
+		A.link,
+		A.sort,
+		SI.url
+		FROM `ADPOSITION` A
+		LEFT JOIN service_images SI ON A.ID = SI.source_id
+		WHERE si.device_type = #{deviceType} AND A.status=1 ORDER BY A.sort DESC;
+	</select>
+	
+</mapper>

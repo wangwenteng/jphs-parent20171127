@@ -195,7 +195,7 @@ public class AlipaySignController {
 											transaction.setCreatorId("");
 											transaction.setCreatorName("系统");
 											transaction.setCreateTime(new Date());
-											transaction.setStatus(0);
+											transaction.setStatus(1);
 											// 记录日志-debug
 											if (Util.debugLog.isDebugEnabled()) {
 												Util.debugLog.debug("alipay.notify.json;transaction="+JSONObject.fromObject(transaction).toString());

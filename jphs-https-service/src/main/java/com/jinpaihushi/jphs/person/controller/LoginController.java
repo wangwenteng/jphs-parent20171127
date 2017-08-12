@@ -12,12 +12,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
+import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
+import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.jphs.verification.model.Verification;
@@ -27,6 +30,8 @@ import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.MD5;
 import com.jinpaihushi.utils.UUIDUtils;
 import com.jinpaihushi.utils.Util;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(path = "/login")
@@ -39,19 +44,23 @@ public class LoginController {
 	private AccountService accountService;
 	@Autowired
 	private NurseImagesService nurseImagesService;
+	@Autowired
+	private NurseService nurseService;
 
+	@SuppressWarnings("static-access")
 	@ResponseBody
 	@RequestMapping(name = "登录", path = "/login.json")
 	public byte[] login(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone, String password,
-			String type) {
+			String smsCode, String type) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("login.login.json,phone=" + phone + " password=" + password + " type=" + type);
+				Util.debugLog.debug("login.login.json,phone=" + phone + " password=" + password + " smsCode=" + smsCode
+						+ " type=" + type);
 			}
 
 			// 查空
-			if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password) || StringUtils.isEmpty(type)) {
+			if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(type)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			int tid = 0; // type
@@ -60,20 +69,65 @@ public class LoginController {
 			} catch (NumberFormatException e) {
 				return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
 			}
-			User user = new User();
-			user.setPhone(phone);
-			user.setPassword(password);
-			user.setType(tid);
-			// 1.根据 name，password,type查询完整信息
-			user = userService.findUser(user);
 
-			// 2.错误N种情况判断及返回前端
-			if (user == null) {
-				return JSONUtil.toJSONResult(0, "用户名或密码不正确！", null);
+			User user = new User();
+
+			// 判断登录的类型 如果是护士 判断密码
+			if (tid == 2) {
+				user.setPhone(phone);
+				user.setPassword(MD5.md5crypt(MD5.md5crypt(password)));
+				user.setType(0);
+				// 1.根据 name，password,type查询完整信息
+				user = userService.findUser(user);
+				if (user == null) {
+					return JSONUtil.toJSONResult(0, "用户名或密码不正确！", null);
+				}
+			} else {
+				// 如果是用户判断短信验证码
+				// 获取该手机号最新一条短信
+				Verification vc = verificationService.getLastRecordByPhone(phone);
+				if (vc == null) {
+					return JSONUtil.toJSONResult(0, "非法请求", null);
+
+				} else {
+					if (!smsCode.equals(vc.getCode())) {
+						// 验证码不对
+						return JSONUtil.toJSONResult(0, "短信验证码不正确", null);
+					}
+				}
+				int t = Common.beforeNow(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vc.getValidTime()));
+				if (t == 0) {
+					// 无效
+					return JSONUtil.toJSONResult(0, "验证码已失效", null);
+				} else if (t == -1) {
+					// 失败
+					return JSONUtil.toJSONResult(0, "判断验证码有效时间失败", null);
+				}
+				// 2.错误N种情况判断及返回前端
+				user.setPhone(phone);
+				user.setType(tid);
+				// 1.根据 name，password,type查询完整信息
+				user = userService.queryUser(user);
+				if (user == null) {
+					return JSONUtil.toJSONResult(0, "您还未注册！请前往注册！！", null);
+				}
 			}
+
+			if (tid == 2) {
+				Nurse nurse_s = new Nurse();
+				nurse_s.setCreatorId(user.getId());
+				Nurse n = nurseService.load(nurse_s);
+				user.setNurse(new JSONObject().fromObject(n));
+			}
+			NurseImages img = new NurseImages();
+			img.setSourceId(user.getId());
+			img.setType(1);
+			img = nurseImagesService.load(img);
+			if (img != null)
+				user.setHeadPicture(img.getUrl());
 			// 设置token
 			String token = "";
-			token = Common.getToken(phone, password);// 生成token
+			token = Common.getToken(phone, user.getPassword());// 生成token
 			user.setToken(token);
 			// 3.信息无误，封装信息以及生成token，返回前端
 
@@ -154,7 +208,7 @@ public class LoginController {
 			user.setPhone(phone);
 			user.setType(tid);
 			// 1.根据 name，password,type查询完整信息
-			user = userService.findUser(user);
+			user = userService.queryUser(user);
 			NurseImages img = null;
 			// 2.错误N种情况判断及返回前端
 			if (user == null) {
@@ -222,10 +276,11 @@ public class LoginController {
 		}
 		return null;
 	}
+
 	@ResponseBody
 	@RequestMapping(name = "退出", path = "/loginOut.json")
-	public byte[] loginOut(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone, String password,
-			String type) {
+	public byte[] loginOut(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
+			String password, String type) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
@@ -236,7 +291,7 @@ public class LoginController {
 			return JSONUtil.toJSONResult(1, "已成功退出，欢迎下次登录", null);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.debugLog.debug("login.loginOut.json",e);
+			Util.debugLog.debug("login.loginOut.json", e);
 		}
 		return null;
 	}

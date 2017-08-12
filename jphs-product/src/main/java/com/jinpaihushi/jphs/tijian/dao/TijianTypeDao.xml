@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-08 16:01:40
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.tijian.dao.TijianTypeDao">
+	
+	<sql id="field">
+		TT.id, TT.name, TT.create_time, TT.creator_id, 
+		TT.creator_name, TT.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		TT.id TT_id, TT.name TT_name, 
+		TT.create_time TT_create_time, TT.creator_id TT_creator_id, 
+		TT.creator_name TT_creator_name, TT.status TT_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		TT.id id, TT.name name, 
+		TT.create_time createTime, TT.creator_id creatorId, 
+		TT.creator_name creatorName, TT.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND TT.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND TT.name=#{name}
+		</if>
+		<if test="createTime!=null">
+			AND TT.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND TT.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND TT.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND TT.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND TT.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND TT.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND TT.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND TT.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND TT.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND TT.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				TT.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				TT.name=#{name}, 
+		   </if>
+           <if test="createTime!=null">
+				TT.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				TT.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				TT.creator_name=#{creatorName}, 
+		   </if>
+           <if test="status!=null">
+				TT.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="tijianType" type="com.jinpaihushi.jphs.tijian.model.TijianType">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="tijianTypeGlobal" type="com.jinpaihushi.jphs.tijian.model.TijianType">
+		<result property="id" column="TT_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="TT_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="TT_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="TT_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="TT_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="TT_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.tijian.model.TijianType">
+		INSERT INTO `TIJIAN_TYPE`(
+			id, name, 
+			create_time, creator_id, 
+			creator_name, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `TIJIAN_TYPE`(
+			id, name, 
+			create_time, creator_id, 
+			creator_name, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE TT FROM `TIJIAN_TYPE` TT WHERE TT.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `TIJIAN_TYPE` TT
+		SET 
+		TT.STATUS = -1
+		WHERE TT.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `TIJIAN_TYPE` TT
+		<include refid="dynamicSet" /> 
+	    WHERE TT.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="tijianType">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_TYPE` TT
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `TIJIAN_TYPE` TT
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="tijianType">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_TYPE` TT
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="tijianType">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_TYPE` TT
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="tijianType">
+		SELECT <include refid="field"/>
+		FROM `TIJIAN_TYPE` TT
+		WHERE TT.ID = #{id}
+	</select>
+	
+</mapper>

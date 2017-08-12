@@ -259,7 +259,6 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 					Area area = null;
 					area = new Area();
 					area.setSourceId(nurse.getUser().getId());
-					area.setStatus(-1);
 					List<Area> list = areaDao.list(area);
 					for (Area area2 : list) {
 						areaDao.deleteById(area2.getId());

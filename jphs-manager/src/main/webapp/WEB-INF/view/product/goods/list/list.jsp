@@ -29,7 +29,7 @@
 					<c:forEach items="${e.goodsList}" var="goodsOne" varStatus="status">
 						<tr class="bg_list_body">
 							<td width="30"><%=i++%></td>							
-							<td style="text-align: left;"><c:out value="${goodsOne.title}" /></td>
+							<td><c:out value="${goodsOne.title}" /></td>
 							<td><c:out value="${e.title}" /></td>
 							<%-- <td><c:out value="${goodsOne.subTitle}" /></td> --%>
 							<%-- <td><c:out value="${e.content}"/></td> --%>

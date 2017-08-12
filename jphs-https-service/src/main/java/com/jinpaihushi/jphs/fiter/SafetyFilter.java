@@ -15,7 +15,7 @@ public class SafetyFilter extends HandlerInterceptorAdapter {
 		logger.info("过滤器.......");
 		response.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");  
         response.setHeader("Access-Control-Allow-Credentials", "true");  
-		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		return true;	
 	}
 

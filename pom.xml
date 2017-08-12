@@ -12,7 +12,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-	
 		<module>jphs-manager</module>
 		<module>jphs-service</module>
 		<module>jphs-user</module>
@@ -29,7 +28,8 @@
 		<module>jphs-activity</module>
 		<module>jphs-activity-api</module>
 		<module>jphs-https-service</module>
-		<module>jphs-https-shoppingmall</module>
+		<module>jphs-shop-api</module>
+		<module>jphs-shop</module>
 	</modules>
 
 	<properties>
@@ -59,7 +59,14 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>cz.jirutka.spring</groupId>
 			<artifactId>spring-http-client-cache</artifactId>
@@ -246,6 +253,15 @@
 			  <version>1.0</version>
 			</dependency>
 		<!-- 微信支付所需jar	ENT -->
+		
+		<!-- 银联支付  -->
+		<dependency>
+		  <groupId>bcprov-jdk16</groupId>
+		  <artifactId>bcprov-jdk16</artifactId>
+		  <version>1.6</version>
+		</dependency>
+		
+		<!-- 银联支付 			END-->
 		<!-- 时间操作组件 -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -255,6 +271,13 @@
 			<groupId>taobao-sdk</groupId>
 			<artifactId>taobao-sdk</artifactId>
 			<version>1.0</version>
+		</dependency>
+		
+		<!--定时器 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.3</version>
 		</dependency>
 	</dependencies>
 </project>

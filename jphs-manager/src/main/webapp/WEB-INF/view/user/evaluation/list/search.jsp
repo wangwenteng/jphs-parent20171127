@@ -12,7 +12,7 @@
 			<td width="200">
 				<input type="text" name="orderId" id="orderId" value="${evaluation.orderId}" />
 			</td>
-				<td>昵称：</td>
+				<td>用户昵称：</td>
 			<td width="200">
 				<input type="text" name="userName" id="userName" value="${evaluation.userName}" />
 			</td>

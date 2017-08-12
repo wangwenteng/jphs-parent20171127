@@ -330,7 +330,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		content FROM `location` l
 		LEFT JOIN location l2 ON l.parent_id = l2.id
 		LEFT JOIN location l3 ON l2.parent_id = l3.id where l.type=3 ) t ON t.id = ar.location 
-		where ar.type=0  AND ar.status=0 AND s.status=0  and s.id=#{id}
+		where s.id=#{id}
 	</select>
 	<sql id="queryDetail">
 		<where>

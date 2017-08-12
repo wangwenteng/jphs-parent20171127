@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,18 +80,23 @@ public class SystemRoleServiceImpl extends BaseServiceImpl<SystemRole> implement
 
 	@Override
 	public int saveRoleModule(String roleId, String moduleIds) {
-		String[] moduleId = moduleIds.split(",");
+		int j =0;
 		// 根据角色id获取已经分配的模块
 		systemRoleModuleDao.deleteByRole(roleId);
-		SystemRoleModule insert = null;
-		List<SystemRoleModule> list = new ArrayList<>();
-		for (int i = 0; i < moduleId.length; i++) {
-			insert = new SystemRoleModule();
-			insert.setSystemRoleId(roleId);
-			insert.setSystemModuleId(moduleId[i]);
-			list.add(insert);
+		if(StringUtils.isNotEmpty(moduleIds)){
+			String[] moduleId = moduleIds.split(",");
+			SystemRoleModule insert = null;
+			List<SystemRoleModule> list = new ArrayList<>();
+			for (int i = 0; i < moduleId.length; i++) {
+				insert = new SystemRoleModule();
+				insert.setSystemRoleId(roleId);
+				insert.setSystemModuleId(moduleId[i]);
+				list.add(insert);
+			}
+			j=systemRoleModuleDao.inserts(list);
 		}
-		return systemRoleModuleDao.inserts(list);
+		
+		return j;
 	}
 
 	@Override
@@ -107,6 +113,11 @@ public class SystemRoleServiceImpl extends BaseServiceImpl<SystemRole> implement
 		int i = systemRoleDao.insert(systemRole);
 		if(i>0) return systemRole.getId();
 		return "";
+	}
+
+	@Override
+	public int checkName(SystemRole role) {
+		return systemRoleDao.checkName(role);
 	}
 	
 }

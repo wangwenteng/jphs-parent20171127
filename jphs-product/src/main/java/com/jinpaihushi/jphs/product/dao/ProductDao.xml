@@ -258,6 +258,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					<result property="type" column="good_type" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="gradeType" column="good_gradeType" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="sort" column="good_sort" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="isBg" column="good_is_bg" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="remark" column="good_remark" javaType="String" jdbcType="VARCHAR"></result>
 					<result property="status" column="good_status" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="createTime" column="good_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -322,6 +323,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					<result property="type" column="good_type" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="gradeType" column="good_gradeType" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="sort" column="good_sort" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="isBg" column="good_is_bg" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="remark" column="good_remark" javaType="String" jdbcType="VARCHAR"></result>
 					<result property="status" column="good_status" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="createTime" column="good_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -478,6 +480,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			G.type good_type,
 			G.grade_type good_grade_type,
 			G.sort good_sort,
+			G.is_bg good_is_bg,
 			G.status good_status,
 			G.remark good_remark,
 			G.create_time good_create_time,
@@ -566,6 +569,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             s.type good_type,
             s.grade_type good_grade_type,
             s.sort good_sort,
+            s.is_bg good_is_bg,
             s.status good_status,
             s.remark good_remark,
             s.create_time good_create_time,
@@ -601,6 +605,60 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="getProductGoodsDetail" resultMap="getSiteGoodsDetail">
+		SELECT  DISTINCT
+	    p.id product_id,
+            p.platform_id product_platform_id,
+            p.title product_title,
+            p.sort product_sort,
+            p.status product_status,
+            p.remark product_remark,
+            s.id good_id,
+            s.title good_title,
+            s.sub_title good_sub_title,
+            s.product_id good_product_id,
+            s.content good_content,
+            s.tool good_tool,
+            s.insurance good_insurance,
+            s.tijian_type_id good_tijian_type_id,
+            s.tijian_hospital_id good_tijian_hospital_id,
+            s.type good_type,
+            s.grade_type good_grade_type,
+            s.sort good_sort,
+            s.status good_status,
+            s.remark good_remark,
+            s.create_time good_create_time,
+            s.creator_id good_creator_id,
+            s.creator_name good_creator_name,
+            e.id price_id,
+            e.goods_id price_goods_id,
+            e.title price_title,
+            e.grade price_grade,
+            e.grade_name price_grade_name,
+            e.service_number price_service_number,
+            e.service_time price_service_time,
+            e.unit price_unit,
+            e.sort price_sort,
+            e.remark price_remark,
+            e.create_time price_create_time,
+            e.status price_status,
+            e.creator_id price_creator_id,
+            e.creator_name creator_name,
+            pr.id pr_id,
+            pr.price_id pr_price_id,
+            pr.site_id pr_site_id,
+            pr.price pr_price,
+            pr.old_price pr_old_price,
+            pr.cost_price pr_cost_price,
+            pr.profit pr_profit
+        FROM
+            price_part pr
+       LEFT JOIN `price` e ON e.id = pr.price_id
+       LEFT JOIN `goods` s ON s.id = e.goods_id
+       LEFT JOIN `product` p ON p.id = s.product_id
+       WHERE (pr.site_id=#{id} OR pr.id IN (SELECT id FROM price_part WHERE site_id=0 AND price_id NOT IN(SELECT price_id FROM price_part WHERE site_id=#{id}))) AND p.status=1 AND e.status=1 AND s.status=1 ORDER BY e.create_time
+	</select>
+	
+	<!-- <select id="getProductGoodsDetail" resultMap="getSiteGoodsDetail">
 		SELECT  DISTINCT
 			p.id product_id,
             p.platform_id product_platform_id,
@@ -651,8 +709,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
        LEFT JOIN `price` e ON e.id = pr.price_id
        LEFT JOIN `goods` s ON s.id = e.goods_id
        LEFT JOIN `product` p ON p.id = s.product_id
-        WHERE (site_id=#{id} OR price_id NOT IN (SELECT price_id FROM price_part WHERE site_id=#{id} )) AND p.status=1 AND e.status=1 AND s.status=1 ORDER BY e.create_time
-	</select>
+       WHERE (site_id=#{id} OR price_id IN (SELECT price_id FROM price_part WHERE site_id=0 and price_id not in(select price_id from price_part where site_id=#{id} ))) AND p.status=1 AND e.status=1 AND s.status=1 ORDER BY e.create_time
+	</select> -->
 	<!-- <select id="getProductGoodsDetail" resultMap="getSiteGoodsDetail">
 		SELECT 
 			p.id product_id,

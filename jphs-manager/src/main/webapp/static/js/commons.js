@@ -3,14 +3,17 @@ function gotoPage(url, p) {
 	$("#serach-form").append(input_p);
 	$("#serach-form").submit();
 }
-//序列化提交
-function httpRequest(httpUrl, httpParam, httpType,async) {
-	var reqResult = {"result":0,"message":"没有请求服务器或接受到返回值"};
+// 序列化提交
+function httpRequest(httpUrl, httpParam, httpType, async) {
+	var reqResult = {
+		"result" : 0,
+		"message" : "没有请求服务器或接受到返回值"
+	};
 	$.ajax({
-		url : httpUrl, 
+		url : httpUrl,
 		type : httpType,
 		async : async,
-		data: httpParam,
+		data : httpParam,
 		dataType : 'json',
 		success : function(msg) {
 			if (msg.result == 0) {
@@ -22,55 +25,87 @@ function httpRequest(httpUrl, httpParam, httpType,async) {
 		},
 		error : function(data) {
 			/**
-			 * 此处应为弹出公共提示信息窗口
-			 * 提示错误信息
-			 * 并返回登录页面
-			return false;*/
-			alert("系统错误，"+data.status);
+			 * 此处应为弹出公共提示信息窗口 提示错误信息 并返回登录页面 return false;
+			 */
+			alert("系统错误，" + data.status);
 		}
 	});
 	return reqResult;
 }
 jQuery.validator
-.addMethod(
-		"isMobile",
-		function(value, element) {
-			var length = value.length;
-			var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-			return this.optional(element)
-			|| (length == 11 && mobile.test(value));
-		}, "请正确填写您的手机号码");
+		.addMethod(
+				"isMobile",
+				function(value, element) {
+					var length = value.length;
+					var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+					return this.optional(element)
+							|| (length == 11 && mobile.test(value));
+				}, "请正确填写您的手机号码");
 jQuery.validator.addMethod("isIdCardNo", function(value, element) {
 	return this.optional(element) || idCardNoUtil.checkIdCardNo(value);
 }, "请正确输入您的身份证号码");
-jQuery.validator.addMethod("accept", function(value, element,param) {
-	var index =value.lastIndexOf("@");
+jQuery.validator.addMethod("accept", function(value, element, param) {
+	var index = value.lastIndexOf("@");
 	var ext = value.substr(index);
-	return this.optional(element)||(param==ext);
+	return this.optional(element) || (param == ext);
 }, "请输入带有公司后缀的邮箱");
-jQuery.validator.addMethod("isTrue", function(value, element,userId) {
+jQuery.validator.addMethod("isTrue",
+		function(value, element, userId) {
+			var otype = "post";
+			var osync = false;
+			var param = {
+				chackValue : value,
+				userId : userId,
+			};
+			var result = httpRequest("/system/user/chackUser.json", param,
+					otype, osync);
+			return this.optional(element) || (result == 0);
+		}, "此名称已被使用！！！");
+jQuery.validator.addMethod("jobtitleIsTrue", function(value, element, id) {
 	var otype = "post";
 	var osync = false;
 	var param = {
-		chackValue: value,
-		userId:userId,
+		name : value,
+		id : id,
 	};
-	var result=httpRequest("/system/user/chackUser.json", param, otype, osync);
-	return this.optional(element)||(result==0);
+	var result = httpRequest("/jobtitle/checkName.json", param, otype, osync);
+	return this.optional(element) || (result == 0);
 }, "此名称已被使用！！！");
-jQuery.validator.addMethod("checkPassword", function(value, element,userId) {
+jQuery.validator.addMethod("jobtitleTypeIsTrue", function(value, element, id) {
 	var otype = "post";
 	var osync = false;
 	var param = {
-		password: value,
-		userId:userId,
+		name : value,
+		id : id,
 	};
-	var result=httpRequest("/system/user/checkPassword.json", param, otype, osync);
-	return this.optional(element)||(result);
+	var result = httpRequest("/jobtitle/type/checkName.json", param, otype, osync);
+	return this.optional(element) || (result == 0);
+}, "此名称已被使用！！！");
+jQuery.validator.addMethod("checkPassword", function(value, element, userId) {
+	var otype = "post";
+	var osync = false;
+	var param = {
+		password : value,
+		userId : userId,
+	};
+	var result = httpRequest("/system/user/checkPassword.json", param, otype,
+			osync);
+	return this.optional(element) || (result);
+}, "此名称已被使用！！！");
+jQuery.validator.addMethod("roleName", function(value, element, id) {
+	var otype = "post";
+	var osync = false;
+	var param = {
+		name : value,
+		id : id,
+	};
+	var result = httpRequest("/system/role/checkName.json", param, otype,
+			osync);
+	return this.optional(element) || (result==0);
 }, "此名称已被使用！！！");
 jQuery.validator.addMethod("isChinese", function(value, element) {
-	var chinese=/^[\u4e00-\u9fa5]+$/;
-	return this.optional(element)||(chinese.test(value));
+	var chinese = /^[\u4e00-\u9fa5]+$/;
+	return this.optional(element) || (chinese.test(value));
 }, "请输入中文");
 
 var idCardNoUtil = {
@@ -274,10 +309,10 @@ var idCardNoUtil = {
 		}
 	}
 };
-//验证护照是否正确
+// 验证护照是否正确
 function checknumber(number) {
 	var str = number;
-	//在JavaScript中，正则表达式只能使用"/"开头和结束，不能使用双引号
+	// 在JavaScript中，正则表达式只能使用"/"开头和结束，不能使用双引号
 	var Expression = /(P\d{7})|(G\d{8})/;
 	var objExp = new RegExp(Expression);
 	if (objExp.test(str) == true) {
@@ -287,7 +322,7 @@ function checknumber(number) {
 	}
 };
 
-//退出提示
-function logout(){
+// 退出提示
+function logout() {
 	alert("您已退出！");
 }

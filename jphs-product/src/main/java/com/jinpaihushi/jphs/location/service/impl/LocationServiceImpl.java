@@ -50,9 +50,8 @@ public class LocationServiceImpl extends BaseServiceImpl<Location> implements Lo
 	 */
 	@Override
 	@Transactional
-	@SuppressWarnings("unchecked")
 	public List<Location> getEasyTreeData(List<Location> locationList, String sourceId) {
-		
+
 		// 获取已选择的区域
 		List<Area> nurseArea = new ArrayList<>();
 		if (StringUtils.isNotEmpty(sourceId)) {
@@ -75,19 +74,17 @@ public class LocationServiceImpl extends BaseServiceImpl<Location> implements Lo
 				List<Location> districtList = (List<Location>) CollectionUtils.select(locationList, districtPredicate);
 				if (CollectionUtils.isNotEmpty(nurseArea)) {
 					for (Location location3 : districtList) {
-						if(nurseArea!=null){
-							for (Area area1 : nurseArea) {
-								if (area1.getLocation().equals(location3.getId())) {
-									location3.setChecked(true);
-									flag = true;
-								}
+						for (Area area1 : nurseArea) {
+							if (area1.getLocation().equals(location3.getId())) {
+								location3.setChecked(true);
+								flag = true;
 							}
 						}
-						if (flag) {
+					}
+					if (flag) {
 
-							location2.setState("open");
-							location.setState("open");
-						}
+						location2.setState("open");
+						location.setState("open");
 					}
 				}
 				location2.setChildren(districtList);

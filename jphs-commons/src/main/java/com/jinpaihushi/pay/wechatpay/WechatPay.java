@@ -10,6 +10,8 @@ import java.util.Properties;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jinpaihushi.pay.utils.ReturnUtils;
 import com.jinpaihushi.pay.wechatpay.utils.HttpUtil;
 import com.jinpaihushi.pay.wechatpay.utils.PayCommonUtil;
@@ -62,21 +64,21 @@ public class WechatPay {
 		
 		try {
 			JSONObject contentjson = JSONObject.fromObject(content);
-			if(!contentjson.containsKey("price") || contentjson.getString("price")==null || "".equals(contentjson.getString("price"))){
+			if(!contentjson.containsKey("price") || StringUtils.isEmpty(contentjson.getString("price"))){
 				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
 			}
 			order_price = contentjson.getString("price");
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付参数：price="+order_price);
 			}
-			if(!contentjson.containsKey("body") || contentjson.getString("body")==null || "".equals(contentjson.getString("body"))){
+			if(!contentjson.containsKey("body") || StringUtils.isEmpty(contentjson.getString("body"))){
 				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
 			}
 			body = contentjson.getString("body");
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付参数：body="+body);
 			}
-			if(!contentjson.containsKey("out_trade_no") || contentjson.getString("out_trade_no")==null || "".equals(contentjson.getString("out_trade_no"))){
+			if(!contentjson.containsKey("out_trade_no") || StringUtils.isEmpty(contentjson.getString("out_trade_no"))){
 				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
 			}
 			out_trade_no = contentjson.getString("out_trade_no");

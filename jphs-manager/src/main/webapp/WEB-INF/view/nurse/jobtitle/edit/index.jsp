@@ -5,12 +5,13 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div class="common_right_title">
-	<img src="/static/images/yousanjiaox.png" />护士管理<i class="public1-horn-45"></i>职称管理 <i
-		class="public1-horn-45"></i> ${jobtitle.id == null?'添加职称':'编辑职称'} 
+	<img src="/static/images/yousanjiaox.png" />护士管理<i
+		class="public1-horn-45"></i>职称管理 <i class="public1-horn-45"></i>
+	${jobtitle.id == null?'添加职称':'编辑职称'}
 </div>
-<div class="marage_right_content">
-	<form class="form-horizontal edit_form" id="jobtitleForm" method="post"
-		data-role="validate-form" action="/jobtitle/insert.jhtml">
+<form class="form-horizontal edit_form" id="jobtitleForm" method="post"
+	data-role="validate-form" action="/jobtitle/insert.jhtml">
+	<div class="marage_right_content">
 		<div class="clearfix">
 			<jphs:hasPermission url="/jobtitle/insert.jhtml">
 				<button type="submit" id="save"
@@ -19,10 +20,7 @@
 			<input type="button" class="public-info public_btn public_btn_left"
 				name="button1" id="button1" value="返回" onclick="history.go(-1)">
 		</div>
-		<div class="event_handle_body">
-			<div style="width: 630px; margin: 0 auto; padding: 10px 0px;">
-				<jsp:include page="form.jsp"></jsp:include>
-			</div>
-		</div>
-	</form>
-</div>
+		<hr class="mt-5" />
+		<jsp:include page="form.jsp"></jsp:include>
+	</div>
+</form>

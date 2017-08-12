@@ -34,5 +34,10 @@ public class JobtitleTypeServiceImpl extends BaseServiceImpl<JobtitleType> imple
 		List<JobtitleType> list = jobtitleTypeDao.getJobtitleDetail(jobtitle);
 		return list;
 	}
+
+	@Override
+	public int checkName(JobtitleType jobtitleType) {
+		return jobtitleTypeDao.checkName(jobtitleType);
+	}
 	
 }

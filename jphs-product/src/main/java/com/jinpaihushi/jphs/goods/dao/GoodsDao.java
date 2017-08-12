@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.goods.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +23,9 @@ public interface GoodsDao extends BaseDao<Goods> {
 	Goods getGoodsImgDetail(@Param("id")String id);
 	
 	Goods getGoodsByPricePart(@Param("pricePartId")String pricePartId);
+	
+	List<Map<String,Object>> getColumnGoods(Map<String,Object> map);
+	
+	List<Map<String,Object>> getHospitalGoods(Map<String,Object> map);
+	
 }

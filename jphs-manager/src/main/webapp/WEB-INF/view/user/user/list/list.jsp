@@ -31,8 +31,8 @@
 					<td><c:out value="${e.city}" /></td>
 					<td><fmt:formatDate value="${e.createTime}"
 							pattern="yy-MM-dd HH:mm" />
-					<td><c:if test="${e.status == 0}">开启</c:if> <c:if
-							test="${e.status == 1}">关闭</c:if></td>
+					<td  ><c:if test="${e.status == 0}"><span style="color: #34BC2C;">开启</span></c:if> <c:if
+							test="${e.status == 1}"><span style="color: #F0BB1C;">关闭</span></c:if></td>
 					<td>
 					<jphs:hasPermission url="/user/detail.jhtml">
 					<a onclick="redirectDetailPage('${e.id}')"> <img

@@ -23,7 +23,7 @@ public class CollectionShort {
             @Override
             public int compare(Map<String, Object> o1, Map<String, Object> o2) {
                 //进行判断
-                return ((String) o1.get(name)).compareTo((String) o2.get(name));
+                return -((String) o1.get(name)).compareTo((String) o2.get(name));
             }
         });
         return list;

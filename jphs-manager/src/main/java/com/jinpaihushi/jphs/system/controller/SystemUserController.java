@@ -78,7 +78,7 @@ public class SystemUserController extends BaseController<SystemUser> {
 	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
 	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
 			SystemUser systemUser) {
-		SystemUser seesion_user = (SystemUser) req.getSession().getAttribute("session_user");
+		SystemUser session_user = (SystemUser) req.getSession().getAttribute("session_user");
 		if (systemUser.getId() != null && !systemUser.getId().equals("")) {
 			boolean b = systemUserService.update(systemUser);
 			if (b == false) {
@@ -91,8 +91,8 @@ public class SystemUserController extends BaseController<SystemUser> {
 			systemUser.setId(UUIDUtils.getId());
 			systemUser.setCreateTime(new Date());
 			systemUser.setStatus(0);
-			systemUser.setCreatorId(seesion_user.getId());
-			systemUser.setCreatorName(seesion_user.getName());
+			systemUser.setCreatorId(session_user.getId());
+			systemUser.setCreatorName(session_user.getName());
 			String result = systemUserService.insert(systemUser);
 			if (result.length() <= 0) {
 				// 跳转到错误页
@@ -140,7 +140,7 @@ public class SystemUserController extends BaseController<SystemUser> {
 		return "system/system/user/role/edit";
 	}
 
-	@RequestMapping(name = "查看用户角色", path = "/toEditPassword.jhtml")
+	@RequestMapping(name = "跳转到修改密码", path = "/toEditPassword.jhtml")
 	public String toEditPassword(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
 			String id, String type) {
 
@@ -150,7 +150,7 @@ public class SystemUserController extends BaseController<SystemUser> {
 		return "system/system/user/editPassword";
 	}
 
-	@RequestMapping(name = "查看用户角色", path = "/editPassword.jhtml")
+	@RequestMapping(name = "修改密码", path = "/editPassword.jhtml")
 	public String editPassword(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,SystemUser user) {
 		String password =MD5.md5crypt(MD5.md5crypt(user.getPassword()));
 		user.setPassword(password);

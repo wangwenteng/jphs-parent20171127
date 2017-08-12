@@ -38,11 +38,6 @@ public class AdvertisingServiceImpl extends BaseServiceImpl<Advertising> impleme
 
 	@Override
 	public String insertAdvertising(Advertising advertising) {
-		advertising.setId(UUIDUtils.getId());
-		advertising.setCreatorId("88888");
-		advertising.setCreatorName("zhangzd");
-		advertising.setCreateTime(new Date());
-		advertising.setStatus(0);
 		int i = advertisingDao.insert(advertising);
 		if(i>0){
 			ServiceImages  serviceImages = new ServiceImages();
@@ -129,8 +124,8 @@ public class AdvertisingServiceImpl extends BaseServiceImpl<Advertising> impleme
 	 * @author: wangwt
 	 */
 	@Override
-	public List<Map<String, Object>> getCarouselFigure(Map<String, Object> map) {
-		List<Map<String,Object>> list = advertisingDao.getCarouselFigure(map);
+	public List<Advertising> getCarouselFigure(Map<String, Object> map) {
+		List<Advertising> list = advertisingDao.getCarouselFigure(map);
 		
 		return list;
 	}

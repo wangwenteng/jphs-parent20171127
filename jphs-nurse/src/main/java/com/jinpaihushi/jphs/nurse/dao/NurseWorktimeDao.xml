@@ -1,0 +1,373 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-09 13:46:25
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseWorktimeDao">
+	
+	<sql id="field">
+		NW.id, NW.userId, NW.calendar, NW.week, 
+		NW.h_9_11, NW.h_11_13, NW.h_13_15, NW.h_15_17, 
+		NW.h_17_19, NW.h_19_21, NW.w_9_11, NW.w_11_13, 
+		NW.w_13_15, NW.w_15_17, NW.w_17_19, NW.w_19_21, 
+		NW.createTime
+	</sql>
+
+	<sql id="fieldGlobal">
+		NW.id NW_id, NW.userId NW_userId, 
+		NW.calendar NW_calendar, NW.week NW_week, 
+		NW.h_9_11 NW_h_9_11, NW.h_11_13 NW_h_11_13, 
+		NW.h_13_15 NW_h_13_15, NW.h_15_17 NW_h_15_17, 
+		NW.h_17_19 NW_h_17_19, NW.h_19_21 NW_h_19_21, 
+		NW.w_9_11 NW_w_9_11, NW.w_11_13 NW_w_11_13, 
+		NW.w_13_15 NW_w_13_15, NW.w_15_17 NW_w_15_17, 
+		NW.w_17_19 NW_w_17_19, NW.w_19_21 NW_w_19_21, 
+		NW.createTime NW_createTime
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NW.id id, NW.userId userid, 
+		NW.calendar calendar, NW.week week, 
+		NW.h_9_11 h911, NW.h_11_13 h1113, 
+		NW.h_13_15 h1315, NW.h_15_17 h1517, 
+		NW.h_17_19 h1719, NW.h_19_21 h1921, 
+		NW.w_9_11 w911, NW.w_11_13 w1113, 
+		NW.w_13_15 w1315, NW.w_15_17 w1517, 
+		NW.w_17_19 w1719, NW.w_19_21 w1921, 
+		NW.createTime createtime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NW.id=#{id}
+		</if>
+		<if test="userid!=null and userid!=''">
+			AND NW.userId=#{userid}
+		</if>
+		<if test="calendar!=null and calendar!=''">
+			AND NW.calendar=#{calendar}
+		</if>
+		<if test="week!=null and week!=''">
+			AND NW.week=#{week}
+		</if>
+		<if test="h911!=null">
+			AND NW.h_9_11=#{h911}
+		</if>
+		<if test="h1113!=null">
+			AND NW.h_11_13=#{h1113}
+		</if>
+		<if test="h1315!=null">
+			AND NW.h_13_15=#{h1315}
+		</if>
+		<if test="h1517!=null">
+			AND NW.h_15_17=#{h1517}
+		</if>
+		<if test="h1719!=null">
+			AND NW.h_17_19=#{h1719}
+		</if>
+		<if test="h1921!=null">
+			AND NW.h_19_21=#{h1921}
+		</if>
+		<if test="w911!=null and w911!=''">
+			AND NW.w_9_11=#{w911}
+		</if>
+		<if test="w1113!=null and w1113!=''">
+			AND NW.w_11_13=#{w1113}
+		</if>
+		<if test="w1315!=null and w1315!=''">
+			AND NW.w_13_15=#{w1315}
+		</if>
+		<if test="w1517!=null and w1517!=''">
+			AND NW.w_15_17=#{w1517}
+		</if>
+		<if test="w1719!=null and w1719!=''">
+			AND NW.w_17_19=#{w1719}
+		</if>
+		<if test="w1921!=null and w1921!=''">
+			AND NW.w_19_21=#{w1921}
+		</if>
+		<if test="createtime!=null">
+			AND NW.createTime=#{createtime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NW.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="userid!=null and userid!=''">
+				AND NW.userId LIKE CONCAT('%', #{userid}, '%')
+			</if>
+			<if test="calendar!=null and calendar!=''">
+				AND NW.calendar LIKE CONCAT('%', #{calendar}, '%')
+			</if>
+			<if test="week!=null and week!=''">
+				AND NW.week LIKE CONCAT('%', #{week}, '%')
+			</if>
+			<if test="h911!=null">
+				AND NW.h_9_11=#{h911}
+			</if>
+			<if test="h1113!=null">
+				AND NW.h_11_13=#{h1113}
+			</if>
+			<if test="h1315!=null">
+				AND NW.h_13_15=#{h1315}
+			</if>
+			<if test="h1517!=null">
+				AND NW.h_15_17=#{h1517}
+			</if>
+			<if test="h1719!=null">
+				AND NW.h_17_19=#{h1719}
+			</if>
+			<if test="h1921!=null">
+				AND NW.h_19_21=#{h1921}
+			</if>
+			<if test="w911!=null and w911!=''">
+				AND NW.w_9_11 LIKE CONCAT('%', #{w911}, '%')
+			</if>
+			<if test="w1113!=null and w1113!=''">
+				AND NW.w_11_13 LIKE CONCAT('%', #{w1113}, '%')
+			</if>
+			<if test="w1315!=null and w1315!=''">
+				AND NW.w_13_15 LIKE CONCAT('%', #{w1315}, '%')
+			</if>
+			<if test="w1517!=null and w1517!=''">
+				AND NW.w_15_17 LIKE CONCAT('%', #{w1517}, '%')
+			</if>
+			<if test="w1719!=null and w1719!=''">
+				AND NW.w_17_19 LIKE CONCAT('%', #{w1719}, '%')
+			</if>
+			<if test="w1921!=null and w1921!=''">
+				AND NW.w_19_21 LIKE CONCAT('%', #{w1921}, '%')
+			</if>
+			<if test="createtime!=null">
+				AND NW.createTime=#{createtime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NW.id=#{id}, 
+		   </if>
+           <if test="userid!=null">
+				NW.userId=#{userid}, 
+		   </if>
+           <if test="calendar!=null">
+				NW.calendar=#{calendar}, 
+		   </if>
+           <if test="week!=null">
+				NW.week=#{week}, 
+		   </if>
+           <if test="h911!=null">
+				NW.h_9_11=#{h911}, 
+		   </if>
+           <if test="h1113!=null">
+				NW.h_11_13=#{h1113}, 
+		   </if>
+           <if test="h1315!=null">
+				NW.h_13_15=#{h1315}, 
+		   </if>
+           <if test="h1517!=null">
+				NW.h_15_17=#{h1517}, 
+		   </if>
+           <if test="h1719!=null">
+				NW.h_17_19=#{h1719}, 
+		   </if>
+           <if test="h1921!=null">
+				NW.h_19_21=#{h1921}, 
+		   </if>
+           <if test="w911!=null">
+				NW.w_9_11=#{w911}, 
+		   </if>
+           <if test="w1113!=null">
+				NW.w_11_13=#{w1113}, 
+		   </if>
+           <if test="w1315!=null">
+				NW.w_13_15=#{w1315}, 
+		   </if>
+           <if test="w1517!=null">
+				NW.w_15_17=#{w1517}, 
+		   </if>
+           <if test="w1719!=null">
+				NW.w_17_19=#{w1719}, 
+		   </if>
+           <if test="w1921!=null">
+				NW.w_19_21=#{w1921}, 
+		   </if>
+           <if test="createtime!=null">
+				NW.createTime=#{createtime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseWorktime" type="com.jinpaihushi.jphs.nurse.model.NurseWorktime">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userid" column="userId" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="calendar" column="calendar" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="week" column="week" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="h911" column="h_9_11" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1113" column="h_11_13" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1315" column="h_13_15" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1517" column="h_15_17" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1719" column="h_17_19" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1921" column="h_19_21" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="w911" column="w_9_11" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1113" column="w_11_13" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1315" column="w_13_15" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1517" column="w_15_17" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1719" column="w_17_19" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1921" column="w_19_21" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createtime" column="createTime" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="nurseWorktimeGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseWorktime">
+		<result property="id" column="NW_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userid" column="NW_userId" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="calendar" column="NW_calendar" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="week" column="NW_week" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="h911" column="NW_h_9_11" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1113" column="NW_h_11_13" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1315" column="NW_h_13_15" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1517" column="NW_h_15_17" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1719" column="NW_h_17_19" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h1921" column="NW_h_19_21" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="w911" column="NW_w_9_11" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1113" column="NW_w_11_13" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1315" column="NW_w_13_15" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1517" column="NW_w_15_17" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1719" column="NW_w_17_19" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w1921" column="NW_w_19_21" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createtime" column="NW_createTime" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseWorktime">
+		INSERT INTO `NURSE_WORKTIME`(
+			id, userId, 
+			calendar, week, 
+			h_9_11, h_11_13, 
+			h_13_15, h_15_17, 
+			h_17_19, h_19_21, 
+			w_9_11, w_11_13, 
+			w_13_15, w_15_17, 
+			w_17_19, w_19_21, 
+			createTime
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+			#{calendar,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR}, 
+			#{h911,jdbcType=INTEGER}, #{h1113,jdbcType=INTEGER}, 
+			#{h1315,jdbcType=INTEGER}, #{h1517,jdbcType=INTEGER}, 
+			#{h1719,jdbcType=INTEGER}, #{h1921,jdbcType=INTEGER}, 
+			#{w911,jdbcType=VARCHAR}, #{w1113,jdbcType=VARCHAR}, 
+			#{w1315,jdbcType=VARCHAR}, #{w1517,jdbcType=VARCHAR}, 
+			#{w1719,jdbcType=VARCHAR}, #{w1921,jdbcType=VARCHAR}, 
+			#{createtime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_WORKTIME`(
+			id, userId, 
+			calendar, week, 
+			h_9_11, h_11_13, 
+			h_13_15, h_15_17, 
+			h_17_19, h_19_21, 
+			w_9_11, w_11_13, 
+			w_13_15, w_15_17, 
+			w_17_19, w_19_21, 
+			createTime
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.userid,jdbcType=VARCHAR}, 
+			#{item.calendar,jdbcType=VARCHAR}, #{item.week,jdbcType=VARCHAR}, 
+			#{item.h911,jdbcType=INTEGER}, #{item.h1113,jdbcType=INTEGER}, 
+			#{item.h1315,jdbcType=INTEGER}, #{item.h1517,jdbcType=INTEGER}, 
+			#{item.h1719,jdbcType=INTEGER}, #{item.h1921,jdbcType=INTEGER}, 
+			#{item.w911,jdbcType=VARCHAR}, #{item.w1113,jdbcType=VARCHAR}, 
+			#{item.w1315,jdbcType=VARCHAR}, #{item.w1517,jdbcType=VARCHAR}, 
+			#{item.w1719,jdbcType=VARCHAR}, #{item.w1921,jdbcType=VARCHAR}, 
+			#{item.createtime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NW FROM `NURSE_WORKTIME` NW WHERE NW.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_WORKTIME` NW
+		SET 
+		NW.STATUS = -1
+		WHERE NW.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_WORKTIME` NW
+		<include refid="dynamicSet" /> 
+	    WHERE NW.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseWorktime">
+		SELECT <include refid="field"/>
+		FROM `NURSE_WORKTIME` NW
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_WORKTIME` NW
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseWorktime">
+		SELECT <include refid="field"/>
+		FROM `NURSE_WORKTIME` NW
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseWorktime">
+		SELECT <include refid="field"/>
+		FROM `NURSE_WORKTIME` NW
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseWorktime">
+		SELECT <include refid="field"/>
+		FROM `NURSE_WORKTIME` NW
+		WHERE NW.ID = #{id}
+	</select>
+	<select id="getAllNurse" resultType="java.lang.String">
+		SELECT DISTINCT userId FROM `nurse_worktime` ;
+	</select>
+	<delete id="deleteExpired">
+		DELETE nw FROM `NURSE_WORKTIME` nw WHERE nw.calendar &lt; DATE_FORMAT(NOW(),'%Y-%m-%d')
+	</delete>
+	<select id="getTrialNurseId" resultType="java.lang.String">
+		SELECT n.creator_id FROM nurse  n WHERE n.status=1
+	</select>
+</mapper>

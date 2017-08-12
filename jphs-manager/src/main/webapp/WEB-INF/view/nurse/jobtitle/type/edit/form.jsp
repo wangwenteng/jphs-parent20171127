@@ -4,11 +4,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
-<form class="form-horizontal">
+<form class="form-horizontal edit_form">
 	<fieldset>
-		<div id="legend" class="">
-			<legend class="">${jobtitleType.id == null?'职称类型添加':'职称类型编辑'}</legend>
-		</div>
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" value="${jobtitleType.id}" />
 			<!-- 文本输入 -->
