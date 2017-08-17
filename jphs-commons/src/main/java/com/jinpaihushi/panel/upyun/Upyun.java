@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import main.java.com.UpYun;
 import main.java.com.upyun.FormUploader;
 import main.java.com.upyun.Params;
 import main.java.com.upyun.Result;
@@ -147,6 +148,37 @@ public class Upyun {
 			}
 	    	
 	    }
+	    /**
+	     * 上传图片到又拍云，不加水印
+	     */
+	    public static boolean putUpyunNotWatermark(String SAVE_KEY,File fl){
+	    	boolean result = true;
+	    	try {
+				UpYun up=new UpYun("jinpai","jinpaiwechat","jinpaiwechat");
+				up.setContentMD5(UpYun.md5(fl));
+				Map<String, String> params=new HashMap<String,String>();
+				params.put("x-gmkerl-type", "fix_both");
+//				params.put("x-gmkerl-value", "60x60");
+				result= up.writeFile(SAVE_KEY, fl, true,params);
+			} catch (IOException e) {
+				result = false;
+				
+			}
+	    	return result;
+	    }
+	    
+	    /**
+	     * 上传图片到又拍云，加水印
+	     */
+	    public static boolean putUpyunWatermark(String SAVE_KEY,File fl){
+	    	// 加水印
+			FormUploader uploader = new FormUploader("jinpai", APIKEY, null);
+	        final Map<String, Object> paramsMap = new HashMap<String, Object>();
+	        paramsMap.put(Params.SAVE_KEY,SAVE_KEY);///opacity/90
+	        paramsMap.put(Params.X_GMKERL_THUMB, "/watermark/url/L2ppbnBhaWh1c2hpLzE1MDExMTg4OTE1MTIuanBn/align/southeast/percent/10/margin/10x10");
+	        Result result= uploader.upload(paramsMap, fl);
+	    	return result.isSucceed();
+	    }
 	    
 	    public static String getDateFormat(){
 	        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -155,5 +187,5 @@ public class Upyun {
 	        return "JP"+df.format(new Date())+"-"+rannum;       
 	    }  
 	    
-
+	    
 }

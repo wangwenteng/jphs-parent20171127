@@ -474,6 +474,83 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="creatorName" column="G_creator_name"
 			javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
+	
+	
+	<resultMap id="goodsInfo" type="com.jinpaihushi.jphs.goods.model.Goods">
+		<result property="id" column="goodsId" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="productId" column="product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="tijianTypeId" column="tijian_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianHospitalId" column="tijian_hospital_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tool" column="tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="insurance" column="insurance" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="must" column="must" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="gradeType" column="gradeType" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isBg" column="is_bg" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isProve" column="is_prove" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<collection property="grade"
+			ofType="com.jinpaihushi.jphs.goods.model.Grade">
+			<result property="name" column="grade_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="siUrl" column="siUrl" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="grade" column="grade" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<collection property="goodsPrice"
+				ofType="com.jinpaihushi.jphs.goods.model.GoodsPrice">
+				<result property="id" column="pp_id" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="serviceNumber" column="service_number"
+					javaType="Integer" jdbcType="INTEGER"></result>
+				<result property="serviceTime" column="service_time"
+					javaType="Integer" jdbcType="INTEGER"></result>
+				<result property="unit" column="unit" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="title" column="pp_title" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="price" column="price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="oldPrice" column="old_price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="costPrice" column="cost_price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="profit" column="profit" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="maxPrice" column="max_price" javaType="Double"
+					jdbcType="DECIMAL"></result>
+				<result property="pnPrice" column="pnPrice" javaType="Double"
+					jdbcType="DECIMAL"></result>
+			</collection>
+		</collection>
+		
+	</resultMap>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.goods.model.Goods">
@@ -854,5 +931,80 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN goods g
 		ON p.goods_id =g.id
 		WHERE pp.id = #{pricePartId}
+	</select>
+	
+	
+	<select id="getAllGoods" resultMap="goodsInfo">
+		SELECT
+			jg.goods_id goodsId,
+			pp.id pp_id,
+			g.title,
+			p.grade_name,
+			p.service_number,
+			pp.price,
+			pp.max_price,
+			p.grade
+		FROM
+			jobtitle_goods jg
+		LEFT JOIN price p ON (jg.goods_id = p.goods_id)
+		LEFT JOIN price_part pp ON (pp.price_id = p.id)
+		LEFT JOIN goods g ON(jg.goods_id = g.id)
+		WHERE
+			1 = 1
+		AND pp.site_id = 0
+		AND pp.`status` = 1
+		AND jg.`status` = 1
+		AND jg.jobtitle_id IN (
+			SELECT
+				nj.jobtitle_id
+			FROM
+				nurse_jobtitle nj
+			WHERE
+				nj.creator_id = #{creatorId}
+			AND nj.`status` = 1
+		)
+		ORDER BY
+			jg.goods_id,
+			p.grade_name,
+			p.service_number,
+			p.grade
+	</select>
+	
+	<select id="getMyService" resultMap="goodsInfo">
+		SELECT
+			jg.goods_id goodsId,
+			pp.id pp_id,
+			g.title,
+			p.grade_name,
+			p.service_number,
+			pp.price,
+			pp.max_price,
+			p.grade,
+			si.url siUrl,
+			pn.price pnPrice
+		FROM
+			jobtitle_goods jg
+		LEFT JOIN price p ON (jg.goods_id = p.goods_id)
+		LEFT JOIN price_part pp ON (pp.price_id = p.id)
+		LEFT JOIN goods g ON (jg.goods_id = g.id)
+		LEFT JOIN service_images si ON (jg.goods_id = si.source_id)
+		WHERE
+			1 = 1
+		AND pp.site_id = 0
+		AND pp.`status` = 1
+		AND jg.`status` = 1
+		AND si.device_type = 2
+		AND jg.jobtitle_id IN (
+			SELECT
+				nj.jobtitle_id
+			FROM
+				nurse_jobtitle nj
+			WHERE
+				nj.creator_id = #{creatorId}
+		)
+		ORDER BY
+			jg.goods_id,
+			p.grade_name,
+			p.service_number
 	</select>
 </mapper>

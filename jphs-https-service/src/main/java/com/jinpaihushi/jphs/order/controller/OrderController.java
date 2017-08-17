@@ -236,7 +236,7 @@ public class OrderController {
 					sParaTemp.put("subject", goodsName);
 					sParaTemp.put("total_fee", payParice);
 	
-					byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY");
+					byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY","1");
 					return s;
 				}
 				

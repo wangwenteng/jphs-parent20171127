@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.nurse.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +14,8 @@ import com.jinpaihushi.service.impl.BaseServiceImpl;
 
 /**
  * 
- * @author wangwt
- * @date 2017-07-13 13:43:01
+ * @author scj
+ * @date 2017-08-16 14:56:07
  * @version 1.0
  */
 @Service("nurseJobtitleService")
@@ -26,4 +29,9 @@ public class NurseJobtitleServiceImpl extends BaseServiceImpl<NurseJobtitle> imp
 		return nurseJobtitleDao;
 	}
 
+	@Override
+	public List<Map<String, Object>> getNurseList(Map<String, Object> query) {
+		return nurseJobtitleDao.getNurseList(query);
+	}
+	
 }

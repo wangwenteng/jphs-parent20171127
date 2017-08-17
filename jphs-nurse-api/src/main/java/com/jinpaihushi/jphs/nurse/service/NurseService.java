@@ -35,4 +35,13 @@ public interface NurseService extends BaseService<Nurse> {
 	 */
 	List<JobtitleType> getNurseJobtitle(Nurse nurse);
 
+	/**
+	 * 护士的基本信息
+	 * @param userId 护士id
+	 * @param lon 经度
+	 * @param lat 纬度
+	 * @return
+	 */
+	List<Map<String, Object>> getBasicInfo(Map<String, Object> map);
+
 }

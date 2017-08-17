@@ -200,4 +200,58 @@ public class GoodsController extends BaseController<Goods> {
 		}
 		return null;
 	}
+
+
+	@ResponseBody
+	@RequestMapping(name = "服务评价", path = "/getAllGoods.json")
+	public byte[] getAllGoods(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,Goods goods) {
+
+		try {
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("goods.getAllGoods.json");
+			}
+
+			if (StringUtils.isEmpty(goods.getCreatorId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			 
+			List<Goods> goodsList = goodsService.getAllGoods(goods);
+
+			return JSONUtil.toJSONResult(1, "操作成功！", goodsList);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.failLog.error("goods.getAllGoods.json " , e);
+		}
+		return null;
+	}
+
+
+	
+	@ResponseBody
+	@RequestMapping(name = "服务评价", path = "/getMyServices.json")
+	public byte[] getMyServices(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String creatorId) {
+
+		try {
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("goods.getMyServices.json creatorId = "+ creatorId);
+			}
+			if (StringUtils.isEmpty(creatorId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			 
+			List<Goods> goodsList = goodsService.getMyService(creatorId);
+
+			return JSONUtil.toJSONResult(1, "操作成功！", goodsList);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.failLog.error("goods.getMyServices.json creatorId = "+creatorId , e);
+		}
+		return null;
+	}
+
+
+
+	
 }

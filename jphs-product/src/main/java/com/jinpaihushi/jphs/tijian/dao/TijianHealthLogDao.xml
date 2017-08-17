@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-08-15 10:36:45 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.tijian.dao.TijianHealthLogDao">
+
+	<sql id="field">
+		THL.id, THL.user_id, THL.order_id, THL.name, THL.phone,
+		THL.tijian_type_id, THL.head, THL.neck, THL.arm, THL.leg, THL.hand,
+		THL.foot, THL.heart, THL.liver, THL.lungs, THL.stomach,
+		THL.gallbladder, THL.kidney, THL.reproductiveSystem_man,
+		THL.reproductiveSystem_woman, THL.image, THL.proposal,
+		THL.health_time, THL.notes, THL.creator_name, THL.creator_id,
+		THL.create_time, THL.status
+	</sql>
+ 
+	<sql id="fieldGlobal">
+		THL.id THL_id, THL.user_id THL_user_id, THL.order_id
+		THL_order_id, THL.name THL_name, THL.phone THL_phone,
+		THL.tijian_type_id THL_tijian_type_id, THL.head THL_head, THL.neck
+		THL_neck, THL.arm THL_arm, THL.leg THL_leg, THL.hand THL_hand,
+		THL.foot THL_foot, THL.heart THL_heart, THL.liver THL_liver, THL.lungs
+		THL_lungs, THL.stomach THL_stomach, THL.gallbladder THL_gallbladder,
+		THL.kidney THL_kidney, THL.reproductiveSystem_man
+		THL_reproductiveSystem_man, THL.reproductiveSystem_woman
+		THL_reproductiveSystem_woman, THL.image THL_image, THL.proposal
+		THL_proposal, THL.health_time THL_health_time, THL.notes THL_notes,
+		THL.creator_name THL_creator_name, THL.creator_id THL_creator_id,
+		THL.create_time THL_create_time, THL.status THL_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		THL.id id, THL.user_id userId, THL.order_id orderId,
+		THL.name name, THL.phone phone, THL.tijian_type_id tijianTypeId,
+		THL.head head, THL.neck neck, THL.arm arm, THL.leg leg, THL.hand hand,
+		THL.foot foot, THL.heart heart, THL.liver liver, THL.lungs lungs,
+		THL.stomach stomach, THL.gallbladder gallbladder, THL.kidney kidney,
+		THL.reproductiveSystem_man reproductivesystemMan,
+		THL.reproductiveSystem_woman reproductivesystemWoman, THL.image image,
+		THL.proposal proposal, THL.health_time healthTime, THL.notes notes,
+		THL.creator_name creatorName, THL.creator_id creatorId,
+		THL.create_time createTime, THL.status status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND THL.id=#{id}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND THL.user_id=#{userId}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND THL.order_id=#{orderId}
+		</if>
+		<if test="name!=null and name!=''">
+			AND THL.name=#{name}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND THL.phone=#{phone}
+		</if>
+		<if test="tijianTypeId!=null and tijianTypeId!=''">
+			AND THL.tijian_type_id=#{tijianTypeId}
+		</if>
+		<if test="head!=null and head!=''">
+			AND THL.head=#{head}
+		</if>
+		<if test="neck!=null and neck!=''">
+			AND THL.neck=#{neck}
+		</if>
+		<if test="arm!=null and arm!=''">
+			AND THL.arm=#{arm}
+		</if>
+		<if test="leg!=null and leg!=''">
+			AND THL.leg=#{leg}
+		</if>
+		<if test="hand!=null and hand!=''">
+			AND THL.hand=#{hand}
+		</if>
+		<if test="foot!=null and foot!=''">
+			AND THL.foot=#{foot}
+		</if>
+		<if test="heart!=null and heart!=''">
+			AND THL.heart=#{heart}
+		</if>
+		<if test="liver!=null and liver!=''">
+			AND THL.liver=#{liver}
+		</if>
+		<if test="lungs!=null and lungs!=''">
+			AND THL.lungs=#{lungs}
+		</if>
+		<if test="stomach!=null and stomach!=''">
+			AND THL.stomach=#{stomach}
+		</if>
+		<if test="gallbladder!=null and gallbladder!=''">
+			AND THL.gallbladder=#{gallbladder}
+		</if>
+		<if test="kidney!=null and kidney!=''">
+			AND THL.kidney=#{kidney}
+		</if>
+		<if test="reproductivesystemMan!=null and reproductivesystemMan!=''">
+			AND THL.reproductiveSystem_man=#{reproductivesystemMan}
+		</if>
+		<if test="reproductivesystemWoman!=null and reproductivesystemWoman!=''">
+			AND
+			THL.reproductiveSystem_woman=#{reproductivesystemWoman}
+		</if>
+		<if test="image!=null and image!=''">
+			AND THL.image=#{image}
+		</if>
+		<if test="proposal!=null and proposal!=''">
+			AND THL.proposal=#{proposal}
+		</if>
+		<if test="healthTime!=null">
+			AND THL.health_time=#{healthTime}
+		</if>
+		<if test="notes!=null and notes!=''">
+			AND THL.notes=#{notes}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND THL.creator_name=#{creatorName}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND THL.creator_id=#{creatorId}
+		</if>
+		<if test="createTime!=null">
+			AND THL.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND THL.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND THL.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND THL.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND THL.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND THL.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND THL.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="tijianTypeId!=null and tijianTypeId!=''">
+				AND THL.tijian_type_id LIKE CONCAT('%', #{tijianTypeId},
+				'%')
+			</if>
+			<if test="head!=null and head!=''">
+				AND THL.head LIKE CONCAT('%', #{head}, '%')
+			</if>
+			<if test="neck!=null and neck!=''">
+				AND THL.neck LIKE CONCAT('%', #{neck}, '%')
+			</if>
+			<if test="arm!=null and arm!=''">
+				AND THL.arm LIKE CONCAT('%', #{arm}, '%')
+			</if>
+			<if test="leg!=null and leg!=''">
+				AND THL.leg LIKE CONCAT('%', #{leg}, '%')
+			</if>
+			<if test="hand!=null and hand!=''">
+				AND THL.hand LIKE CONCAT('%', #{hand}, '%')
+			</if>
+			<if test="foot!=null and foot!=''">
+				AND THL.foot LIKE CONCAT('%', #{foot}, '%')
+			</if>
+			<if test="heart!=null and heart!=''">
+				AND THL.heart LIKE CONCAT('%', #{heart}, '%')
+			</if>
+			<if test="liver!=null and liver!=''">
+				AND THL.liver LIKE CONCAT('%', #{liver}, '%')
+			</if>
+			<if test="lungs!=null and lungs!=''">
+				AND THL.lungs LIKE CONCAT('%', #{lungs}, '%')
+			</if>
+			<if test="stomach!=null and stomach!=''">
+				AND THL.stomach LIKE CONCAT('%', #{stomach}, '%')
+			</if>
+			<if test="gallbladder!=null and gallbladder!=''">
+				AND THL.gallbladder LIKE CONCAT('%', #{gallbladder}, '%')
+			</if>
+			<if test="kidney!=null and kidney!=''">
+				AND THL.kidney LIKE CONCAT('%', #{kidney}, '%')
+			</if>
+			<if test="reproductivesystemMan!=null and reproductivesystemMan!=''">
+				AND THL.reproductiveSystem_man LIKE CONCAT('%',
+				#{reproductivesystemMan}, '%')
+			</if>
+			<if test="reproductivesystemWoman!=null and reproductivesystemWoman!=''">
+				AND THL.reproductiveSystem_woman LIKE CONCAT('%',
+				#{reproductivesystemWoman}, '%')
+			</if>
+			<if test="image!=null and image!=''">
+				AND THL.image LIKE CONCAT('%', #{image}, '%')
+			</if>
+			<if test="proposal!=null and proposal!=''">
+				AND THL.proposal LIKE CONCAT('%', #{proposal}, '%')
+			</if>
+			<if test="healthTime!=null">
+				AND THL.health_time=#{healthTime}
+			</if>
+			<if test="notes!=null and notes!=''">
+				AND THL.notes LIKE CONCAT('%', #{notes}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND THL.creator_name LIKE CONCAT('%', #{creatorName},
+				'%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND THL.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND THL.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND THL.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				THL.id=#{id},
+			</if>
+			<if test="userId!=null">
+				THL.user_id=#{userId},
+			</if>
+			<if test="orderId!=null">
+				THL.order_id=#{orderId},
+			</if>
+			<if test="name!=null">
+				THL.name=#{name},
+			</if>
+			<if test="phone!=null">
+				THL.phone=#{phone},
+			</if>
+			<if test="tijianTypeId!=null">
+				THL.tijian_type_id=#{tijianTypeId},
+			</if>
+			<if test="head!=null">
+				THL.head=#{head},
+			</if>
+			<if test="neck!=null">
+				THL.neck=#{neck},
+			</if>
+			<if test="arm!=null">
+				THL.arm=#{arm},
+			</if>
+			<if test="leg!=null">
+				THL.leg=#{leg},
+			</if>
+			<if test="hand!=null">
+				THL.hand=#{hand},
+			</if>
+			<if test="foot!=null">
+				THL.foot=#{foot},
+			</if>
+			<if test="heart!=null">
+				THL.heart=#{heart},
+			</if>
+			<if test="liver!=null">
+				THL.liver=#{liver},
+			</if>
+			<if test="lungs!=null">
+				THL.lungs=#{lungs},
+			</if>
+			<if test="stomach!=null">
+				THL.stomach=#{stomach},
+			</if>
+			<if test="gallbladder!=null">
+				THL.gallbladder=#{gallbladder},
+			</if>
+			<if test="kidney!=null">
+				THL.kidney=#{kidney},
+			</if>
+			<if test="reproductivesystemMan!=null">
+				THL.reproductiveSystem_man=#{reproductivesystemMan},
+			</if>
+			<if test="reproductivesystemWoman!=null">
+				THL.reproductiveSystem_woman=#{reproductivesystemWoman},
+			</if>
+			<if test="image!=null">
+				THL.image=#{image},
+			</if>
+			<if test="proposal!=null">
+				THL.proposal=#{proposal},
+			</if>
+			<if test="healthTime!=null">
+				THL.health_time=#{healthTime},
+			</if>
+			<if test="notes!=null">
+				THL.notes=#{notes},
+			</if>
+			<if test="creatorName!=null">
+				THL.creator_name=#{creatorName},
+			</if>
+			<if test="creatorId!=null">
+				THL.creator_id=#{creatorId},
+			</if>
+			<if test="createTime!=null">
+				THL.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				THL.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="tijianHealthLog"
+		type="com.jinpaihushi.jphs.tijian.model.TijianHealthLog">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="tijianTypeId" column="tijian_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="head" column="head" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="neck" column="neck" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="arm" column="arm" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="leg" column="leg" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hand" column="hand" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="foot" column="foot" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="heart" column="heart" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="liver" column="liver" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="lungs" column="lungs" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="stomach" column="stomach" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="gallbladder" column="gallbladder" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="kidney" column="kidney" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="reproductivesystemMan" column="reproductiveSystem_man"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reproductivesystemWoman" column="reproductiveSystem_woman"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="image" column="image" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="proposal" column="proposal" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="healthTime" column="health_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="notes" column="notes" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<resultMap id="tijianHealthLogGlobal"
+		type="com.jinpaihushi.jphs.tijian.model.TijianHealthLog">
+		<result property="id" column="THL_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userId" column="THL_user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="THL_order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="THL_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="THL_phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="tijianTypeId" column="THL_tijian_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="head" column="THL_head" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="neck" column="THL_neck" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="arm" column="THL_arm" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="leg" column="THL_leg" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="hand" column="THL_hand" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="foot" column="THL_foot" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="heart" column="THL_heart" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="liver" column="THL_liver" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="lungs" column="THL_lungs" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="stomach" column="THL_stomach" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="gallbladder" column="THL_gallbladder"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="kidney" column="THL_kidney" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="reproductivesystemMan" column="THL_reproductiveSystem_man"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reproductivesystemWoman" column="THL_reproductiveSystem_woman"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="image" column="THL_image" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="proposal" column="THL_proposal" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="healthTime" column="THL_health_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="notes" column="THL_notes" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="THL_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="THL_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="THL_create_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="THL_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.tijian.model.TijianHealthLog">
+		INSERT INTO `TIJIAN_HEALTH_LOG`(
+		id, user_id, order_id,
+		name, phone, tijian_type_id, head, neck, arm, leg,
+		hand, foot, heart,
+		liver, lungs, stomach, gallbladder, kidney,
+		reproductiveSystem_man,
+		reproductiveSystem_woman, image, proposal,
+		health_time, notes,
+		creator_name, creator_id, create_time, status
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR},
+		#{tijianTypeId,jdbcType=VARCHAR},
+		#{head,jdbcType=VARCHAR},
+		#{neck,jdbcType=VARCHAR},
+		#{arm,jdbcType=VARCHAR},
+		#{leg,jdbcType=VARCHAR},
+		#{hand,jdbcType=VARCHAR},
+		#{foot,jdbcType=VARCHAR},
+		#{heart,jdbcType=VARCHAR},
+		#{liver,jdbcType=VARCHAR},
+		#{lungs,jdbcType=VARCHAR},
+		#{stomach,jdbcType=VARCHAR},
+		#{gallbladder,jdbcType=VARCHAR},
+		#{kidney,jdbcType=VARCHAR},
+		#{reproductivesystemMan,jdbcType=VARCHAR},
+		#{reproductivesystemWoman,jdbcType=VARCHAR},
+		#{image,jdbcType=VARCHAR}, #{proposal,jdbcType=VARCHAR},
+		#{healthTime,jdbcType=TIMESTAMP}, #{notes,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `TIJIAN_HEALTH_LOG`(
+			id, user_id, 
+			order_id, name, 
+			phone, tijian_type_id, 
+			head, neck, 
+			arm, leg, 
+			hand, foot, 
+			heart, liver, 
+			lungs, stomach, 
+			gallbladder, kidney, 
+			reproductiveSystem_man, reproductiveSystem_woman, 
+			image, proposal, 
+			health_time, notes, 
+			creator_name, creator_id, 
+			create_time, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.userId,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR},
+			#{item.tijianTypeId,jdbcType=VARCHAR}, #{item.head,jdbcType=VARCHAR},
+			#{item.neck,jdbcType=VARCHAR}, #{item.arm,jdbcType=VARCHAR},
+			#{item.leg,jdbcType=VARCHAR}, #{item.hand,jdbcType=VARCHAR},
+			#{item.foot,jdbcType=VARCHAR}, #{item.heart,jdbcType=VARCHAR},
+			#{item.liver,jdbcType=VARCHAR}, #{item.lungs,jdbcType=VARCHAR},
+			#{item.stomach,jdbcType=VARCHAR},
+			#{item.gallbladder,jdbcType=VARCHAR},
+			#{item.kidney,jdbcType=VARCHAR},
+			#{item.reproductivesystemMan,jdbcType=VARCHAR},
+			#{item.reproductivesystemWoman,jdbcType=VARCHAR},
+			#{item.image,jdbcType=VARCHAR}, #{item.proposal,jdbcType=VARCHAR},
+			#{item.healthTime,jdbcType=TIMESTAMP},
+			#{item.notes,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE THL FROM `TIJIAN_HEALTH_LOG` THL WHERE THL.ID
+		= #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `TIJIAN_HEALTH_LOG` THL
+		SET
+		THL.STATUS = -1
+		WHERE THL.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `TIJIAN_HEALTH_LOG` THL
+		<include refid="dynamicSet" />
+		WHERE THL.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="tijianHealthLog">
+		SELECT
+		<include refid="field" />
+		FROM `TIJIAN_HEALTH_LOG` THL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `TIJIAN_HEALTH_LOG` THL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="tijianHealthLog">
+		SELECT
+		<include refid="field" />
+		FROM `TIJIAN_HEALTH_LOG` THL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="tijianHealthLog">
+		SELECT
+		<include refid="field" />
+		FROM `TIJIAN_HEALTH_LOG` THL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="tijianHealthLog">
+		SELECT
+		<include refid="field" />
+		FROM `TIJIAN_HEALTH_LOG` THL
+		WHERE THL.ID = #{id}
+	</select>
+	<select id="getUserHealthLog" resultType="java.util.HashMap">
+		SELECT
+		thl.id,
+		thl.user_id userId,
+		thl.`name` userName,
+		u.sex sex,
+		ni.url headPicture,
+		thl.health_time,
+		<if test="id!=null and id!=''">
+			IFNULL(o.accept_user_id, '') nurseId,
+			IFNULL(ua.`name`, '')
+			nurseName,
+			IFNULL(ua.phone,'') nursePhone,
+			IFNULL(oo.hospital,'')
+			hospital,
+			IFNULL(tt.`name`,'') suiteName,
+			IFNULL(thl.image,'') image,
+		</if>
+		CASE
+		WHEN
+		u.birthday IS NOT NULL THEN (
+		(
+		YEAR (now()) - YEAR (u.birthday)
+		- 1
+		) +
+		(
+		DATE_FORMAT(u.birthday, '%m%d')  &lt;= DATE_FORMAT(NOW(), '%m%d')
+		)
+		)
+		ELSE
+		''
+		END AS age
+		FROM
+		tijian_health_log thl
+		LEFT JOIN `user` u ON
+		thl.user_id = u.id
+		LEFT JOIN nurse_images ni ON u.id = ni.source_id
+		<if test="id!=null and id!=''">
+			LEFT JOIN `order` o ON thl.order_id = o.id
+			LEFT JOIN `user`
+			ua ON o.accept_user_id = ua.id
+			LEFT JOIN order_other oo ON o.id =
+			oo.order_id
+			LEFT JOIN tijian_type tt ON thl.tijian_type_id = tt.id
+		</if>
+		<where>
+			AND thl.user_id = #{userId}
+			<if test="id!=null and id!=''">
+				AND thl.id =#{id}
+			</if>
+		</where>
+		ORDER BY thl.create_time DESC
+	</select>
+</mapper>

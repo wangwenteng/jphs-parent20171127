@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -56,6 +58,25 @@ public class XMLUtil {
           
         return m;  
     }  
+    
+	@SuppressWarnings("rawtypes")
+	public static String parseXML( SortedMap<Object, Object> packageParams) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<xml>");
+		Set es = packageParams.entrySet();
+		Iterator it = es.iterator();
+		while(it.hasNext()) {
+			Map.Entry entry = (Map.Entry)it.next();
+			String k = (String)entry.getKey();
+			String v = (String)entry.getValue();
+			if(null != v && !"".equals(v) && !"appkey".equals(k)) {
+
+				sb.append("<" + k +">" + v + "</" + k + ">\n");
+			}
+		}
+		sb.append("</xml>");
+		return sb.toString();
+	}
       
     /** 
      * ��ȡ�ӽ���xml 

@@ -194,8 +194,8 @@ public class WechatController {
 								transaction.setWithdraw(0);
 								transaction.setPayType(2);
 								transaction.setOutTradeNo(transaction_id);
-								transaction.setCreatorId("");
-								transaction.setCreatorName("系统");
+								transaction.setCreatorId(order.getCreatorId());
+								transaction.setCreatorName(order.getCreatorName());
 								transaction.setCreateTime(new Date());
 								transaction.setStatus(1);
 								// 记录日志-debug

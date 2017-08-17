@@ -14,6 +14,7 @@ import com.jinpaihushi.model.BaseModel;
 public class Grade extends BaseModel{
 	private String name;
 	private Integer grade;
+	private String siUrl;
 	private List<GoodsPrice> goodsPrice;
 
 	public String getName() {
@@ -40,4 +41,24 @@ public class Grade extends BaseModel{
 		this.goodsPrice = goodsPrice;
 	}
 
+	public String getSiUrl() {
+		return siUrl;
+	}
+
+	public void setSiUrl(String siUrl) {
+		this.siUrl = siUrl;
+	}
+
+	
+	public static void main(String[] args) {
+		
+		String a1 = "22,333";
+		String a2 = "22";
+		
+		String[] split = a1.split(",");
+		String[] split2 = a2.split(",");
+		System.out.println(split.length);
+		System.out.println(split2.length);
+	}
+	
 }

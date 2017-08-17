@@ -53,6 +53,6 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<import resource="dubbo.xml"/>
+	<!-- <import resource="dubbo.xml"/> -->
 	
 </beans>   

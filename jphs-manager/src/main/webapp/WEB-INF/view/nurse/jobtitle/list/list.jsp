@@ -8,7 +8,7 @@
 	int i = 1;
 %>
 <table id="dateTable" cellpadding="0" cellspacing="0"
-	class="text-center">
+	class="data_table text-center" style="width:100%;">
 	<thead>
 		<tr>
 			<th width="30"></th>

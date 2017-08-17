@@ -406,5 +406,17 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 		query.put("siteId", siteId);
 		return gradeDao.getGoodsPrice(query);
 	}
+
+	@Override
+	public List<Goods> getAllGoods(Goods goods) {
+		 
+		return goodsDao.getAllGoods(goods);
+	}
+
+	@Override
+	public List<Goods> getMyService(String creatorId) {
+		// TODO Auto-generated method stub
+		return goodsDao.getMyService(creatorId);
+	}
 	
 }

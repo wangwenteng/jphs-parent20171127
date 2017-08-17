@@ -70,7 +70,7 @@ public class InformationServiceImpl extends BaseServiceImpl<Information> impleme
 	public Information getInformationDetail(String id) {
 		// 资讯的基本信息
 		Information information = informationDao.loadById(id);
-		String str = information.getContent().replace("＜", "<");
+		String str = information.getContent()==null?"":information.getContent().replace("＜", "<");
 		str = str.replace("＞", ">");
 		str = str.replace("＆", "&");
 		information.setContent(str);

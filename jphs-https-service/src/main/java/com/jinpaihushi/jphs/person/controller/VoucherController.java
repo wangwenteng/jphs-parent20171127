@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.user.service.UserService;
-import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;

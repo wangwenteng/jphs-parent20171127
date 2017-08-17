@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-
-import main.java.com.upyun.FormUploader;
-import main.java.com.upyun.Params;
-import main.java.com.upyun.Result;
+import com.jinpaihushi.panel.upyun.Upyun;
 
 @Controller
 @RequestMapping(name = "文件上传", path = "/upload")
@@ -36,7 +31,7 @@ public class FileUploadController {
 	 */
 	@RequestMapping(value = "/index.jhtml")
 	@ResponseBody
-	public JSONObject upload(@RequestParam("uname") String uname, @RequestParam MultipartFile[] myfiles,
+	public JSONObject upload(@RequestParam("uname") String uname,@RequestParam("type") String type, @RequestParam MultipartFile[] myfiles,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JSONObject message =new JSONObject();
 		// 可以在上传文件的同时接收其它参数
@@ -54,6 +49,20 @@ public class FileUploadController {
 		// 如果想上传多个文件,那么这里就要用MultipartFile[]类型来接收文件,并且要指定@RequestParam注解
 		// 上传多个文件时,前台表单中的所有<input
 		// type="file"/>的name都应该是myfiles,否则参数里的myfiles无法获取到所有上传的文件
+		
+		//type=1加水印
+		int type_s = 0;
+		try {
+			if(type == null || type.equals("")){
+				type_s = 0;
+			}else{
+				type_s = Integer.parseInt(type);
+			}
+		} catch (Exception e1) {
+			type_s = 0;
+		}
+
+		String sb_img = "";
 		for (MultipartFile myfile : myfiles) {
 			if (myfile.isEmpty()) {
 				message.put("msg", "上传失败");
@@ -71,35 +80,27 @@ public class FileUploadController {
 					// 此处也可以使用Spring提供的MultipartFile.transferTo(File
 					// dest)方法实现文件的上传
 					FileUtils.copyInputStreamToFile(myfile.getInputStream(), new File(realPath, originalFilename));
-				
-					//	--上传图片到又拍云	不加水印	
+					
 					File fl=new File(realPath+"/"+ originalFilename);
-					/*UpYun up=new UpYun("jinpai","jinpaiwechat","jinpaiwechat");
-					String SAVE_KEY = "/jinpaihushi/" + getDateFormat() + ".jpg";
-					up.setContentMD5(UpYun.md5(fl));
-					Map<String, String> params=new HashMap<String,String>();
-					params.put("x-gmkerl-type", "fix_both");
-					params.put("x-gmkerl-value", "60x60");
-					boolean result= up.writeFile(SAVE_KEY, fl, true,params);*/
-					
-					// 加水印
 					String SAVE_KEY = "/jinpaihushi/" + getDateFormat() + ".png";
-					FormUploader uploader = new FormUploader("jinpai", "giy0MIxZ40EYXsIWh6tF2wdIqrg=", null);
-			        final Map<String, Object> paramsMap = new HashMap<String, Object>();
-			        paramsMap.put(Params.SAVE_KEY,SAVE_KEY);///opacity/90
-			        paramsMap.put(Params.X_GMKERL_THUMB, "/watermark/url/L2ppbnBhaWh1c2hpLzE1MDExMTg4OTE1MTIuanBn/align/southeast/percent/10/margin/10x10");
-			        Result result= uploader.upload(paramsMap, fl);
+					boolean result = true;
+					// 加水印
+					if(type_s == 1){
+						result = Upyun.putUpyunWatermark(SAVE_KEY, fl);
+					}else{
+						// 不加水印
+						result = Upyun.putUpyunNotWatermark(SAVE_KEY, fl);
+					}
 					
-			        if(result.isSucceed()){
-			        	message.put("msg", URL+SAVE_KEY);
-						message.put("resultcode", "1");
+			        if(result){
+			        	if(sb_img.length()>2)
+			        		sb_img+= ","+ URL+SAVE_KEY;
+			        	else
+			        		sb_img+= URL+SAVE_KEY;
 			        }else{
-			        	message.put("msg", "上传失败");
-			        	message.put("resultcode", "0");
+			        	if(sb_img.length()>2)
+			        	sb_img+= ",";
 			        }
-					
-					return message;
-					/*return new ModelAndView(customJsonView);*/
 					
 				} catch (IOException e) {
 					System.out.println("文件[" + originalFilename + "]上传失败,堆栈轨迹如下");
@@ -110,18 +111,24 @@ public class FileUploadController {
 				}
 			}
 		}
-		// 此时在Windows下输出的是[D:\Develop\apache-tomcat-6.0.36\webapps\AjaxFileUpload\\upload\愤怒的小鸟.jpg]
-		// System.out.println(realPath + "\\" + originalFilename);
-		// 此时在Windows下输出的是[/AjaxFileUpload/upload/愤怒的小鸟.jpg]
-		// System.out.println(request.getContextPath() + "/upload/" +
-		// originalFilename);
-		// 不推荐返回[realPath + "\\" + originalFilename]的值
-		// 因为在Windows下<img src="file:///D:/aa.jpg">能被firefox显示,而<img
-		// src="D:/aa.jpg">firefox是不认的
-		System.out.println("0`" + request.getContextPath() + "/upload/" + originalFilename);
-		message.put("msg", "上传失败");
-		message.put("resultcode", "0");
-		return message;
+		if(sb_img.length()>2){
+			message.put("msg", sb_img);
+			message.put("resultcode", "1");
+			return message;
+		}else{
+			message.put("msg", "上传失败");
+			message.put("resultcode", "0");
+			return message;
+		}
+	}
+	
+	public static void main(String[] args) {
+		String [] str = new String[30];
+		str[0] = "23wer";
+		str[1] = "asd";
+		str[2] = "asd";
+		
+		System.out.println(str.length);
 	}
 	
 	public static String getDateFormat(){

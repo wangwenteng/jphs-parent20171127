@@ -22,6 +22,12 @@
 				<a href="/voucher/index.jhtml"><img src="/static/images/Group7.png" />优惠券管理</a>
 			</dd>
 			</jphs:hasPermission>
+			<dd>
+				<a href="#"><img src="/static/images/Group7.png" />栏目管理</a>
+			</dd>
+			<dd>
+				<a href="#"><img src="/static/images/Group7.png" />推广管理</a>
+			</dd>
 		</div>
 	</dl>
 	

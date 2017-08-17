@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.car.service;
 
+import java.util.List;
+
 import com.jinpaihushi.jphs.car.model.Car;
 import com.jinpaihushi.service.BaseService;
 
@@ -11,6 +13,6 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CarService extends BaseService<Car> {
 
-	
+	List<Car> getList(String creatorId);
 
 }

@@ -263,6 +263,8 @@ body {
 	background: #fff;
 	margin-top: 10px;
 	padding-bottom: 100px;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .public_btn {
@@ -322,28 +324,31 @@ body {
 	padding-top: 10px;
 }
 
-.marage_right_content table {
-	width: 965px;
-	margin-left: 10px;
-	margin-right: 10px;
+.data_table {
 	border: 1px solid #E1E1E1;
 	border-radius: 2px;
 	margin-top: 5px;
 }
 
-.marage_right_content table thead {
-	background: #f3f3f3;
+.data_table thead {
+	background: #f3f3f3;	
 }
 
-.marage_right_content thead tr {
-	height: 48px;
-}
 
-.marage_right_content table td {
+.data_table thead tr {
+	height: 48px;	
+}
+.data_table thead tr th {	
+	border: 1px solid #E1E1E1;
+}
+.data_table td {
 	cursor: pointer;
+	border: 1px solid #E1E1E1;
+	text-align: left;
+	text-indent: 0.5em;
 }
 
-.marage_right_content tbody tr:hover {
+.data_table tbody tr:hover {
 	background-color: #fafafa;
 }
 

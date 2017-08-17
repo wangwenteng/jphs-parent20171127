@@ -62,7 +62,7 @@ public class SafetyFilter extends HandlerInterceptorAdapter {
 
 		}
 
-		return flag;
+		return true;
 	}
 
 	@Override

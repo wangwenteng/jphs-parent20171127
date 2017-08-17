@@ -4,7 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
-<table id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
+<table id="dateTable" cellpadding="0" cellspacing="0" class="data_table text-center" style="width:100%;">
 	<thead>
 		<tr>
 			<th width="30"></th>

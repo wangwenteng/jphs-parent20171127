@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.account.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -13,7 +16,8 @@ import com.jinpaihushi.jphs.account.model.Account;
  */
 @Repository("accountDao")
 public interface AccountDao extends BaseDao<Account> {
-	
+
+	List<Map<String, Object>> getMonthList(Map<String, Object> query);
 	
 	
 }

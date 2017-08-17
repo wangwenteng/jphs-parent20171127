@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><tiles:insertAttribute name="title" ignore="true" /></title>
+<title>金牌护士后台管理系统-<tiles:insertAttribute name="title" ignore="true" /></title>
 <link href="/static/css/build/build_standalone.less" rel="stylesheet" type="text/css" />
 <link href="/static/css/build/build.less" rel="stylesheet" type="text/css" />
 <link href="/static/css/less/datetimepicker.less" rel="stylesheet" type="text/css" />

@@ -4,16 +4,16 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
-<table id="dateTable" cellpadding="0" cellspacing="0" class="text-center">
+<table id="dateTable" cellpadding="0" cellspacing="0" class="data_table text-center" style="width:100%;">
 	<thead>
 		<tr >
 			<th width="30"></th>
 			<th>品类名称</th>
 			<th>排序</th>
-			<th width="100px">创建人</th>
-			<th width="150px">创时间</th>
-			<th width="50px">状态</th>
-			<th width="125px">操作</th>
+			<th width="100">创建人</th>
+			<th width="118">创时间</th>
+			<th width="60">状态</th>
+			<th width="125">操作</th>
 		</tr>
 	</thead>
 	<tbody>

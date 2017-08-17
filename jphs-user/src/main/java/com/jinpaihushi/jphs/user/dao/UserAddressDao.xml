@@ -302,13 +302,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="getReceiveAddress" resultMap="userAddress">
 		SELECT
 			ua.id,
+			ua.name,
 			ua.default_address,
 			ua.title,
 			ua.province,
 			ua.city,
 			ua.area,
 			ua.detailAddress,
-			ua.phone
+			ua.phone,
+			ua.creator_id
 		FROM
 			user_address ua
 		WHERE

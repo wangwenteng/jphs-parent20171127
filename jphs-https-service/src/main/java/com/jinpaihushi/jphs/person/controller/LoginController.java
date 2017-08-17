@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
@@ -74,6 +73,9 @@ public class LoginController {
 
 			// 判断登录的类型 如果是护士 判断密码
 			if (tid == 2) {
+				if (StringUtils.isEmpty(password)) {
+					return JSONUtil.toJSONResult(0, "参数不能为空", null);
+				}
 				user.setPhone(phone);
 				user.setPassword(MD5.md5crypt(MD5.md5crypt(password)));
 				user.setType(0);
@@ -85,6 +87,9 @@ public class LoginController {
 			} else {
 				// 如果是用户判断短信验证码
 				// 获取该手机号最新一条短信
+				if (StringUtils.isEmpty(smsCode)) {
+					return JSONUtil.toJSONResult(0, "参数不能为空", null);
+				}
 				Verification vc = verificationService.getLastRecordByPhone(phone);
 				if (vc == null) {
 					return JSONUtil.toJSONResult(0, "非法请求", null);

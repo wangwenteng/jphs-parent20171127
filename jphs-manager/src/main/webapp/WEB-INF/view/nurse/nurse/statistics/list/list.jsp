@@ -6,7 +6,7 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div
 	style="width: 465px; float: left; margin-left: 40px; border-right: 1px solid #e0e0e0; margin-right: 44px;">
-	<table style="width: 400px" class="text-center">
+	<table style="width: 400px" class="data_table text-center" style="width:100%;">
 		<caption align="left">护士订单统计</caption>
 		<thead>
 			<tr>
@@ -51,7 +51,7 @@
 	</table>
 </div>
 <div style="width: 400; margin-left: 20px;">
-	<table style="width: 400px" class="text-center">
+	<table style="width: 400px" class="data_table text-center" style="width:100%;">
 		<caption align="left">护士收入统计</caption>
 		<thead>
 			<tr>
@@ -96,7 +96,7 @@
 	</table>
 </div>
 <%-- <table id="dateTable" cellpadding="0" cellspacing="0"
-	class="text-center">
+	class="data_table text-center" style="width:100%;">
 	<thead>
 		<tr>
 			<th width="30"></th>

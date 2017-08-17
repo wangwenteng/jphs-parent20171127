@@ -27,5 +27,9 @@ public interface GoodsDao extends BaseDao<Goods> {
 	List<Map<String,Object>> getColumnGoods(Map<String,Object> map);
 	
 	List<Map<String,Object>> getHospitalGoods(Map<String,Object> map);
+
+	List<Goods> getAllGoods(Goods goods);
+
+	List<Goods> getMyService(String creatorId);
 	
 }

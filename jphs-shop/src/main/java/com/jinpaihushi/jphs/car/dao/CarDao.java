@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.car.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -13,6 +15,8 @@ import com.jinpaihushi.jphs.car.model.Car;
  */
 @Repository("carDao")
 public interface CarDao extends BaseDao<Car> {
+
+	List<Car> getList(String creatorId);
 	
 	
 	

@@ -24,7 +24,6 @@ import com.jinpaihushi.jphs.information.model.InformationEvaluate;
 import com.jinpaihushi.jphs.information.service.InformationCollectionService;
 import com.jinpaihushi.jphs.information.service.InformationEvaluateService;
 import com.jinpaihushi.jphs.information.service.InformationService;
-import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.ObjectVerification;
@@ -40,8 +39,8 @@ public class InformationController extends BaseController<Information> {
 	private InformationEvaluateService informationEvaluateService;
 	@Autowired
 	private InformationCollectionService informationCollectionService;
-	@Autowired
-	private UserService userService;
+//	@Autowired
+//	private UserService userService;
 
 	@ResponseBody
 	@RequestMapping(name = "最新资讯", path = "/getLatestformation.json")
@@ -326,7 +325,7 @@ public class InformationController extends BaseController<Information> {
 			}*/
 			Information query = informationService.loadById(informationId);
 			query.setPreviewNumber(query.getPreviewNumber() + 1);
-			boolean b = informationService.update(query);
+			informationService.update(query);
 			return JSONUtil.toJSONResult(1, "操作成功！", query.getPreviewNumber());
 		} catch (Exception e) {
 			// 记录日志-fail

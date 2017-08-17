@@ -51,14 +51,14 @@ public class AlipaySignController {
 
 	@RequestMapping(path = "/sign.json", name = "阿里支付")
 	@ResponseBody
-	public byte[] alipaySign(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String content,String registerDevice){
+	public byte[] alipaySign(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String content,String registerDevice,String endType){
 		
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("alipay.sign.json");
 			}
-			byte[] s = AlipaySign.getAlisign(content, registerDevice);
+			byte[] s = AlipaySign.getAlisign(content, registerDevice,endType);
 			return s;
 		} catch (Exception e) {
 			Util.failLog.error("alipay.sign.json", e);
@@ -192,8 +192,8 @@ public class AlipaySignController {
 											transaction.setWithdraw(0);
 											transaction.setPayType(1);
 											transaction.setOutTradeNo(trade_no);
-											transaction.setCreatorId("");
-											transaction.setCreatorName("系统");
+											transaction.setCreatorId(order.getCreatorId());
+											transaction.setCreatorName(order.getCreatorName());
 											transaction.setCreateTime(new Date());
 											transaction.setStatus(1);
 											// 记录日志-debug

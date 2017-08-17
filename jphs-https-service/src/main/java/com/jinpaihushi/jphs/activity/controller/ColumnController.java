@@ -31,7 +31,7 @@ public class ColumnController {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("adposition.index.json,columnId=" + columnId);
+				Util.debugLog.debug("column.getColumnService.json,columnId=" + columnId);
 			}
 			// 查空
 			if (StringUtils.isEmpty(columnId)) {
@@ -47,7 +47,7 @@ public class ColumnController {
 			return JSONUtil.toJSONResult(1, "操作成功！", list);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("adposition.index.json,columnId=" + columnId, e);
+			Util.failLog.error("column.getColumnService.json,columnId=" + columnId, e);
 		}
 		return null;
 	}

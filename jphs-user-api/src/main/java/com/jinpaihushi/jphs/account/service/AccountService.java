@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.account.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.service.BaseService;
 
@@ -11,6 +14,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface AccountService extends BaseService<Account> {
 
-	
+	List<Map<String, Object>> getMonthList(Map<String, Object> map);
+
 
 }

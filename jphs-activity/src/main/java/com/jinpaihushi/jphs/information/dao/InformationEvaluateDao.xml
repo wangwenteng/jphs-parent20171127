@@ -408,9 +408,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					AND IE.information_id =
 					#{informationEvaluate.informationId}
 				</if>
-				( IE.`status` =1
+				AND ( IE.`status` =1
 				<if test="userId!=null and userId!=''">
-					OR(IE.creator_id=#{userId} OR IE.status =0)
+					OR(IE.creator_id=#{userId} AND IE.status =0)
 				</if>
 				)
 			</if>

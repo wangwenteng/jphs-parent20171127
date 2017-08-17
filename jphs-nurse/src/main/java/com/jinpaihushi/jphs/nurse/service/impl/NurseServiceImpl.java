@@ -314,7 +314,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 		List<JobtitleType> result = jobtitleTypeDao.getJobtitleDetail(null);
 		//获取护士的职称
 		NurseJobtitle query = new NurseJobtitle();
-		query.setNurseId(nurse.getId());
+		query.setCreatorId(nurse.getId());
 		List<NurseJobtitle> nurseList = nurseJobtitleDao.list(query);
 		for (JobtitleType jobtitleType : result) {
 			for (Jobtitle jobtitle : jobtitleType.getJobtitle()) {
@@ -327,5 +327,11 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
 		}
 		return result;
 	}
+
+	@Override
+	public List<Map<String, Object>> getBasicInfo(Map<String, Object> map) {
 		
+		return nurseDao.getBasicInfo(map);
+	}
+	
 }

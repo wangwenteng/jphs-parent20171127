@@ -16,8 +16,12 @@ public class GoodsPrice extends BaseModel {
 	/** 利润 */
 	private Double profit;
 
+	/** 利润 */
+	private Double maxPrice;
 	/** 服务次数 */
 	private Integer serviceNumber;
+	
+	private Double pnPrice;
 
 	/** 服务时长 */
 	private Integer serviceTime;
@@ -93,4 +97,21 @@ public class GoodsPrice extends BaseModel {
 		this.title = title;
 	}
 
+	public Double getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(Double maxPrice) {
+		this.maxPrice = maxPrice;
+	}
+
+	public Double getPnPrice() {
+		return pnPrice;
+	}
+
+	public void setPnPrice(Double pnPrice) {
+		this.pnPrice = pnPrice;
+	}
+
+	
 }

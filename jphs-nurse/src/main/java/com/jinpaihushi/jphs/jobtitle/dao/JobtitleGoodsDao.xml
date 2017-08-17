@@ -222,7 +222,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="getJobtitleCount" resultType="java.lang.Integer">
 		SELECT COUNT(id) FROM jobtitle_goods jg 
 		WHERE jg.status=1 
-		AND jg.jobtitle_id IN (SELECT nj.jobtitle_id FROM nurse_jobtitle nj WHERE nj.nurse_id=#{nurseId} AND nj.status=1 ) 
+		AND jg.jobtitle_id IN (SELECT nj.jobtitle_id FROM nurse_jobtitle nj WHERE nj.creator_id=#{nurseId} AND nj.status=1 ) 
 		AND jg.goods_id=#{goodsId}
 	</select>
 	

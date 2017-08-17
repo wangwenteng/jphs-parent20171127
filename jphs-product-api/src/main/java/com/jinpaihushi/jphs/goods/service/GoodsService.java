@@ -57,4 +57,7 @@ public interface GoodsService extends BaseService<Goods> {
 	
 	public List<Map<String,Object>> getHospitalGoods(Map<String,Object> map);
 	
+	List<Goods> getAllGoods(Goods goods);
+	
+	List<Goods> getMyService(String creatorId);
 }

@@ -6,7 +6,7 @@
 	<definition name="toLogin" extends="empty.layout">
 		<put-attribute type="string" name="title" value="后台管理" />
 		<put-attribute type="template" name="body"
-			value="/WEB-INF/view/login/login.jsp" />
+			value="/index.jsp" />
 		<put-list-attribute name="scripts" inherit="true">
 			<add-attribute value="/static/js/login/login.js" />
 		</put-list-attribute>

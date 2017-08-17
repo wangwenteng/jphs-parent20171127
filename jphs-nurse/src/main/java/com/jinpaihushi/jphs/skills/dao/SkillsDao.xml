@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-16 09:44:28
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.skills.dao.SkillsDao">
+	
+	<sql id="field">
+		S.id, S.name, S.creator_name, S.creator_id, 
+		S.create_time, S.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		S.id S_id, S.name S_name, 
+		S.creator_name S_creator_name, S.creator_id S_creator_id, 
+		S.create_time S_create_time, S.status S_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		S.id id, S.name name, 
+		S.creator_name creatorName, S.creator_id creatorId, 
+		S.create_time createTime, S.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND S.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND S.name=#{name}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND S.creator_name=#{creatorName}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND S.creator_id=#{creatorId}
+		</if>
+		<if test="createTime!=null">
+			AND S.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND S.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND S.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND S.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND S.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND S.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND S.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND S.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				S.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				S.name=#{name}, 
+		   </if>
+           <if test="creatorName!=null">
+				S.creator_name=#{creatorName}, 
+		   </if>
+           <if test="creatorId!=null">
+				S.creator_id=#{creatorId}, 
+		   </if>
+           <if test="createTime!=null">
+				S.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				S.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="skills" type="com.jinpaihushi.jphs.skills.model.Skills">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="skillsGlobal" type="com.jinpaihushi.jphs.skills.model.Skills">
+		<result property="id" column="S_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="S_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="S_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="S_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="S_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="S_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.skills.model.Skills">
+		INSERT INTO `SKILLS`(
+			id, name, 
+			creator_name, creator_id, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SKILLS`(
+			id, name, 
+			creator_name, creator_id, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE S FROM `SKILLS` S WHERE S.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SKILLS` S
+		SET 
+		S.STATUS = -1
+		WHERE S.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SKILLS` S
+		<include refid="dynamicSet" /> 
+	    WHERE S.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="skills">
+		SELECT <include refid="field"/>
+		FROM `SKILLS` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SKILLS` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="skills">
+		SELECT <include refid="field"/>
+		FROM `SKILLS` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="skills">
+		SELECT <include refid="field"/>
+		FROM `SKILLS` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="skills">
+		SELECT <include refid="field"/>
+		FROM `SKILLS` S
+		WHERE S.ID = #{id}
+	</select>
+	
+	<select id="getNurseSkills" resultType="java.util.HashMap">
+		SELECT 
+			s.`name`,
+			s.`create_time`,
+			s.`creator_id`,
+			s.`creator_name`,
+			s.`id`,
+			(SELECT COUNT(id) FROM nurse_skills ns WHERE ns.creator_id=#{nurseId} AND ns.type=#{type} AND ns.skills_id =s.`id` AND ns.status=1 ) ifnot
+			FROM skills s WHERE s.type=#{type} s.`status`=1
+	</select>
+	
+</mapper>

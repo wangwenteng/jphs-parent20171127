@@ -1,5 +1,9 @@
 package com.jinpaihushi.jphs.account.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +30,9 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 		return accountDao;
 	}
 
+	@Override
+	public List<Map<String, Object>> getMonthList(Map<String, Object> map) {
+		List<Map<String, Object>> result=accountDao.getMonthList(map);
+		return result;
+	}
 }

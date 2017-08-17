@@ -138,8 +138,8 @@ public class UnionpayController {
 					transaction.setWithdraw(0);
 					transaction.setPayType(1);
 					transaction.setOutTradeNo(orderId);
-					transaction.setCreatorId("");
-					transaction.setCreatorName("系统");
+					transaction.setCreatorId(order.getCreatorId());
+					transaction.setCreatorName(order.getCreatorName());
 					transaction.setCreateTime(new Date());
 					transaction.setStatus(1);
 					// 记录日志-debug

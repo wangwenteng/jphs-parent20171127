@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><tiles:insertAttribute name="title" ignore="true" /></title>
+<title>金牌护士后台管理系统-<tiles:insertAttribute name="title" ignore="true" /></title>
 <link href="/static/css/build/build_standalone.less" rel="stylesheet" type="text/css" />
 <link href="/static/css/build/build.less" rel="stylesheet" type="text/css" />
 <link href="/static/css/less/datetimepicker.less" rel="stylesheet" type="text/css" />
@@ -21,7 +21,6 @@
 <link href="/static/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
 <link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/static/css/mystyle.css">
-<link rel="stylesheet" href="/static/css/min.css">
 <link rel="stylesheet" type="text/css" href="/static/EasyUI/themes/metro/easyui.css">
 <link rel="stylesheet" type="text/css" href="/static/EasyUI/themes/mobile.css">
 <link rel="stylesheet" type="text/css" href="/static/EasyUI/themes/icon.css">
@@ -37,16 +36,10 @@
 <script src="/static/js/echarts-all.js" type="text/javascript"></script>
 <script src="/static/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
 <script src="/static/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 
 <script src="/static/js/fileinput.js" type="text/javascript"></script>
 <script src="/static/js/fileinput_locale_zh.js" type="text/javascript"></script>
-<script src="/static/js/page.js" type="text/javascript"></script>
-<script type="text/javascript" src="/static/EasyUI/jquery.easyui.min.js"></script>
+<script src="/static/EasyUI/jquery.easyui.min.js" type="text/javascript" ></script>
 <script src="/static/js/btjs/distpicker.data.js"></script>
 <script src="/static/js/btjs/distpicker.js"></script>
 <script src="/static/js/btjs/main.js"></script>

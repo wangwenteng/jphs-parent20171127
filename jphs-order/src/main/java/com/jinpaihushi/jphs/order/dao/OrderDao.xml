@@ -2,47 +2,43 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!-- author : yangsong date : 2017-06-27 14:43:43 version : 1.0 -->
+<!--
+	author	:	wangwenteng
+	date	:	2017-08-16 14:59:44
+	version	:	1.0
+-->
 <mapper namespace="com.jinpaihushi.jphs.order.dao.OrderDao">
 
 	<sql id="field">
-		O.id, O.order_no, O.voucher_price, O.voucher_use_id,
-		O.platform_id, O.expector_id, O.accept_user_id, O.appointment_time,
-		O.accept_time, O.transaction_id, O.schedule, O.device,
-		O.remarks,
-		O.status, O.create_time, O.creator_id
+		O.id, O.order_no, O.voucher_price, O.voucher_use_id, 
+		O.platform_id, O.expector_id, O.accept_user_id, O.recommend_id, 
+		O.appointment_time, O.accept_time, O.transaction_id, O.schedule, 
+		O.device, O.remarks, O.status, O.create_time, 
+		O.creator_id
 	</sql>
 
 	<sql id="fieldGlobal">
-		O.id O_id, O.order_no O_order_no,
-		O.voucher_price
-		O_voucher_price, O.voucher_use_id O_voucher_use_id,
-		O.platform_id
-		O_platform_id, O.expector_id O_expector_id,
-		O.accept_user_id
-		O_accept_user_id, O.appointment_time O_appointment_time,
-		O.accept_time
-		O_accept_time, O.transaction_id O_transaction_id,
-		O.schedule
-		O_schedule, O.device O_device,
-		O.remarks O_remarks, O.status O_status,
-		O.create_time O_create_time, O.creator_id O_creator_id
+		O.id O_id, O.order_no O_order_no, 
+		O.voucher_price O_voucher_price, O.voucher_use_id O_voucher_use_id, 
+		O.platform_id O_platform_id, O.expector_id O_expector_id, 
+		O.accept_user_id O_accept_user_id, O.recommend_id O_recommend_id, 
+		O.appointment_time O_appointment_time, O.accept_time O_accept_time, 
+		O.transaction_id O_transaction_id, O.schedule O_schedule, 
+		O.device O_device, O.remarks O_remarks, 
+		O.status O_status, O.create_time O_create_time, 
+		O.creator_id O_creator_id
 	</sql>
-
+	
 	<sql id="fieldWithAlias">
-		O.id id, O.order_no orderNo,
-		O.voucher_price voucherPrice,
-		O.voucher_use_id voucherUseId,
-		O.platform_id platformId, O.expector_id
-		expectorId,
-		O.accept_user_id acceptUserId, O.appointment_time
-		appointmentTime,
-		O.accept_time acceptTime, O.transaction_id
-		transactionId,
-		O.schedule schedule, O.device device,
-		O.remarks remarks,
-		O.status status,
-		O.create_time createTime, O.creator_id creatorId
+		O.id id, O.order_no orderNo, 
+		O.voucher_price voucherPrice, O.voucher_use_id voucherUseId, 
+		O.platform_id platformId, O.expector_id expectorId, 
+		O.accept_user_id acceptUserId, O.recommend_id recommendId, 
+		O.appointment_time appointmentTime, O.accept_time acceptTime, 
+		O.transaction_id transactionId, O.schedule schedule, 
+		O.device device, O.remarks remarks, 
+		O.status status, O.create_time createTime, 
+		O.creator_id creatorId
 	</sql>
 
 	<sql id="condition">
@@ -66,6 +62,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="acceptUserId!=null and acceptUserId!=''">
 			AND O.accept_user_id=#{acceptUserId}
+		</if>
+		<if test="recommendId!=null and recommendId!=''">
+			AND O.recommend_id=#{recommendId}
 		</if>
 		<if test="appointmentTime!=null">
 			AND O.appointment_time=#{appointmentTime}
@@ -98,14 +97,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition" />
+			<include refid="condition"/>
 		</where>
 	</sql>
-
+	
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
-				AND O.id =#{id}
+				AND O.id LIKE CONCAT('%', #{id}, '%')
 			</if>
 			<if test="orderNo!=null and orderNo!=''">
 				AND O.order_no LIKE CONCAT('%', #{orderNo}, '%')
@@ -114,8 +113,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND O.voucher_price=#{voucherPrice}
 			</if>
 			<if test="voucherUseId!=null and voucherUseId!=''">
-				AND O.voucher_use_id LIKE CONCAT('%', #{voucherUseId},
-				'%')
+				AND O.voucher_use_id LIKE CONCAT('%', #{voucherUseId}, '%')
 			</if>
 			<if test="platformId!=null and platformId!=''">
 				AND O.platform_id LIKE CONCAT('%', #{platformId}, '%')
@@ -124,8 +122,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND O.expector_id LIKE CONCAT('%', #{expectorId}, '%')
 			</if>
 			<if test="acceptUserId!=null and acceptUserId!=''">
-				AND O.accept_user_id LIKE CONCAT('%', #{acceptUserId},
-				'%')
+				AND O.accept_user_id LIKE CONCAT('%', #{acceptUserId}, '%')
+			</if>
+			<if test="recommendId!=null and recommendId!=''">
+				AND O.recommend_id LIKE CONCAT('%', #{recommendId}, '%')
 			</if>
 			<if test="appointmentTime!=null">
 				AND O.appointment_time=#{appointmentTime}
@@ -134,8 +134,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND O.accept_time=#{acceptTime}
 			</if>
 			<if test="transactionId!=null and transactionId!=''">
-				AND O.transaction_id LIKE CONCAT('%', #{transactionId},
-				'%')
+				AND O.transaction_id LIKE CONCAT('%', #{transactionId}, '%')
 			</if>
 			<if test="schedule!=null">
 				AND O.schedule=#{schedule}
@@ -157,60 +156,63 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-
+	
 	<sql id="dynamicSet">
 		<set>
-			<if test="id!=null">
-				O.id=#{id},
-			</if>
-			<if test="orderNo!=null">
-				O.order_no=#{orderNo},
-			</if>
-			<if test="voucherPrice!=null">
-				O.voucher_price=#{voucherPrice},
-			</if>
-			<if test="voucherUseId!=null">
-				O.voucher_use_id=#{voucherUseId},
-			</if>
-			<if test="platformId!=null">
-				O.platform_id=#{platformId},
-			</if>
-			<if test="expectorId!=null">
-				O.expector_id=#{expectorId},
-			</if>
-			<if test="acceptUserId!=null">
-				O.accept_user_id=#{acceptUserId},
-			</if>
-			<if test="appointmentTime!=null">
-				O.appointment_time=#{appointmentTime},
-			</if>
-			<if test="acceptTime!=null">
-				O.accept_time=#{acceptTime},
-			</if>
-			<if test="transactionId!=null">
-				O.transaction_id=#{transactionId},
-			</if>
-			<if test="schedule!=null">
-				O.schedule=#{schedule},
-			</if>
-			<if test="device!=null">
-				O.device=#{device},
-			</if>
-			<if test="remarks!=null">
-				O.remarks=#{remarks},
-			</if>
-			<if test="status!=null">
-				O.status=#{status},
-			</if>
-			<if test="createTime!=null">
-				O.create_time=#{createTime},
-			</if>
-			<if test="creatorId!=null">
-				O.creator_id=#{creatorId},
-			</if>
+           <if test="id!=null">
+				O.id=#{id}, 
+		   </if>
+           <if test="orderNo!=null">
+				O.order_no=#{orderNo}, 
+		   </if>
+           <if test="voucherPrice!=null">
+				O.voucher_price=#{voucherPrice}, 
+		   </if>
+           <if test="voucherUseId!=null">
+				O.voucher_use_id=#{voucherUseId}, 
+		   </if>
+           <if test="platformId!=null">
+				O.platform_id=#{platformId}, 
+		   </if>
+           <if test="expectorId!=null">
+				O.expector_id=#{expectorId}, 
+		   </if>
+           <if test="acceptUserId!=null">
+				O.accept_user_id=#{acceptUserId}, 
+		   </if>
+           <if test="recommendId!=null">
+				O.recommend_id=#{recommendId}, 
+		   </if>
+           <if test="appointmentTime!=null">
+				O.appointment_time=#{appointmentTime}, 
+		   </if>
+           <if test="acceptTime!=null">
+				O.accept_time=#{acceptTime}, 
+		   </if>
+           <if test="transactionId!=null">
+				O.transaction_id=#{transactionId}, 
+		   </if>
+           <if test="schedule!=null">
+				O.schedule=#{schedule}, 
+		   </if>
+           <if test="device!=null">
+				O.device=#{device}, 
+		   </if>
+           <if test="remarks!=null">
+				O.remarks=#{remarks}, 
+		   </if>
+           <if test="status!=null">
+				O.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				O.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				O.creator_id=#{creatorId}, 
+		   </if>
 		</set>
 	</sql>
-
+	
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
@@ -218,151 +220,118 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 	<resultMap id="order" type="com.jinpaihushi.jphs.order.model.Order">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="orderNo" column="order_no" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="voucherPrice" column="voucher_price"
-			javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="voucherUseId" column="voucher_use_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="platformId" column="platform_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="expectorId" column="expector_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="acceptUserId" column="accept_user_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="appointmentTime" column="appointment_time"
-			javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="acceptTime" column="accept_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="transactionId" column="transaction_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="schedule" column="schedule" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="device" column="device" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="remarks" column="remarks" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="voucher_use_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="expector_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="accept_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="recommendId" column="recommend_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="accept_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="transaction_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
+	
 	<resultMap id="orderGlobal" type="com.jinpaihushi.jphs.order.model.Order">
 		<result property="id" column="O_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="orderNo" column="O_order_no" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="voucherPrice" column="O_voucher_price"
-			javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="voucherUseId" column="O_voucher_use_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="platformId" column="O_platform_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="expectorId" column="O_expector_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="acceptUserId" column="O_accept_user_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="appointmentTime" column="O_appointment_time"
-			javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="acceptTime" column="O_accept_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="transactionId" column="O_transaction_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="schedule" column="O_schedule" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="device" column="O_device" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="remarks" column="O_remarks" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="status" column="O_status" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="createTime" column="O_create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="O_creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="O_order_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="O_voucher_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="voucherUseId" column="O_voucher_use_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="O_platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorId" column="O_expector_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="acceptUserId" column="O_accept_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="recommendId" column="O_recommend_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="O_appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="acceptTime" column="O_accept_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="transactionId" column="O_transaction_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="O_schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="device" column="O_device" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="O_remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="O_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="O_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="O_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
-		parameterType="com.jinpaihushi.jphs.order.model.Order">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.order.model.Order">
 		INSERT INTO `ORDER`(
-		id, order_no,
-		voucher_price,
-		voucher_use_id,
-		platform_id, expector_id,
-		accept_user_id,
-		appointment_time,
-		accept_time, transaction_id,
-		schedule, device,
-		remarks, status,
-		create_time, creator_id
+			id, order_no, 
+			voucher_price, voucher_use_id, 
+			platform_id, expector_id, 
+			accept_user_id, recommend_id, 
+			appointment_time, accept_time, 
+			transaction_id, schedule, 
+			device, remarks, 
+			status, create_time, 
+			creator_id
 		)VALUES(
-		#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
-		#{voucherPrice,jdbcType=DECIMAL}, #{voucherUseId,jdbcType=VARCHAR},
-		#{platformId,jdbcType=VARCHAR}, #{expectorId,jdbcType=VARCHAR},
-		#{acceptUserId,jdbcType=VARCHAR},
-		#{appointmentTime,jdbcType=TIMESTAMP},
-		#{acceptTime,jdbcType=TIMESTAMP}, #{transactionId,jdbcType=VARCHAR},
-		#{schedule,jdbcType=INTEGER}, #{device,jdbcType=INTEGER},
-		#{remarks,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
-		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}
+			#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+			#{voucherPrice,jdbcType=DECIMAL}, #{voucherUseId,jdbcType=VARCHAR}, 
+			#{platformId,jdbcType=VARCHAR}, #{expectorId,jdbcType=VARCHAR}, 
+			#{acceptUserId,jdbcType=VARCHAR}, #{recommendId,jdbcType=VARCHAR}, 
+			#{appointmentTime,jdbcType=TIMESTAMP}, #{acceptTime,jdbcType=TIMESTAMP}, 
+			#{transactionId,jdbcType=VARCHAR}, #{schedule,jdbcType=INTEGER}, 
+			#{device,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}
 		)
 	</insert>
-
-	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
         <![CDATA[
         INSERT INTO `ORDER`(
 			id, order_no, 
 			voucher_price, voucher_use_id, 
 			platform_id, expector_id, 
-			accept_user_id, appointment_time, 
-			accept_time, transaction_id, 
-			schedule, device, 
-			remarks, status, 
-			create_time, creator_id
+			accept_user_id, recommend_id, 
+			appointment_time, accept_time, 
+			transaction_id, schedule, 
+			device, remarks, 
+			status, create_time, 
+			creator_id
         )]]>
-		VALUES
+       	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR},
-			#{item.orderNo,jdbcType=VARCHAR},
-			#{item.voucherPrice,jdbcType=DECIMAL},
-			#{item.voucherUseId,jdbcType=VARCHAR},
-			#{item.platformId,jdbcType=VARCHAR},
-			#{item.expectorId,jdbcType=VARCHAR},
-			#{item.acceptUserId,jdbcType=VARCHAR},
-			#{item.appointmentTime,jdbcType=TIMESTAMP},
-			#{item.acceptTime,jdbcType=TIMESTAMP},
-			#{item.transactionId,jdbcType=VARCHAR},
-			#{item.schedule,jdbcType=INTEGER}, #{item.device,jdbcType=INTEGER},
-			#{item.remarks,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
-			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.id,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR}, 
+			#{item.voucherPrice,jdbcType=DECIMAL}, #{item.voucherUseId,jdbcType=VARCHAR}, 
+			#{item.platformId,jdbcType=VARCHAR}, #{item.expectorId,jdbcType=VARCHAR}, 
+			#{item.acceptUserId,jdbcType=VARCHAR}, #{item.recommendId,jdbcType=VARCHAR}, 
+			#{item.appointmentTime,jdbcType=TIMESTAMP}, #{item.acceptTime,jdbcType=TIMESTAMP}, 
+			#{item.transactionId,jdbcType=VARCHAR}, #{item.schedule,jdbcType=INTEGER}, 
+			#{item.device,jdbcType=INTEGER}, #{item.remarks,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
 			#{item.creatorId,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
-
+	
 	<delete id="deleteById">
-		DELETE O FROM `ORDER` O WHERE O.ID = #{id}
+		DELETE O FROM `ORDER` O WHERE O.ID = #{id} 
 	</delete>
-
+	
 	<update id="disableById">
-		UPDATE `ORDER` O
-		SET
+	    UPDATE `ORDER` O
+		SET 
 		O.STATUS = -1
 		WHERE O.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `ORDER` O
-		<include refid="dynamicSet" />
-		WHERE O.ID = #{id}
+		<include refid="dynamicSet" /> 
+	    WHERE O.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="order">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ORDER` O
 		<include refid="dynamicWhere" />
 	</select>
@@ -373,24 +342,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="order">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ORDER` O
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="order">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ORDER` O
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-
+	
 	<select id="loadById" resultMap="order">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ORDER` O
 		WHERE O.ID = #{id}
 	</select>

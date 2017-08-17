@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.jphs.price.model.Price;
 import com.jinpaihushi.jphs.price.model.PriceGrade;
+import com.jinpaihushi.jphs.price.model.PricePart;
 import com.jinpaihushi.jphs.product.model.Product;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.model.BaseModel;
@@ -85,12 +86,16 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 	 * 获取等级价格信息
 	 */
 	List<PriceGrade> priceGrade;
+	
+	List<Grade> grade;
 	/**
 	 * 用来存储平台但客户端的图片信息 eg：官网PC端的图片
 	 */
 	private ServiceImages images;
 
 	private String url;
+	
+	private PricePart pricePart ;
 
 	/**
 	 * 获取职称列表
@@ -340,8 +345,28 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	
 
-	 public String toString() {
+	 public PricePart getPricePart() {
+		return pricePart;
+	}
+
+	public void setPricePart(PricePart pricePart) {
+		this.pricePart = pricePart;
+	}
+	
+	
+
+	public List<Grade> getGrade() {
+		return grade;
+	}
+
+	public void setGrade(List<Grade> grade) {
+		this.grade = grade;
+	}
+
+	public String toString() {
 			return new StringBuilder().append("Goods{").
 				append("id=").append(id).
 				append(",productId=").append(productId).

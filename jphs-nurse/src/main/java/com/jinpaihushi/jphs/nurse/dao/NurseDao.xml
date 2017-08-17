@@ -657,4 +657,76 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND n.`type` = #{type}
 		</if>
 	</select>
+	<select id="getBasicInfo" resultType="java.util.HashMap">
+		SELECT
+			u.id,
+			u.`name`,
+			u.sex,
+			n.hospital,
+		n.department_id departmentId,
+		d.name departmentName,
+			(
+				SELECT
+					COUNT(id)
+				FROM
+					`order` o
+				WHERE
+					o.accept_user_id = n.creator_id
+				AND o.`schedule` = 5
+			) serviceNumber,
+			CASE
+		WHEN n.work_years IS NOT NULL THEN
+			(
+				(
+					YEAR (now()) - YEAR (n.work_years) - 1
+				) + (
+					DATE_FORMAT(n.work_years, '%m%d') <= DATE_FORMAT(NOW(), '%m%d')
+				)
+			)
+		ELSE
+			''
+		END AS workYear,
+		 CASE
+		WHEN n.sfz != '' THEN
+			(
+				(
+					YEAR (now()) - CAST(
+						(SUBSTR(n.sfz, 7, 4)) AS SIGNED INTEGER
+					) - 1
+				) + (
+					SUBSTR(n.sfz, 7, 6) <= DATE_FORMAT(NOW(), '%m%d')
+				)
+			)
+		ELSE
+			''
+		END AS age,
+		ROUND(
+			6378.138 * 2 * ASIN(
+				SQRT(
+					POW(
+						SIN(
+							(
+								#{lat} * PI() / 180 - p.lat * PI() / 180
+							) / 2
+						),
+						2
+					) + COS(#{lat} * PI() / 180) * COS(p.lat * PI() / 180) * POW(
+						SIN(
+							(
+								#{lon} * PI() / 180 - p.lon * PI() / 180
+							) / 2
+						),
+						2
+					)
+				)
+			),
+			2
+		) AS distance
+		FROM
+			nurse n
+		LEFT JOIN `user` u ON n.creator_id = u.id
+		LEFT JOIN department d ON n.department_id = d.id
+		LEFT JOIN position p ON n.creator_id = p.creator_id
+		WHERE n.creator_id = #{userId}
+	</select>
 </mapper>

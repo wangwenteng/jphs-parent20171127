@@ -5,7 +5,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <table id="dateTable" cellpadding="0" cellspacing="0"
-	class="text-center">
+	class="data_table text-center" style="width:100%;">
 	<thead>
 		<tr>
 			<th width="30"></th>
@@ -16,7 +16,7 @@
 			<th>联系人手机号</th>
 			<!-- <th>公司地址</th> -->
 			<th>创建人</th>
-			<th>创建时间</th>
+			<th width="118">创建时间</th>
 			<th>状态</th>
 			<th width="125">操作</th>
 		</tr>
