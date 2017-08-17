@@ -1,4 +1,4 @@
-package com.jinpaihushi.jphs.person.controller;
+package com.jinpaihushi.jphs.nurse.controller;
 
 import java.util.HashMap;
 import java.util.List;
