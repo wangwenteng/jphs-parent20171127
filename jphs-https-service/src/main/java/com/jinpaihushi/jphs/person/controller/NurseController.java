@@ -51,6 +51,7 @@ public class NurseController {
 			//工作时间
 			List<Worktime> worktime=worktimeService.getNurseWorktime(userId);
 			Map<String, Object> result = new HashMap<>();
+			result.put("basicInfo", basicInfo);
 			result.put("serviceItems", serviceItems);
 			result.put("worktime", worktime);
 			return JSONUtil.toJSONResult(1, "操作成功！", result);

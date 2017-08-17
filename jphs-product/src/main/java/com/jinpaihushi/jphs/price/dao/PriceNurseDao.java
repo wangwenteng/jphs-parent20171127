@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.price.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -17,13 +18,11 @@ import com.jinpaihushi.jphs.price.model.PriceNurse;
 @Repository("priceNurseDao")
 public interface PriceNurseDao extends BaseDao<PriceNurse> {
 
-	/**
-	 * 护士的服务项目
-	 * @param userId 护士id
-	 * @return
-	 */
-	List<Map<String, Object>> getServiceItems(String userId);
-	
-	
-	
+    /**
+     * 护士的服务项目
+     * @param userId 护士id
+     * @return
+     */
+    List<Map<String, Object>> getServiceItems(@Param("userId") String userId);
+
 }

@@ -1,7 +1,6 @@
 package com.jinpaihushi.jphs.activity.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +38,7 @@ public class ColumnController {
 			}
 			ColumnService columnService = new ColumnService();
 			columnService.setColumnId(columnId);
+			columnService.setStatus(1);
 			List<ColumnService> list = columnServiceService.list(columnService);
 			// 1.根据 name，password,type查询完整信息
 			// 2.错误N种情况判断及返回前端

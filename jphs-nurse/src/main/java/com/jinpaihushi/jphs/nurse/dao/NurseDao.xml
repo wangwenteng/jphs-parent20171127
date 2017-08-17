@@ -665,6 +665,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			n.hospital,
 		n.department_id departmentId,
 		d.name departmentName,
+		(SELECT url FROM nurse_images ni WHERE ni.creator_id =u.id AND ni.type =1) url,
 			(
 				SELECT
 					COUNT(id)
@@ -680,7 +681,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				(
 					YEAR (now()) - YEAR (n.work_years) - 1
 				) + (
-					DATE_FORMAT(n.work_years, '%m%d') <= DATE_FORMAT(NOW(), '%m%d')
+					DATE_FORMAT(n.work_years, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
 				)
 			)
 		ELSE
@@ -694,7 +695,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 						(SUBSTR(n.sfz, 7, 4)) AS SIGNED INTEGER
 					) - 1
 				) + (
-					SUBSTR(n.sfz, 7, 6) <= DATE_FORMAT(NOW(), '%m%d')
+					SUBSTR(n.sfz, 7, 6) &lt;= DATE_FORMAT(NOW(), '%m%d')
 				)
 			)
 		ELSE

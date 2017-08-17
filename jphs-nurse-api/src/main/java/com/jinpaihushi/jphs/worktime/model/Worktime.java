@@ -34,43 +34,43 @@ public class Worktime extends BaseModel implements Predicate<Worktime>, Updator<
     private String week;
 
     /** 0=空闲 1=已满 2=已接单 */
-    private Integer h9 = 0;
+    private Integer h9;
 
     /**  */
-    private Integer h10 = 0;
+    private Integer h10;
 
     /**  */
-    private Integer h11 = 0;
+    private Integer h11;
 
     /**  */
-    private Integer h12 = 0;
+    private Integer h12;
 
     /**  */
-    private Integer h13 = 0;
+    private Integer h13;
 
     /**  */
-    private Integer h14 = 0;
+    private Integer h14;
 
     /**  */
-    private Integer h15 = 0;
+    private Integer h15;
 
     /**  */
-    private Integer h16 = 0;
+    private Integer h16;
 
     /**  */
-    private Integer h17 = 0;
+    private Integer h17;
 
     /**  */
-    private Integer h18 = 0;
+    private Integer h18;
 
     /**  */
-    private Integer h19 = 0;
+    private Integer h19;
 
     /**  */
-    private Integer h20 = 0;
+    private Integer h20;
 
     /**  */
-    private Integer h21 = 0;
+    private Integer h21;
 
     /**  */
     @Length(max = 50, message = "{worktime.w9.illegal.length}")

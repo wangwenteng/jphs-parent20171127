@@ -72,7 +72,10 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 	/** 备注 */
 	@Length(max = 255, message = "{goods.remark.illegal.length}")
 	private String remark;
-
+	
+	private Double maxPrice;
+	
+	private Double minPrice;
 	/**
 	 * 获取品类图片信息
 	 */
@@ -364,6 +367,24 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 
 	public void setGrade(List<Grade> grade) {
 		this.grade = grade;
+	}
+	
+	
+
+	public Double getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(Double maxPrice) {
+		this.maxPrice = maxPrice;
+	}
+
+	public Double getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMinPrice(Double minPrice) {
+		this.minPrice = minPrice;
 	}
 
 	public String toString() {

@@ -492,6 +492,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="tool" column="tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="url" column="url" javaType="String"
+				jdbcType="VARCHAR"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="must" column="must" javaType="Integer"
@@ -518,8 +520,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<collection property="grade"
 			ofType="com.jinpaihushi.jphs.goods.model.Grade">
 			<result property="name" column="grade_name" javaType="String"
-				jdbcType="VARCHAR"></result>
-			<result property="siUrl" column="siUrl" javaType="String"
 				jdbcType="VARCHAR"></result>
 			<result property="grade" column="grade" javaType="Integer"
 				jdbcType="INTEGER"></result>
@@ -980,14 +980,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			pp.price,
 			pp.max_price,
 			p.grade,
-			si.url siUrl,
+			si.url,
 			pn.price pnPrice
+			
 		FROM
 			jobtitle_goods jg
 		LEFT JOIN price p ON (jg.goods_id = p.goods_id)
 		LEFT JOIN price_part pp ON (pp.price_id = p.id)
 		LEFT JOIN goods g ON (jg.goods_id = g.id)
 		LEFT JOIN service_images si ON (jg.goods_id = si.source_id)
+		LEFT JOIN price_nurse pn ON (pn.price_part_id = pp.id)
 		WHERE
 			1 = 1
 		AND pp.site_id = 0

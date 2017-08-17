@@ -16,20 +16,20 @@ import com.jinpaihushi.jphs.worktime.model.Worktime;
 @Repository("worktimeDao")
 public interface WorktimeDao extends BaseDao<Worktime> {
 
-	int deleteByCalendar(String yesterday);
+    int deleteByCalendar(String yesterday);
 
-	/**
-	 * 获取所有的护士
-	 * @return
-	 */
-	List<String> getAllNurse();
+    /**
+     * 获取所有的护士
+     * @return
+     */
+    List<String> getAllNurse();
 
-	/**
-	 * 删除护士已过的日程
-	 * @return
-	 */
-	int deleteExpired();
-	
-	
-	
+    /**
+     * 删除护士已过的日程
+     * @return
+     */
+    int deleteExpired();
+
+    List<Worktime> queryByTime(Worktime userWorktime);
+
 }

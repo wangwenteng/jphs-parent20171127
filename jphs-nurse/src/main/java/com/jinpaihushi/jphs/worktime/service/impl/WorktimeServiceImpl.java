@@ -66,6 +66,18 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             insert.setCalendar(newDays);
             insert.setUserid("0");
             insert.setWeek(week);
+            insert.setH9(0);
+            insert.setH11(0);
+            insert.setH12(0);
+            insert.setH13(0);
+            insert.setH14(0);
+            insert.setH15(0);
+            insert.setH16(0);
+            insert.setH17(0);
+            insert.setH18(0);
+            insert.setH19(0);
+            insert.setH20(0);
+            insert.setH21(0);
             insert.setCreatetime(new Date());
             worktimeDao.insert(insert);
         }
@@ -139,6 +151,18 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             worktime.setCalendar(string);
             worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(string)));
             worktime.setUserid(userId);
+            worktime.setH9(0);
+            worktime.setH11(0);
+            worktime.setH12(0);
+            worktime.setH13(0);
+            worktime.setH14(0);
+            worktime.setH15(0);
+            worktime.setH16(0);
+            worktime.setH17(0);
+            worktime.setH18(0);
+            worktime.setH19(0);
+            worktime.setH20(0);
+            worktime.setH21(0);
             worktime.setCreatetime(new Date());
             i = worktimeDao.insert(worktime);
         }
@@ -216,8 +240,8 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         return result;
     }
 
-	@Override
-	public List<Worktime> getNurseWorktime(String userId) {
+    @Override
+    public List<Worktime> getNurseWorktime(String userId) {
         Worktime userWorktime = null;
         List<Worktime> result = new ArrayList<>();
         // 默认提前一个小时预约
@@ -270,8 +294,8 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
                 userWorktime = new Worktime();
                 userWorktime.setUserid(userId);
                 userWorktime.setCalendar(sdf.format(date));
-                PageHelper.startPage(1, 7);
-                result = worktimeDao.list(userWorktime);
+                userWorktime.setOrderby("W.calendar ASC");
+                result = worktimeDao.queryByTime(userWorktime);
             }
         }
         catch (Exception e) {
@@ -279,5 +303,5 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         }
         return result;
     }
-    
+
 }

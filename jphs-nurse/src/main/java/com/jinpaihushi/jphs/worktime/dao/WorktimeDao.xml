@@ -589,4 +589,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<delete id="deleteExpired">
 		DELETE nw FROM `WORKTIME` nw WHERE nw.calendar &lt; DATE_FORMAT(NOW(),'%Y-%m-%d') AND nw.userId !=0
 	</delete>
+	<select id="queryByTime" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		<where>
+			<if test="userid!=null and userid!=''">
+				AND W.userId = #{userid} 
+			</if>
+			<if test="calendar!=null and calendar!=''">
+				AND W.calendar &gt;=#{calendar}
+			</if>
+		</where>
+		<include refid="orderby" />
+		LIMIT 7
+	</select>
 </mapper>
