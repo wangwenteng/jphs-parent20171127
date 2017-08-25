@@ -71,6 +71,14 @@ public class GoodsDetail extends BaseModel {
 
     private String unit;
 
+    /** 体检医院id */
+    @Length(max = 50, message = "{goods.tijianHospitalName.illegal.length}")
+    private String tijianHospitalName;
+
+    /** 体检医院id */
+    @Length(max = 50, message = "{goods.tijianHospitalId.illegal.length}")
+    private String tijianHospitalId;
+
     public String getProductId() {
         return productId;
     }
@@ -229,6 +237,22 @@ public class GoodsDetail extends BaseModel {
 
     public void setIsProve(Integer isProve) {
         this.isProve = isProve;
+    }
+
+    public String getTijianHospitalName() {
+        return tijianHospitalName;
+    }
+
+    public void setTijianHospitalName(String tijianHospitalName) {
+        this.tijianHospitalName = tijianHospitalName;
+    }
+
+    public String getTijianHospitalId() {
+        return tijianHospitalId;
+    }
+
+    public void setTijianHospitalId(String tijianHospitalId) {
+        this.tijianHospitalId = tijianHospitalId;
     }
 
 }

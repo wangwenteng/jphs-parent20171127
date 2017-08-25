@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-25 16:52:03
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.cancel.dao.CancelOrderDao">
+	
+	<sql id="field">
+		CO.id, CO.source_id, CO.type, CO.price, 
+		CO.number, CO.cancel_time, CO.cancel_reason, CO.status, 
+		CO.creator_id, CO.creator_name, CO.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		CO.id CO_id, CO.source_id CO_source_id, 
+		CO.type CO_type, CO.price CO_price, 
+		CO.number CO_number, CO.cancel_time CO_cancel_time, 
+		CO.cancel_reason CO_cancel_reason, CO.status CO_status, 
+		CO.creator_id CO_creator_id, CO.creator_name CO_creator_name, 
+		CO.create_time CO_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CO.id id, CO.source_id sourceId, 
+		CO.type type, CO.price price, 
+		CO.number number, CO.cancel_time cancelTime, 
+		CO.cancel_reason cancelReason, CO.status status, 
+		CO.creator_id creatorId, CO.creator_name creatorName, 
+		CO.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CO.id=#{id}
+		</if>
+		<if test="sourceId!=null and sourceId!=''">
+			AND CO.source_id=#{sourceId}
+		</if>
+		<if test="type!=null">
+			AND CO.type=#{type}
+		</if>
+		<if test="price!=null">
+			AND CO.price=#{price}
+		</if>
+		<if test="number!=null">
+			AND CO.number=#{number}
+		</if>
+		<if test="cancelTime!=null">
+			AND CO.cancel_time=#{cancelTime}
+		</if>
+		<if test="cancelReason!=null and cancelReason!=''">
+			AND CO.cancel_reason=#{cancelReason}
+		</if>
+		<if test="status!=null">
+			AND CO.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CO.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CO.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND CO.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CO.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="sourceId!=null and sourceId!=''">
+				AND CO.source_id LIKE CONCAT('%', #{sourceId}, '%')
+			</if>
+			<if test="type!=null">
+				AND CO.type=#{type}
+			</if>
+			<if test="price!=null">
+				AND CO.price=#{price}
+			</if>
+			<if test="number!=null">
+				AND CO.number=#{number}
+			</if>
+			<if test="cancelTime!=null">
+				AND CO.cancel_time=#{cancelTime}
+			</if>
+			<if test="cancelReason!=null and cancelReason!=''">
+				AND CO.cancel_reason LIKE CONCAT('%', #{cancelReason}, '%')
+			</if>
+			<if test="status!=null">
+				AND CO.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CO.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CO.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND CO.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CO.id=#{id}, 
+		   </if>
+           <if test="sourceId!=null">
+				CO.source_id=#{sourceId}, 
+		   </if>
+           <if test="type!=null">
+				CO.type=#{type}, 
+		   </if>
+           <if test="price!=null">
+				CO.price=#{price}, 
+		   </if>
+           <if test="number!=null">
+				CO.number=#{number}, 
+		   </if>
+           <if test="cancelTime!=null">
+				CO.cancel_time=#{cancelTime}, 
+		   </if>
+           <if test="cancelReason!=null">
+				CO.cancel_reason=#{cancelReason}, 
+		   </if>
+           <if test="status!=null">
+				CO.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				CO.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CO.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				CO.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="cancelOrder" type="com.jinpaihushi.jphs.cancel.model.CancelOrder">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="number" column="number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="cancelTime" column="cancel_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="cancelReason" column="cancel_reason" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="cancelOrderGlobal" type="com.jinpaihushi.jphs.cancel.model.CancelOrder">
+		<result property="id" column="CO_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="CO_source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="CO_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="price" column="CO_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="number" column="CO_number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="cancelTime" column="CO_cancel_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="cancelReason" column="CO_cancel_reason" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="CO_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="CO_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CO_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="CO_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.cancel.model.CancelOrder">
+		INSERT INTO `CANCEL_ORDER`(
+			id, source_id, 
+			type, price, 
+			number, cancel_time, 
+			cancel_reason, status, 
+			creator_id, creator_name, 
+			create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+			#{type,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
+			#{number,jdbcType=INTEGER}, #{cancelTime,jdbcType=TIMESTAMP}, 
+			#{cancelReason,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `CANCEL_ORDER`(
+			id, source_id, 
+			type, price, 
+			number, cancel_time, 
+			cancel_reason, status, 
+			creator_id, creator_name, 
+			create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.sourceId,jdbcType=VARCHAR}, 
+			#{item.type,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, 
+			#{item.number,jdbcType=INTEGER}, #{item.cancelTime,jdbcType=TIMESTAMP}, 
+			#{item.cancelReason,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CO FROM `CANCEL_ORDER` CO WHERE CO.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `CANCEL_ORDER` CO
+		SET 
+		CO.STATUS = -1
+		WHERE CO.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `CANCEL_ORDER` CO
+		<include refid="dynamicSet" /> 
+	    WHERE CO.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="cancelOrder">
+		SELECT <include refid="field"/>
+		FROM `CANCEL_ORDER` CO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `CANCEL_ORDER` CO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="cancelOrder">
+		SELECT <include refid="field"/>
+		FROM `CANCEL_ORDER` CO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="cancelOrder">
+		SELECT <include refid="field"/>
+		FROM `CANCEL_ORDER` CO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="cancelOrder">
+		SELECT <include refid="field"/>
+		FROM `CANCEL_ORDER` CO
+		WHERE CO.ID = #{id}
+	</select>
+	
+</mapper>

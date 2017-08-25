@@ -22,9 +22,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="isProve" column="is_prove" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isProve" column="is_prove" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="must" column="must" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="tijianHospitalId" column="tijian_hospital_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianHospitalName" column="tijian_hospital_name"
+			javaType="String" jdbcType="VARCHAR"></result>
 		<association property="images"
 			javaType="com.jinpaihushi.jphs.goods.model.Images">
 			<result property="id" column="si_id" javaType="String"
@@ -75,6 +80,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		g.must,
 		g.sub_title,
 		g.is_prove,
+		th.id
+		tijian_hospital_id,
+		th.`name` tijian_hospital_name,
 		pd.id product_id,
 		pd.title product_name,
 		g.content,
@@ -83,7 +91,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		p.grade,
 		p.grade_name,
 		pp.id pp_id,
-		p.id priceId,
+		p.id
+		priceId,
 		p.title pp_title,
 		p.service_number,
 		p.service_time,
@@ -94,12 +103,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM
 		price_part pp
 		LEFT JOIN
-		price p ON pp.price_id = p.id
+		price p
+		ON pp.price_id = p.id
 		LEFT JOIN goods g ON p.goods_id = g.id
-		LEFT JOIN service_images si ON
+		LEFT JOIN
+		service_images si ON
 		si.source_id = g.id
 		LEFT JOIN product pd
-		ON g.product_id = pd.id
+		ON
+		g.product_id = pd.id
+		LEFT JOIN tijian_hospital th ON th.id = g.tijian_hospital_id
 		WHERE
 		pp.site_id = #{siteId}
 		AND p.goods_id =
