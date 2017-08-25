@@ -34,6 +34,7 @@ public class CarServiceImpl extends BaseServiceImpl<Car> implements CarService{
 		return carDao.getList(creatorId);
 	}
 
+<<<<<<< HEAD
 	@Override
 	public Car lookup(Car car) {
 		 
@@ -65,4 +66,6 @@ public class CarServiceImpl extends BaseServiceImpl<Car> implements CarService{
 	
 	 
 
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

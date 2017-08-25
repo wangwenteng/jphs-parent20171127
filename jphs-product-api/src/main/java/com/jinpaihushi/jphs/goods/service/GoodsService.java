@@ -60,6 +60,9 @@ public interface GoodsService extends BaseService<Goods> {
 	List<Goods> getAllGoods(Goods goods);
 	
 	List<Goods> getMyService(String creatorId);
+<<<<<<< HEAD
 
 	List<Map<String, Object>> getGoodsByProduct(String productId);
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

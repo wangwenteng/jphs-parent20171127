@@ -84,6 +84,7 @@ public class RegistController {
             User user_register = new User();
             user_register.setPhone(user.getPhone());
             user_register.setType(type_id);
+<<<<<<< HEAD
             user_register.setStatus(1);
             User user_enroll = userService.load(user_register);
             if (user_enroll != null) {
@@ -226,6 +227,153 @@ public class RegistController {
             user.setPhone(phone);
             user.setType(type_id);
             user.setStatus(1);
+=======
+            user_register.setStatus(0);
+            User user_enroll = userService.load(user_register);
+            if (user_enroll != null) {
+                return JSONUtil.toJSONResult(0, "手机号已经注册", null);
+            }
+
+            // 获取该手机号最新一条短信
+            Verification vc = verificationService.getLastRecordByPhone(user.getPhone());
+            if (vc == null || !verificattionCode.equals(vc.getCode())) {
+                // 验证码不对
+                return JSONUtil.toJSONResult(0, "验证码不正确", null);
+            }
+            int t = Common.beforeNow(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vc.getValidTime()));
+            if (t == 0) {
+                // 无效
+                return JSONUtil.toJSONResult(0, "验证码已失效", null);
+            }
+            else if (t == -1) {
+                // 失败
+                return JSONUtil.toJSONResult(0, "判断验证码有效时间失败", null);
+            }
+            // 设置用户的注册端
+            user.setDevice(user.getDevice());
+            // 密码md5加密
+            String md5_p = MD5.md5crypt(MD5.md5crypt(user.getPassword()));
+            user.setPassword(md5_p);
+            // 设置当前注册类型为用户
+            user.setType(type_id);
+            user.setCreateTime(new Date());
+            if (type_id == 0)
+                user.setSex(0);
+            else
+                user.setSex(1);
+            // 后期会用-默认用户名是手机号
+            if (StringUtils.isEmpty(user.getName())) {
+                user.setName(user.getPhone());
+            }
+            user.setStatus(0);
+
+            //写入数据
+            String userId = userService.insertUser(user);
+            if (userId.length() < 0) {
+                return JSONUtil.toJSONResult(0, "注册失败", null);
+            }
+            if (type_id == 0) {
+                Nurse nurse = new Nurse();
+                nurse.setId(UUID.randomUUID().toString());
+                nurse.setCreateTime(new Date());
+                nurse.setCreatorId(userId);
+                nurse.setCreatorName(user.getName());
+                nurse.setStatus(0);
+                String nurseId = nurseService.insert(nurse);
+                if (nurseId.length() < 0) {
+                    return JSONUtil.toJSONResult(0, "注册失败", null);
+                }
+            }
+
+            //给用户创建相应的account账户
+            Account account = new Account();
+            account.setId(UUIDUtils.getId());
+            account.setBalance(0.0);
+            account.setScore(0);
+            account.setCreateTime(new Date());
+            account.setCreatorId(userId);
+            account.setStatus(0);
+            accountService.insert(account);
+
+            if (type_id == 0) {
+                // 1.根据 name，password,type查询完整信息
+                User user_login = userService.findUser(user);
+                if (user_login == null) {
+
+                    return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
+                }
+                // 设置token
+                String token = "";
+                token = Common.getToken(user_login.getPhone(), user_login.getPassword());// 生成token
+                user_login.setToken(token);
+
+                Nurse nurse_s = new Nurse();
+                nurse_s.setCreatorId(user_login.getId());
+                nurse_s = nurseService.load(nurse_s);
+                if (nurse_s == null) {
+                    return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
+                }
+                user_login.setNurse(new JSONObject().fromObject(nurse_s));
+
+                return JSONUtil.toJSONResult(1, "注册成功！", user_login);
+            }
+            else {
+                return JSONUtil.toJSONResult(1, "注册成功！", null);
+            }
+
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("regist.user.json,phone=" + user.getPhone() + " verificattionCode=" + verificattionCode
+                    + " type=" + type, e);
+        }
+        return null;
+    }
+
+    //	http://192.168.7.66:8059/regist/updatePwd.json?phone=手机号&verificattionCode=验证码&password=密码&type=2
+    @RequestMapping(name = "更新密码", path = "/updatePwd")
+    @ResponseBody
+    public byte[] updatePwd(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
+            String verificattionCode, String password, String type) {
+        try {
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("regist.updatePwd.json 请求参数-phone" + phone + " verificattionCode"
+                        + verificattionCode + " password" + password);
+            }
+            // 查空
+            if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password) || StringUtils.isEmpty(type)
+                    || StringUtils.isEmpty(verificattionCode)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            // 获取该手机号最新一条短信
+            Verification vc = verificationService.getLastRecordByPhone(phone);
+            if (!verificattionCode.equals(vc.getCode())) {
+                // 验证码不对
+                return JSONUtil.toJSONResult(0, "验证码不正确", null);
+            }
+            int t = Common.beforeNow(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vc.getValidTime()));
+            if (t == 0) {
+                // 无效
+                return JSONUtil.toJSONResult(0, "验证码已失效", null);
+            }
+            else if (t == -1) {
+                // 失败
+                return JSONUtil.toJSONResult(0, "判断验证码有效时间失败", null);
+            }
+            int type_id = 0; // type
+            try {
+                type_id = Integer.valueOf(type);
+            }
+            catch (NumberFormatException e) {
+                return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
+            }
+
+            User user = new User();
+            user.setPhone(phone);
+            user.setType(type_id);
+            user.setStatus(0);
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
             User user_up = userService.load(user);
             if (user_up == null) {
                 return JSONUtil.toJSONResult(0, "该手机号未注册", null);

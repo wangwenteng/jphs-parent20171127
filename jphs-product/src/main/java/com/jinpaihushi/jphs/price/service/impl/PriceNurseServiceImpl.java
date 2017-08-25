@@ -29,6 +29,7 @@ public class PriceNurseServiceImpl extends BaseServiceImpl<PriceNurse> implement
 		return priceNurseDao;
 	}
 
+<<<<<<< HEAD
 	
 	@Override
 	public List<Map<String, Object>> getServiceItems(String userId) {
@@ -48,4 +49,11 @@ public class PriceNurseServiceImpl extends BaseServiceImpl<PriceNurse> implement
 	}
 
  
+=======
+	@Override
+	public List<Map<String, Object>> getServiceItems(String userId) {
+		return priceNurseDao.getServiceItems(userId);
+	}
+	
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

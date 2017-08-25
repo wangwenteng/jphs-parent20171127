@@ -25,6 +25,7 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
+<<<<<<< HEAD
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -130,6 +131,117 @@ public class NurseIndexController extends BaseController<Nurse> {
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
 			}*/
+=======
+import com.jinpaihushi.utils.Common;
+import com.jinpaihushi.utils.JSONUtil;
+import com.jinpaihushi.utils.Util;
+
+@Controller
+@RequestMapping("/nurseindex")
+public class NurseIndexController extends BaseController<Nurse> {
+
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private ColumnServiceService columnServiceService;
+	
+	@Autowired
+	private AdvertisingService advertisingService;
+	
+	@Autowired
+	private InformationService informationService;
+	
+	
+	@Override
+	protected BaseService<Nurse> getService() {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
+	
+	/**
+	 * 金牌康护-护士端首页-抢单列表
+	 * @param hs
+	 * @param req
+	 * @param resp
+	 * @param authCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(name="护士首页",path="/spearorder.json")
+	public byte[] spearorder( HttpServletRequest req, HttpServletResponse resp,String columnId, String authCode,User user,Integer p,Integer n){
+
+		try{
+			String token = "";
+			try {
+				token = req.getHeader("token");
+			} catch (Exception e) {
+			}
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("nurseindex.neworder.json,columnId"+columnId+" user="+user.getPhone()+" authCode="+authCode+" token="+token);
+			}
+			// 查空
+			if(StringUtils.isEmpty(columnId)
+					||StringUtils.isEmpty(user.getId())
+						||StringUtils.isEmpty(user.getPassword())
+							||StringUtils.isEmpty(user.getPhone())/*
+								||StringUtils.isEmpty(token)*/){
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+				return JSONUtil.toJSONResult(0, "token验证失败", null);
+			}
+
+			//	抢单列表
+			Map<String , Object> q_o_map = new HashMap<String , Object>();
+			q_o_map.put("schedule", 1);
+			q_o_map.put("status", 1);
+			PageHelper.startPage(p, n);
+			List<Map<String , Object>> q_order_list = orderService.getOrderGoodsList(q_o_map);
+			PageInfo<Map<String,Object>> page = new PageInfo<Map<String,Object>>(q_order_list);
+			
+			return JSONUtil.toJSONResult(1, "成功", page);
+		} catch (Exception e) {
+			// 记录日志-fail
+			Util.debugLog.debug("nurseindex.neworder.json",e);
+		}
+		return null;
+	}
+	
+	/**
+	 * 金牌康护-护士端首页-最新带服务
+	 * @param hs
+	 * @param req
+	 * @param resp
+	 * @param authCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(name="护士首页",path="/neworder.json")
+	public byte[] neworder( HttpServletRequest req, HttpServletResponse resp,String columnId, String authCode,User user){
+
+		try{
+			String token = "";
+			try {
+				token = req.getHeader("token");
+			} catch (Exception e) {
+			}
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("nurseindex.neworder.json,columnId"+columnId+" user="+user.getPhone()+" authCode="+authCode+" token="+token);
+			}
+			// 查空
+			if(StringUtils.isEmpty(columnId)
+					||StringUtils.isEmpty(user.getId())
+						||StringUtils.isEmpty(user.getPassword())
+							||StringUtils.isEmpty(user.getPhone())/*
+								||StringUtils.isEmpty(token)*/){
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+				return JSONUtil.toJSONResult(0, "token验证失败", null);
+			}
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 			//	最新待服务订单
 			Map<String , Object> o_map = new HashMap<String , Object>();
 			o_map.put("acceptUserId", user.getId());

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
+<<<<<<< HEAD
 import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
 
 /**
@@ -29,4 +30,25 @@ public interface VoucherRepertoryDao extends BaseDao<VoucherRepertory> {
      * @return
      */
     int updataUseTime(String id);
+=======
+import com.jinpaihushi.jphs.voucher.model.Voucher;
+import com.jinpaihushi.jphs.voucher.model.VoucherRepertory;
+
+/**
+ * 
+ * @author yangsong
+ * @date 2017-07-14 14:35:45
+ * @version 1.0
+ */
+@Repository("voucherRepertoryDao")
+public interface VoucherRepertoryDao extends BaseDao<VoucherRepertory> {
+	/**  
+	 * 根据用户下单的商品获取用户可用的优惠券
+	 * @param map 用户id 品类id 商品的id
+	 * @return
+	 */
+	List<Map<String, Object>> getUserVocher(Map<String, Object> map);
+	
+	
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

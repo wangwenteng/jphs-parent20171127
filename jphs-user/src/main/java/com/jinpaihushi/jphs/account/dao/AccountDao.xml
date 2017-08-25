@@ -236,7 +236,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			DATE_FORMAT(o.accept_time,
 			'%Y-%m-%d') accept_time,
 			og.pay_price,
+<<<<<<< HEAD
 			t.amount,
+=======
+			t.amount
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 		</if>
 		DATE_FORMAT(t.create_time, '%Y-%m') monthstr
 		FROM

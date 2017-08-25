@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.access.model;
 
+<<<<<<< HEAD
 import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +17,28 @@ import com.jinpaihushi.model.BaseModel;
  */
 @SuppressWarnings("serial")
 public class AccessLogSpread extends BaseModel {
+=======
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.jinpaihushi.model.BaseModel;
+
+/**
+ * ACCESS_LOG_SPREAD 平台日志数据扩展类
+ * 
+ * @author wangwt
+ * @date 2017-06-13 15:01:41
+ * @company jinpaihushi
+ * @version 1.0
+ */
+@SuppressWarnings("serial")
+public class AccessLogSpread extends BaseModel {
+    private static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 
     /** 商品请求地址 */
     @Length(max = 50, message = "{accessLog.goodsUrlId.illegal.length}")

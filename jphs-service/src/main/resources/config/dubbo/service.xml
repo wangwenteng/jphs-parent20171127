@@ -12,6 +12,7 @@
 	<dubbo:service ref="goodsService"
 		interface="com.jinpaihushi.jphs.goods.service.GoodsService" />
 	<dubbo:service ref="productService"
+<<<<<<< HEAD
 		interface="com.jinpaihushi.jphs.product.service.ProductService" />
 	<dubbo:service ref="platformService"
 		interface="com.jinpaihushi.jphs.platform.service.PlatformService" />
@@ -22,5 +23,13 @@
 		interface="com.jinpaihushi.jphs.site.service.SiteService" />
 	<dubbo:service ref="serviceImagesService"
 		interface="com.jinpaihushi.jphs.service.service.ServiceImagesService" />
+=======
+		interface="com.jinpaihushi.jphs.product.service.ProductService" />	
+	<dubbo:service ref="platformService"
+		interface="com.jinpaihushi.jphs.platform.service.PlatformService" />
+	<dubbo:service ref="siteService"
+		interface="com.jinpaihushi.jphs.site.service.SiteService" />
+	
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 
 </beans>

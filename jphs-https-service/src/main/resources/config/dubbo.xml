@@ -29,6 +29,9 @@
 	<import resource="dubbo/system.xml"/>
 	<!-- 其它接口 -->
 	<import resource="dubbo/other.xml"/>
+<<<<<<< HEAD
 	<!-- 商品 -->
 	<import resource="dubbo/commodity.xml"/>
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </beans>

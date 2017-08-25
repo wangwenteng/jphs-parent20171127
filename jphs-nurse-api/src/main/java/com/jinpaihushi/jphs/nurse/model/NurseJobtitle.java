@@ -1,6 +1,7 @@
 package com.jinpaihushi.jphs.nurse.model;
 
 import java.util.Date;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -94,6 +95,91 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	}
 	public void setNurseImages(List<NurseImages> nurseImages) {
 		this.nurseImages = nurseImages;
+=======
+import java.util.function.Predicate;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.jinpaihushi.function.Updator;
+import com.jinpaihushi.model.BaseModel;
+
+/**
+ * NURSE_JOBTITLE 
+ * 继承自父类的字段:
+ * id : 	
+ * creatorId : 	
+ * creatorName : 	
+ * createTime : 	
+ * status : 	
+ * 
+ * @author scj
+ * @date 2017-08-16 14:56:07
+ * @company jinpaihushi
+ * @version 1.0
+ */
+@SuppressWarnings("serial")
+public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>,
+		Updator<NurseJobtitle> {
+
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.name.illegal.length}")
+	private String name;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.sfz.illegal.length}")
+	private String sfz;
+
+    /**  */
+	private Integer sex;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.hospital.illegal.length}")
+	private String hospital;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.departmentId.illegal.length}")
+	private String departmentId;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.jobtitleId.illegal.length}")
+	private String jobtitleId;
+
+    /**  */
+	private Date workYears;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.education.illegal.length}")
+	private String education;
+
+    /**  */
+	@Length(max = 50, message = "{nurseJobtitle.address.illegal.length}")
+	private String address;
+	
+	/**	身份证-正面	*/
+	private String sfzz;
+	/**	身份证-反面	*/
+	private String sfzf;
+	/**	执业证	*/
+	private String charteredProve;
+	/**	资格证	*/
+	private String seniorityProve;
+	/**	医院聘书	*/
+	private String hospitalContract;
+	/**	工牌	*/
+	private String workCard;
+	/**	康复师资格证正面	*/
+	private String therapistZ;
+	/**	康复师资格证反面	*/
+	private String therapistF;
+	/**	母婴师	*/
+	private String fransnanaCard;
+	
+	public NurseJobtitle(){}
+
+	public NurseJobtitle(String id){
+		this.id = id;
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	}
 	
 	public String getSfzz() {

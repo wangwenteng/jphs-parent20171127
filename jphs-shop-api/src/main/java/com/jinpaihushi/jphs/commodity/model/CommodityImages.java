@@ -34,7 +34,11 @@ public class CommodityImages extends BaseModel implements Predicate<CommodityIma
 	private String sourceId;
 
     /** 图片地址 */
+<<<<<<< HEAD
 	@Length(max = 65535, message = "{commodityImages.url.illegal.length}")
+=======
+	@Length(max = 500, message = "{commodityImages.url.illegal.length}")
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	private String url;
 
     /** 物理地址 */

@@ -13,6 +13,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityService extends BaseService<Commodity> {
 
+<<<<<<< HEAD
 	List<Commodity> getCommodityList(String columnId,String nurseId,String sort);
 	
 	Commodity getCommodityDetail(String columnId,String commodityId);
@@ -21,4 +22,12 @@ public interface CommodityService extends BaseService<Commodity> {
 
 	List<Commodity> getNurseSale(String nurseId,String commodityId,String schedule);
 	
+=======
+	List<Commodity> getCommodityList(String columnId);
+	
+	Commodity getCommodityDetail(String columnId,String commodityId);
+	
+	List<Commodity> getSaleByNurse(String nurseId);
+
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

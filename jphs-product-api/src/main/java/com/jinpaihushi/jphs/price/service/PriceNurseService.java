@@ -14,6 +14,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface PriceNurseService extends BaseService<PriceNurse> {
 
+<<<<<<< HEAD
  
 	boolean deleteByUserAndGoods(PriceNurse pn);
  
@@ -25,6 +26,15 @@ public interface PriceNurseService extends BaseService<PriceNurse> {
 	List<Map<String, Object>> getServiceItems(String userId);
 
 	boolean updatePriceNurse(PriceNurse pn);
+=======
+	/**
+	 * 
+	 * @param userId 用户id
+	 * @return
+	 */
+	List<Map<String, Object>> getServiceItems(String userId);
+
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	
 
 }

@@ -8,6 +8,7 @@
         ">
 	<dubbo:reference id="accessLogService" interface="com.jinpaihushi.jphs.access.service.AccessLogService"
 		timeout="${dubbo.timeout}" check="false" />
+<<<<<<< HEAD
  	<dubbo:reference id="healthLogService" interface="com.jinpaihushi.jphs.health.service.HealthLogService"
 		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="tijianHealthLogService" interface="com.jinpaihushi.jphs.tijian.service.TijianHealthLogService"
@@ -43,5 +44,18 @@
 		timeout="${dubbo.timeout}" check="false" />
 	<!-- 意见反馈 -->
 	<dubbo:reference id="feedbackService" interface="com.jinpaihushi.jphs.user.service.FeedbackService"
+=======
+ 	<dubbo:reference id="advertisingService" interface="com.jinpaihushi.jphs.activity.service.AdvertisingService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="healthLogService" interface="com.jinpaihushi.jphs.health.service.HealthLogService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="insuranceService" interface="com.jinpaihushi.jphs.insurance.service.InsuranceService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="feedbackService" interface="com.jinpaihushi.jphs.user.service.FeedbackService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="informationService" interface="com.jinpaihushi.jphs.information.service.InformationService" 
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 		timeout="${dubbo.timeout}" check="false" />
 </beans>

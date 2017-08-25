@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.jphs.goods.model.Goods;
+<<<<<<< HEAD
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.user.model.User;
@@ -133,6 +134,122 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
         this.serviceOrderImages = serviceOrderImages;
     }
     
+=======
+import com.jinpaihushi.jphs.transaction.model.Transaction;
+import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.model.BaseModel;
+
+/**
+ * ORDER 继承自父类的字段: id : status : createTime : creatorId :
+ * 
+ * @author yangsong
+ * @date 2017-06-27 14:43:43
+ * @company jinpaihushi
+ * @version 1.0
+ */
+@SuppressWarnings("serial")
+public class Order extends BaseModel implements Predicate<Order>, Updator<Order> {
+
+    /** 订单号 */
+    @Length(max = 255, message = "{order.orderNo.illegal.length}")
+    private String orderNo;
+
+    /** 优惠券价格 */
+    private Double voucherPrice;
+
+    /** 优惠券id */
+    @Length(max = 50, message = "{order.voucherUseId.illegal.length}")
+    private String voucherUseId;
+
+    /** 平台id */
+    @Length(max = 50, message = "{order.platformId.illegal.length}")
+    private String platformId;
+
+    /** 指定人 */
+    @Length(max = 50, message = "{order.expectorId.illegal.length}")
+    private String expectorId;
+
+    /** 接单人 */
+    @Length(max = 50, message = "{order.acceptUserId.illegal.length}")
+    private String acceptUserId;
+
+    /** 分享人id 推荐人  */
+    @Length(max = 50, message = "{order.recommendId.illegal.length}")
+    private String recommendId;
+
+    /** 预约时间 */
+    private Date appointmentTime;
+
+    /** 接单时间 */
+    private Date acceptTime;
+
+    /** 交易id */
+    @Length(max = 50, message = "{order.transactionId.illegal.length}")
+    private String transactionId;
+
+    /** 进度(0:待支付,1:待接单,2:已接单,3:执行中,4:待确定,5:已完成,6:已取消,7:申诉中) */
+    private Integer schedule;
+
+    /** 下单设备/来源 pc=5 */
+    private Integer device;
+
+    /** 备注 */
+    @Length(max = 500, message = "{order.remarks.illegal.length}")
+    private String remarks;
+
+    private OrderGoods orderGoods;
+
+    private OrderService orderService;
+
+    private User user;
+
+    private Goods goods;
+
+    private Transaction transaction;
+
+    private String phone;
+
+    private Integer type;
+
+    private String title;
+
+    private String nurseName;
+
+    private String userName;
+
+    private String nursePhone;
+
+    private String beginTime;
+
+    private String stopTime;
+
+    private String url;
+
+    private String detailAddress;
+
+    private Integer orderServiceNumber;
+
+    /** 销售价 */
+    private Double price;
+
+    /** 实付金额 */
+    private Double payPrice;
+
+    private Double discountPrice;
+
+    private List<OrderService> orderServiceList;
+
+    private OrderOther orderOther;
+
+    public Integer getOrderServiceNumber() {
+        return orderServiceNumber;
+    }
+
+    public void setOrderServiceNumber(Integer orderServiceNumber) {
+        this.orderServiceNumber = orderServiceNumber;
+    }
+
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
     public OrderOther getOrderOther() {
         return orderOther;
     }

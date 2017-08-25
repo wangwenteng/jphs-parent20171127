@@ -25,6 +25,7 @@ public interface WorktimeService extends BaseService<Worktime> {
      * @param isNextWeek 是否是下周
      * @return
      */
+<<<<<<< HEAD
     List<Worktime> findWorkTime(String userId);
 
     /**
@@ -47,5 +48,29 @@ public interface WorktimeService extends BaseService<Worktime> {
      * @return
      */
     List<Worktime> getNurseWorktime(String userId);
+=======
+    List<Worktime> findWorkTime(String userId, Boolean isNextWeek);
+
+    /**
+     * 更新护士的日程时间
+     */
+    void updateAllNurseWorkTime();
+
+    int insertNurseWorkTime(String userId);
+
+    /**
+     * 获取用户的工作时间
+     * @param productId
+     * @return
+     */
+    List<Worktime> findUserWorkTime(String productId);
+
+	/**
+	 * 护士主页的可约时间
+	 * @param userId
+	 * @return
+	 */
+	List<Worktime> getNurseWorktime(String userId);
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 
 }

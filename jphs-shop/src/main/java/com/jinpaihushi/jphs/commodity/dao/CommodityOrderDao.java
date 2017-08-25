@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.dao;
 
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 
@@ -22,5 +23,22 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	List<CommodityOrder> getOrderList(Map<String, Object> map);
 
 	CommodityOrder getOrderDetail(String orderId);
+=======
+import org.springframework.stereotype.Repository;
+
+import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
+
+/**
+ * 
+ * @author yangsong
+ * @date 2017-08-09 09:02:59
+ * @version 1.0
+ */
+@Repository("commodityOrderDao")
+public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
+	
+	
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	
 }

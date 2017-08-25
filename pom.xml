@@ -210,6 +210,7 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0</version>
 		</dependency>
+<<<<<<< HEAD
 
 		<dependency>
 			<groupId>alipay-sdk-java</groupId>
@@ -317,5 +318,76 @@
 			<version>1.2.17</version>
 		</dependency>
 		<!-- 极光推送配置开始 -->
+=======
+		
+		<dependency>
+		  <groupId>alipay-sdk-java</groupId>
+		  <artifactId>alipay-sdk-java</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.jvnet.hudson.dom4j</groupId>
+		  <artifactId>dom4j</artifactId>
+		  <version>1.6.1-hudson-3</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.apache.geronimo.bundles</groupId>
+		  <artifactId>commons-httpclient</artifactId>
+		  <version>3.1_2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.14</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>ueditor-mini</groupId>
+		  <artifactId>ueditor-mini</artifactId>
+		  <version>1.0</version>
+		</dependency>
+		<!-- 微信支付所需jar	OUT -->
+			<dependency>
+			  <groupId>jaxen-1.1.6</groupId>
+			  <artifactId>jaxen-1.1.6</artifactId>
+			  <version>1.0</version>
+			</dependency>
+			
+			<dependency>
+			  <groupId>jdom</groupId>
+			  <artifactId>jdom</artifactId>
+			  <version>1.0</version>
+			</dependency>
+		<!-- 微信支付所需jar	ENT -->
+		
+		<!-- 银联支付  -->
+		<dependency>
+		  <groupId>bcprov-jdk16</groupId>
+		  <artifactId>bcprov-jdk16</artifactId>
+		  <version>1.6</version>
+		</dependency>
+		
+		<!-- 银联支付 			END-->
+		<!-- 时间操作组件 -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>taobao-sdk</groupId>
+			<artifactId>taobao-sdk</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		<!--定时器 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	</dependencies>
 </project>

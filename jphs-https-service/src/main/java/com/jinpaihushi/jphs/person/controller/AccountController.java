@@ -101,6 +101,7 @@ public class AccountController {
 		}
 		return null;
 	}
+<<<<<<< HEAD
 	@RequestMapping(path = "/getUserBalance.json", name = "用户余额")
 	@ResponseBody
 	public byte[] getUserBalance(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,Integer operate,String month) {
@@ -135,6 +136,8 @@ public class AccountController {
 		return null;
 	}
 	//获取账户余额
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	@RequestMapping(path = "/getTranByMonth.json", name = "得到指定月的交易记录")
 	@ResponseBody
 	public byte[] getTranByMonth(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,Integer operate,String month) {

@@ -344,6 +344,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE COI.ID = #{id}
 	</select>
 	
+<<<<<<< HEAD
 	<update id="updateByOrderNo">
 		UPDATE 
 			commodity_order_info coi 
@@ -373,4 +374,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE coi.commodity_id = #{commodityId}
 		 AND coi.user_id = #{userId}
 	</select>
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </mapper>

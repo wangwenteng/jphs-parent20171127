@@ -11,6 +11,10 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityOrderInfoService extends BaseService<CommodityOrderInfo> {
 
+<<<<<<< HEAD
 	Integer updateByOrderNo(CommodityOrderInfo commodityOrderInfo);
+=======
+	
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 
 }

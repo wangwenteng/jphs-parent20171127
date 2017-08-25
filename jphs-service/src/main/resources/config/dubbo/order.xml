@@ -8,6 +8,7 @@
         ">
 	<!-- 服务订单 -->
 	<dubbo:service ref="orderService"
+<<<<<<< HEAD
 		interface="com.jinpaihushi.jphs.order.service.OrderService" />
 	<dubbo:service ref="orderGoodsService"
 		interface="com.jinpaihushi.jphs.order.service.OrderGoodsService" />
@@ -19,6 +20,20 @@
 		interface="com.jinpaihushi.jphs.custom.service.CustomServiceService" />
 	<dubbo:service ref="evaluationService"
 		interface="com.jinpaihushi.jphs.evaluation.service.EvaluationService" />
+=======
+		interface="com.jinpaihushi.jphs.order.service.OrderService" />	
+	<dubbo:service ref="orderGoodsService"
+		interface="com.jinpaihushi.jphs.order.service.OrderGoodsService" />
+	<dubbo:service ref="orderOtherService"
+		interface="com.jinpaihushi.jphs.order.service.OrderOtherService" />
+	<dubbo:service ref="orderServiceService"
+		interface="com.jinpaihushi.jphs.order.service.OrderServiceService" />
+	<dubbo:service ref="customServiceService"
+		interface="com.jinpaihushi.jphs.custom.service.CustomServiceService" />
+	
+	
+	<!-- 商品订单 -->
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 
 
 

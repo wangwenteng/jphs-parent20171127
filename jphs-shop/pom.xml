@@ -20,10 +20,13 @@
 			<artifactId>jphs-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-user</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+=======
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	</dependencies>
 </project>

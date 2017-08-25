@@ -471,11 +471,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="findUser" resultMap="userDetail">
 		select * from user where
+<<<<<<< HEAD
 		status=1 and password=#{password} and phone=#{phone} and type=#{type}
 	</select>
 	<select id="queryUser" resultMap="userDetail">
 		select * from user where
 		status=1 and phone=#{phone} and type=#{type}
+=======
+		status=0 and password=#{password} and phone=#{phone} and type=#{type}
+	</select>
+	<select id="queryUser" resultMap="userDetail">
+		select * from user where
+		status=0 and phone=#{phone} and type=#{type}
+>>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	</select>
 
 </mapper>
