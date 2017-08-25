@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-07-14 14:01:47 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.voucher.dao.VoucherDao">
+
+	<sql id="field">
+		V.id, V.type, V.batch_no, V.product_id, V.goods_id,
+		V.start_time, V.end_time,V.activation_start_time,
+		V.activation_end_time, V.days, V.creator_id, V.creator_name,
+		V.create_time, V.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		V.id V_id, V.type V_type, V.batch_no V_batch_no,
+		V.product_id V_product_id, V.goods_id V_goods_id,
+		V.start_time
+		V_start_time, V.end_time V_end_time,
+		V.activation_start_time
+		V_activation_start_time,
+		V.activation_end_time V_activation_end_time,
+		V.days V_days, V.creator_id
+		V_creator_id, V.creator_name
+		V_creator_name, V.create_time
+		V_create_time, V.status V_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		V.id id, V.type type, V.batch_no batchNo, V.product_id
+		productId, V.goods_id goodsId,
+		V.start_time startTime, V.end_time
+		endTime,
+		V.activation_start_time activationStartTime,
+		V.activation_end_time activationEndTime,
+		V.days
+		days, V.creator_id
+		creatorId, V.creator_name
+		creatorName, V.create_time
+		createTime,
+		V.status status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND V.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND V.type=#{type}
+		</if>
+		<if test="batchNo!=null and batchNo!=''">
+			AND V.batch_no=#{batchNo}
+		</if>
+		<if test="productId!=null and productId!=''">
+			AND V.product_id=#{productId}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND V.goods_id=#{goodsId}
+		</if>
+		<if test="startTime!=null">
+			AND V.start_time=#{startTime}
+		</if>
+		<if test="endTime!=null">
+			AND V.end_time=#{endTime}
+		</if>
+		<if test="activationStartTime!=null">
+			AND V.activation_start_time=#{activationStartTime}
+		</if>
+		<if test="activationEndTime!=null">
+			AND V.activation_end_time=#{activationEndTime}
+		</if>
+
+		<if test="days!=null">
+			AND V.days=#{days}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND V.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND V.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND V.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND V.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND V.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND V.type=#{type}
+			</if>
+			<if test="batchNo!=null and batchNo!=''">
+				AND V.batch_no LIKE CONCAT('%', #{batchNo}, '%')
+			</if>
+			<if test="productId!=null and productId!=''">
+				AND V.product_id LIKE CONCAT('%', #{productId}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND V.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="startTime!=null">
+				AND V.start_time=#{startTime}
+			</if>
+			<if test="endTime!=null">
+				AND V.end_time=#{endTime}
+			</if>
+			<if test="startTime!=null">
+				AND V.activation_start_time=#{activationStartTime}
+			</if>
+			<if test="endTime!=null">
+				AND V.activation_end_time=#{activationEndTime}
+			</if>
+
+			<if test="days!=null">
+				AND V.days=#{days}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND V.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND V.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND V.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND V.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				V.id=#{id},
+			</if>
+			<if test="type!=null">
+				V.type=#{type},
+			</if>
+			<if test="batchNo!=null">
+				V.batch_no=#{batchNo},
+			</if>
+			<if test="productId!=null">
+				V.product_id=#{productId},
+			</if>
+			<if test="goodsId!=null">
+				V.goods_id=#{goodsId},
+			</if>
+			<if test="startTime!=null">
+				V.start_time=#{startTime},
+			</if>
+			<if test="endTime!=null">
+				V.end_time=#{endTime},
+			</if>
+			<if test="activationStartTime!=null">
+				V.activation_start_time=#{activationStartTime},
+			</if>
+			<if test="activationEndTime!=null">
+				V.activation_end_time=#{activationEndTime},
+			</if>
+			<if test="days!=null">
+				V.days=#{days},
+			</if>
+			<if test="creatorId!=null">
+				V.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				V.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				V.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				V.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="voucher" type="com.jinpaihushi.jphs.voucher.model.Voucher">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="batchNo" column="batch_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productId" column="product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="startTime" column="start_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="end_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="days" column="days" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="productName" column="productName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="conditionAmount" column="condition_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="discountAmount" column="discount_amount"
+			javaType="Double" jdbcType="DECIMAL"></result>
+	</resultMap>
+
+	<resultMap id="voucherGlobal" type="com.jinpaihushi.jphs.voucher.model.Voucher">
+		<result property="id" column="V_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="V_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="batchNo" column="V_batch_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productId" column="V_product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="V_goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="startTime" column="V_start_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="V_end_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="V_activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="V_activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="days" column="V_days" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="V_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="V_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="V_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="V_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+	<resultMap id="userVoucher" type="com.jinpaihushi.jphs.voucher.model.Voucher">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="batchNo" column="batch_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productId" column="product_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="productName" column="productName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsName" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="startTime" column="start_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="end_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="activationStartTime" column="activation_start_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="activationEndTime" column="activation_end_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="days" column="days" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<association property="voucherRepertory"
+			javaType="com.jinpaihushi.jphs.voucher.model.VoucherRepertory">
+			<result property="id" column="vr_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="voucherId" column="vr_voucher_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="no" column="vr_no" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="code" column="vr_code" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="amount" column="vr_amount" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="conditionAmount" column="vr_condition_amount"
+				javaType="Double" jdbcType="DECIMAL"></result>
+			<result property="discountAmount" column="vr_discount_amount"
+				javaType="Double" jdbcType="DECIMAL"></result>
+			<result property="status" column="vr_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<association property="voucherUse"
+			javaType="com.jinpaihushi.jphs.activity.model.VoucherUse">
+			<result property="id" column="vu_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="voucherRepertoryId" column="vu_voucher_repertory_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="phone" column="vu_phone" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="amount" column="vu_amount" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="startTime" column="vu_start_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="endTime" column="vu_end_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="activationStartTime" column="vu_activation_start_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="activationEndTime" column="vu_activation_end_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="useTime" column="vu_use_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="vu_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="vu_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="vu_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="vu_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+	</resultMap>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.voucher.model.Voucher">
+		INSERT INTO `VOUCHER`(
+		id, type, batch_no, product_id,
+		goods_id, start_time, end_time,activation_start_time,
+		activation_end_time, days,
+		creator_id, creator_name,
+		create_time, status
+		)VALUES(
+		#{id,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER},
+		#{batchNo,jdbcType=VARCHAR},
+		#{productId,jdbcType=VARCHAR},
+		#{goodsId,jdbcType=VARCHAR},
+		#{startTime,jdbcType=TIMESTAMP},
+		#{endTime,jdbcType=TIMESTAMP},
+		#{activationStartTime,jdbcType=TIMESTAMP},
+		#{activationEndTime,jdbcType=TIMESTAMP},
+		#{days,jdbcType=INTEGER},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `VOUCHER`(
+			id, type, 
+			batch_no, product_id, 
+			goods_id, start_time, 
+			end_time,activation_start_time,activation_end_time, days, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER},
+			#{item.batchNo,jdbcType=VARCHAR},
+			#{item.productId,jdbcType=VARCHAR},
+			#{item.goodsId,jdbcType=VARCHAR},
+			#{item.startTime,jdbcType=TIMESTAMP},
+			#{item.endTime,jdbcType=TIMESTAMP},
+			#{item.activationStartTime,jdbcType=TIMESTAMP},
+			#{item.activationEndTime,jdbcType=TIMESTAMP},
+			#{item.days,jdbcType=INTEGER},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE V FROM `VOUCHER` V WHERE V.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `VOUCHER` V
+		SET
+		V.STATUS = -1
+		WHERE V.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `VOUCHER` V
+		<include refid="dynamicSet" />
+		WHERE V.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="voucher">
+		SELECT
+		<include refid="field" />
+		FROM `VOUCHER` V
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `VOUCHER` V
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="voucher">
+		SELECT
+		<include refid="field" />
+		FROM `VOUCHER` V
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="voucher">
+		SELECT
+		<include refid="field" />
+		FROM `VOUCHER` V
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="voucher">
+		SELECT
+		<include refid="field" />
+		FROM `VOUCHER` V
+		WHERE V.ID = #{id}
+	</select>
+
+	<select id="getList" resultMap="voucher">
+		SELECT
+		`v`.`id`
+		,`v`.`type`
+		,`v`.`batch_no`
+		,`v`.`product_id`
+		,`v`.`goods_id`
+		,`v`.`start_time`
+		,`v`.`end_time`
+		,`v`.`days`
+		,`v`.`creator_id`
+		,`v`.`creator_name`
+		,`v`.`product_id` productId
+		,`v`.`goods_id` goodsId
+		,`v`.`create_time`
+		,`v`.`status`
+		,`vr`.`amount`
+		,`vr`.`condition_amount`
+		,`vr`.`discount_amount`
+		,`p`.`title`
+		productName
+		FROM
+		`jphs`.`voucher` AS
+		`v`
+		LEFT JOIN `jphs`.`product` AS
+		`p`
+		ON (`v`.`product_id` = `p`.`id`)
+		LEFT JOIN
+		`jphs`.`voucher_repertory` AS
+		`vr`
+		ON (`v`.`id` =
+		`vr`.`voucher_id`)
+		WHERE 1 = 1
+		<if test="id!=null">
+			AND `v`.`id` = #{id}
+		</if>
+		<if test="batchNo!=null">
+			AND `v`.`batch_no` LIKE CONCAT(CONCAT('%', #{batchNo}),
+			'%')
+		</if>
+		<if test="type!=null">
+			AND `v`.`type` = #{type}
+		</if>
+		<if test="productId!=null">
+			AND `v`.`product_id` LIKE CONCAT(CONCAT('%',
+			#{productId}),
+			'%')
+		</if>
+		<if test="goodsId!=null">
+			AND `v`.`goods_id` LIKE CONCAT(CONCAT('%', #{goodsId}),
+			'%')
+		</if>
+		<if test="amount!=null">
+			AND `vr`.`amount` = #{amount}
+		</if>
+		<if test="status!=null">
+			AND `v`.`status` = #{status}
+		</if>
+		<if test="beginTime!=null">
+			AND `v`.`create_time` &gt;= #{beginTime}
+		</if>
+		<if test="stopTime!=null">
+			AND `v`.`create_time` &lt;= #{stopTime}
+		</if>
+		GROUP BY `v`.`batch_no`
+	</select>
+	<select id="getUserAllVocher" resultType="java.util.HashMap">
+		SELECT
+		vu.amount,
+		vu.end_time,
+		v.type,
+		v.product_id,
+		v.goods_id,
+		vr.condition_amount,
+		vr.discount_amount,
+		vu.use_time,
+		CASE
+		WHEN
+		vu.use_time IS NOT NULL THEN
+		'已使用'
+		<![CDATA[
+		WHEN vu.end_time < NOW() THEN
+		]]>
+		'已过期'
+		ELSE
+		'未使用'
+		END AS `status`
+		FROM
+		voucher_use vu
+		LEFT JOIN
+		voucher_repertory vr ON vu.voucher_repertory_id = vr.id
+		LEFT JOIN
+		voucher v ON vr.voucher_id = v.id
+		LEFT JOIN product p ON v.product_id =
+		p.id
+		WHERE vu.creator_id
+		=#{userId}
+		<if test="type!=null">
+			<if test="type==1">
+				AND v.type =1
+			</if>
+			<if test="type==2">
+				AND v.type =2
+			</if>
+			<if test="type==3">
+				AND v.type =3
+			</if>
+		</if>
+		<if test="status!=null">
+			<if test="status==3">
+				AND vu.use_time IS NOT NULL
+			</if>
+			<if test="status==2">
+				<![CDATA[
+				AND vu.end_time < NOW()
+				]]>
+			</if>
+			<if test="status==1">
+				<![CDATA[
+				AND vu.end_time > NOW() AND vu.use_time IS  NULL
+				]]>
+			</if>
+		</if>
+		ORDER BY vu.use_time, vu.create_time DESC
+	</select>
+	<select id="getVocherByUser" resultMap="userVoucher">
+		SELECT
+		vu.id AS
+		vu_id,
+		vu.phone AS vu_phone,
+		vu.amount AS vu_amount,
+		vu.start_time AS
+		vu_start_time,
+		vu.end_time AS vu_end_time,
+		vu.use_time AS vu_use_time,
+		vr.`no` AS vr_no,
+		vr.condition_amount AS vr_condition_amount,
+		vr.amount
+		AS vr_amount,
+		vr.discount_amount AS vr_discount_amount,
+		v.id,
+		v.type,
+		v.batch_no,
+		v.product_id,
+		v.goods_id,
+		v.start_time,
+		v.end_time,
+		v.days,
+		v.creator_id,
+		v.creator_name,
+		v.create_time,
+		v.`status`
+		FROM
+		voucher_use vu
+		LEFT JOIN voucher_repertory vr ON vu.voucher_repertory_id = vr.id
+		LEFT
+		JOIN voucher v ON vr.voucher_id = v.id
+		WHERE vu.id =#{voucherUseId}
+	</select>
+</mapper>

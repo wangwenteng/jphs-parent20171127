@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-27 11:24:31
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.workyears.dao.WorkyearsDao">
+	
+	<sql id="field">
+		W.id, W.content, W.status, W.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		W.id W_id, W.content W_content, 
+		W.status W_status, W.create_time W_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		W.id id, W.content content, 
+		W.status status, W.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null">
+			AND W.id=#{id}
+		</if>
+		<if test="content!=null and content!=''">
+			AND W.content=#{content}
+		</if>
+		<if test="status!=null">
+			AND W.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND W.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null">
+				AND W.id=#{id}
+			</if>
+			<if test="content!=null and content!=''">
+				AND W.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND W.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND W.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				W.id=#{id}, 
+		   </if>
+           <if test="content!=null">
+				W.content=#{content}, 
+		   </if>
+           <if test="status!=null">
+				W.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				W.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="workyears" type="com.jinpaihushi.jphs.workyears.model.Workyears">
+		<result property="id" column="id" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="workyearsGlobal" type="com.jinpaihushi.jphs.workyears.model.Workyears">
+		<result property="id" column="W_id" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="W_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="W_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="W_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.workyears.model.Workyears">
+		INSERT INTO `WORKYEARS`(
+			id, content, 
+			status, create_time
+		)VALUES(
+			#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `WORKYEARS`(
+			id, content, 
+			status, create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=INTEGER}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE W FROM `WORKYEARS` W WHERE W.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `WORKYEARS` W
+		SET 
+		W.STATUS = -1
+		WHERE W.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `WORKYEARS` W
+		<include refid="dynamicSet" /> 
+	    WHERE W.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="workyears">
+		SELECT <include refid="field"/>
+		FROM `WORKYEARS` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `WORKYEARS` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="workyears">
+		SELECT <include refid="field"/>
+		FROM `WORKYEARS` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="workyears">
+		SELECT <include refid="field"/>
+		FROM `WORKYEARS` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="workyears">
+		SELECT <include refid="field"/>
+		FROM `WORKYEARS` W
+		WHERE W.ID = #{id}
+	</select>
+	
+</mapper>

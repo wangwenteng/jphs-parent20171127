@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="order/custom/service/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/order/custom/service/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/order/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/order/custom/service/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="order/custom/service/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/order/custom/service/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/order/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/order/custom/service/edit.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="order/custom/service/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/order/custom/service/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/order/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/order/custom/service/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

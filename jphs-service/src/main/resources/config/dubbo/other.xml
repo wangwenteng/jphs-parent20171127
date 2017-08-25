@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<dubbo:service ref="accessLogService"
+		interface="com.jinpaihushi.jphs.access.service.AccessLogService" />
+	<dubbo:service ref="advertisingService"
+		interface="com.jinpaihushi.jphs.activity.service.AdvertisingService" />
+	<dubbo:service ref="aptitudeService"
+		interface="com.jinpaihushi.jphs.aptitude.service.AptitudeService" />
+
+	<dubbo:service ref="healthLogService"
+		interface="com.jinpaihushi.jphs.health.service.HealthLogService" />
+
+	<dubbo:service ref="transactionService"
+		interface="com.jinpaihushi.jphs.transaction.service.TransactionService" />
+	<dubbo:service ref="insuranceService"
+		interface="com.jinpaihushi.jphs.insurance.service.InsuranceService" />
+
+	<dubbo:service ref="feedbackService"
+		interface="com.jinpaihushi.jphs.user.service.FeedbackService" />
+
+	<dubbo:service ref="informationService"
+		interface="com.jinpaihushi.jphs.information.service.InformationService" />
+	<dubbo:service ref="informationCollectionService"
+		interface="com.jinpaihushi.jphs.information.service.InformationCollectionService" />
+	<dubbo:service ref="informationEvaluateService"
+		interface="com.jinpaihushi.jphs.information.service.InformationEvaluateService" />
+	<!-- 广告位 -->
+	<dubbo:service ref="adpositionService"
+		interface="com.jinpaihushi.jphs.adposition.service.AdpositionService" />
+	<!-- 经纬度 -->
+	<dubbo:service ref="positionService"
+		interface="com.jinpaihushi.jphs.position.service.PositionService" />
+	<dubbo:service ref="tijianHospitalService"
+		interface="com.jinpaihushi.jphs.tijian.service.TijianHospitalService" />
+	<dubbo:service ref="tijianHealthLogService"
+		interface="com.jinpaihushi.jphs.tijian.service.TijianHealthLogService" />
+	<dubbo:service ref="recoveredRecordService"
+		interface="com.jinpaihushi.jphs.recovered.service.RecoveredRecordService" />
+	<dubbo:service ref="peizhenRecordService"
+		interface="com.jinpaihushi.jphs.peizhen.service.PeizhenRecordService" />
+	<dubbo:service ref="peizhenPharmacyRemindService"
+		interface="com.jinpaihushi.jphs.peizhen.service.PeizhenPharmacyRemindService" />
+	<dubbo:service ref="columnServiceService"
+		interface="com.jinpaihushi.jphs.column.service.ColumnServiceService" />
+
+</beans>

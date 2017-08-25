@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-07-10 19:34:53 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.system.dao.SystemRoleDao">
+
+	<sql id="field">
+		SR.id, SR.name, SR.describe, SR.status,
+		SR.creator_id, SR.creator_name, SR.create_time, SR.type
+	</sql>
+
+	<sql id="fieldGlobal">
+		SR.id SR_id, SR.name SR_name,
+		SR.describe SR_describe, SR.status SR_status,
+		SR.creator_id SR_creator_id, SR.creator_name SR_creator_name,
+		SR.create_time SR_create_time, SR.type SR_type
+	</sql>
+
+	<sql id="fieldWithAlias">
+		SR.id id, SR.name name,
+		SR.describe describe, SR.status status,
+		SR.creator_id creatorId, SR.creator_name creatorName,
+		SR.create_time createTime, SR.type type
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND SR.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND SR.name=#{name}
+		</if>
+		<if test="describe!=null and describe!=''">
+			AND SR.describe=#{describe}
+		</if>
+		<if test="status!=null">
+			AND SR.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND SR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND SR.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND SR.create_time=#{createTime}
+		</if>
+		<if test="type!=null">
+			AND SR.type=#{type}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND SR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND SR.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="describe!=null and describe!=''">
+				AND SR.describe LIKE CONCAT('%', #{describe}, '%')
+			</if>
+			<if test="status!=null">
+				AND SR.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND SR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND SR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND SR.create_time=#{createTime}
+			</if>
+			<if test="type!=null">
+				AND SR.type=#{type}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				SR.id=#{id},
+			</if>
+			<if test="name!=null">
+				SR.name=#{name},
+			</if>
+			<if test="describe!=null">
+				SR.describe=#{describe},
+			</if>
+			<if test="status!=null">
+				SR.status=#{status},
+			</if>
+			<if test="creatorId!=null">
+				SR.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				SR.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				SR.create_time=#{createTime},
+			</if>
+			<if test="type!=null">
+				SR.type=#{type},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="systemRole" type="com.jinpaihushi.jphs.system.model.SystemRole">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="describe" column="describe" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<resultMap id="systemRoleGlobal" type="com.jinpaihushi.jphs.system.model.SystemRole">
+		<result property="id" column="SR_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="SR_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="describe" column="SR_describe" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="SR_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="SR_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="SR_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="SR_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="type" column="SR_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.system.model.SystemRole">
+		INSERT INTO `SYSTEM_ROLE`(
+		id, name,
+		`describe`, status,
+		creator_id, creator_name,
+		create_time, type
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{describe,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSTEM_ROLE`(
+			id, name, 
+			`describe`, status, 
+			creator_id, creator_name, 
+			create_time, type
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.describe,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.type,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE SR FROM `SYSTEM_ROLE` SR WHERE SR.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `SYSTEM_ROLE` SR
+		SET
+		SR.STATUS = -1
+		WHERE SR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSTEM_ROLE` SR
+		<include refid="dynamicSet" />
+		WHERE SR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="systemRole">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_ROLE` SR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSTEM_ROLE` SR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="systemRole">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_ROLE` SR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="systemRole">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_ROLE` SR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="systemRole">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_ROLE` SR
+		WHERE SR.ID = #{id}
+	</select>
+	<select id="checkName" resultType="java.lang.Integer">
+		SELECT COUNT(SR.name) FROM system_role SR
+		<where>
+			<if test="id!=null and id!=''">
+				AND SR.id !=#{id}
+			</if>
+			<if test="name!=null and name!=''">
+				AND SR.name=#{name}
+			</if>
+			<if test="describe!=null and describe!=''">
+				AND SR.describe=#{describe}
+			</if>
+			<if test="status!=null">
+				AND SR.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND SR.creator_id=#{creatorId}
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND SR.creator_name=#{creatorName}
+			</if>
+			<if test="createTime!=null">
+				AND SR.create_time=#{createTime}
+			</if>
+			<if test="type!=null">
+				AND SR.type=#{type}
+			</if>
+		</where>
+	</select>
+</mapper>

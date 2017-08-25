@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-18 14:06:14
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.peizhen.dao.PeizhenRecordDao">
+	
+	<sql id="field">
+		PR.id, PR.return_examine, PR.examine_time, PR.rotate_examine, 
+		PR.rotate_time, PR.recommend_department, PR.remarks, PR.order_id, 
+		PR.user_id, PR.creator_id, PR.creator_name, PR.create_time, 
+		PR.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		PR.id PR_id, PR.return_examine PR_return_examine, 
+		PR.examine_time PR_examine_time, PR.rotate_examine PR_rotate_examine, 
+		PR.rotate_time PR_rotate_time, PR.recommend_department PR_recommend_department, 
+		PR.remarks PR_remarks, PR.order_id PR_order_id, 
+		PR.user_id PR_user_id, PR.creator_id PR_creator_id, 
+		PR.creator_name PR_creator_name, PR.create_time PR_create_time, 
+		PR.status PR_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PR.id id, PR.return_examine returnExamine, 
+		PR.examine_time examineTime, PR.rotate_examine rotateExamine, 
+		PR.rotate_time rotateTime, PR.recommend_department recommendDepartment, 
+		PR.remarks remarks, PR.order_id orderId, 
+		PR.user_id userId, PR.creator_id creatorId, 
+		PR.creator_name creatorName, PR.create_time createTime, 
+		PR.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PR.id=#{id}
+		</if>
+		<if test="returnExamine!=null">
+			AND PR.return_examine=#{returnExamine}
+		</if>
+		<if test="examineTime!=null">
+			AND PR.examine_time=#{examineTime}
+		</if>
+		<if test="rotateExamine!=null">
+			AND PR.rotate_examine=#{rotateExamine}
+		</if>
+		<if test="rotateTime!=null">
+			AND PR.rotate_time=#{rotateTime}
+		</if>
+		<if test="recommendDepartment!=null and recommendDepartment!=''">
+			AND PR.recommend_department=#{recommendDepartment}
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			AND PR.remarks=#{remarks}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND PR.order_id=#{orderId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND PR.user_id=#{userId}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PR.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND PR.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND PR.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="returnExamine!=null">
+				AND PR.return_examine=#{returnExamine}
+			</if>
+			<if test="examineTime!=null">
+				AND PR.examine_time=#{examineTime}
+			</if>
+			<if test="rotateExamine!=null">
+				AND PR.rotate_examine=#{rotateExamine}
+			</if>
+			<if test="rotateTime!=null">
+				AND PR.rotate_time=#{rotateTime}
+			</if>
+			<if test="recommendDepartment!=null and recommendDepartment!=''">
+				AND PR.recommend_department LIKE CONCAT('%', #{recommendDepartment}, '%')
+			</if>
+			<if test="remarks!=null and remarks!=''">
+				AND PR.remarks LIKE CONCAT('%', #{remarks}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND PR.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND PR.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND PR.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND PR.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PR.id=#{id}, 
+		   </if>
+           <if test="returnExamine!=null">
+				PR.return_examine=#{returnExamine}, 
+		   </if>
+           <if test="examineTime!=null">
+				PR.examine_time=#{examineTime}, 
+		   </if>
+           <if test="rotateExamine!=null">
+				PR.rotate_examine=#{rotateExamine}, 
+		   </if>
+           <if test="rotateTime!=null">
+				PR.rotate_time=#{rotateTime}, 
+		   </if>
+           <if test="recommendDepartment!=null">
+				PR.recommend_department=#{recommendDepartment}, 
+		   </if>
+           <if test="remarks!=null">
+				PR.remarks=#{remarks}, 
+		   </if>
+           <if test="orderId!=null">
+				PR.order_id=#{orderId}, 
+		   </if>
+           <if test="userId!=null">
+				PR.user_id=#{userId}, 
+		   </if>
+           <if test="creatorId!=null">
+				PR.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PR.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				PR.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				PR.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="peizhenRecord" type="com.jinpaihushi.jphs.peizhen.model.PeizhenRecord">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="returnExamine" column="return_examine" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="examineTime" column="examine_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="rotateExamine" column="rotate_examine" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="rotateTime" column="rotate_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="recommendDepartment" column="recommend_department" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remarks" column="remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="peizhenRecordGlobal" type="com.jinpaihushi.jphs.peizhen.model.PeizhenRecord">
+		<result property="id" column="PR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="returnExamine" column="PR_return_examine" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="examineTime" column="PR_examine_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="rotateExamine" column="PR_rotate_examine" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="rotateTime" column="PR_rotate_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="recommendDepartment" column="PR_recommend_department" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remarks" column="PR_remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="PR_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="PR_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="PR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="PR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="PR_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.peizhen.model.PeizhenRecord">
+		INSERT INTO `PEIZHEN_RECORD`(
+			id, return_examine, 
+			examine_time, rotate_examine, 
+			rotate_time, recommend_department, 
+			remarks, order_id, 
+			user_id, creator_id, 
+			creator_name, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{returnExamine,jdbcType=INTEGER}, 
+			#{examineTime,jdbcType=TIMESTAMP}, #{rotateExamine,jdbcType=INTEGER}, 
+			#{rotateTime,jdbcType=TIMESTAMP}, #{recommendDepartment,jdbcType=VARCHAR}, 
+			#{remarks,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+			#{userId,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PEIZHEN_RECORD`(
+			id, return_examine, 
+			examine_time, rotate_examine, 
+			rotate_time, recommend_department, 
+			remarks, order_id, 
+			user_id, creator_id, 
+			creator_name, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.returnExamine,jdbcType=INTEGER}, 
+			#{item.examineTime,jdbcType=TIMESTAMP}, #{item.rotateExamine,jdbcType=INTEGER}, 
+			#{item.rotateTime,jdbcType=TIMESTAMP}, #{item.recommendDepartment,jdbcType=VARCHAR}, 
+			#{item.remarks,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
+			#{item.userId,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PR FROM `PEIZHEN_RECORD` PR WHERE PR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PEIZHEN_RECORD` PR
+		SET 
+		PR.STATUS = -1
+		WHERE PR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PEIZHEN_RECORD` PR
+		<include refid="dynamicSet" /> 
+	    WHERE PR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="peizhenRecord">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_RECORD` PR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PEIZHEN_RECORD` PR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="peizhenRecord">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_RECORD` PR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="peizhenRecord">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_RECORD` PR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="peizhenRecord">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_RECORD` PR
+		WHERE PR.ID = #{id}
+	</select>
+	<select id="getHealthLog" resultType="java.util.HashMap">
+		SELECT
+			hl.user_id,
+			u.`name` userName,
+			u.sex sex,
+			ni.url headPicture,
+			IFNULL(o.accept_time, '') accept_time,
+			<if test="id!=null and id!=''">
+				IFNULL(o.accept_user_id, '') nurseId,
+				IFNULL(ua.`name`, '') nurseName,
+				IFNULL(ua.phone, '') nursePhone,
+				IFNULL(hl.return_examine, '') return_examine,
+				IFNULL(hl.examine_time, '') examine_time,
+				IFNULL(hl.rotate_examine, '') rotate_examine,
+				IFNULL(hl.recommend_department, '') recommend_department,
+				IFNULL(hl.remarks, '') remarks,
+			</if>
+			CASE
+		WHEN u.birthday IS NOT NULL THEN
+			(
+				(
+					YEAR (now()) - YEAR (u.birthday) - 1
+				) + (
+					DATE_FORMAT(u.birthday, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
+				)
+			)
+		ELSE
+			''
+		END AS age
+		FROM
+			peizhen_record hl
+		LEFT JOIN `user` u ON hl.user_id = u.id
+		LEFT JOIN nurse_images ni ON u.id = ni.source_id
+		LEFT JOIN `order` o ON hl.order_id = o.id
+		LEFT JOIN `user` ua ON o.accept_user_id = ua.id
+		<where>
+			AND hl.status =1 AND hl.user_id = #{userId}
+			<if test="id!=null and id!=''">
+				AND hl.id =#{id}
+			</if>
+		</where>
+		ORDER BY
+			hl.create_time DESC
+	</select>
+</mapper>

@@ -1,0 +1,297 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-04 10:29:44
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.order.dao.OrderGoodsDao">
+	
+	<sql id="field">
+		OG.id, OG.order_id, OG.goods_id, OG.title, 
+		OG.price, OG.pay_price, OG.profit, OG.expector_id, 
+		OG.executor_id, OG.status, OG.create_time, OG.remark
+	</sql>
+
+	<sql id="fieldGlobal">
+		OG.id OG_id, OG.order_id OG_order_id, 
+		OG.goods_id OG_goods_id, OG.title OG_title, 
+		OG.price OG_price, OG.pay_price OG_pay_price, 
+		OG.profit OG_profit, OG.expector_id OG_expector_id, 
+		OG.executor_id OG_executor_id, OG.status OG_status, 
+		OG.create_time OG_create_time, OG.remark OG_remark
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		OG.id id, OG.order_id orderId, 
+		OG.goods_id goodsId, OG.title title, 
+		OG.price price, OG.pay_price payPrice, 
+		OG.profit profit, OG.expector_id expectorId, 
+		OG.executor_id executorId, OG.status status, 
+		OG.create_time createTime, OG.remark remark
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND OG.id=#{id}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND OG.order_id=#{orderId}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND OG.goods_id=#{goodsId}
+		</if>
+		<if test="title!=null and title!=''">
+			AND OG.title=#{title}
+		</if>
+		<if test="price!=null">
+			AND OG.price=#{price}
+		</if>
+		<if test="payPrice!=null">
+			AND OG.pay_price=#{payPrice}
+		</if>
+		<if test="profit!=null">
+			AND OG.profit=#{profit}
+		</if>
+		<if test="expectorId!=null and expectorId!=''">
+			AND OG.expector_id=#{expectorId}
+		</if>
+		<if test="executorId!=null and executorId!=''">
+			AND OG.executor_id=#{executorId}
+		</if>
+		<if test="status!=null">
+			AND OG.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND OG.create_time=#{createTime}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND OG.remark=#{remark}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND OG.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND OG.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND OG.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND OG.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="price!=null">
+				AND OG.price=#{price}
+			</if>
+			<if test="payPrice!=null">
+				AND OG.pay_price=#{payPrice}
+			</if>
+			<if test="profit!=null">
+				AND OG.profit=#{profit}
+			</if>
+			<if test="expectorId!=null and expectorId!=''">
+				AND OG.expector_id LIKE CONCAT('%', #{expectorId}, '%')
+			</if>
+			<if test="executorId!=null and executorId!=''">
+				AND OG.executor_id LIKE CONCAT('%', #{executorId}, '%')
+			</if>
+			<if test="status!=null">
+				AND OG.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND OG.create_time=#{createTime}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND OG.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				OG.id=#{id}, 
+		   </if>
+           <if test="orderId!=null">
+				OG.order_id=#{orderId}, 
+		   </if>
+           <if test="goodsId!=null">
+				OG.goods_id=#{goodsId}, 
+		   </if>
+           <if test="title!=null">
+				OG.title=#{title}, 
+		   </if>
+           <if test="price!=null">
+				OG.price=#{price}, 
+		   </if>
+           <if test="payPrice!=null">
+				OG.pay_price=#{payPrice}, 
+		   </if>
+           <if test="profit!=null">
+				OG.profit=#{profit}, 
+		   </if>
+           <if test="expectorId!=null">
+				OG.expector_id=#{expectorId}, 
+		   </if>
+           <if test="executorId!=null">
+				OG.executor_id=#{executorId}, 
+		   </if>
+           <if test="status!=null">
+				OG.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				OG.create_time=#{createTime}, 
+		   </if>
+           <if test="remark!=null">
+				OG.remark=#{remark}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="orderGoods" type="com.jinpaihushi.jphs.order.model.OrderGoods">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="payPrice" column="pay_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="expectorId" column="expector_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="executorId" column="executor_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="orderGoodsGlobal" type="com.jinpaihushi.jphs.order.model.OrderGoods">
+		<result property="id" column="OG_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="OG_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="OG_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="OG_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="OG_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="payPrice" column="OG_pay_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="OG_profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="expectorId" column="OG_expector_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="executorId" column="OG_executor_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="OG_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="OG_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remark" column="OG_remark" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.order.model.OrderGoods">
+		INSERT INTO `ORDER_GOODS`(
+			id, order_id, 
+			goods_id, title, 
+			price, pay_price, 
+			profit, expector_id, 
+			executor_id, status, 
+			create_time, remark
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+			#{goodsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+			#{price,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, 
+			#{profit,jdbcType=DECIMAL}, #{expectorId,jdbcType=VARCHAR}, 
+			#{executorId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `ORDER_GOODS`(
+			id, order_id, 
+			goods_id, title, 
+			price, pay_price, 
+			profit, expector_id, 
+			executor_id, status, 
+			create_time, remark
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
+			#{item.goodsId,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.payPrice,jdbcType=DECIMAL}, 
+			#{item.profit,jdbcType=DECIMAL}, #{item.expectorId,jdbcType=VARCHAR}, 
+			#{item.executorId,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.remark,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE OG FROM `ORDER_GOODS` OG WHERE OG.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `ORDER_GOODS` OG
+		SET 
+		OG.STATUS = -1
+		WHERE OG.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ORDER_GOODS` OG
+		<include refid="dynamicSet" /> 
+	    WHERE OG.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="orderGoods">
+		SELECT <include refid="field"/>
+		FROM `ORDER_GOODS` OG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ORDER_GOODS` OG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="orderGoods">
+		SELECT <include refid="field"/>
+		FROM `ORDER_GOODS` OG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="orderGoods">
+		SELECT <include refid="field"/>
+		FROM `ORDER_GOODS` OG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="orderGoods">
+		SELECT <include refid="field"/>
+		FROM `ORDER_GOODS` OG
+		WHERE OG.ID = #{id}
+	</select>
+	
+	
+	<select id="getOrderCount" resultType="java.lang.Integer">
+		SELECT COUNT(ID)
+		FROM `ORDER_GOODS` OG
+		WHERE OG.`ORDER_ID` = #{orderId};
+	</select>
+	
+</mapper>

@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-08 10:46:13
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.sysversion.dao.SysversionDao">
+	
+	<sql id="field">
+		S.id, S.type, S.version, S.download_url, 
+		S.force_updating, S.content, S.status, S.create_time, 
+		S.creator_id, S.creator_name, S.hide
+	</sql>
+
+	<sql id="fieldGlobal">
+		S.id S_id, S.type S_type, 
+		S.version S_version, S.download_url S_download_url, 
+		S.force_updating S_force_updating, S.content S_content, 
+		S.status S_status, S.create_time S_create_time, 
+		S.creator_id S_creator_id, S.creator_name S_creator_name, 
+		S.hide S_hide
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		S.id id, S.type type, 
+		S.version version, S.download_url downloadUrl, 
+		S.force_updating forceUpdating, S.content content, 
+		S.status status, S.create_time createTime, 
+		S.creator_id creatorId, S.creator_name creatorName, 
+		S.hide hide
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND S.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND S.type=#{type}
+		</if>
+		<if test="version!=null and version!=''">
+			AND S.version=#{version}
+		</if>
+		<if test="downloadUrl!=null and downloadUrl!=''">
+			AND S.download_url=#{downloadUrl}
+		</if>
+		<if test="forceUpdating!=null">
+			AND S.force_updating=#{forceUpdating}
+		</if>
+		<if test="content!=null and content!=''">
+			AND S.content=#{content}
+		</if>
+		<if test="status!=null">
+			AND S.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND S.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND S.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND S.creator_name=#{creatorName}
+		</if>
+		<if test="hide!=null">
+			AND S.hide=#{hide}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND S.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND S.type=#{type}
+			</if>
+			<if test="version!=null and version!=''">
+				AND S.version LIKE CONCAT('%', #{version}, '%')
+			</if>
+			<if test="downloadUrl!=null and downloadUrl!=''">
+				AND S.download_url LIKE CONCAT('%', #{downloadUrl}, '%')
+			</if>
+			<if test="forceUpdating!=null">
+				AND S.force_updating=#{forceUpdating}
+			</if>
+			<if test="content!=null and content!=''">
+				AND S.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND S.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND S.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND S.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND S.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="hide!=null">
+				AND S.hide=#{hide}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				S.id=#{id}, 
+		   </if>
+           <if test="type!=null">
+				S.type=#{type}, 
+		   </if>
+           <if test="version!=null">
+				S.version=#{version}, 
+		   </if>
+           <if test="downloadUrl!=null">
+				S.download_url=#{downloadUrl}, 
+		   </if>
+           <if test="forceUpdating!=null">
+				S.force_updating=#{forceUpdating}, 
+		   </if>
+           <if test="content!=null">
+				S.content=#{content}, 
+		   </if>
+           <if test="status!=null">
+				S.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				S.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				S.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				S.creator_name=#{creatorName}, 
+		   </if>
+           <if test="hide!=null">
+				S.hide=#{hide}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="sysversion" type="com.jinpaihushi.jphs.sysversion.model.Sysversion">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="version" column="version" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="downloadUrl" column="download_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="forceUpdating" column="force_updating" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hide" column="hide" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="sysversionGlobal" type="com.jinpaihushi.jphs.sysversion.model.Sysversion">
+		<result property="id" column="S_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="S_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="version" column="S_version" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="downloadUrl" column="S_download_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="forceUpdating" column="S_force_updating" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="S_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="S_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="S_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="S_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="S_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hide" column="S_hide" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.sysversion.model.Sysversion">
+		INSERT INTO `SYSVERSION`(
+			id, type, 
+			version, download_url, 
+			force_updating, content, 
+			status, create_time, 
+			creator_id, creator_name, 
+			hide
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{version,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, 
+			#{forceUpdating,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{hide,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSVERSION`(
+			id, type, 
+			version, download_url, 
+			force_updating, content, 
+			status, create_time, 
+			creator_id, creator_name, 
+			hide
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.version,jdbcType=VARCHAR}, #{item.downloadUrl,jdbcType=VARCHAR}, 
+			#{item.forceUpdating,jdbcType=INTEGER}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.hide,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE S FROM `SYSVERSION` S WHERE S.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SYSVERSION` S
+		SET 
+		S.STATUS = -1
+		WHERE S.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSVERSION` S
+		<include refid="dynamicSet" /> 
+	    WHERE S.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="sysversion">
+		SELECT <include refid="field"/>
+		FROM `SYSVERSION` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSVERSION` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="sysversion">
+		SELECT <include refid="field"/>
+		FROM `SYSVERSION` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="sysversion">
+		SELECT <include refid="field"/>
+		FROM `SYSVERSION` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="sysversion">
+		SELECT <include refid="field"/>
+		FROM `SYSVERSION` S
+		WHERE S.ID = #{id}
+	</select>
+	
+	<select id="appVersion" resultMap="sysversion">
+		SELECT <include refid="field"/> FROM sysversion S WHERE type=#{type} ORDER BY id DESC LIMIT 1
+	</select>
+	
+</mapper>

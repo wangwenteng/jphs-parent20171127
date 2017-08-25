@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+	<dubbo:reference id="systemUserService" interface="com.jinpaihushi.jphs.system.service.SystemUserService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="systemModuleService" interface="com.jinpaihushi.jphs.system.service.SystemModuleService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="systemRoleService" interface="com.jinpaihushi.jphs.system.service.SystemRoleService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="sysversionService" interface="com.jinpaihushi.jphs.sysversion.service.SysversionService"
+		timeout="${dubbo.timeout}" check="false" />
+</beans>

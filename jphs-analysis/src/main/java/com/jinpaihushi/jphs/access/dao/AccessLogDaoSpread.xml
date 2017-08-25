@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-13 15:01:41
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.access.dao.AccessLogSpreadDao">
+	<resultMap id="accessLogSpread" type="com.jinpaihushi.jphs.access.model.AccessLogSpread">
+		<result property="uv" column="uv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="pv" column="pv" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="accesstime" column="accesstime" javaType="Date" jdbcType="DATE"></result>
+		<result property="starttime" column="startTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="endtime" column="endTime" javaType="Date" jdbcType="TIME"></result>
+		<result property="platformId" column="platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformName" column="platformName" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="accessMonth" column="accessMonth" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	<select id="getAmountOfAccessByDay" resultMap="accessLogSpread">
+		SELECT DISTINCT
+			sum(al.pv) AS pv,
+			sum(al.uv) AS uv,
+			al.accesstime,
+			al.startTime,
+			al.endTime,
+			al.platform_id ,
+			pl.`name` platformName
+		FROM
+			access_log al
+		LEFT JOIN goods_url g ON al.goods_url_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN platform pl ON al.platform_id = pl.id
+		WHERE
+			CONCAT(
+				al.startTime,
+				'-',
+				al.endTime
+			) != '00:00:00-23:59:59'
+		AND DATE_FORMAT(al.accesstime, '%Y-%m-%d') = #{days}
+		GROUP BY
+			al.platform_id,
+			al.startTime,
+			al.endTime;
+	</select>
+	<select id="getAmountOfAccessByWeek" resultMap="accessLogSpread" >
+		SELECT DISTINCT
+			sum(al.pv) AS pv,
+			sum(al.uv) AS uv,
+			al.accesstime,
+			al.startTime,
+			al.endTime,
+			al.platform_id,
+			pl.`name` platformName
+		FROM
+			access_log al
+		LEFT JOIN goods_url g ON al.goods_url_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN platform pl ON al.platform_id = pl.id
+		WHERE
+			CONCAT(
+				al.startTime,
+				'-',
+				al.endTime
+			) = '00:00:00-23:59:59'
+		AND DATE_FORMAT(al.accesstime, '%Y-%m-%d') BETWEEN #{startTime}
+		AND #{endTime}
+		GROUP BY
+			al.platform_id,
+			al.accesstime;
+	</select>
+	<select id="getAmountOfAccessByMonth" resultMap="accessLogSpread" >
+		SELECT DISTINCT
+			sum(al.pv) AS pv,
+			sum(al.uv) AS uv,
+			al.accesstime,
+			al.startTime,
+			al.endTime,
+			al.platform_id,
+			pl.`name` platformName
+		FROM
+			access_log al
+		LEFT JOIN goods_url g ON al.goods_url_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN platform pl ON al.platform_id = pl.id
+		WHERE
+			CONCAT(
+				al.startTime,
+				'-',
+				al.endTime
+			) = '00:00:00-23:59:59'
+		AND DATE_FORMAT(al.accesstime, '%Y-%m') = #{month}
+		GROUP BY
+			al.platform_id,
+			al.accesstime;
+	</select>
+	<select id="getAmountOfAccessByYear" resultMap="accessLogSpread" >
+		SELECT DISTINCT
+			sum(al.pv) AS pv,
+			sum(al.uv) AS uv,
+			DATE_FORMAT(al.accesstime, '%Y-%m') AS accessMonth,
+			al.startTime,
+			al.endTime,
+			al.platform_id,
+			pl.`name` platformName
+		FROM
+			access_log al
+		LEFT JOIN goods_url g ON al.goods_url_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN platform pl ON al.platform_id = pl.id
+		WHERE
+			CONCAT(
+				al.startTime,
+				'-',
+				al.endTime
+			) = '00:00:00-23:59:59'
+		AND DATE_FORMAT(al.accesstime, '%Y') =#{year}
+		GROUP BY
+			DATE_FORMAT(al.accesstime, '%Y-%m'),
+			al.platform_id;
+	</select>
+</mapper>

@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-06-27 14:43:42 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.evaluation.dao.EvaluationDao">
+
+	<sql id="field">
+		E.id, E.order_id, E.goods_id, E.nurse_id, E.level,
+		E.content, E.status, E.create_time, E.creator_id, E.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		E.id E_id, E.order_id E_order_id, E.goods_id E_goods_id,
+		E.nurse_id E_nurse_id, E.level E_level, E.content E_content, E.status
+		E_status, E.create_time E_create_time, E.creator_id E_creator_id,
+		E.creator_name E_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		E.id id, E.order_id orderId, E.goods_id goodsId, E.nurse_id
+		nurseId, E.level level, E.content content, E.status status,
+		E.create_time createTime, E.creator_id creatorId, E.creator_name
+		creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND E.id=#{id}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND E.order_id=#{orderId}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND E.goods_id=#{goodsId}
+		</if>
+		<if test="nurseId!=null and nurseId!=''">
+			AND E.nurse_id=#{nurseId}
+		</if>
+		<if test="level!=null">
+			AND E.level=#{level}
+		</if>
+		<if test="content!=null and content!=''">
+			AND E.content=#{content}
+		</if>
+		<if test="status!=null">
+			AND E.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND E.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND E.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND E.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND E.id = #{id}
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND E.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND E.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="nurseId!=null and nurseId!=''">
+				AND E.nurse_id LIKE CONCAT('%', #{nurseId}, '%')
+			</if>
+			<if test="level!=null">
+				AND E.level=#{level}
+			</if>
+			<if test="content!=null and content!=''">
+				AND E.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND E.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND E.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND E.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND E.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				E.id=#{id},
+			</if>
+			<if test="orderId!=null">
+				E.order_id=#{orderId},
+			</if>
+			<if test="goodsId!=null">
+				E.goods_id=#{goodsId},
+			</if>
+			<if test="nurseId!=null">
+				E.nurse_id=#{nurseId},
+			</if>
+			<if test="level!=null">
+				E.level=#{level},
+			</if>
+			<if test="content!=null">
+				E.content=#{content},
+			</if>
+			<if test="status!=null">
+				E.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				E.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				E.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				E.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="evaluation"
+		type="com.jinpaihushi.jphs.evaluation.model.Evaluation">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="nurse_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="level" column="level" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseName" column="nurseName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userName" column="userName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsName" column="goodsName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="headPortrait" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userPhone" column="userPhone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nursePhone" column="nursePhone" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="evaluationGlobal"
+		type="com.jinpaihushi.jphs.evaluation.model.Evaluation">
+		<result property="id" column="E_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="E_order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="E_goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseId" column="E_nurse_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="level" column="E_level" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="content" column="E_content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="E_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="E_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="E_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="E_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.evaluation.model.Evaluation">
+		INSERT INTO `EVALUATION`(
+		id, order_id, goods_id,
+		nurse_id, level, content, status, create_time,
+		creator_id, creator_name
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+		#{goodsId,jdbcType=VARCHAR},
+		#{nurseId,jdbcType=VARCHAR},
+		#{level,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `EVALUATION`(
+			id, order_id, 
+			goods_id, nurse_id, 
+			level, content, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.orderId,jdbcType=VARCHAR}, #{item.goodsId,jdbcType=VARCHAR},
+			#{item.nurseId,jdbcType=VARCHAR}, #{item.level,jdbcType=INTEGER},
+			#{item.content,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE E FROM `EVALUATION` E WHERE E.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `EVALUATION` E
+		SET
+		E.STATUS = -1
+		WHERE E.ID =
+		#{id}
+	</update>
+
+	<update id="update">
+		UPDATE `EVALUATION` E
+		<include refid="dynamicSet" />
+		WHERE E.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="evaluation">
+		SELECT
+		<include refid="field" />
+		FROM `EVALUATION` E
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `EVALUATION` E
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="evaluation">
+		SELECT
+		<include refid="field" />
+		FROM `EVALUATION` E
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="evaluation">
+		SELECT
+		<include refid="field" />
+		FROM `EVALUATION` E
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="evaluation">
+		SELECT
+		<include refid="field" />
+		FROM `EVALUATION` E
+		WHERE E.ID = #{id}
+	</select>
+	<select id="listInfo" resultMap="evaluation">
+		SELECT
+		E.id,
+		E.goods_id,
+		E.nurse_id,
+		n.name nurseName,
+		ni.url ,
+		E. LEVEL,
+		E.content,
+		E. STATUS,
+		E.create_time,
+		u.id creator_id,
+		REPLACE(u.phone,SUBSTR(u.phone,4,4),'****') creator_name
+		FROM
+		`EVALUATION` E
+		LEFT JOIN `user` u ON E.creator_id = u.id
+		LEFT JOIN `user` n ON E.creator_id = n.id
+		LEFT JOIN nurse_images ni ON E.creator_id = ni.source_id
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
+	<select id="getInfo" resultMap="evaluation">
+		SELECT
+		`e`.`order_id`
+		, `e`.`id`
+		, `e`.`level`
+		, `e`.`content`
+		,
+		`e`.`status`
+		, `e`.`create_time`
+		, `e`.`creator_name`
+		, `u`.`id`
+		,
+		`u`.`name` userName
+		, `g`.`title` goodsName
+		, `e`.`nurse_id`
+		,
+		`e`.`creator_id`
+		, `u`.`phone` userPhone
+		, `u2`.`name` nurseName
+		FROM
+		`jphs`.`evaluation` AS `e`
+		LEFT JOIN `jphs`.`user` AS `u`
+		ON
+		(`e`.`creator_id` = `u`.`id`)
+		LEFT JOIN `jphs`.`nurse` AS `n`
+		ON
+		(`e`.`nurse_id` = `n`.`id`)
+		LEFT JOIN `jphs`.`goods` AS `g`
+		ON
+		(`e`.`goods_id` = `g`.`id`)
+		LEFT JOIN `jphs`.`user` AS `u2`
+		ON
+		(`n`.`creator_id` = `u2`.`id`)
+		WHERE 1 =1
+		<if test="userName!=null">
+			AND `e`.`creator_name` LIKE
+			concat(concat('%',#{userName}),'%')
+		</if>
+		<if test="orderId!=null">
+			AND e.`order_id` LIKE concat(concat('%',#{orderId}),'%')
+		</if>
+		<if test="creatorId!=null">
+			AND e.`creator_id` LIKE
+			concat(concat('%',#{creatorId}),'%')
+		</if>
+		<if test="nurseId!=null">
+			AND e.`nurse_id` LIKE concat(concat('%',#{nurseId}),'%')
+		</if>
+		<if test="beginTime!=null">
+			AND `e`.`create_time` &gt;= #{beginTime}
+		</if>
+		<if test="stopTime!=null">
+			AND `e`.`create_time` &lt;= #{stopTime}
+		</if>
+		<if test="id!=null">
+			AND `e`.`id` = #{id}
+		</if>
+		ORDER BY e.create_time DESC
+	</select>
+
+
+	<select id="getList" resultMap="evaluation">
+		SELECT
+		`e`.`order_id`
+		, `e`.`id`
+		, `g`.`title`
+		, `u`.`name` nurseName
+		,
+		`u`.`phone`
+		, `e`.`level`
+		, `e`.`content`
+		, `e`.`status`
+		,
+		`e`.`creator_name`
+		, `e`.`create_time`
+		FROM
+		`jphs`.`evaluation` AS `e`
+		LEFT JOIN `jphs`.`goods` AS `g`
+		ON (`e`.`goods_id` = `g`.`id`)
+		LEFT JOIN
+		`jphs`.`nurse` AS `n`
+		ON (`e`.`nurse_id` = `n`.`id`)
+		LEFT JOIN
+		`jphs`.`user` AS `u`
+		ON (`n`.`creator_id` = `u`.`id`)
+		LEFT JOIN
+		`jphs`.`user` AS `u1`
+		ON (`e`.`creator_id` = `u1`.`id`)
+		WHERE 1 = 1
+		<if test="orderId != null">
+			AND `e`.`order_id` LIKE concat(concat('%',#{orderId}),'%')
+		</if>
+		<if test="nurseName != null">
+			AND `u`.`name` LIKE concat(concat('%',#{nurseName}),'%')
+		</if>
+		<if test="title != null">
+			AND `g`.`title` LIKE concat(concat('%',#{title}),'%')
+		</if>
+		<if test="nursePhone != null">
+			AND `u`.`phone` LIKE concat(concat('%',#{nursePhone}),'%')
+		</if>
+		<if test="creatorName != null">
+			AND `e`.`creator_name` LIKE
+			concat(concat('%',#{creatorName}),'%')
+		</if>
+		<if test="userPhone != null">
+			AND `u1`.`phone` LIKE concat(concat('%',#{userPhone}),'%')
+		</if>
+	</select>
+	<select id="getGoodsLevel" resultType="java.lang.Integer">
+		SELECT IFNULL(ROUND(AVG(
+		`level`)),0) level FROM `evaluation` where goods_id
+		=#{goodsId};
+	</select>
+</mapper>

@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-15 19:05:47
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.price.dao.PriceGradeDao">
+	
+	<sql id="field">
+		PG.id, PG.goods_id, PG.grade, PG.grade_name, 
+		PG.status, PG.create_time, PG.creator_id, PG.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		PG.id PG_id, PG.goods_id PG_goods_id, 
+		PG.grade PG_grade, PG.grade_name PG_grade_name, 
+		PG.status PG_status, PG.create_time PG_create_time, 
+		PG.creator_id PG_creator_id, PG.creator_name PG_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PG.id id, PG.goods_id goodsId, 
+		PG.grade grade, PG.grade_name gradeName, 
+		PG.status status, PG.create_time createTime, 
+		PG.creator_id creatorId, PG.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PG.id=#{id}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND PG.goods_id=#{goodsId}
+		</if>
+		<if test="grade!=null">
+			AND PG.grade=#{grade}
+		</if>
+		<if test="gradeName!=null and gradeName!=''">
+			AND PG.grade_name=#{gradeName}
+		</if>
+		<if test="status!=null">
+			AND PG.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND PG.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PG.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PG.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PG.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND PG.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="grade!=null">
+				AND PG.grade=#{grade}
+			</if>
+			<if test="gradeName!=null and gradeName!=''">
+				AND PG.grade_name LIKE CONCAT('%', #{gradeName}, '%')
+			</if>
+			<if test="status!=null">
+				AND PG.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND PG.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PG.id=#{id}, 
+		   </if>
+           <if test="goodsId!=null">
+				PG.goods_id=#{goodsId}, 
+		   </if>
+           <if test="grade!=null">
+				PG.grade=#{grade}, 
+		   </if>
+           <if test="gradeName!=null">
+				PG.grade_name=#{gradeName}, 
+		   </if>
+           <if test="status!=null">
+				PG.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				PG.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				PG.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PG.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="priceGrade" type="com.jinpaihushi.jphs.price.model.PriceGrade">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="gradeName" column="grade_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="priceGradeGlobal" type="com.jinpaihushi.jphs.price.model.PriceGrade">
+		<result property="id" column="PG_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="PG_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="PG_grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="gradeName" column="PG_grade_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="PG_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="PG_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PG_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PG_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.price.model.PriceGrade">
+		INSERT INTO `PRICE_GRADE`(
+			id, goods_id, 
+			grade, grade_name, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+			#{grade,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PRICE_GRADE`(
+			id, goods_id, 
+			grade, grade_name, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.goodsId,jdbcType=VARCHAR}, 
+			#{item.grade,jdbcType=INTEGER}, #{item.gradeName,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PG FROM `PRICE_GRADE` PG WHERE PG.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PRICE_GRADE` PG
+		SET 
+		PG.STATUS = -1
+		WHERE PG.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PRICE_GRADE` PG
+		<include refid="dynamicSet" /> 
+	    WHERE PG.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="priceGrade">
+		SELECT <include refid="field"/>
+		FROM `PRICE_GRADE` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PRICE_GRADE` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="priceGrade">
+		SELECT <include refid="field"/>
+		FROM `PRICE_GRADE` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="priceGrade">
+		SELECT <include refid="field"/>
+		FROM `PRICE_GRADE` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="priceGrade">
+		SELECT <include refid="field"/>
+		FROM `PRICE_GRADE` PG
+		WHERE PG.ID = #{id}
+	</select>
+	
+</mapper>

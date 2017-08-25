@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-21 15:30:05
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.platform.dao.PlatformSiteDao">
+	
+	<sql id="field">
+		PS.id, PS.platform_id, PS.site_id, PS.url, 
+		PS.status, PS.create_time, PS.creator_id, PS.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		PS.id PS_id, PS.platform_id PS_platform_id, 
+		PS.site_id PS_site_id, PS.url PS_url, 
+		PS.status PS_status, PS.create_time PS_create_time, 
+		PS.creator_id PS_creator_id, PS.creator_name PS_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PS.id id, PS.platform_id platformId, 
+		PS.site_id siteId, PS.url url, 
+		PS.status status, PS.create_time createTime, 
+		PS.creator_id creatorId, PS.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PS.id=#{id}
+		</if>
+		<if test="platformId!=null and platformId!=''">
+			AND PS.platform_id=#{platformId}
+		</if>
+		<if test="siteId!=null and siteId!=''">
+			AND PS.site_id=#{siteId}
+		</if>
+		<if test="url!=null and url!=''">
+			AND PS.url=#{url}
+		</if>
+		<if test="status!=null">
+			AND PS.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND PS.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PS.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PS.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PS.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="platformId!=null and platformId!=''">
+				AND PS.platform_id LIKE CONCAT('%', #{platformId}, '%')
+			</if>
+			<if test="siteId!=null and siteId!=''">
+				AND PS.site_id LIKE CONCAT('%', #{siteId}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND PS.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="status!=null">
+				AND PS.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND PS.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PS.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PS.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PS.id=#{id}, 
+		   </if>
+           <if test="platformId!=null">
+				PS.platform_id=#{platformId}, 
+		   </if>
+           <if test="siteId!=null">
+				PS.site_id=#{siteId}, 
+		   </if>
+           <if test="url!=null">
+				PS.url=#{url}, 
+		   </if>
+           <if test="status!=null">
+				PS.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				PS.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				PS.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PS.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="platformSite" type="com.jinpaihushi.jphs.platform.model.PlatformSite">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="siteId" column="site_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="platformSiteGlobal" type="com.jinpaihushi.jphs.platform.model.PlatformSite">
+		<result property="id" column="PS_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="platformId" column="PS_platform_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="siteId" column="PS_site_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="PS_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="PS_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="PS_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PS_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PS_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.platform.model.PlatformSite">
+		INSERT INTO `PLATFORM_SITE`(
+			id, platform_id, 
+			site_id, url, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{platformId,jdbcType=VARCHAR}, 
+			#{siteId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PLATFORM_SITE`(
+			id, platform_id, 
+			site_id, url, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.platformId,jdbcType=VARCHAR}, 
+			#{item.siteId,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PS FROM `PLATFORM_SITE` PS WHERE PS.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PLATFORM_SITE` PS
+		SET 
+		PS.STATUS = -1
+		WHERE PS.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PLATFORM_SITE` PS
+		<include refid="dynamicSet" /> 
+	    WHERE PS.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="platformSite">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_SITE` PS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PLATFORM_SITE` PS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="platformSite">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_SITE` PS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="platformSite">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_SITE` PS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="platformSite">
+		SELECT <include refid="field"/>
+		FROM `PLATFORM_SITE` PS
+		WHERE PS.ID = #{id}
+	</select>
+	
+</mapper>

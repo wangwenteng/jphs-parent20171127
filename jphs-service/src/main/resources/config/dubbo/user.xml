@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+	<dubbo:service ref="userService"
+		interface="com.jinpaihushi.jphs.user.service.UserService" />
+	<dubbo:service ref="userAddressService"
+		interface="com.jinpaihushi.jphs.user.service.UserAddressService" />
+	<dubbo:service ref="accountService"
+		interface="com.jinpaihushi.jphs.account.service.AccountService" />
+	<dubbo:service ref="voucherUseService"
+		interface="com.jinpaihushi.jphs.activity.service.VoucherUseService" />
+	<dubbo:service ref="voucherService"
+		interface="com.jinpaihushi.jphs.voucher.service.VoucherService" />
+	<dubbo:service ref="voucherRepertoryService"
+		interface="com.jinpaihushi.jphs.voucher.service.VoucherRepertoryService" />
+
+	<!-- 工作时间 -->
+	<dubbo:service ref="worktimeService"
+		interface="com.jinpaihushi.jphs.worktime.service.WorktimeService" />
+	<!-- 短信 -->
+	<dubbo:service ref="verificationService"
+		interface="com.jinpaihushi.jphs.verification.service.VerificationService" />
+</beans>

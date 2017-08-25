@@ -1,0 +1,496 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-07-08 09:34:35 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.price.dao.PriceDao">
+
+	<sql id="field">
+		P.id, P.goods_id, P.title, P.grade,
+		P.grade_name, P.service_number, P.service_time, P.aptitude_id_arr,
+		P.unit, P.sort, P.remark, P.create_time,
+		P.status, P.creator_id, P.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		P.id P_id, P.goods_id P_goods_id,
+		P.title P_title, P.grade P_grade,
+		P.grade_name P_grade_name, P.service_number P_service_number,
+		P.service_time P_service_time, P.aptitude_id_arr P_aptitude_id_arr,
+		P.unit P_unit, P.sort P_sort,
+		P.remark P_remark, P.create_time P_create_time,
+		P.status P_status, P.creator_id P_creator_id,
+		P.creator_name P_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		P.id id, P.goods_id goodsId,
+		P.title title, P.grade grade,
+		P.grade_name gradeName, P.service_number serviceNumber,
+		P.service_time serviceTime, P.aptitude_id_arr aptitudeIdArr,
+		P.unit unit, P.sort sort,
+		P.remark remark, P.create_time createTime,
+		P.status status, P.creator_id creatorId,
+		P.creator_name creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND P.id=#{id}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND P.goods_id=#{goodsId}
+		</if>
+		<if test="title!=null and title!=''">
+			AND P.title=#{title}
+		</if>
+		<if test="grade!=null">
+			AND P.grade=#{grade}
+		</if>
+		<if test="gradeName!=null and gradeName!=''">
+			AND P.grade_name=#{gradeName}
+		</if>
+		<if test="serviceNumber!=null">
+			AND P.service_number=#{serviceNumber}
+		</if>
+		<if test="serviceTime!=null">
+			AND P.service_time=#{serviceTime}
+		</if>
+		<if test="aptitudeIdArr!=null and aptitudeIdArr!=''">
+			AND P.aptitude_id_arr=#{aptitudeIdArr}
+		</if>
+		<if test="unit!=null and unit!=''">
+			AND P.unit=#{unit}
+		</if>
+		<if test="sort!=null">
+			AND P.sort=#{sort}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND P.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND P.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND P.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND P.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND P.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND P.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND P.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND P.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="grade!=null">
+				AND P.grade=#{grade}
+			</if>
+			<if test="gradeName!=null and gradeName!=''">
+				AND P.grade_name LIKE CONCAT('%', #{gradeName}, '%')
+			</if>
+			<if test="serviceNumber!=null">
+				AND P.service_number=#{serviceNumber}
+			</if>
+			<if test="serviceTime!=null">
+				AND P.service_time=#{serviceTime}
+			</if>
+			<if test="aptitudeIdArr!=null and aptitudeIdArr!=''">
+				AND P.aptitude_id_arr LIKE CONCAT('%', #{aptitudeIdArr},
+				'%')
+			</if>
+			<if test="unit!=null and unit!=''">
+				AND P.unit LIKE CONCAT('%', #{unit}, '%')
+			</if>
+			<if test="sort!=null">
+				AND P.sort=#{sort}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND P.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND P.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND P.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND P.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND P.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				P.id=#{id},
+			</if>
+			<if test="goodsId!=null">
+				P.goods_id=#{goodsId},
+			</if>
+			<if test="title!=null">
+				P.title=#{title},
+			</if>
+			<if test="grade!=null">
+				P.grade=#{grade},
+			</if>
+			<if test="gradeName!=null">
+				P.grade_name=#{gradeName},
+			</if>
+			<if test="serviceNumber!=null">
+				P.service_number=#{serviceNumber},
+			</if>
+			<if test="serviceTime!=null">
+				P.service_time=#{serviceTime},
+			</if>
+			<if test="aptitudeIdArr!=null">
+				P.aptitude_id_arr=#{aptitudeIdArr},
+			</if>
+			<if test="unit!=null">
+				P.unit=#{unit},
+			</if>
+			<if test="sort!=null">
+				P.sort=#{sort},
+			</if>
+			<if test="remark!=null">
+				P.remark=#{remark},
+			</if>
+			<if test="createTime!=null">
+				P.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				P.status=#{status},
+			</if>
+			<if test="creatorId!=null">
+				P.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				P.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+	<resultMap id="price" type="com.jinpaihushi.jphs.price.model.Price">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="gradeName" column="grade_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="serviceNumber" column="service_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="serviceTime" column="service_time" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="aptitudeIdArr" column="aptitude_id_arr"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="getGoodsPriceDetail" type="com.jinpaihushi.jphs.price.model.Price">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="gradeName" column="grade_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="serviceNumber" column="service_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="serviceTime" column="service_time" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="aptitudeIdArr" column="aptitude_id_arr"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unit" column="unit" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<association property="pricePart"
+			javaType="com.jinpaihushi.jphs.price.model.PricePart">
+			<result property="id" column="pr_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="priceId" column="price_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="siteId" column="site_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="aptitudeIdArr" column="aptitude_id_arr"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="costPrice" column="cost_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="oldPrice" column="old_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="profit" column="profit" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="status" column="pr_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+	</resultMap>
+
+	<resultMap id="priceGlobal" type="com.jinpaihushi.jphs.price.model.Price">
+		<result property="id" column="P_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="P_goods_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="title" column="P_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="grade" column="P_grade" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="gradeName" column="P_grade_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="serviceNumber" column="P_service_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="serviceTime" column="P_service_time"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="aptitudeIdArr" column="P_aptitude_id_arr"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unit" column="P_unit" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="P_sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="P_remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="P_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="P_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="creatorId" column="P_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="P_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.price.model.Price">
+		INSERT INTO `PRICE`(
+		id, goods_id,
+		title, grade,
+		grade_name, service_number,
+		service_time, aptitude_id_arr,
+		unit, sort,
+		remark, create_time,
+		status, creator_id,
+		creator_name
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER},
+		#{gradeName,jdbcType=VARCHAR}, #{serviceNumber,jdbcType=INTEGER},
+		#{serviceTime,jdbcType=INTEGER}, #{aptitudeIdArr,jdbcType=VARCHAR},
+		#{unit,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR}, now(),
+		#{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `PRICE`(
+			id, goods_id, 
+			title, grade, 
+			grade_name, service_number, 
+			service_time, aptitude_id_arr, 
+			unit, sort, 
+			remark, create_time, 
+			status, creator_id, 
+			creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.goodsId,jdbcType=VARCHAR},
+			#{item.title,jdbcType=VARCHAR}, #{item.grade,jdbcType=INTEGER},
+			#{item.gradeName,jdbcType=VARCHAR}, #{item.serviceNumber,jdbcType=INTEGER},
+			#{item.serviceTime,jdbcType=INTEGER},
+			#{item.aptitudeIdArr,jdbcType=VARCHAR},
+			#{item.unit,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE P FROM `PRICE` P WHERE P.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `PRICE` P
+		SET
+		P.STATUS = -1
+		WHERE P.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PRICE` P
+		<include refid="dynamicSet" />
+		WHERE P.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="price">
+		SELECT
+		<include refid="field" />
+		FROM `PRICE` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PRICE` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="price">
+		SELECT
+		<include refid="field" />
+		FROM `PRICE` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="price">
+		SELECT
+		<include refid="field" />
+		FROM `PRICE` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="price">
+		SELECT
+		<include refid="field" />
+		FROM `PRICE` P
+		WHERE P.ID = #{id}
+	</select>
+
+	<select id="getGoodsPriceGradeDetail" resultMap="getGoodsPriceDetail">
+		SELECT
+		p.id,
+		p.goods_id,
+		p.title,
+		p.grade,
+		p.grade_name,
+		p.service_number,
+		p.service_time,
+		p.aptitude_id_arr,
+		p.unit,
+		p.sort,
+		p.remark,
+		p.create_time,
+		p.status,
+		p.creator_id,
+		p.creator_name,
+		pr.id pr_id,
+		pr.site_id,
+		pr.price,
+		pr.cost_price,
+		pr.old_price,
+		pr.profit,
+		pr.status pr_status
+		FROM price p
+		LEFT JOIN `price_part` pr ON pr.price_id = p.id
+		WHERE pr.site_id=0 AND p.status=1 AND p.goods_id =#{id}
+		group by p.grade order by p.grade
+	</select>
+
+	<!-- // getGoodsPriceDetail -->
+	<select id="getGoodsPriceDetail" resultMap="getGoodsPriceDetail">
+		SELECT
+		p.id,
+		p.goods_id,
+		p.title,
+		p.grade,
+		p.grade_name,
+		p.service_number,
+		p.service_time,
+		p.aptitude_id_arr,
+		p.unit,
+		p.sort,
+		p.remark,
+		p.create_time,
+		p.status,
+		p.creator_id,
+		p.creator_name,
+		pr.id pr_id,
+		pr.site_id,
+		pr.price,
+		pr.cost_price,
+		pr.old_price,
+		pr.profit,
+		pr.status pr_status
+		FROM
+		price p
+		LEFT JOIN `price_part` pr ON pr.price_id = p.id
+		WHERE 
+		p.status=1 AND p.goods_id = #{goodsId} 
+		<if test="grade!=null">
+			AND p.grade=#{grade}
+		</if>
+		<choose>
+			<when test="siteId!=null and siteId!=''">
+				AND pr.site_id=#{siteId}
+			</when>
+			<otherwise>
+				AND pr.site_id=0
+			</otherwise>
+		</choose>
+		;
+	</select>
+	<select id="getGoodsGrade" resultMap="price">
+		SELECT DISTINCT grade,grade_name FROM
+		price p WHERE p.goods_id=#{goodsId} GROUP BY grade;
+	</select>
+</mapper>

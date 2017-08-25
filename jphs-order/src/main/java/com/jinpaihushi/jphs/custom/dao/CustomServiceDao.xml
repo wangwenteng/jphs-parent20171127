@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-13 14:40:35
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.custom.dao.CustomServiceDao">
+	
+	<sql id="field">
+		CS.id, CS.name, CS.company_name, CS.type, 
+		CS.phone, CS.create_time, CS.source, CS.visit_time, 
+		CS.visitor, CS.status, CS.creator_id, CS.creator_name, 
+		CS.remark
+	</sql>
+
+	<sql id="fieldGlobal">
+		CS.id CS_id, CS.name CS_name, 
+		CS.company_name CS_company_name, CS.type CS_type, 
+		CS.phone CS_phone, CS.create_time CS_create_time, 
+		CS.source CS_source, CS.visit_time CS_visit_time, 
+		CS.visitor CS_visitor, CS.status CS_status, 
+		CS.creator_id CS_creator_id, CS.creator_name CS_creator_name, 
+		CS.remark CS_remark
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CS.id id, CS.name name, 
+		CS.company_name companyName, CS.type type, 
+		CS.phone phone, CS.create_time createTime, 
+		CS.source source, CS.visit_time visitTime, 
+		CS.visitor visitor, CS.status status, 
+		CS.creator_id creatorId, CS.creator_name creatorName, 
+		CS.remark remark
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CS.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND CS.name=#{name}
+		</if>
+		<if test="companyName!=null and companyName!=''">
+			AND CS.company_name=#{companyName}
+		</if>
+		<if test="type!=null">
+			AND CS.type=#{type}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND CS.phone=#{phone}
+		</if>
+		<if test="createTime!=null">
+			AND CS.create_time=#{createTime}
+		</if>
+		<if test="source!=null and source!=''">
+			AND CS.source=#{source}
+		</if>
+		<if test="visitTime!=null">
+			AND CS.visit_time=#{visitTime}
+		</if>
+		<if test="visitor!=null and visitor!=''">
+			AND CS.visitor=#{visitor}
+		</if>
+		<if test="status!=null">
+			AND CS.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CS.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CS.creator_name=#{creatorName}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND CS.remark=#{remark}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CS.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND CS.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="companyName!=null and companyName!=''">
+				AND CS.company_name LIKE CONCAT('%', #{companyName}, '%')
+			</if>
+			<if test="type!=null">
+				AND CS.type=#{type}
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND CS.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND CS.create_time=#{createTime}
+			</if>
+			<if test="source!=null and source!=''">
+				AND CS.source LIKE CONCAT('%', #{source}, '%')
+			</if>
+			<if test="visitTime!=null">
+				AND CS.visit_time=#{visitTime}
+			</if>
+			<if test="visitor!=null and visitor!=''">
+				AND CS.visitor LIKE CONCAT('%', #{visitor}, '%')
+			</if>
+			<if test="status!=null">
+				AND CS.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CS.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CS.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND CS.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CS.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				CS.name=#{name}, 
+		   </if>
+           <if test="companyName!=null">
+				CS.company_name=#{companyName}, 
+		   </if>
+           <if test="type!=null">
+				CS.type=#{type}, 
+		   </if>
+           <if test="phone!=null">
+				CS.phone=#{phone}, 
+		   </if>
+           <if test="createTime!=null">
+				CS.create_time=#{createTime}, 
+		   </if>
+           <if test="source!=null">
+				CS.source=#{source}, 
+		   </if>
+           <if test="visitTime!=null">
+				CS.visit_time=#{visitTime}, 
+		   </if>
+           <if test="visitor!=null">
+				CS.visitor=#{visitor}, 
+		   </if>
+           <if test="status!=null">
+				CS.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				CS.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CS.creator_name=#{creatorName}, 
+		   </if>
+           <if test="remark!=null">
+				CS.remark=#{remark}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="customService" type="com.jinpaihushi.jphs.custom.model.CustomService">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="companyName" column="company_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="source" column="source" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="visitTime" column="visit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="visitor" column="visitor" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="customServiceGlobal" type="com.jinpaihushi.jphs.custom.model.CustomService">
+		<result property="id" column="CS_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="CS_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="companyName" column="CS_company_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="CS_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="CS_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="CS_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="source" column="CS_source" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="visitTime" column="CS_visit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="visitor" column="CS_visitor" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="CS_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="CS_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CS_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="CS_remark" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.custom.model.CustomService">
+		INSERT INTO `CUSTOM_SERVICE`(
+			id, name, 
+			company_name, type, 
+			phone, create_time, 
+			source, visit_time, 
+			visitor, status, 
+			creator_id, creator_name, 
+			remark
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{companyName,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{phone,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{source,jdbcType=VARCHAR}, #{visitTime,jdbcType=TIMESTAMP}, 
+			#{visitor,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{remark,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `CUSTOM_SERVICE`(
+			id, name, 
+			company_name, type, 
+			phone, create_time, 
+			source, visit_time, 
+			visitor, status, 
+			creator_id, creator_name, 
+			remark
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.companyName,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.phone,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.source,jdbcType=VARCHAR}, #{item.visitTime,jdbcType=TIMESTAMP}, 
+			#{item.visitor,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.remark,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CS FROM `CUSTOM_SERVICE` CS WHERE CS.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `CUSTOM_SERVICE` CS
+		SET 
+		CS.STATUS = -1
+		WHERE CS.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `CUSTOM_SERVICE` CS
+		<include refid="dynamicSet" /> 
+	    WHERE CS.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="customService">
+		SELECT <include refid="field"/>
+		FROM `CUSTOM_SERVICE` CS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `CUSTOM_SERVICE` CS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="customService">
+		SELECT <include refid="field"/>
+		FROM `CUSTOM_SERVICE` CS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="customService">
+		SELECT <include refid="field"/>
+		FROM `CUSTOM_SERVICE` CS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="customService">
+		SELECT <include refid="field"/>
+		FROM `CUSTOM_SERVICE` CS
+		WHERE CS.ID = #{id}
+	</select>
+	
+	
+	<select id="getList" resultMap="customService">
+		SELECT
+		    `id`
+		    , `name`
+		    , `phone`
+		    , `create_time`
+		    , `visit_time`
+		    , `visitor`
+		    , `status`
+		    , `remark`
+		FROM
+		    `jphs`.`custom_service`
+		    WHERE 1=1
+		    <if test="name!=null">
+		        AND NAME LIKE concat(concat('%',#{name}),'%')   
+		    </if>
+		    <if test="phone!=null">
+		        AND PHONE LIKE concat(concat('%',#{phone}),'%')
+		    </if>
+		     <if test="beginTime!=null">
+		     AND `create_time` &gt;= #{beginTime}
+			</if>
+			<if test="stopTime!=null">
+			     AND `create_time` &lt;= #{stopTime}
+			</if>
+			ORDER BY `create_time` DESC
+	</select>
+	
+</mapper>

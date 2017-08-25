@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<!-- 提供方应用名称信息，这个相当于起一个名字，我们dubbo管理页面比较清晰是哪个应用暴露出来的 -->
+	<dubbo:application name="jphs_provider"></dubbo:application>
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry address="${dubbo.address}" check="false"
+		subscribe="false" register=""></dubbo:registry>
+	<!-- 护士接口 -->
+	<import resource="dubbo/nurse.xml"/>
+	<!-- 服务接口 -->
+	<import resource="dubbo/service.xml"/>
+	<!-- 商品接口 -->
+	<!-- <import resource="dubbo/goods.xml"/> -->
+	<!-- 订单接口包含服务订单、商品订单-->
+	<import resource="dubbo/order.xml"/>
+	<!-- 会员接口 -->
+	<import resource="dubbo/user.xml"/>
+	<!-- 系统接口 -->
+	<import resource="dubbo/system.xml"/>
+	<!-- 其他接口 -->
+	<import resource="dubbo/other.xml"/>
+	<!-- 商品 -->
+	<import resource="dubbo/commodity.xml"/>
+</beans>

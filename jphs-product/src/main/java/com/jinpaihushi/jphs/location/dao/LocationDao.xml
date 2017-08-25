@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-28 11:52:33
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.location.dao.LocationDao">
+	
+	<sql id="field">
+		L.id, L.content, L.parent_id, L.type
+	</sql>
+
+	<sql id="fieldGlobal">
+		L.id L_id, L.content L_content, 
+		L.parent_id L_parent_id, L.type L_type
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		L.id id, L.content content, 
+		L.parent_id parentId, L.type type
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND L.id=#{id}
+		</if>
+		<if test="content!=null and content!=''">
+			AND L.content=#{content}
+		</if>
+		<if test="parentId!=null and parentId!=''">
+			AND L.parent_id=#{parentId}
+		</if>
+		<if test="type!=null">
+			AND L.type=#{type}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND L.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND L.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="parentId!=null and parentId!=''">
+				AND L.parent_id LIKE CONCAT('%', #{parentId}, '%')
+			</if>
+			<if test="type!=null">
+				AND L.type=#{type}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				L.id=#{id}, 
+		   </if>
+           <if test="content!=null">
+				L.content=#{content}, 
+		   </if>
+           <if test="parentId!=null">
+				L.parent_id=#{parentId}, 
+		   </if>
+           <if test="type!=null">
+				L.type=#{type}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="location" type="com.jinpaihushi.jphs.location.model.Location">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="pid" column="parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="text" column="content" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="locationGlobal" type="com.jinpaihushi.jphs.location.model.Location">
+		<result property="id" column="L_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="L_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="L_parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="L_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="pid" column="parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="text" column="content" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.location.model.Location">
+		INSERT INTO `LOCATION`(
+			id, content, 
+			parent_id, type
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+			#{parentId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `LOCATION`(
+			id, content, 
+			parent_id, type
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.parentId,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE L FROM `LOCATION` L WHERE L.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `LOCATION` L
+		SET 
+		L.STATUS = -1
+		WHERE L.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `LOCATION` L
+		<include refid="dynamicSet" /> 
+	    WHERE L.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="location">
+		SELECT <include refid="field"/>
+		FROM `LOCATION` L
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `LOCATION` L
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="location">
+		SELECT <include refid="field"/>
+		FROM `LOCATION` L
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="location">
+		SELECT <include refid="field"/>
+		FROM `LOCATION` L
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="location">
+		SELECT <include refid="field"/>
+		FROM `LOCATION` L
+		WHERE L.ID = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+        
+    <dubbo:reference id="userAddressService" interface="com.jinpaihushi.jphs.user.service.UserAddressService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="userService" interface="com.jinpaihushi.jphs.user.service.UserService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="accountService" interface="com.jinpaihushi.jphs.account.service.AccountService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="voucherUseService" interface="com.jinpaihushi.jphs.activity.service.VoucherUseService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="voucherService" interface="com.jinpaihushi.jphs.voucher.service.VoucherService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="voucherRepertoryService" interface="com.jinpaihushi.jphs.voucher.service.VoucherRepertoryService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 工作时间 -->
+	<dubbo:reference id="worktimeService" interface="com.jinpaihushi.jphs.worktime.service.WorktimeService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 短信 -->
+	<dubbo:reference id="verificationService" interface="com.jinpaihushi.jphs.verification.service.VerificationService"
+		timeout="${dubbo.timeout}" check="false" />
+</beans>

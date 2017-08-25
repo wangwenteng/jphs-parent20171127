@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-09 17:06:12
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.jobtitle.dao.JobtitleGoodsDao">
+	
+	<sql id="field">
+		JG.id, JG.goods_id, JG.jobtitle_id, JG.status, 
+		JG.creator_id, JG.creator_name, JG.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		JG.id JG_id, JG.goods_id JG_goods_id, 
+		JG.jobtitle_id JG_jobtitle_id, JG.status JG_status, 
+		JG.creator_id JG_creator_id, JG.creator_name JG_creator_name, 
+		JG.create_time JG_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		JG.id id, JG.goods_id goodsId, 
+		JG.jobtitle_id jobtitleId, JG.status status, 
+		JG.creator_id creatorId, JG.creator_name creatorName, 
+		JG.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND JG.id=#{id}
+		</if>
+		<if test="goodsId!=null and goodsId!=''">
+			AND JG.goods_id=#{goodsId}
+		</if>
+		<if test="jobtitleId!=null and jobtitleId!=''">
+			AND JG.jobtitle_id=#{jobtitleId}
+		</if>
+		<if test="status!=null">
+			AND JG.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND JG.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND JG.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND JG.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND JG.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="goodsId!=null and goodsId!=''">
+				AND JG.goods_id LIKE CONCAT('%', #{goodsId}, '%')
+			</if>
+			<if test="jobtitleId!=null and jobtitleId!=''">
+				AND JG.jobtitle_id LIKE CONCAT('%', #{jobtitleId}, '%')
+			</if>
+			<if test="status!=null">
+				AND JG.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND JG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND JG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND JG.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				JG.id=#{id}, 
+		   </if>
+           <if test="goodsId!=null">
+				JG.goods_id=#{goodsId}, 
+		   </if>
+           <if test="jobtitleId!=null">
+				JG.jobtitle_id=#{jobtitleId}, 
+		   </if>
+           <if test="status!=null">
+				JG.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				JG.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				JG.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				JG.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="jobtitleGoods" type="com.jinpaihushi.jphs.jobtitle.model.JobtitleGoods">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="jobtitle_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="jobtitleGoodsGlobal" type="com.jinpaihushi.jphs.jobtitle.model.JobtitleGoods">
+		<result property="id" column="JG_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="goodsId" column="JG_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="JG_jobtitle_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="JG_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="JG_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="JG_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="JG_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.jobtitle.model.JobtitleGoods">
+		INSERT INTO `JOBTITLE_GOODS`(
+			id, goods_id, 
+			jobtitle_id, status, 
+			creator_id, creator_name, 
+			create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+			#{jobtitleId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `JOBTITLE_GOODS`(
+			id, goods_id, 
+			jobtitle_id, status, 
+			creator_id, creator_name, 
+			create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.goodsId,jdbcType=VARCHAR}, 
+			#{item.jobtitleId,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE JG FROM `JOBTITLE_GOODS` JG WHERE JG.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `JOBTITLE_GOODS` JG
+		SET 
+		JG.STATUS = -1
+		WHERE JG.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `JOBTITLE_GOODS` JG
+		<include refid="dynamicSet" /> 
+	    WHERE JG.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="jobtitleGoods">
+		SELECT <include refid="field"/>
+		FROM `JOBTITLE_GOODS` JG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `JOBTITLE_GOODS` JG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="jobtitleGoods">
+		SELECT <include refid="field"/>
+		FROM `JOBTITLE_GOODS` JG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="jobtitleGoods">
+		SELECT <include refid="field"/>
+		FROM `JOBTITLE_GOODS` JG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="jobtitleGoods">
+		SELECT <include refid="field"/>
+		FROM `JOBTITLE_GOODS` JG
+		WHERE JG.ID = #{id}
+	</select>
+	
+	<select id="getJobtitleCount" resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM jobtitle_goods jg 
+		WHERE jg.status=1 
+		AND jg.jobtitle_id IN (SELECT nj.jobtitle_id FROM nurse_jobtitle nj WHERE nj.creator_id=#{nurseId} AND nj.status=1 ) 
+		AND jg.goods_id=#{goodsId}
+	</select>
+	
+</mapper>

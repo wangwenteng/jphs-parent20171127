@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinpaihushi.jphs.goods.dao.GradeDao">
+	<resultMap type="com.jinpaihushi.jphs.goods.model.Grade" id="grade">
+		<result property="name" column="grade_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<collection property="goodsPrice" ofType="com.jinpaihushi.jphs.goods.model.GoodsPrice">
+			<result property="id" column="pp_id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="serviceNumber" column="service_number" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="serviceTime" column="service_time" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="title" column="pp_title" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+			<result property="oldPrice" column="old_price" javaType="Double" jdbcType="DECIMAL"></result>
+			<result property="costPrice" column="cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+			<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
+		</collection>
+	</resultMap>
+	<select id="getGoodsPrice" resultMap="grade">
+		SELECT
+		p.grade,
+		p.grade_name,
+		pp.id pp_id,
+		p.title pp_title,
+		p.service_number,
+		p.service_time,
+		p.unit,
+		pp.price,
+		pp.old_price,
+		pp.cost_price
+		FROM
+		price_part pp
+		LEFT JOIN price p ON pp.price_id = p.id
+		WHERE
+		pp.site_id =
+		#{siteId}
+		AND p.goods_id = #{goodsId}
+		ORDER BY
+		p.grade,
+		p.sort
+	</select>
+</mapper>

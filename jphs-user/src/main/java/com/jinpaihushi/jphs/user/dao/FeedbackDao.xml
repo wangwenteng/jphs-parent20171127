@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	zhangzd
+	date	:	2017-06-27 11:22:41
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.user.dao.FeedbackDao">
+	
+	<sql id="field">
+		F.id, F.content, F.creator_name, F.creator_id, 
+		F.create_time, F.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		F.id F_id, F.content F_content, 
+		F.creator_name F_creator_name, F.creator_id F_creator_id, 
+		F.create_time F_create_time, F.status F_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		F.id id, F.content content, 
+		F.creator_name creatorName, F.creator_id creatorId, 
+		F.create_time createTime, F.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND F.id=#{id}
+		</if>
+		<if test="content!=null and content!=''">
+			AND F.content=#{content}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND F.creator_name=#{creatorName}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND F.creator_id=#{creatorId}
+		</if>
+		<if test="createTime!=null">
+			AND F.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND F.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND F.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND F.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND F.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND F.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND F.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND F.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				F.id=#{id}, 
+		   </if>
+           <if test="content!=null">
+				F.content=#{content}, 
+		   </if>
+           <if test="creatorName!=null">
+				F.creator_name=#{creatorName}, 
+		   </if>
+           <if test="creatorId!=null">
+				F.creator_id=#{creatorId}, 
+		   </if>
+           <if test="createTime!=null">
+				F.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				F.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="feedback" type="com.jinpaihushi.jphs.user.model.Feedback">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="feedbackGlobal" type="com.jinpaihushi.jphs.user.model.Feedback">
+		<result property="id" column="F_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="F_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="F_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="F_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="F_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="F_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.user.model.Feedback">
+		INSERT INTO `FEEDBACK`(
+			id, content, 
+			creator_name, creator_id, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FEEDBACK`(
+			id, content, 
+			creator_name, creator_id, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE F FROM `FEEDBACK` F WHERE F.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FEEDBACK` F
+		SET 
+		F.STATUS = -1
+		WHERE F.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FEEDBACK` F
+		<include refid="dynamicSet" /> 
+	    WHERE F.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="feedback">
+		SELECT <include refid="field"/>
+		FROM `FEEDBACK` F
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FEEDBACK` F
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="feedback">
+		SELECT <include refid="field"/>
+		FROM `FEEDBACK` F
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="feedback">
+		SELECT <include refid="field"/>
+		FROM `FEEDBACK` F
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="feedback">
+		SELECT <include refid="field"/>
+		FROM `FEEDBACK` F
+		WHERE F.ID = #{id}
+	</select>
+	
+</mapper>

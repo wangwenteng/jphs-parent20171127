@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-08-10 18:58:20 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityOrderDao">
+
+	<sql id="field">
+		CO.id, CO.order_no, CO.pay_price, CO.pay_time,
+		CO.send_time, CO.take_time, CO.confirm_time, CO.remind_time,
+		CO.protect_day, CO.protect_time, CO.voucher_use_id, CO.voucher_price,
+		CO.schedule, CO.status, CO.create_time, CO.creator_id,
+		CO.creator_name, CO.address, CO.detail_address, CO.phone,
+		CO. receiveName
+	</sql>
+
+	<sql id="fieldGlobal">
+		CO.id CO_id, CO.order_no CO_order_no,
+		CO.pay_price CO_pay_price, CO.pay_time CO_pay_time,
+		CO.send_time CO_send_time, CO.take_time CO_take_time,
+		CO.confirm_time CO_confirm_time, CO.remind_time CO_remind_time,
+		CO.protect_day CO_protect_day, CO.protect_time CO_protect_time,
+		CO.voucher_use_id CO_voucher_use_id, CO.voucher_price CO_voucher_price,
+		CO.schedule CO_schedule, CO.status CO_status,
+		CO.create_time CO_create_time, CO.creator_id CO_creator_id,
+		CO.creator_name CO_creator_name, CO.address CO_address,
+		CO.detail_address CO_detail_address, CO.phone CO_phone,
+		CO. receiveName CO_ receiveName
+	</sql>
+
+	<sql id="fieldWithAlias">
+		CO.id id, CO.order_no orderNo,
+		CO.pay_price payPrice, CO.pay_time payTime,
+		CO.send_time sendTime, CO.take_time takeTime,
+		CO.confirm_time confirmTime, CO.remind_time remindTime,
+		CO.protect_day protectDay, CO.protect_time protectTime,
+		CO.voucher_use_id voucherUseId, CO.voucher_price voucherPrice,
+		CO.schedule schedule, CO.status status,
+		CO.create_time createTime, CO.creator_id creatorId,
+		CO.creator_name creatorName, CO.address address,
+		CO.detail_address detailAddress, CO.phone phone,
+		CO. receiveName receivename
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CO.id=#{id}
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			AND CO.order_no=#{orderNo}
+		</if>
+		<if test="payPrice!=null">
+			AND CO.pay_price=#{payPrice}
+		</if>
+		<if test="payTime!=null">
+			AND CO.pay_time=#{payTime}
+		</if>
+		<if test="sendTime!=null">
+			AND CO.send_time=#{sendTime}
+		</if>
+		<if test="takeTime!=null">
+			AND CO.take_time=#{takeTime}
+		</if>
+		<if test="confirmTime!=null">
+			AND CO.confirm_time=#{confirmTime}
+		</if>
+		<if test="remindTime!=null">
+			AND CO.remind_time=#{remindTime}
+		</if>
+		<if test="protectDay!=null">
+			AND CO.protect_day=#{protectDay}
+		</if>
+		<if test="protectTime!=null">
+			AND CO.protect_time=#{protectTime}
+		</if>
+		<if test="voucherUseId!=null and voucherUseId!=''">
+			AND CO.voucher_use_id=#{voucherUseId}
+		</if>
+		<if test="voucherPrice!=null">
+			AND CO.voucher_price=#{voucherPrice}
+		</if>
+		<if test="schedule!=null">
+			AND CO.schedule=#{schedule}
+		</if>
+		<if test="status!=null">
+			AND CO.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CO.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CO.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CO.creator_name=#{creatorName}
+		</if>
+		<if test="address!=null and address!=''">
+			AND CO.address=#{address}
+		</if>
+		<if test="detailAddress!=null and detailAddress!=''">
+			AND CO.detail_address=#{detailAddress}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND CO.phone=#{phone}
+		</if>
+		<if test=" receivename!=null and  receivename!=''">
+			AND CO. receiveName=#{ receivename}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CO.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderNo!=null and orderNo!=''">
+				AND CO.order_no LIKE CONCAT('%', #{orderNo}, '%')
+			</if>
+			<if test="payPrice!=null">
+				AND CO.pay_price=#{payPrice}
+			</if>
+			<if test="payTime!=null">
+				AND CO.pay_time=#{payTime}
+			</if>
+			<if test="sendTime!=null">
+				AND CO.send_time=#{sendTime}
+			</if>
+			<if test="takeTime!=null">
+				AND CO.take_time=#{takeTime}
+			</if>
+			<if test="confirmTime!=null">
+				AND CO.confirm_time=#{confirmTime}
+			</if>
+			<if test="remindTime!=null">
+				AND CO.remind_time=#{remindTime}
+			</if>
+			<if test="protectDay!=null">
+				AND CO.protect_day=#{protectDay}
+			</if>
+			<if test="protectTime!=null">
+				AND CO.protect_time=#{protectTime}
+			</if>
+			<if test="voucherUseId!=null and voucherUseId!=''">
+				AND CO.voucher_use_id LIKE CONCAT('%', #{voucherUseId},
+				'%')
+			</if>
+			<if test="voucherPrice!=null">
+				AND CO.voucher_price=#{voucherPrice}
+			</if>
+			<if test="schedule!=null">
+				AND CO.schedule=#{schedule}
+			</if>
+			<if test="status!=null">
+				AND CO.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CO.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CO.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CO.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND CO.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="detailAddress!=null and detailAddress!=''">
+				AND CO.detail_address LIKE CONCAT('%', #{detailAddress},
+				'%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND CO.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test=" receivename!=null and  receivename!=''">
+				AND CO. receiveName LIKE CONCAT('%', #{ receivename},
+				'%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				CO.id=#{id},
+			</if>
+			<if test="orderNo!=null">
+				CO.order_no=#{orderNo},
+			</if>
+			<if test="payPrice!=null">
+				CO.pay_price=#{payPrice},
+			</if>
+			<if test="payTime!=null">
+				CO.pay_time=#{payTime},
+			</if>
+			<if test="sendTime!=null">
+				CO.send_time=#{sendTime},
+			</if>
+			<if test="takeTime!=null">
+				CO.take_time=#{takeTime},
+			</if>
+			<if test="confirmTime!=null">
+				CO.confirm_time=#{confirmTime},
+			</if>
+			<if test="remindTime!=null">
+				CO.remind_time=#{remindTime},
+			</if>
+			<if test="protectDay!=null">
+				CO.protect_day=#{protectDay},
+			</if>
+			<if test="protectTime!=null">
+				CO.protect_time=#{protectTime},
+			</if>
+			<if test="voucherUseId!=null">
+				CO.voucher_use_id=#{voucherUseId},
+			</if>
+			<if test="voucherPrice!=null">
+				CO.voucher_price=#{voucherPrice},
+			</if>
+			<if test="schedule!=null">
+				CO.schedule=#{schedule},
+			</if>
+			<if test="status!=null">
+				CO.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				CO.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				CO.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				CO.creator_name=#{creatorName},
+			</if>
+			<if test="address!=null">
+				CO.address=#{address},
+			</if>
+			<if test="detailAddress!=null">
+				CO.detail_address=#{detailAddress},
+			</if>
+			<if test="phone!=null">
+				CO.phone=#{phone},
+			</if>
+			<if test=" receivename!=null">
+				CO. receiveName=#{ receivename},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityOrder"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityOrder">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="payPrice" column="pay_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="payTime" column="pay_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="sendTime" column="send_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="takeTime" column="take_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="confirm_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="remind_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="protectDay" column="protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="protectTime" column="protect_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="voucherUseId" column="voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="detail_address"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property=" receivename" column=" receiveName" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="commodityOrderGlobal"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityOrder">
+		<result property="id" column="CO_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="CO_order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="payPrice" column="CO_pay_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="payTime" column="CO_pay_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="sendTime" column="CO_send_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="takeTime" column="CO_take_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="CO_confirm_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="CO_remind_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="protectDay" column="CO_protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="protectTime" column="CO_protect_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="voucherUseId" column="CO_voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="CO_voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="CO_schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="CO_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="CO_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CO_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CO_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="CO_address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="CO_detail_address"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="CO_phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property=" receivename" column="CO_ receiveName"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+
+
+
+	<resultMap id="co"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityOrder">
+		<result property="id" column="commodityOrderId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderNo" column="order_no" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="payPrice" column="pay_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="payTime" column="pay_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="sendTime" column="send_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="takeTime" column="take_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="confirm_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="remind_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="protectDay" column="protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="protectTime" column="protect_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="voucherUseId" column="voucher_use_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherPrice" column="voucher_price"
+			javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="schedule" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="detailAddress" column="detail_address"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<association property="commodityImages"
+			javaType="com.jinpaihushi.jphs.commodity.model.CommodityImages">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="sourceId" column="source_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="url" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="path" column="path" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="deviceType" column="device_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="type" column="type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="sort" column="sort" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="remarks" column="remarks" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<collection property="coiList"
+			ofType="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="commodityOrderId" column="commodity_order_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="commodityId" column="commodity_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="userId" column="user_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="profit" column="profit" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="title" column="title" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="oldPrice" column="old_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="commodityPriceName" column="commodity_price_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="commodityModel" column="commodity_model"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="number" column="number" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="remark" column="remark" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="creator_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</collection>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.commodity.model.CommodityOrder">
+		INSERT INTO `COMMODITY_ORDER`(
+		id, order_no,
+		pay_price, pay_time,
+		send_time, take_time,
+		confirm_time, remind_time,
+		protect_day, protect_time,
+		voucher_use_id, voucher_price,
+		schedule, status,
+		create_time, creator_id,
+		creator_name, address,
+		detail_address, phone,
+		receiveName
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
+		#{payPrice,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP},
+		#{sendTime,jdbcType=TIMESTAMP}, #{takeTime,jdbcType=TIMESTAMP},
+		#{confirmTime,jdbcType=TIMESTAMP}, #{remindTime,jdbcType=TIMESTAMP},
+		#{protectDay,jdbcType=INTEGER}, #{protectTime,jdbcType=TIMESTAMP},
+		#{voucherUseId,jdbcType=VARCHAR}, #{voucherPrice,jdbcType=DECIMAL},
+		#{schedule,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{detailAddress,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+		#{ receivename,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_ORDER`(
+			id, order_no, 
+			pay_price, pay_time, 
+			send_time, take_time, 
+			confirm_time, remind_time, 
+			protect_day, protect_time, 
+			voucher_use_id, voucher_price, 
+			schedule, status, 
+			create_time, creator_id, 
+			creator_name, address, 
+			detail_address, phone, 
+			 receiveName
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.orderNo,jdbcType=VARCHAR},
+			#{item.payPrice,jdbcType=DECIMAL}, #{item.payTime,jdbcType=TIMESTAMP},
+			#{item.sendTime,jdbcType=TIMESTAMP},
+			#{item.takeTime,jdbcType=TIMESTAMP},
+			#{item.confirmTime,jdbcType=TIMESTAMP},
+			#{item.remindTime,jdbcType=TIMESTAMP},
+			#{item.protectDay,jdbcType=INTEGER},
+			#{item.protectTime,jdbcType=TIMESTAMP},
+			#{item.voucherUseId,jdbcType=VARCHAR},
+			#{item.voucherPrice,jdbcType=DECIMAL},
+			#{item.schedule,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.address,jdbcType=VARCHAR},
+			#{item.detailAddress,jdbcType=VARCHAR},
+			#{item.phone,jdbcType=VARCHAR},
+			#{item. receivename,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE CO FROM `COMMODITY_ORDER` CO WHERE CO.ID =
+		#{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `COMMODITY_ORDER` CO
+		SET
+		CO.STATUS = -1
+		WHERE CO.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_ORDER` CO
+		<include refid="dynamicSet" />
+		WHERE CO.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityOrder">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY_ORDER` CO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_ORDER` CO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityOrder">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY_ORDER` CO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityOrder">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY_ORDER` CO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="commodityOrder">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY_ORDER` CO
+		WHERE CO.ID = #{id}
+	</select>
+
+	<select id="getObjectByOrder" resultMap="commodityOrder">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY_ORDER` CO
+		WHERE CO.ORDER_NO =#{orderNo};
+	</select>
+
+
+	<select id="getOrderList" resultMap="co">
+		SELECT
+		co.id commodityOrderId,
+		co.`schedule`,
+		co.create_time,
+		coi.commodity_id,
+		coi.title,
+		coi.price,
+		coi.commodity_model,
+		coi.number,
+		coi.status
+		FROM commodity_order co
+		LEFT JOIN commodity_order_info coi ON (co.id =
+		coi.commodity_order_id)
+		WHERE co.creator_id = #{userId}
+		<if test="schedule!=null">
+			AND co.`schedule` = #{schedule}
+		</if>
+	</select>
+
+
+	<select id="getOrderDetail" resultMap="co">
+		SELECT
+		co.id commodityOrderId,
+		co.phone,
+		co.` receiveName` ,
+		co.address,
+		co.detail_address,
+		co.`schedule`,
+		co.pay_price,
+		co.order_no,
+		co.create_time,
+		ci.url,
+		coi.title,
+		coi.price,
+		coi.commodity_model,
+		coi.commodity_id,
+		coi.number
+		FROM
+		commodity_order co
+		LEFT JOIN commodity_order_info coi ON (co.id = coi.commodity_order_id)
+		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
+		WHERE co.id=#{orderId}
+		AND ci.type = 1
+	</select>
+	
+	<select id="getSaleProfit" resultType="java.lang.Double">
+		SELECT
+			 SUM(coi.profit)
+		FROM commodity_order_info coi 
+		WHERE coi.user_id = #{userId}
+		AND coi.commodity_id = #{commodityId}
+	</select>
+	
+	<select id="getSaleDetail" resultMap="co">
+		SELECT
+			coi.id,
+			coi.title,
+			coi.`status`,
+			coi.create_time,
+			coi.profit,
+			ci.url
+		FROM commodity_order_info coi 
+		LEFT JOIN commodity_images ci ON (coi.commodity_id = ci.source_id)
+		WHERE coi.user_id = #{userId}
+		AND coi.commodity_id = #{commodityId}
+		AND ci.type = 1
+	</select>
+	
+	<update id="updateShopOrderSchedule">
+		UPDATE 
+			commodity_order co  
+		SET co.`schedule` = #{schedule} 
+		WHERE co.id = #{id}
+	</update>
+</mapper>

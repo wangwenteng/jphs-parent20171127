@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-08-18 14:06:14
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.peizhen.dao.PeizhenPharmacyRemindDao">
+	
+	<sql id="field">
+		PPR.id, PPR.peizhen_record_id, PPR.drug, PPR.content, 
+		PPR.create_time, PPR.creator_id, PPR.creator_name, PPR.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		PPR.id PPR_id, PPR.peizhen_record_id PPR_peizhen_record_id, 
+		PPR.drug PPR_drug, PPR.content PPR_content, 
+		PPR.create_time PPR_create_time, PPR.creator_id PPR_creator_id, 
+		PPR.creator_name PPR_creator_name, PPR.status PPR_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		PPR.id id, PPR.peizhen_record_id peizhenRecordId, 
+		PPR.drug drug, PPR.content content, 
+		PPR.create_time createTime, PPR.creator_id creatorId, 
+		PPR.creator_name creatorName, PPR.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PPR.id=#{id}
+		</if>
+		<if test="peizhenRecordId!=null and peizhenRecordId!=''">
+			AND PPR.peizhen_record_id=#{peizhenRecordId}
+		</if>
+		<if test="drug!=null and drug!=''">
+			AND PPR.drug=#{drug}
+		</if>
+		<if test="content!=null and content!=''">
+			AND PPR.content=#{content}
+		</if>
+		<if test="createTime!=null">
+			AND PPR.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PPR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PPR.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND PPR.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PPR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="peizhenRecordId!=null and peizhenRecordId!=''">
+				AND PPR.peizhen_record_id LIKE CONCAT('%', #{peizhenRecordId}, '%')
+			</if>
+			<if test="drug!=null and drug!=''">
+				AND PPR.drug LIKE CONCAT('%', #{drug}, '%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND PPR.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND PPR.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PPR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PPR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND PPR.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				PPR.id=#{id}, 
+		   </if>
+           <if test="peizhenRecordId!=null">
+				PPR.peizhen_record_id=#{peizhenRecordId}, 
+		   </if>
+           <if test="drug!=null">
+				PPR.drug=#{drug}, 
+		   </if>
+           <if test="content!=null">
+				PPR.content=#{content}, 
+		   </if>
+           <if test="createTime!=null">
+				PPR.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				PPR.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				PPR.creator_name=#{creatorName}, 
+		   </if>
+           <if test="status!=null">
+				PPR.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="peizhenPharmacyRemind" type="com.jinpaihushi.jphs.peizhen.model.PeizhenPharmacyRemind">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="peizhenRecordId" column="peizhen_record_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="drug" column="drug" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="peizhenPharmacyRemindGlobal" type="com.jinpaihushi.jphs.peizhen.model.PeizhenPharmacyRemind">
+		<result property="id" column="PPR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="peizhenRecordId" column="PPR_peizhen_record_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="drug" column="PPR_drug" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="PPR_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="PPR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PPR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PPR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="PPR_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.peizhen.model.PeizhenPharmacyRemind">
+		INSERT INTO `PEIZHEN_PHARMACY_REMIND`(
+			id, peizhen_record_id, 
+			drug, content, 
+			create_time, creator_id, 
+			creator_name, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{peizhenRecordId,jdbcType=VARCHAR}, 
+			#{drug,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `PEIZHEN_PHARMACY_REMIND`(
+			id, peizhen_record_id, 
+			drug, content, 
+			create_time, creator_id, 
+			creator_name, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.peizhenRecordId,jdbcType=VARCHAR}, 
+			#{item.drug,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE PPR FROM `PEIZHEN_PHARMACY_REMIND` PPR WHERE PPR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `PEIZHEN_PHARMACY_REMIND` PPR
+		SET 
+		PPR.STATUS = -1
+		WHERE PPR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PEIZHEN_PHARMACY_REMIND` PPR
+		<include refid="dynamicSet" /> 
+	    WHERE PPR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="peizhenPharmacyRemind">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_PHARMACY_REMIND` PPR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PEIZHEN_PHARMACY_REMIND` PPR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="peizhenPharmacyRemind">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_PHARMACY_REMIND` PPR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="peizhenPharmacyRemind">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_PHARMACY_REMIND` PPR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="peizhenPharmacyRemind">
+		SELECT <include refid="field"/>
+		FROM `PEIZHEN_PHARMACY_REMIND` PPR
+		WHERE PPR.ID = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-09 09:20:37
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityPriceDao">
+	
+	<sql id="field">
+		CP.id, CP.commodity_id, CP.name, CP.number, 
+		CP.cost_price, CP.old_price, CP.price, CP.profit, 
+		CP.sort, CP.status, CP.create_time, CP.creator_id, 
+		CP.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		CP.id CP_id, CP.commodity_id CP_commodity_id, 
+		CP.name CP_name, CP.number CP_number, 
+		CP.cost_price CP_cost_price, CP.old_price CP_old_price, 
+		CP.price CP_price, CP.profit CP_profit, 
+		CP.sort CP_sort, CP.status CP_status, 
+		CP.create_time CP_create_time, CP.creator_id CP_creator_id, 
+		CP.creator_name CP_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CP.id id, CP.commodity_id commodityId, 
+		CP.name name, CP.number number, 
+		CP.cost_price costPrice, CP.old_price oldPrice, 
+		CP.price price, CP.profit profit, 
+		CP.sort sort, CP.status status, 
+		CP.create_time createTime, CP.creator_id creatorId, 
+		CP.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CP.id=#{id}
+		</if>
+		<if test="commodityId!=null and commodityId!=''">
+			AND CP.commodity_id=#{commodityId}
+		</if>
+		<if test="name!=null and name!=''">
+			AND CP.name=#{name}
+		</if>
+		<if test="number!=null">
+			AND CP.number=#{number}
+		</if>
+		<if test="costPrice!=null">
+			AND CP.cost_price=#{costPrice}
+		</if>
+		<if test="oldPrice!=null">
+			AND CP.old_price=#{oldPrice}
+		</if>
+		<if test="price!=null">
+			AND CP.price=#{price}
+		</if>
+		<if test="profit!=null">
+			AND CP.profit=#{profit}
+		</if>
+		<if test="sort!=null">
+			AND CP.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND CP.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CP.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CP.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CP.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CP.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="commodityId!=null and commodityId!=''">
+				AND CP.commodity_id LIKE CONCAT('%', #{commodityId}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND CP.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="number!=null">
+				AND CP.number=#{number}
+			</if>
+			<if test="costPrice!=null">
+				AND CP.cost_price=#{costPrice}
+			</if>
+			<if test="oldPrice!=null">
+				AND CP.old_price=#{oldPrice}
+			</if>
+			<if test="price!=null">
+				AND CP.price=#{price}
+			</if>
+			<if test="profit!=null">
+				AND CP.profit=#{profit}
+			</if>
+			<if test="sort!=null">
+				AND CP.sort=#{sort}
+			</if>
+			<if test="status!=null">
+				AND CP.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CP.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CP.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CP.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CP.id=#{id}, 
+		   </if>
+           <if test="commodityId!=null">
+				CP.commodity_id=#{commodityId}, 
+		   </if>
+           <if test="name!=null">
+				CP.name=#{name}, 
+		   </if>
+           <if test="number!=null">
+				CP.number=#{number}, 
+		   </if>
+           <if test="costPrice!=null">
+				CP.cost_price=#{costPrice}, 
+		   </if>
+           <if test="oldPrice!=null">
+				CP.old_price=#{oldPrice}, 
+		   </if>
+           <if test="price!=null">
+				CP.price=#{price}, 
+		   </if>
+           <if test="profit!=null">
+				CP.profit=#{profit}, 
+		   </if>
+           <if test="sort!=null">
+				CP.sort=#{sort}, 
+		   </if>
+           <if test="status!=null">
+				CP.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				CP.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				CP.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CP.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityPrice" type="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="number" column="number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="costPrice" column="cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="oldPrice" column="old_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityPriceGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
+		<result property="id" column="CP_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="CP_commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="CP_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="number" column="CP_number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="costPrice" column="CP_cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="oldPrice" column="CP_old_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="price" column="CP_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="profit" column="CP_profit" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="sort" column="CP_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="CP_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="CP_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CP_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CP_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
+		INSERT INTO `COMMODITY_PRICE`(
+			id, commodity_id, 
+			name, number, 
+			cost_price, old_price, 
+			price, profit, 
+			sort, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, 
+			#{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+			#{costPrice,jdbcType=DECIMAL}, #{oldPrice,jdbcType=DECIMAL}, 
+			#{price,jdbcType=DECIMAL}, #{profit,jdbcType=DECIMAL}, 
+			#{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_PRICE`(
+			id, commodity_id, 
+			name, number, 
+			cost_price, old_price, 
+			price, profit, 
+			sort, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityId,jdbcType=VARCHAR}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.number,jdbcType=INTEGER}, 
+			#{item.costPrice,jdbcType=DECIMAL}, #{item.oldPrice,jdbcType=DECIMAL}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.profit,jdbcType=DECIMAL}, 
+			#{item.sort,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CP FROM `COMMODITY_PRICE` CP WHERE CP.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `COMMODITY_PRICE` CP
+		SET 
+		CP.STATUS = -1
+		WHERE CP.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_PRICE` CP
+		<include refid="dynamicSet" /> 
+	    WHERE CP.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityPrice">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_PRICE` CP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_PRICE` CP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityPrice">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_PRICE` CP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityPrice">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_PRICE` CP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="commodityPrice">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_PRICE` CP
+		WHERE CP.ID = #{id}
+	</select>
+	
+</mapper>

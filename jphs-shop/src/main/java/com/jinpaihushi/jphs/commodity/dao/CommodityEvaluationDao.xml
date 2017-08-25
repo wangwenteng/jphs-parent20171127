@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-08 20:09:47
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityEvaluationDao">
+	
+	<sql id="field">
+		CE.id, CE.commodity_order_id, CE.commodity_id, CE.anonymous, 
+		CE.grade, CE.description_level, CE.logistics_level, CE.content, 
+		CE.status, CE.create_time, CE.creator_id, CE.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		CE.id CE_id, CE.commodity_order_id CE_commodity_order_id, 
+		CE.commodity_id CE_commodity_id, CE.anonymous CE_anonymous, 
+		CE.grade CE_grade, CE.description_level CE_description_level, 
+		CE.logistics_level CE_logistics_level, CE.content CE_content, 
+		CE.status CE_status, CE.create_time CE_create_time, 
+		CE.creator_id CE_creator_id, CE.creator_name CE_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CE.id id, CE.commodity_order_id commodityOrderId, 
+		CE.commodity_id commodityId, CE.anonymous anonymous, 
+		CE.grade grade, CE.description_level descriptionLevel, 
+		CE.logistics_level logisticsLevel, CE.content content, 
+		CE.status status, CE.create_time createTime, 
+		CE.creator_id creatorId, CE.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CE.id=#{id}
+		</if>
+		<if test="commodityOrderId!=null and commodityOrderId!=''">
+			AND CE.commodity_order_id=#{commodityOrderId}
+		</if>
+		<if test="commodityId!=null and commodityId!=''">
+			AND CE.commodity_id=#{commodityId}
+		</if>
+		<if test="anonymous!=null">
+			AND CE.anonymous=#{anonymous}
+		</if>
+		<if test="grade!=null">
+			AND CE.grade=#{grade}
+		</if>
+		<if test="descriptionLevel!=null">
+			AND CE.description_level=#{descriptionLevel}
+		</if>
+		<if test="logisticsLevel!=null">
+			AND CE.logistics_level=#{logisticsLevel}
+		</if>
+		<if test="content!=null and content!=''">
+			AND CE.content=#{content}
+		</if>
+		<if test="status!=null">
+			AND CE.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CE.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CE.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CE.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CE.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="commodityOrderId!=null and commodityOrderId!=''">
+				AND CE.commodity_order_id LIKE CONCAT('%', #{commodityOrderId}, '%')
+			</if>
+			<if test="commodityId!=null and commodityId!=''">
+				AND CE.commodity_id LIKE CONCAT('%', #{commodityId}, '%')
+			</if>
+			<if test="anonymous!=null">
+				AND CE.anonymous=#{anonymous}
+			</if>
+			<if test="grade!=null">
+				AND CE.grade=#{grade}
+			</if>
+			<if test="descriptionLevel!=null">
+				AND CE.description_level=#{descriptionLevel}
+			</if>
+			<if test="logisticsLevel!=null">
+				AND CE.logistics_level=#{logisticsLevel}
+			</if>
+			<if test="content!=null and content!=''">
+				AND CE.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND CE.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CE.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CE.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CE.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CE.id=#{id}, 
+		   </if>
+           <if test="commodityOrderId!=null">
+				CE.commodity_order_id=#{commodityOrderId}, 
+		   </if>
+           <if test="commodityId!=null">
+				CE.commodity_id=#{commodityId}, 
+		   </if>
+           <if test="anonymous!=null">
+				CE.anonymous=#{anonymous}, 
+		   </if>
+           <if test="grade!=null">
+				CE.grade=#{grade}, 
+		   </if>
+           <if test="descriptionLevel!=null">
+				CE.description_level=#{descriptionLevel}, 
+		   </if>
+           <if test="logisticsLevel!=null">
+				CE.logistics_level=#{logisticsLevel}, 
+		   </if>
+           <if test="content!=null">
+				CE.content=#{content}, 
+		   </if>
+           <if test="status!=null">
+				CE.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				CE.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				CE.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CE.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityEvaluation" type="com.jinpaihushi.jphs.commodity.model.CommodityEvaluation">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="anonymous" column="anonymous" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="grade" column="grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="descriptionLevel" column="description_level" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="logisticsLevel" column="logistics_level" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityEvaluationGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityEvaluation">
+		<result property="id" column="CE_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="CE_commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="CE_commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="anonymous" column="CE_anonymous" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="grade" column="CE_grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="descriptionLevel" column="CE_description_level" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="logisticsLevel" column="CE_logistics_level" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="content" column="CE_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="CE_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="CE_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CE_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CE_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityEvaluation">
+		INSERT INTO `COMMODITY_EVALUATION`(
+			id, commodity_order_id, 
+			commodity_id, anonymous, 
+			grade, description_level, 
+			logistics_level, content, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR}, 
+			#{commodityId,jdbcType=VARCHAR}, #{anonymous,jdbcType=INTEGER}, 
+			#{grade,jdbcType=INTEGER}, #{descriptionLevel,jdbcType=INTEGER}, 
+			#{logisticsLevel,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_EVALUATION`(
+			id, commodity_order_id, 
+			commodity_id, anonymous, 
+			grade, description_level, 
+			logistics_level, content, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderId,jdbcType=VARCHAR}, 
+			#{item.commodityId,jdbcType=VARCHAR}, #{item.anonymous,jdbcType=INTEGER}, 
+			#{item.grade,jdbcType=INTEGER}, #{item.descriptionLevel,jdbcType=INTEGER}, 
+			#{item.logisticsLevel,jdbcType=INTEGER}, #{item.content,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CE FROM `COMMODITY_EVALUATION` CE WHERE CE.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `COMMODITY_EVALUATION` CE
+		SET 
+		CE.STATUS = -1
+		WHERE CE.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_EVALUATION` CE
+		<include refid="dynamicSet" /> 
+	    WHERE CE.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityEvaluation">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_EVALUATION` CE
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_EVALUATION` CE
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityEvaluation">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_EVALUATION` CE
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityEvaluation">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_EVALUATION` CE
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="commodityEvaluation">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_EVALUATION` CE
+		WHERE CE.ID = #{id}
+	</select>
+	
+</mapper>

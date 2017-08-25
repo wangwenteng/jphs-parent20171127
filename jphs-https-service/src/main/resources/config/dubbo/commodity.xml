@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<dubbo:reference id="commodityReturnService" interface="com.jinpaihushi.jphs.commodity.service.CommodityReturnService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="commodityService" interface="com.jinpaihushi.jphs.commodity.service.CommodityService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="commodityOrderService" interface="com.jinpaihushi.jphs.commodity.service.CommodityOrderService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="commodityOrderInfoService" interface="com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="carService" interface="com.jinpaihushi.jphs.car.service.CarService"
+		timeout="${dubbo.timeout}" check="false" />
+</beans>

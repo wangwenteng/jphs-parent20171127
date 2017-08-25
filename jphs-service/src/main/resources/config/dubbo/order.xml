@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+	<!-- 服务订单 -->
+	<dubbo:service ref="orderService"
+		interface="com.jinpaihushi.jphs.order.service.OrderService" />
+	<dubbo:service ref="orderGoodsService"
+		interface="com.jinpaihushi.jphs.order.service.OrderGoodsService" />
+	<dubbo:service ref="orderOtherService"
+		interface="com.jinpaihushi.jphs.order.service.OrderOtherService" />
+	<dubbo:service ref="orderServiceService"
+		interface="com.jinpaihushi.jphs.order.service.OrderServiceService" />
+	<dubbo:service ref="customServiceService"
+		interface="com.jinpaihushi.jphs.custom.service.CustomServiceService" />
+	<dubbo:service ref="evaluationService"
+		interface="com.jinpaihushi.jphs.evaluation.service.EvaluationService" />
+
+
+
+</beans>

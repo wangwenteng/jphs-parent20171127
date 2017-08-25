@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+	<dubbo:reference id="accessLogService" interface="com.jinpaihushi.jphs.access.service.AccessLogService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="advertisingService" interface="com.jinpaihushi.jphs.activity.service.AdvertisingService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="voucherUseService" interface="com.jinpaihushi.jphs.activity.service.VoucherUseService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="healthLogService" interface="com.jinpaihushi.jphs.health.service.HealthLogService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="insuranceService" interface="com.jinpaihushi.jphs.insurance.service.InsuranceService"
+		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="feedbackService" interface="com.jinpaihushi.jphs.user.service.FeedbackService"
+		timeout="${dubbo.timeout}" check="false" />
+</beans>

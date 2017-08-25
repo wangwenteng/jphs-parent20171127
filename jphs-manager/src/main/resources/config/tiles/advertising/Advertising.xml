@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="activity/advertising/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/activity/advertising/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/activity/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/activity/advertising/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="activity/advertising/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/activity/advertising/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/activity/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/activity/advertising/edit.js" />
+			<add-attribute value="/static/js/ajaxfileupload.js" />
+			<add-attribute value="/static/js/img.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="activity/advertising/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/activity/advertising/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/activity/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/activity/advertising/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

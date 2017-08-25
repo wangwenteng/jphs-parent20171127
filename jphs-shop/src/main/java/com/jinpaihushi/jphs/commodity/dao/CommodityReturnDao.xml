@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-15 13:57:49
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityReturnDao">
+	
+	<sql id="field">
+		CR.id, CR.commodity_order_id, CR.reason, CR.remark, 
+		CR.status, CR.create_time, CR.creator_id, CR.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		CR.id CR_id, CR.commodity_order_id CR_commodity_order_id, 
+		CR.reason CR_reason, CR.remark CR_remark, 
+		CR.status CR_status, CR.create_time CR_create_time, 
+		CR.creator_id CR_creator_id, CR.creator_name CR_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CR.id id, CR.commodity_order_id commodityOrderId, 
+		CR.reason reason, CR.remark remark, 
+		CR.status status, CR.create_time createTime, 
+		CR.creator_id creatorId, CR.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CR.id=#{id}
+		</if>
+		<if test="commodityOrderId!=null and commodityOrderId!=''">
+			AND CR.commodity_order_id=#{commodityOrderId}
+		</if>
+		<if test="reason!=null and reason!=''">
+			AND CR.reason=#{reason}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND CR.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND CR.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CR.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CR.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="commodityOrderId!=null and commodityOrderId!=''">
+				AND CR.commodity_order_id LIKE CONCAT('%', #{commodityOrderId}, '%')
+			</if>
+			<if test="reason!=null and reason!=''">
+				AND CR.reason LIKE CONCAT('%', #{reason}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND CR.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND CR.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CR.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CR.id=#{id}, 
+		   </if>
+           <if test="commodityOrderId!=null">
+				CR.commodity_order_id=#{commodityOrderId}, 
+		   </if>
+           <if test="reason!=null">
+				CR.reason=#{reason}, 
+		   </if>
+           <if test="remark!=null">
+				CR.remark=#{remark}, 
+		   </if>
+           <if test="status!=null">
+				CR.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				CR.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				CR.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CR.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityReturn" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reason" column="reason" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityReturnGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+		<result property="id" column="CR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="CR_commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reason" column="CR_reason" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="CR_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="CR_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="CR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+		INSERT INTO `COMMODITY_RETURN`(
+			id, commodity_order_id, 
+			reason, remark, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR}, 
+			#{reason,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_RETURN`(
+			id, commodity_order_id, 
+			reason, remark, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderId,jdbcType=VARCHAR}, 
+			#{item.reason,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CR FROM `COMMODITY_RETURN` CR WHERE CR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `COMMODITY_RETURN` CR
+		SET 
+		CR.STATUS = -1
+		WHERE CR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_RETURN` CR
+		<include refid="dynamicSet" /> 
+	    WHERE CR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityReturn">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_RETURN` CR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_RETURN` CR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityReturn">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_RETURN` CR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityReturn">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_RETURN` CR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="commodityReturn">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_RETURN` CR
+		WHERE CR.ID = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-08-16 11:08:43 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.worktime.dao.WorktimeDao">
+
+	<sql id="field">
+		W.id, W.userId, W.calendar, W.week, W.h_9, W.h_10, W.h_11,
+		W.h_12, W.h_13, W.h_14, W.h_15, W.h_16, W.h_17, W.h_18, W.h_19,
+		W.h_20, W.h_21, W.w_9, W.w_10, W.w_11, W.w_12, W.w_13, W.w_14, W.w_15,
+		W.w_16, W.w_17, W.w_18, W.w_19, W.w_20, W.w_21, W.createTime
+	</sql>
+
+	<sql id="fieldGlobal">
+		W.id W_id, W.userId W_userId, W.calendar W_calendar, W.week
+		W_week, W.h_9 W_h_9, W.h_10 W_h_10, W.h_11 W_h_11, W.h_12 W_h_12,
+		W.h_13 W_h_13, W.h_14 W_h_14, W.h_15 W_h_15, W.h_16 W_h_16, W.h_17
+		W_h_17, W.h_18 W_h_18, W.h_19 W_h_19, W.h_20 W_h_20, W.h_21 W_h_21,
+		W.w_9 W_w_9, W.w_10 W_w_10, W.w_11 W_w_11, W.w_12 W_w_12, W.w_13
+		W_w_13, W.w_14 W_w_14, W.w_15 W_w_15, W.w_16 W_w_16, W.w_17 W_w_17,
+		W.w_18 W_w_18, W.w_19 W_w_19, W.w_20 W_w_20, W.w_21 W_w_21,
+		W.createTime W_createTime
+	</sql>
+
+	<sql id="fieldWithAlias">
+		W.id id, W.userId userid, W.calendar calendar, W.week week,
+		W.h_9 h9, W.h_10 h10, W.h_11 h11, W.h_12 h12, W.h_13 h13, W.h_14 h14,
+		W.h_15 h15, W.h_16 h16, W.h_17 h17, W.h_18 h18, W.h_19 h19, W.h_20
+		h20, W.h_21 h21, W.w_9 w9, W.w_10 w10, W.w_11 w11, W.w_12 w12, W.w_13
+		w13, W.w_14 w14, W.w_15 w15, W.w_16 w16, W.w_17 w17, W.w_18 w18,
+		W.w_19 w19, W.w_20 w20, W.w_21 w21, W.createTime createtime
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND W.id=#{id}
+		</if>
+		<if test="userid!=null and userid!=''">
+			AND W.userId=#{userid}
+		</if>
+		<if test="calendar!=null and calendar!=''">
+			AND W.calendar=#{calendar}
+		</if>
+		<if test="week!=null and week!=''">
+			AND W.week=#{week}
+		</if>
+		<if test="h9!=null">
+			AND W.h_9=#{h9}
+		</if>
+		<if test="h10!=null">
+			AND W.h_10=#{h10}
+		</if>
+		<if test="h11!=null">
+			AND W.h_11=#{h11}
+		</if>
+		<if test="h12!=null">
+			AND W.h_12=#{h12}
+		</if>
+		<if test="h13!=null">
+			AND W.h_13=#{h13}
+		</if>
+		<if test="h14!=null">
+			AND W.h_14=#{h14}
+		</if>
+		<if test="h15!=null">
+			AND W.h_15=#{h15}
+		</if>
+		<if test="h16!=null">
+			AND W.h_16=#{h16}
+		</if>
+		<if test="h17!=null">
+			AND W.h_17=#{h17}
+		</if>
+		<if test="h18!=null">
+			AND W.h_18=#{h18}
+		</if>
+		<if test="h19!=null">
+			AND W.h_19=#{h19}
+		</if>
+		<if test="h20!=null">
+			AND W.h_20=#{h20}
+		</if>
+		<if test="h21!=null">
+			AND W.h_21=#{h21}
+		</if>
+		<if test="w9!=null and w9!=''">
+			AND W.w_9=#{w9}
+		</if>
+		<if test="w10!=null and w10!=''">
+			AND W.w_10=#{w10}
+		</if>
+		<if test="w11!=null and w11!=''">
+			AND W.w_11=#{w11}
+		</if>
+		<if test="w12!=null and w12!=''">
+			AND W.w_12=#{w12}
+		</if>
+		<if test="w13!=null and w13!=''">
+			AND W.w_13=#{w13}
+		</if>
+		<if test="w14!=null and w14!=''">
+			AND W.w_14=#{w14}
+		</if>
+		<if test="w15!=null and w15!=''">
+			AND W.w_15=#{w15}
+		</if>
+		<if test="w16!=null and w16!=''">
+			AND W.w_16=#{w16}
+		</if>
+		<if test="w17!=null and w17!=''">
+			AND W.w_17=#{w17}
+		</if>
+		<if test="w18!=null and w18!=''">
+			AND W.w_18=#{w18}
+		</if>
+		<if test="w19!=null and w19!=''">
+			AND W.w_19=#{w19}
+		</if>
+		<if test="w20!=null and w20!=''">
+			AND W.w_20=#{w20}
+		</if>
+		<if test="w21!=null and w21!=''">
+			AND W.w_21=#{w21}
+		</if>
+		<if test="createtime!=null">
+			AND W.createTime=#{createtime}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND W.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="userid!=null and userid!=''">
+				AND W.userId LIKE CONCAT('%', #{userid}, '%')
+			</if>
+			<if test="calendar!=null and calendar!=''">
+				AND W.calendar LIKE CONCAT('%', #{calendar}, '%')
+			</if>
+			<if test="week!=null and week!=''">
+				AND W.week LIKE CONCAT('%', #{week}, '%')
+			</if>
+			<if test="h9!=null">
+				AND W.h_9=#{h9}
+			</if>
+			<if test="h10!=null">
+				AND W.h_10=#{h10}
+			</if>
+			<if test="h11!=null">
+				AND W.h_11=#{h11}
+			</if>
+			<if test="h12!=null">
+				AND W.h_12=#{h12}
+			</if>
+			<if test="h13!=null">
+				AND W.h_13=#{h13}
+			</if>
+			<if test="h14!=null">
+				AND W.h_14=#{h14}
+			</if>
+			<if test="h15!=null">
+				AND W.h_15=#{h15}
+			</if>
+			<if test="h16!=null">
+				AND W.h_16=#{h16}
+			</if>
+			<if test="h17!=null">
+				AND W.h_17=#{h17}
+			</if>
+			<if test="h18!=null">
+				AND W.h_18=#{h18}
+			</if>
+			<if test="h19!=null">
+				AND W.h_19=#{h19}
+			</if>
+			<if test="h20!=null">
+				AND W.h_20=#{h20}
+			</if>
+			<if test="h21!=null">
+				AND W.h_21=#{h21}
+			</if>
+			<if test="w9!=null and w9!=''">
+				AND W.w_9 LIKE CONCAT('%', #{w9}, '%')
+			</if>
+			<if test="w10!=null and w10!=''">
+				AND W.w_10 LIKE CONCAT('%', #{w10}, '%')
+			</if>
+			<if test="w11!=null and w11!=''">
+				AND W.w_11 LIKE CONCAT('%', #{w11}, '%')
+			</if>
+			<if test="w12!=null and w12!=''">
+				AND W.w_12 LIKE CONCAT('%', #{w12}, '%')
+			</if>
+			<if test="w13!=null and w13!=''">
+				AND W.w_13 LIKE CONCAT('%', #{w13}, '%')
+			</if>
+			<if test="w14!=null and w14!=''">
+				AND W.w_14 LIKE CONCAT('%', #{w14}, '%')
+			</if>
+			<if test="w15!=null and w15!=''">
+				AND W.w_15 LIKE CONCAT('%', #{w15}, '%')
+			</if>
+			<if test="w16!=null and w16!=''">
+				AND W.w_16 LIKE CONCAT('%', #{w16}, '%')
+			</if>
+			<if test="w17!=null and w17!=''">
+				AND W.w_17 LIKE CONCAT('%', #{w17}, '%')
+			</if>
+			<if test="w18!=null and w18!=''">
+				AND W.w_18 LIKE CONCAT('%', #{w18}, '%')
+			</if>
+			<if test="w19!=null and w19!=''">
+				AND W.w_19 LIKE CONCAT('%', #{w19}, '%')
+			</if>
+			<if test="w20!=null and w20!=''">
+				AND W.w_20 LIKE CONCAT('%', #{w20}, '%')
+			</if>
+			<if test="w21!=null and w21!=''">
+				AND W.w_21 LIKE CONCAT('%', #{w21}, '%')
+			</if>
+			<if test="createtime!=null">
+				AND W.createTime=#{createtime}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				W.id=#{id},
+			</if>
+			<if test="userid!=null">
+				W.userId=#{userid},
+			</if>
+			<if test="calendar!=null">
+				W.calendar=#{calendar},
+			</if>
+			<if test="week!=null">
+				W.week=#{week},
+			</if>
+			<if test="h9!=null">
+				W.h_9=#{h9},
+			</if>
+			<if test="h10!=null">
+				W.h_10=#{h10},
+			</if>
+			<if test="h11!=null">
+				W.h_11=#{h11},
+			</if>
+			<if test="h12!=null">
+				W.h_12=#{h12},
+			</if>
+			<if test="h13!=null">
+				W.h_13=#{h13},
+			</if>
+			<if test="h14!=null">
+				W.h_14=#{h14},
+			</if>
+			<if test="h15!=null">
+				W.h_15=#{h15},
+			</if>
+			<if test="h16!=null">
+				W.h_16=#{h16},
+			</if>
+			<if test="h17!=null">
+				W.h_17=#{h17},
+			</if>
+			<if test="h18!=null">
+				W.h_18=#{h18},
+			</if>
+			<if test="h19!=null">
+				W.h_19=#{h19},
+			</if>
+			<if test="h20!=null">
+				W.h_20=#{h20},
+			</if>
+			<if test="h21!=null">
+				W.h_21=#{h21},
+			</if>
+			<if test="w9!=null">
+				W.w_9=#{w9},
+			</if>
+			<if test="w10!=null">
+				W.w_10=#{w10},
+			</if>
+			<if test="w11!=null">
+				W.w_11=#{w11},
+			</if>
+			<if test="w12!=null">
+				W.w_12=#{w12},
+			</if>
+			<if test="w13!=null">
+				W.w_13=#{w13},
+			</if>
+			<if test="w14!=null">
+				W.w_14=#{w14},
+			</if>
+			<if test="w15!=null">
+				W.w_15=#{w15},
+			</if>
+			<if test="w16!=null">
+				W.w_16=#{w16},
+			</if>
+			<if test="w17!=null">
+				W.w_17=#{w17},
+			</if>
+			<if test="w18!=null">
+				W.w_18=#{w18},
+			</if>
+			<if test="w19!=null">
+				W.w_19=#{w19},
+			</if>
+			<if test="w20!=null">
+				W.w_20=#{w20},
+			</if>
+			<if test="w21!=null">
+				W.w_21=#{w21},
+			</if>
+			<if test="createtime!=null">
+				W.createTime=#{createtime},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="worktime" type="com.jinpaihushi.jphs.worktime.model.Worktime">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userid" column="userId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="calendar" column="calendar" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="week" column="week" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="h9" column="h_9" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="h10" column="h_10" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h11" column="h_11" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h12" column="h_12" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h13" column="h_13" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h14" column="h_14" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h15" column="h_15" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h16" column="h_16" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h17" column="h_17" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h18" column="h_18" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h19" column="h_19" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h20" column="h_20" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h21" column="h_21" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="w9" column="w_9" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="w10" column="w_10" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w11" column="w_11" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w12" column="w_12" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w13" column="w_13" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w14" column="w_14" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w15" column="w_15" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w16" column="w_16" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w17" column="w_17" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w18" column="w_18" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w19" column="w_19" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w20" column="w_20" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w21" column="w_21" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createtime" column="createTime" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+	</resultMap>
+
+	<resultMap id="worktimeGlobal" type="com.jinpaihushi.jphs.worktime.model.Worktime">
+		<result property="id" column="W_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userid" column="W_userId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="calendar" column="W_calendar" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="week" column="W_week" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="h9" column="W_h_9" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h10" column="W_h_10" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h11" column="W_h_11" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h12" column="W_h_12" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h13" column="W_h_13" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h14" column="W_h_14" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h15" column="W_h_15" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h16" column="W_h_16" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h17" column="W_h_17" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h18" column="W_h_18" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h19" column="W_h_19" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h20" column="W_h_20" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="h21" column="W_h_21" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="w9" column="W_w_9" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w10" column="W_w_10" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w11" column="W_w_11" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w12" column="W_w_12" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w13" column="W_w_13" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w14" column="W_w_14" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w15" column="W_w_15" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w16" column="W_w_16" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w17" column="W_w_17" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w18" column="W_w_18" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w19" column="W_w_19" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w20" column="W_w_20" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="w21" column="W_w_21" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createtime" column="W_createTime" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.worktime.model.Worktime">
+		INSERT INTO `WORKTIME`(
+		id, userId, calendar, week, h_9, h_10, h_11, h_12, h_13, h_14, h_15,
+		h_16, h_17, h_18, h_19, h_20, h_21, w_9, w_10, w_11, w_12, w_13, w_14,
+		w_15, w_16, w_17, w_18, w_19, w_20, w_21, createTime )VALUES(
+		#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR},
+		#{calendar,jdbcType=VARCHAR}, #{week,jdbcType=VARCHAR},
+		#{h9,jdbcType=INTEGER}, #{h10,jdbcType=INTEGER},
+		#{h11,jdbcType=INTEGER}, #{h12,jdbcType=INTEGER},
+		#{h13,jdbcType=INTEGER}, #{h14,jdbcType=INTEGER},
+		#{h15,jdbcType=INTEGER}, #{h16,jdbcType=INTEGER},
+		#{h17,jdbcType=INTEGER}, #{h18,jdbcType=INTEGER},
+		#{h19,jdbcType=INTEGER}, #{h20,jdbcType=INTEGER},
+		#{h21,jdbcType=INTEGER}, #{w9,jdbcType=VARCHAR},
+		#{w10,jdbcType=VARCHAR}, #{w11,jdbcType=VARCHAR},
+		#{w12,jdbcType=VARCHAR}, #{w13,jdbcType=VARCHAR},
+		#{w14,jdbcType=VARCHAR}, #{w15,jdbcType=VARCHAR},
+		#{w16,jdbcType=VARCHAR}, #{w17,jdbcType=VARCHAR},
+		#{w18,jdbcType=VARCHAR}, #{w19,jdbcType=VARCHAR},
+		#{w20,jdbcType=VARCHAR}, #{w21,jdbcType=VARCHAR},
+		#{createtime,jdbcType=TIMESTAMP} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `WORKTIME`(
+			id, userId, 
+			calendar, week, 
+			h_9, h_10, 
+			h_11, h_12, 
+			h_13, h_14, 
+			h_15, h_16, 
+			h_17, h_18, 
+			h_19, h_20, 
+			h_21, w_9, 
+			w_10, w_11, 
+			w_12, w_13, 
+			w_14, w_15, 
+			w_16, w_17, 
+			w_18, w_19, 
+			w_20, w_21, 
+			createTime
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.userid,jdbcType=VARCHAR}, #{item.calendar,jdbcType=VARCHAR},
+			#{item.week,jdbcType=VARCHAR}, #{item.h9,jdbcType=INTEGER},
+			#{item.h10,jdbcType=INTEGER}, #{item.h11,jdbcType=INTEGER},
+			#{item.h12,jdbcType=INTEGER}, #{item.h13,jdbcType=INTEGER},
+			#{item.h14,jdbcType=INTEGER}, #{item.h15,jdbcType=INTEGER},
+			#{item.h16,jdbcType=INTEGER}, #{item.h17,jdbcType=INTEGER},
+			#{item.h18,jdbcType=INTEGER}, #{item.h19,jdbcType=INTEGER},
+			#{item.h20,jdbcType=INTEGER}, #{item.h21,jdbcType=INTEGER},
+			#{item.w9,jdbcType=VARCHAR}, #{item.w10,jdbcType=VARCHAR},
+			#{item.w11,jdbcType=VARCHAR}, #{item.w12,jdbcType=VARCHAR},
+			#{item.w13,jdbcType=VARCHAR}, #{item.w14,jdbcType=VARCHAR},
+			#{item.w15,jdbcType=VARCHAR}, #{item.w16,jdbcType=VARCHAR},
+			#{item.w17,jdbcType=VARCHAR}, #{item.w18,jdbcType=VARCHAR},
+			#{item.w19,jdbcType=VARCHAR}, #{item.w20,jdbcType=VARCHAR},
+			#{item.w21,jdbcType=VARCHAR}, #{item.createtime,jdbcType=TIMESTAMP} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE W FROM `WORKTIME` W WHERE W.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `WORKTIME` W
+		SET
+		W.STATUS = -1
+		WHERE W.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `WORKTIME` W
+		<include refid="dynamicSet" />
+		WHERE W.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `WORKTIME` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		WHERE W.ID = #{id}
+	</select>
+	<delete id="deleteByCalendar">
+		DELETE W FROM `WORKTIME` W WHERE W.calendar = #{calendar} AND userId=0
+	</delete>
+	<select id="getAllNurse" resultType="java.lang.String">
+		SELECT DISTINCT userId FROM `worktime` WHERE userId !=0 ;
+	</select>
+	<delete id="deleteExpired">
+		DELETE nw FROM `WORKTIME` nw WHERE nw.calendar &lt; DATE_FORMAT(NOW(),'%Y-%m-%d') AND nw.userId !=0
+	</delete>
+	<select id="queryByTime" resultMap="worktime">
+		SELECT
+		<include refid="field" />
+		FROM `WORKTIME` W
+		<where>
+			<if test="userid!=null and userid!=''">
+				AND W.userId = #{userid} 
+			</if>
+			<if test="calendar!=null and calendar!=''">
+				AND W.calendar &gt;=#{calendar}
+			</if>
+		</where>
+		<include refid="orderby" />
+		LIMIT 7
+	</select>
+</mapper>

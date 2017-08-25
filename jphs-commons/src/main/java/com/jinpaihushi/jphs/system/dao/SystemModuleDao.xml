@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-07-06 09:05:06
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.system.dao.SystemModuleDao">
+	
+	<sql id="field">
+		SM.id, SM.name, SM.status, SM.url, 
+		SM.parent_id, SM.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		SM.id SM_id, SM.name SM_name, 
+		SM.status SM_status, SM.url SM_url, 
+		SM.parent_id SM_parent_id, SM.create_time SM_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		SM.id id, SM.name name, 
+		SM.status status, SM.url url, 
+		SM.parent_id parentId, SM.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND SM.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND SM.name=#{name}
+		</if>
+		<if test="status!=null">
+			AND SM.status=#{status}
+		</if>
+		<if test="url!=null and url!=''">
+			AND SM.url=#{url}
+		</if>
+		<if test="parentId!=null and parentId!=''">
+			AND SM.parent_id=#{parentId}
+		</if>
+		<if test="createTime!=null">
+			AND SM.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND SM.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND SM.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="status!=null">
+				AND SM.status=#{status}
+			</if>
+			<if test="url!=null and url!=''">
+				AND SM.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="parentId!=null and parentId!=''">
+				AND SM.parent_id LIKE CONCAT('%', #{parentId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND SM.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				SM.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				SM.name=#{name}, 
+		   </if>
+           <if test="status!=null">
+				SM.status=#{status}, 
+		   </if>
+           <if test="url!=null">
+				SM.url=#{url}, 
+		   </if>
+           <if test="parentId!=null">
+				SM.parent_id=#{parentId}, 
+		   </if>
+           <if test="createTime!=null">
+				SM.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="systemModule" type="com.jinpaihushi.jphs.system.model.SystemModule">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	<resultMap id="systemModuleDetail" type="com.jinpaihushi.jphs.system.model.SystemModule">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="text" column="text" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="systemModuleGlobal" type="com.jinpaihushi.jphs.system.model.SystemModule">
+		<result property="id" column="SM_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="SM_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="SM_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="url" column="SM_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="SM_parent_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="SM_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.system.model.SystemModule">
+		INSERT INTO `SYSTEM_MODULE`(
+			id, name, 
+			status, url, 
+			parent_id, create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+			#{parentId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSTEM_MODULE`(
+			id, name, 
+			status, url, 
+			parent_id, create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.url,jdbcType=VARCHAR}, 
+			#{item.parentId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE SM FROM `SYSTEM_MODULE` SM WHERE SM.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SYSTEM_MODULE` SM
+		SET 
+		SM.STATUS = -1
+		WHERE SM.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSTEM_MODULE` SM
+		<include refid="dynamicSet" /> 
+	    WHERE SM.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="systemModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_MODULE` SM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSTEM_MODULE` SM
+		<include refid="queryWhere" />
+	</select>
+
+	<select id="list" resultMap="systemModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_MODULE` SM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="systemModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_MODULE` SM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="systemModule">
+		SELECT <include refid="field"/>
+		FROM `SYSTEM_MODULE` SM
+		WHERE SM.ID = #{id}
+	</select>
+	
+	<select id="queryList" resultMap="systemModuleDetail">
+		SELECT 
+			SM.id,
+			SM. NAME,
+			SM. STATUS,
+			SM.url,
+			SM.parent_id,
+			SM.create_time,
+			CONCAT(SM.`name`,'(',SM.url,')') text
+		FROM `SYSTEM_MODULE` SM
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
+</mapper>

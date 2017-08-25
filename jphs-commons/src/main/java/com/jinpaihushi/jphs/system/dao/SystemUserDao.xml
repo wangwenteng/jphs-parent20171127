@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-07-06 09:05:06 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.system.dao.SystemUserDao">
+
+	<sql id="field">
+		SU.id, SU.name, SU.email, SU.password, SU.create_time,
+		SU.creator_id, SU.creator_name, SU.status, SU.phone
+	</sql>
+
+	<sql id="fieldGlobal">
+		SU.id SU_id, SU.name SU_name, SU.email SU_email,
+		SU.password SU_password, SU.create_time SU_create_time, SU.creator_id
+		SU_creator_id, SU.creator_name SU_creator_name, SU.status SU_status,
+		SU.phone SU_phone
+	</sql>
+
+	<sql id="fieldWithAlias">
+		SU.id id, SU.name name, SU.email email, SU.password
+		password, SU.create_time createTime, SU.creator_id creatorId,
+		SU.creator_name creatorName, SU.status status, SU.phone phone
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND SU.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND SU.name=#{name}
+		</if>
+		<if test="email!=null and email!=''">
+			AND SU.email=#{email}
+		</if>
+		<if test="password!=null and password!=''">
+			AND SU.password=#{password}
+		</if>
+		<if test="createTime!=null">
+			AND SU.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND SU.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND SU.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND SU.status=#{status}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND SU.phone=#{phone}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND SU.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND SU.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="email!=null and email!=''">
+				AND SU.email LIKE CONCAT('%', #{email}, '%')
+			</if>
+			<if test="password!=null and password!=''">
+				AND SU.password LIKE CONCAT('%', #{password}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND SU.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND SU.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND SU.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND SU.status=#{status}
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND SU.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				SU.id=#{id},
+			</if>
+			<if test="name!=null">
+				SU.name=#{name},
+			</if>
+			<if test="email!=null">
+				SU.email=#{email},
+			</if>
+			<if test="password!=null">
+				SU.password=#{password},
+			</if>
+			<if test="createTime!=null">
+				SU.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				SU.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				SU.creator_name=#{creatorName},
+			</if>
+			<if test="status!=null">
+				SU.status=#{status},
+			</if>
+			<if test="phone!=null">
+				SU.phone=#{phone},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="systemUser" type="com.jinpaihushi.jphs.system.model.SystemUser">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="email" column="email" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="password" column="password" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<collection property="roleList"
+			ofType="com.jinpaihushi.jphs.system.model.SystemRole">
+			<result property="id" column="role_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="name" column="role_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="describe" column="role_describe" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="role_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="role_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<collection property="moduleList"
+				ofType="com.jinpaihushi.jphs.system.model.SystemModule">
+				<result property="id" column="module_id" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="name" column="module_name" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="status" column="module_status" javaType="Integer"
+					jdbcType="INTEGER"></result>
+				<result property="url" column="module_url" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="parentId" column="module_parent_id"
+					javaType="String" jdbcType="VARCHAR"></result>
+				<result property="text" column="module_name" javaType="String"
+					jdbcType="VARCHAR"></result>
+				<result property="createTime" column="module_create_time"
+					javaType="Date" jdbcType="TIMESTAMP"></result>
+			</collection>
+		</collection>
+	</resultMap>
+
+	<resultMap id="systemUserGlobal" type="com.jinpaihushi.jphs.system.model.SystemUser">
+		<result property="id" column="SU_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="SU_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="email" column="SU_email" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="password" column="SU_password" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="SU_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="SU_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="SU_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="SU_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="phone" column="SU_phone" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.system.model.SystemUser">
+		INSERT INTO `SYSTEM_USER`(
+		id, name, email, password,
+		create_time, creator_id, creator_name, status,
+		phone )VALUES(
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{phone,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `SYSTEM_USER`(
+			id, name, 
+			email, password, 
+			create_time, creator_id, 
+			creator_name, status, 
+			phone
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR}, #{item.email,jdbcType=VARCHAR},
+			#{item.password,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER}, #{item.phone,jdbcType=VARCHAR} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE SU FROM `SYSTEM_USER` SU WHERE SU.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `SYSTEM_USER` SU
+		SET
+		SU.STATUS = -1
+		WHERE SU.ID =
+		#{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SYSTEM_USER` SU
+		<include refid="dynamicSet" />
+		WHERE SU.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="systemUser">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_USER` SU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SYSTEM_USER` SU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="systemUser">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_USER` SU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="systemUser">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_USER` SU
+		<include refid="queryWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="systemUser">
+		SELECT
+		<include refid="field" />
+		FROM `SYSTEM_USER` SU
+		WHERE SU.ID = #{id}
+	</select>
+	<select id="getSystemUser" resultMap="systemUser">
+		SELECT * FROM `system_user`
+		WHERE email =#{userName} OR phone =#{userName} and status=0;
+	</select>
+
+	<select id="getUserRoleModule" resultMap="systemUser">
+		SELECT DISTINCT
+		su.id,
+		su.`name`,
+		su.email,
+		su.phone,
+		su.password,
+		su.create_time,
+		su.creator_id,
+		su.creator_name,
+		su.`status`,
+		sr.id
+		role_id,
+		sr.`name` role_name,
+		sr.`describe` role_describe,
+		sr.create_time role_create_time,
+		sr.`status` role_status,
+		sm.id
+		module_id,
+		sm.`name` module_name,
+		sm.parent_id module_parent_id,
+		sm.url
+		module_url,
+		sm.create_time module_create_time,
+		sm.`status` module_status
+		FROM
+		system_user su
+		LEFT JOIN system_user_role sur ON su.id =
+		sur.system_user_id
+		LEFT
+		JOIN system_role sr ON sur.system_role_id =
+		sr.id
+		LEFT JOIN
+		system_role_module srm ON sr.id = srm.system_role_id
+		LEFT JOIN
+		system_module sm ON srm.system_module_id = sm.id
+		<where>
+			<if test="id!=null and id!=''">
+				AND su.id = #{id}
+			</if>
+			AND su.`status` =0 AND sr.`status`=0 AND sm.`status`=0
+		</where>
+	</select>
+
+	<sql id="queryUserRoleModule">
+		<where>
+			<if test="id!=null and id!=''">
+				AND su.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND su.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="email!=null and email!=''">
+				AND su.email LIKE CONCAT('%', #{email}, '%')
+			</if>
+			<if test="password!=null and password!=''">
+				AND su.password LIKE CONCAT('%', #{password}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND su.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND SU.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND SU.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND su.status=0 AND SM.status = 0 AND SR.status = 0
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND su.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test=""></if>
+		</where>
+	</sql>
+	<select id="chackUser" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*) count
+		FROM
+		system_user su
+		WHERE
+		(su.phone = #{chackValue}
+		OR su.email = #{chackValue}
+		OR su.name =#{chackValue})
+		<if test="userId!=null and userId!=''">
+			AND su.id !=#{userId}
+		</if>
+		;
+	</select>
+</mapper>

@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-04 10:50:13
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.order.dao.OrderServiceDao">
+	
+	<sql id="field">
+		OS.id, OS.order_id, OS.price, OS.nurse_id, 
+		OS.patient_name, OS.patient_phone, OS.expector_doctor, OS.schedule, 
+		OS.appointment_time, OS.setout_time, OS.start_service_time, OS.end_service_time, 
+		OS.remind_time, OS.confirm_time, OS.status, OS.create_time, 
+		OS.creator_id, OS.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		OS.id OS_id, OS.order_id OS_order_id, 
+		OS.price OS_price, OS.nurse_id OS_nurse_id, 
+		OS.patient_name OS_patient_name, OS.patient_phone OS_patient_phone, 
+		OS.expector_doctor OS_expector_doctor, OS.schedule OS_schedule, 
+		OS.appointment_time OS_appointment_time, OS.setout_time OS_setout_time, 
+		OS.start_service_time OS_start_service_time, OS.end_service_time OS_end_service_time, 
+		OS.remind_time OS_remind_time, OS.confirm_time OS_confirm_time, 
+		OS.status OS_status, OS.create_time OS_create_time, 
+		OS.creator_id OS_creator_id, OS.creator_name OS_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		OS.id id, OS.order_id orderId, 
+		OS.price price, OS.nurse_id nurseId, 
+		OS.patient_name patientName, OS.patient_phone patientPhone, 
+		OS.expector_doctor expectorDoctor, OS.schedule schedule, 
+		OS.appointment_time appointmentTime, OS.setout_time setoutTime, 
+		OS.start_service_time startServiceTime, OS.end_service_time endServiceTime, 
+		OS.remind_time remindTime, OS.confirm_time confirmTime, 
+		OS.status status, OS.create_time createTime, 
+		OS.creator_id creatorId, OS.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND OS.id=#{id}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND OS.order_id=#{orderId}
+		</if>
+		<if test="price!=null">
+			AND OS.price=#{price}
+		</if>
+		<if test="nurseId!=null and nurseId!=''">
+			AND OS.nurse_id=#{nurseId}
+		</if>
+		<if test="patientName!=null and patientName!=''">
+			AND OS.patient_name=#{patientName}
+		</if>
+		<if test="patientPhone!=null and patientPhone!=''">
+			AND OS.patient_phone=#{patientPhone}
+		</if>
+		<if test="expectorDoctor!=null and expectorDoctor!=''">
+			AND OS.expector_doctor=#{expectorDoctor}
+		</if>
+		<if test="schedule!=null">
+			AND OS.schedule=#{schedule}
+		</if>
+		<if test="appointmentTime!=null">
+			AND OS.appointment_time=#{appointmentTime}
+		</if>
+		<if test="setoutTime!=null">
+			AND OS.setout_time=#{setoutTime}
+		</if>
+		<if test="startServiceTime!=null">
+			AND OS.start_service_time=#{startServiceTime}
+		</if>
+		<if test="endServiceTime!=null">
+			AND OS.end_service_time=#{endServiceTime}
+		</if>
+		<if test="remindTime!=null">
+			AND OS.remind_time=#{remindTime}
+		</if>
+		<if test="confirmTime!=null">
+			AND OS.confirm_time=#{confirmTime}
+		</if>
+		<if test="status!=null">
+			AND OS.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND OS.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND OS.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND OS.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND OS.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND OS.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="price!=null">
+				AND OS.price=#{price}
+			</if>
+			<if test="nurseId!=null and nurseId!=''">
+				AND OS.nurse_id LIKE CONCAT('%', #{nurseId}, '%')
+			</if>
+			<if test="patientName!=null and patientName!=''">
+				AND OS.patient_name LIKE CONCAT('%', #{patientName}, '%')
+			</if>
+			<if test="patientPhone!=null and patientPhone!=''">
+				AND OS.patient_phone LIKE CONCAT('%', #{patientPhone}, '%')
+			</if>
+			<if test="expectorDoctor!=null and expectorDoctor!=''">
+				AND OS.expector_doctor LIKE CONCAT('%', #{expectorDoctor}, '%')
+			</if>
+			<if test="schedule!=null">
+				AND OS.schedule=#{schedule}
+			</if>
+			<if test="appointmentTime!=null">
+				AND OS.appointment_time=#{appointmentTime}
+			</if>
+			<if test="setoutTime!=null">
+				AND OS.setout_time=#{setoutTime}
+			</if>
+			<if test="startServiceTime!=null">
+				AND OS.start_service_time=#{startServiceTime}
+			</if>
+			<if test="endServiceTime!=null">
+				AND OS.end_service_time=#{endServiceTime}
+			</if>
+			<if test="remindTime!=null">
+				AND OS.remind_time=#{remindTime}
+			</if>
+			<if test="confirmTime!=null">
+				AND OS.confirm_time=#{confirmTime}
+			</if>
+			<if test="status!=null">
+				AND OS.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND OS.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND OS.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND OS.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				OS.id=#{id}, 
+		   </if>
+           <if test="orderId!=null">
+				OS.order_id=#{orderId}, 
+		   </if>
+           <if test="price!=null">
+				OS.price=#{price}, 
+		   </if>
+           <if test="nurseId!=null">
+				OS.nurse_id=#{nurseId}, 
+		   </if>
+           <if test="patientName!=null">
+				OS.patient_name=#{patientName}, 
+		   </if>
+           <if test="patientPhone!=null">
+				OS.patient_phone=#{patientPhone}, 
+		   </if>
+           <if test="expectorDoctor!=null">
+				OS.expector_doctor=#{expectorDoctor}, 
+		   </if>
+           <if test="schedule!=null">
+				OS.schedule=#{schedule}, 
+		   </if>
+           <if test="appointmentTime!=null">
+				OS.appointment_time=#{appointmentTime}, 
+		   </if>
+           <if test="setoutTime!=null">
+				OS.setout_time=#{setoutTime}, 
+		   </if>
+           <if test="startServiceTime!=null">
+				OS.start_service_time=#{startServiceTime}, 
+		   </if>
+           <if test="endServiceTime!=null">
+				OS.end_service_time=#{endServiceTime}, 
+		   </if>
+           <if test="remindTime!=null">
+				OS.remind_time=#{remindTime}, 
+		   </if>
+           <if test="confirmTime!=null">
+				OS.confirm_time=#{confirmTime}, 
+		   </if>
+           <if test="status!=null">
+				OS.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				OS.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				OS.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				OS.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="orderService" type="com.jinpaihushi.jphs.order.model.OrderService">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="nurseId" column="nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientName" column="patient_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientPhone" column="patient_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorDoctor" column="expector_doctor" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="appointmentTime" column="appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="setoutTime" column="setout_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="startServiceTime" column="start_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endServiceTime" column="end_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="remind_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="confirm_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="orderServiceGlobal" type="com.jinpaihushi.jphs.order.model.OrderService">
+		<result property="id" column="OS_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="OS_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="OS_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="nurseId" column="OS_nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientName" column="OS_patient_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientPhone" column="OS_patient_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorDoctor" column="OS_expector_doctor" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="OS_schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="appointmentTime" column="OS_appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="setoutTime" column="OS_setout_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="startServiceTime" column="OS_start_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endServiceTime" column="OS_end_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="OS_remind_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="OS_confirm_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="OS_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="OS_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="OS_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="OS_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+		<resultMap id="info" type="com.jinpaihushi.jphs.order.model.OrderService">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="nurseId" column="nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseName" column="nurseName" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientName" column="patient_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="patientPhone" column="patient_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expectorDoctor" column="expector_doctor" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="schedule" column="schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="appointmentTime" column="appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="setoutTime" column="setout_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="startServiceTime" column="start_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endServiceTime" column="end_service_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remindTime" column="remind_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="confirmTime" column="confirm_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.order.model.OrderService">
+		INSERT INTO `ORDER_SERVICE`(
+			id, order_id, 
+			price, nurse_id, 
+			patient_name, patient_phone, 
+			expector_doctor, schedule, 
+			appointment_time, setout_time, 
+			start_service_time, end_service_time, 
+			remind_time, confirm_time, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+			#{price,jdbcType=DECIMAL}, #{nurseId,jdbcType=VARCHAR}, 
+			#{patientName,jdbcType=VARCHAR}, #{patientPhone,jdbcType=VARCHAR}, 
+			#{expectorDoctor,jdbcType=VARCHAR}, #{schedule,jdbcType=INTEGER}, 
+			#{appointmentTime,jdbcType=TIMESTAMP}, #{setoutTime,jdbcType=TIMESTAMP}, 
+			#{startServiceTime,jdbcType=TIMESTAMP}, #{endServiceTime,jdbcType=TIMESTAMP}, 
+			#{remindTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `ORDER_SERVICE`(
+			id, order_id, 
+			price, nurse_id, 
+			patient_name, patient_phone, 
+			expector_doctor, schedule, 
+			appointment_time, setout_time, 
+			start_service_time, end_service_time, 
+			remind_time, confirm_time, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.nurseId,jdbcType=VARCHAR}, 
+			#{item.patientName,jdbcType=VARCHAR}, #{item.patientPhone,jdbcType=VARCHAR}, 
+			#{item.expectorDoctor,jdbcType=VARCHAR}, #{item.schedule,jdbcType=INTEGER}, 
+			#{item.appointmentTime,jdbcType=TIMESTAMP}, #{item.setoutTime,jdbcType=TIMESTAMP}, 
+			#{item.startServiceTime,jdbcType=TIMESTAMP}, #{item.endServiceTime,jdbcType=TIMESTAMP}, 
+			#{item.remindTime,jdbcType=TIMESTAMP}, #{item.confirmTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE OS FROM `ORDER_SERVICE` OS WHERE OS.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `ORDER_SERVICE` OS
+		SET 
+		OS.STATUS = -1
+		WHERE OS.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `ORDER_SERVICE` OS
+		<include refid="dynamicSet" /> 
+	    WHERE OS.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="orderService">
+		SELECT <include refid="field"/>
+		FROM `ORDER_SERVICE` OS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `ORDER_SERVICE` OS
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="orderService">
+		SELECT <include refid="field"/>
+		FROM `ORDER_SERVICE` OS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="orderService">
+		SELECT <include refid="field"/>
+		FROM `ORDER_SERVICE` OS
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="orderService">
+		SELECT <include refid="field"/>
+		FROM `ORDER_SERVICE` OS
+		WHERE OS.ID = #{id}
+	</select>
+	
+	<select id="getInfo" resultMap="info">
+		SELECT
+    `os`.`nurse_id`
+    , `os`.`appointment_time`
+    , `os`.`schedule`
+    , `os`.`setout_time`
+    , `os`.`start_service_time`
+    , `os`.`end_service_time`
+    , `os`.`remind_time`
+    , `os`.`confirm_time`
+    , `os`.`status`
+    , `os`.`create_time`
+    , `u`.`name` nurseName
+    , `os`.`patient_name`
+    , `os`.`patient_phone`
+	FROM
+    `jphs`.`order_service` AS `os`
+    INNER JOIN `jphs`.`user` AS `u` 
+        ON (`os`.`nurse_id` = `u`.`id`)
+        WHERE os.`order_id` = #{orderId}
+	</select>
+	
+		<update id="updatePatientPhone">
+	   UPDATE `ORDER_SERVICE` OS
+		SET OS.`patient_phone`=#{patientPhone}
+		WHERE OS.`order_id` = #{orderId}
+	</update>
+	
+</mapper>

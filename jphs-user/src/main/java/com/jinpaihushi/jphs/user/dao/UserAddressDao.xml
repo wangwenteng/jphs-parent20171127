@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-07-03 15:09:14
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.user.dao.UserAddressDao">
+	
+	<sql id="field">
+		UA.id, UA.default_address, UA.title, UA.province, UA.city, 
+		UA.area, UA.detailAddress, UA.create_time, UA.creator_id, 
+		UA.name,UA.phone, 
+		UA.creator_name, UA.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		UA.id UA_id,UA.default_address UA_default_address,
+		UA.title UA_title, 
+		UA.province UA_province, UA.city UA_city, 
+		UA.area UA_area, UA.detailAddress UA_detailAddress, 
+		UA.create_time UA_create_time, UA.creator_id UA_creator_id,
+		UA.name UA_name,UA.phone UA_phone,
+		UA.creator_name UA_creator_name, UA.status UA_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		UA.id id,UA.default_address defaultAddress, UA.title title, 
+		UA.province province, UA.city city, 
+		UA.area area, UA.detailAddress detailaddress, 
+		UA.create_time createTime, UA.creator_id creatorId,
+		UA.name name,UA.phone phone, 
+		UA.creator_name creatorName, UA.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND UA.id=#{id}
+		</if>
+		<if test="title!=null and title!=''">
+			AND UA.title=#{title}
+		</if>
+		<if test="defaultAddress!=null and defaultAddress!=''">
+			AND UA.default_address=#{defaultAddress}
+		</if>
+		<if test="province!=null and province!=''">
+			AND UA.province=#{province}
+		</if>
+		<if test="city!=null and city!=''">
+			AND UA.city=#{city}
+		</if>
+		<if test="area!=null and area!=''">
+			AND UA.area=#{area}
+		</if>
+		<if test="detailaddress!=null and detailaddress!=''">
+			AND UA.detailAddress=#{detailaddress}
+		</if>
+		<if test="createTime!=null">
+			AND UA.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND UA.creator_id=#{creatorId}
+		</if>
+		<if test="name!=null and name!=''">
+			AND UA.name=#{name}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND UA.phone=#{phone}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND UA.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND UA.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND UA.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="defaultAddress!=null and defaultAddress!=''">
+				AND UA.default_address LIKE CONCAT('%', #{defaultAddress}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND UA.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="province!=null and province!=''">
+				AND UA.province LIKE CONCAT('%', #{province}, '%')
+			</if>
+			<if test="city!=null and city!=''">
+				AND UA.city LIKE CONCAT('%', #{city}, '%')
+			</if>
+			<if test="area!=null and area!=''">
+				AND UA.area LIKE CONCAT('%', #{area}, '%')
+			</if>
+			<if test="detailaddress!=null and detailaddress!=''">
+				AND UA.detailAddress LIKE CONCAT('%', #{detailaddress}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND UA.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND UA.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND UA.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND UA.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND UA.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND UA.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				UA.id=#{id}, 
+		   </if>
+           <if test="defaultAddress!=null">
+				UA.default_address=#{defaultAddress}, 
+		   </if>
+		   <if test="title!=null">
+				UA.title=#{title}, 
+		   </if>
+           <if test="province!=null">
+				UA.province=#{province}, 
+		   </if>
+           <if test="city!=null">
+				UA.city=#{city}, 
+		   </if>
+           <if test="area!=null">
+				UA.area=#{area}, 
+		   </if>
+           <if test="detailaddress!=null">
+				UA.detailAddress=#{detailaddress}, 
+		   </if>
+           <if test="createTime!=null">
+				UA.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				UA.creator_id=#{creatorId}, 
+		   </if>
+		   <if test="name!=null">
+				UA.name=#{name}, 
+		   </if>
+		   <if test="phone!=null">
+				UA.phone=#{phone}, 
+		   </if>
+           <if test="creatorName!=null">
+				UA.creator_name=#{creatorName}, 
+		   </if>
+           <if test="status!=null">
+				UA.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="userAddress" type="com.jinpaihushi.jphs.user.model.UserAddress">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="province" column="province" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="city" column="city" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="area" column="area" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailaddress" column="detailAddress" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="defaultAddress" column="default_address" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="userAddressGlobal" type="com.jinpaihushi.jphs.user.model.UserAddress">
+		<result property="id" column="UA_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="UA_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="province" column="UA_province" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="city" column="UA_city" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="area" column="UA_area" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="detailaddress" column="UA_detailAddress" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="UA_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="UA_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="UA_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="UA_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="defaultAddress" column="UA_default_address" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="phone" column="UA_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="UA_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.user.model.UserAddress">
+		INSERT INTO `USER_ADDRESS`(
+			id, default_address,title, 
+			province, city, 
+			area, detailAddress, 
+			create_time, creator_id,name,phone,
+			creator_name, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR},#{defaultAddress,jdbcType=INTEGER},
+			#{title,jdbcType=VARCHAR}, 
+			#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+			#{area,jdbcType=VARCHAR}, #{detailaddress,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},
+			#{creatorName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `USER_ADDRESS`(
+			id,default_address, title, 
+			province, city, 
+			area, detailAddress, 
+			create_time, creator_id,name, phone,
+			creator_name, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.defaultAddress,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, 
+			#{item.province,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR}, 
+			#{item.area,jdbcType=VARCHAR}, #{item.detailaddress,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.name,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE UA FROM `USER_ADDRESS` UA WHERE UA.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `USER_ADDRESS` UA
+		SET 
+		UA.STATUS = -1
+		WHERE UA.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `USER_ADDRESS` UA
+		<include refid="dynamicSet" /> 
+	    WHERE UA.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="userAddress">
+		SELECT <include refid="field"/>
+		FROM `USER_ADDRESS` UA
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `USER_ADDRESS` UA
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="userAddress">
+		SELECT <include refid="field"/>
+		FROM `USER_ADDRESS` UA
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="userAddress">
+		SELECT <include refid="field"/>
+		FROM `USER_ADDRESS` UA
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="userAddress">
+		SELECT <include refid="field"/>
+		FROM `USER_ADDRESS` UA
+		WHERE UA.ID = #{id}
+	</select>
+	
+	<select id="getReceiveAddress" resultMap="userAddress">
+		SELECT
+			ua.id,
+			ua.name,
+			ua.default_address,
+			ua.title,
+			ua.province,
+			ua.city,
+			ua.area,
+			ua.detailAddress,
+			ua.phone,
+			ua.creator_id
+		FROM
+			user_address ua
+		WHERE
+			ua.`status` = 0
+		AND ua.creator_id = #{creatorId} 
+			<if test="defaultAddress!=null ">
+		  AND ua.default_address = #{defaultAddress}
+		    </if>
+		 ORDER BY ua.default_address DESC,ua.create_time DESC
+	</select>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="goods/goods/url/list/index" extends="default.layout">
+		<put-attribute type="string" name="title" value="商品地址表管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/goods/goods/url/list/index.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/goods/goods/url/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="goods/goods/url/edit/index" extends="default.layout">
+		<put-attribute type="string" name="title" value="商品地址表编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/goods/goods/url/edit/index.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/goods/goods/url/edit.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="goods/goods/url/detail/index" extends="default.layout">
+		<put-attribute type="string" name="title" value="商品地址表详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/goods/goods/url/detail/index.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/goods/goods/url/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

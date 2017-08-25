@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-06-27 14:35:38
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.service.dao.ServiceImagesDao">
+	
+	<sql id="field">
+		SI.id, SI.source_id, SI.url, SI.path,SI.device_type, 
+		SI.type, SI.sort, SI.remarks, SI.status, 
+		SI.create_time, SI.creator_id, SI.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		SI.id SI_id, SI.source_id SI_source_id,SI.device_type SI_device_type, 
+		SI.url SI_url, SI.path SI_path, 
+		SI.type SI_type, SI.sort SI_sort, 
+		SI.remarks SI_remarks, SI.status SI_status, 
+		SI.create_time SI_create_time, SI.creator_id SI_creator_id, 
+		SI.creator_name SI_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		SI.id id, SI.source_id sourceId,SI.device_type device_type, 
+		SI.url url, SI.path path, 
+		SI.type type, SI.sort sort, 
+		SI.remarks remarks, SI.status status, 
+		SI.create_time createTime, SI.creator_id creatorId, 
+		SI.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND SI.id=#{id}
+		</if>
+		<if test="sourceId!=null and sourceId!=''">
+			AND SI.source_id=#{sourceId}
+		</if>
+		<if test="url!=null and url!=''">
+			AND SI.url=#{url}
+		</if>
+		<if test="path!=null">
+			AND SI.path=#{path}
+		</if>
+		<if test="device_type!=null">
+			AND SI.device_type=#{device_type}
+		</if>
+		<if test="type!=null">
+			AND SI.type=#{type}
+		</if>
+		<if test="sort!=null">
+			AND SI.sort=#{sort}
+		</if>
+		<if test="remarks!=null and remarks!=''">
+			AND SI.remarks=#{remarks}
+		</if>
+		<if test="status!=null">
+			AND SI.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND SI.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND SI.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND SI.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND SI.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="sourceId!=null and sourceId!=''">
+				AND SI.source_id LIKE CONCAT('%', #{sourceId}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND SI.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="path!=null">
+				AND SI.path=#{path}
+			</if>
+			<if test="device_type!=null">
+				AND SI.device_type=#{device_type}
+			</if>
+			<if test="type!=null">
+				AND SI.type=#{type}
+			</if>
+			<if test="sort!=null">
+				AND SI.sort=#{sort}
+			</if>
+			<if test="remarks!=null and remarks!=''">
+				AND SI.remarks LIKE CONCAT('%', #{remarks}, '%')
+			</if>
+			<if test="status!=null">
+				AND SI.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND SI.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND SI.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND SI.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				SI.id=#{id}, 
+		   </if>
+           <if test="sourceId!=null">
+				SI.source_id=#{sourceId}, 
+		   </if>
+           <if test="url!=null">
+				SI.url=#{url}, 
+		   </if>
+           <if test="path!=null">
+				SI.path=#{path}, 
+		   </if>
+		    <if test="device_type!=null">
+				SI.device_type=#{device_type}, 
+		   </if>
+           <if test="type!=null">
+				SI.type=#{type}, 
+		   </if>
+           <if test="sort!=null">
+				SI.sort=#{sort}, 
+		   </if>
+           <if test="remarks!=null">
+				SI.remarks=#{remarks}, 
+		   </if>
+           <if test="status!=null">
+				SI.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				SI.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				SI.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				SI.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="serviceImages" type="com.jinpaihushi.jphs.service.model.ServiceImages">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="path" javaType="String" jdbcType="CHAR"></result>
+		<result property="device_type" column="device_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="serviceImagesGlobal" type="com.jinpaihushi.jphs.service.model.ServiceImages">
+		<result property="id" column="SI_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="SI_source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="SI_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="path" column="SI_path" javaType="String" jdbcType="CHAR"></result>
+		<result property="device_type" column="SI_device_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="SI_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="SI_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remarks" column="SI_remarks" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="SI_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="SI_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="SI_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="SI_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.service.model.ServiceImages">
+		INSERT INTO `SERVICE_IMAGES`(
+			id, source_id, 
+			url, path, 
+			type, device_type, sort, 
+			remarks, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+			#{url,jdbcType=VARCHAR}, #{path,jdbcType=CHAR}, 
+			#{type,jdbcType=INTEGER}, #{device_type,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+			#{remarks,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SERVICE_IMAGES`(
+			id, source_id, 
+			url, path, 
+			type, device_type, sort, 
+			remarks, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.sourceId,jdbcType=VARCHAR}, 
+			#{item.url,jdbcType=VARCHAR}, #{item.path,jdbcType=CHAR}, 
+			#{item.type,jdbcType=INTEGER}, #{item.device_type,jdbcType=INTEGER}, #{item.sort,jdbcType=INTEGER}, 
+			#{item.remarks,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE SI FROM `SERVICE_IMAGES` SI WHERE SI.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SERVICE_IMAGES` SI
+		SET 
+		SI.STATUS = -1
+		WHERE SI.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SERVICE_IMAGES` SI
+		<include refid="dynamicSet" /> 
+	    WHERE SI.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="serviceImages">
+		SELECT <include refid="field"/>
+		FROM `SERVICE_IMAGES` SI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SERVICE_IMAGES` SI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="serviceImages">
+		SELECT <include refid="field"/>
+		FROM `SERVICE_IMAGES` SI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="serviceImages">
+		SELECT <include refid="field"/>
+		FROM `SERVICE_IMAGES` SI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="serviceImages">
+		SELECT <include refid="field"/>
+		FROM `SERVICE_IMAGES` SI
+		WHERE SI.ID = #{id}
+	</select>
+	
+</mapper>

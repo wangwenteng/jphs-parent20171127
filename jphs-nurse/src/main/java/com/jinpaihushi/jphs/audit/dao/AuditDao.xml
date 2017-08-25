@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-07-11 10:38:09
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.audit.dao.AuditDao">
+	
+	<sql id="field">
+		A.id, A.audit, A.audit_time, A.audit_user_id, 
+		A.audit_user_name, A.remark, A.creator_id, A.creator_name, 
+		A.create_time, A.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		A.id A_id, A.audit A_audit, 
+		A.audit_time A_audit_time, A.audit_user_id A_audit_user_id, 
+		A.audit_user_name A_audit_user_name, A.remark A_remark, 
+		A.creator_id A_creator_id, A.creator_name A_creator_name, 
+		A.create_time A_create_time, A.status A_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		A.id id, A.audit audit, 
+		A.audit_time auditTime, A.audit_user_id auditUserId, 
+		A.audit_user_name auditUserName, A.remark remark, 
+		A.creator_id creatorId, A.creator_name creatorName, 
+		A.create_time createTime, A.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND A.id=#{id}
+		</if>
+		<if test="audit!=null">
+			AND A.audit=#{audit}
+		</if>
+		<if test="auditTime!=null">
+			AND A.audit_time=#{auditTime}
+		</if>
+		<if test="auditUserId!=null and auditUserId!=''">
+			AND A.audit_user_id=#{auditUserId}
+		</if>
+		<if test="auditUserName!=null and auditUserName!=''">
+			AND A.audit_user_name=#{auditUserName}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND A.remark=#{remark}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND A.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND A.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND A.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND A.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND A.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="audit!=null">
+				AND A.audit=#{audit}
+			</if>
+			<if test="auditTime!=null">
+				AND A.audit_time=#{auditTime}
+			</if>
+			<if test="auditUserId!=null and auditUserId!=''">
+				AND A.audit_user_id LIKE CONCAT('%', #{auditUserId}, '%')
+			</if>
+			<if test="auditUserName!=null and auditUserName!=''">
+				AND A.audit_user_name LIKE CONCAT('%', #{auditUserName}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND A.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND A.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND A.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND A.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND A.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				A.id=#{id}, 
+		   </if>
+           <if test="audit!=null">
+				A.audit=#{audit}, 
+		   </if>
+           <if test="auditTime!=null">
+				A.audit_time=#{auditTime}, 
+		   </if>
+           <if test="auditUserId!=null">
+				A.audit_user_id=#{auditUserId}, 
+		   </if>
+           <if test="auditUserName!=null">
+				A.audit_user_name=#{auditUserName}, 
+		   </if>
+           <if test="remark!=null">
+				A.remark=#{remark}, 
+		   </if>
+           <if test="creatorId!=null">
+				A.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				A.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				A.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				A.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="audit" type="com.jinpaihushi.jphs.audit.model.Audit">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="audit" column="audit" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="auditTime" column="audit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="auditUserId" column="audit_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditUserName" column="audit_user_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="auditGlobal" type="com.jinpaihushi.jphs.audit.model.Audit">
+		<result property="id" column="A_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="audit" column="A_audit" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="auditTime" column="A_audit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="auditUserId" column="A_audit_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditUserName" column="A_audit_user_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="A_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="A_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="A_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="A_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="A_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.audit.model.Audit">
+		INSERT INTO `AUDIT`(
+			id, audit, 
+			audit_time, audit_user_id, 
+			audit_user_name, remark, 
+			creator_id, creator_name, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{audit,jdbcType=INTEGER}, 
+			#{auditTime,jdbcType=TIMESTAMP}, #{auditUserId,jdbcType=VARCHAR}, 
+			#{auditUserName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `AUDIT`(
+			id, audit, 
+			audit_time, audit_user_id, 
+			audit_user_name, remark, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.audit,jdbcType=INTEGER}, 
+			#{item.auditTime,jdbcType=TIMESTAMP}, #{item.auditUserId,jdbcType=VARCHAR}, 
+			#{item.auditUserName,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE A FROM `AUDIT` A WHERE A.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `AUDIT` A
+		SET 
+		A.STATUS = -1
+		WHERE A.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `AUDIT` A
+		<include refid="dynamicSet" /> 
+	    WHERE A.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="audit">
+		SELECT <include refid="field"/>
+		FROM `AUDIT` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `AUDIT` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="audit">
+		SELECT <include refid="field"/>
+		FROM `AUDIT` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="audit">
+		SELECT <include refid="field"/>
+		FROM `AUDIT` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="audit">
+		SELECT <include refid="field"/>
+		FROM `AUDIT` A
+		WHERE A.ID = #{id}
+	</select>
+	<select id="getNurseAudit" resultMap="audit">
+		SELECT a.*,u.`name` AS audit_user_name FROM audit a LEFT JOIN `user` u ON a.audit_user_id = u.id 
+		<include refid="queryWhere" />
+	</select>
+</mapper>

@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-06-21 14:43:29
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.site.dao.SiteDao">
+	
+	<sql id="field">
+		S.id, S.name, S.url, S.location_id, 
+		S.remark, S.status, S.create_time, S.creator_id, 
+		S.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		S.id S_id, S.name S_name, 
+		S.url S_url, S.location_id S_location_id, 
+		S.remark S_remark, S.status S_status, 
+		S.create_time S_create_time, S.creator_id S_creator_id, 
+		S.creator_name S_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		S.id id, S.name name, 
+		S.url url, S.location_id locationId, 
+		S.remark remark, S.status status, 
+		S.create_time createTime, S.creator_id creatorId, 
+		S.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND S.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND S.name=#{name}
+		</if>
+		<if test="url!=null and url!=''">
+			AND S.url=#{url}
+		</if>
+		<if test="locationId!=null and locationId!=''">
+			AND S.location_id=#{locationId}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND S.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND S.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND S.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND S.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND S.creator_name=#{creatorName}
+		</if>
+		and (S.status=0 or S.status=1)
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND S.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND S.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND S.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="locationId!=null and locationId!=''">
+				AND S.location_id LIKE CONCAT('%', #{locationId}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND S.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND S.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND S.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND S.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND S.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				S.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				S.name=#{name}, 
+		   </if>
+           <if test="url!=null">
+				S.url=#{url}, 
+		   </if>
+           <if test="locationId!=null">
+				S.location_id=#{locationId}, 
+		   </if>
+           <if test="remark!=null">
+				S.remark=#{remark}, 
+		   </if>
+           <if test="status!=null">
+				S.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				S.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				S.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				S.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="site" type="com.jinpaihushi.jphs.site.model.Site">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="locationId" column="location_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="siteGlobal" type="com.jinpaihushi.jphs.site.model.Site">
+		<result property="id" column="S_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="S_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="S_url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="locationId" column="S_location_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="S_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="S_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="S_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="S_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="S_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="getSiteDetail" type="com.jinpaihushi.jphs.site.model.Site">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<collection property="location" ofType="com.jinpaihushi.jphs.location.model.Location">
+			<result property="id" column="location_id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="content" column="location_content" javaType="String" jdbcType="VARCHAR"></result>
+		</collection>
+	</resultMap>
+	
+	<!-- <resultMap id="getSiteGoodsDetail" type="com.jinpaihushi.jphs.product.model.Product">
+			<result property="id" column="product_id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="platformId" column="product_platform_id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="title" column="product_title" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="sort" column="product_sort" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="status" column="product_status" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="remark" column="product_remark" javaType="String" jdbcType="VARCHAR"></result>
+				<collection property="goodsList" ofType="com.jinpaihushi.jphs.goods.model.Goods">
+					<result property="id" column="good_id" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="productId" column="good_product_id" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="title" column="good_title" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="subTitle" column="good_sub_title" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="content" column="good_content" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="tijianTypeId" column="good_tijian_type_id" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="tijianHospitalId" column="good_tijian_hospital_id" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="tool" column="good_tool" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="insurance" column="good_insurance" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="type" column="good_type" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="gradeType" column="good_gradeType" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="sort" column="good_sort" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="remark" column="good_remark" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="status" column="good_status" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="createTime" column="good_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+					<result property="creatorId" column="good_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+					<result property="creatorName" column="good_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+					<collection property="priceList" ofType="com.jinpaihushi.jphs.price.model.Price">
+						<result property="id" column="price_id" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="siteId" column="price_site_id" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="goodsId" column="price_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="price" column="price_price" javaType="Double" jdbcType="DECIMAL"></result>
+						<result property="oldPrice" column="price_old_price" javaType="Double" jdbcType="DECIMAL"></result>
+						<result property="profit" column="price_profit" javaType="Double" jdbcType="DECIMAL"></result>
+						<result property="title" column="price_title" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="grade" column="price_grade" javaType="Integer" jdbcType="INTEGER"></result>
+						<result property="serviceNumber" column="price_service_number" javaType="Integer" jdbcType="INTEGER"></result>
+						<result property="serviceTime" column="price_service_time" javaType="Integer" jdbcType="INTEGER"></result>
+						<result property="unit" column="price_unit" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="sort" column="price_sort" javaType="Integer" jdbcType="INTEGER"></result>
+						<result property="remark" column="price_remark" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="createTime" column="price_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+						<result property="status" column="price_status" javaType="Integer" jdbcType="INTEGER"></result>
+						<result property="creatorId" column="price_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+						<result property="creatorName" column="price_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+					</collection>
+			</collection>
+	</resultMap> -->
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.site.model.Site">
+		INSERT INTO `SITE`(
+			id, name, 
+			url, location_id, 
+			remark, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{url,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, 
+			#{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			now(), #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SITE`(
+			id, name, 
+			url, location_id, 
+			remark, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.url,jdbcType=VARCHAR}, #{item.locationId,jdbcType=VARCHAR}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE S FROM `SITE` S WHERE S.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SITE` S
+		SET 
+		S.STATUS = -1
+		WHERE S.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SITE` S
+		<include refid="dynamicSet" /> 
+	    WHERE S.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="site">
+		SELECT <include refid="field"/>
+		FROM `SITE` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SITE` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="site">
+		SELECT <include refid="field"/>
+		FROM `SITE` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="site">
+		SELECT <include refid="field"/>
+		FROM `SITE` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="site">
+		SELECT <include refid="field"/>
+		FROM `SITE` S
+		WHERE S.ID = #{id}
+	</select>
+	
+	<select id="getSiteDetail" resultMap="getSiteDetail">
+		SELECT 
+			s.id,
+			s.name,
+			s.url,
+			s.remark,
+			s.status,
+			s.create_time,
+			s.creator_id,
+			s.creator_name,
+			t.id location_id,
+			t.content location_content	
+		FROM
+			site s
+		LEFT JOIN area AS ar ON s.id = ar.source_id
+		LEFT JOIN ( SELECT l.id, CONCAT( l3.content,'-', l2.content,'-', l.content ) 
+		content FROM `location` l
+		LEFT JOIN location l2 ON l.parent_id = l2.id
+		LEFT JOIN location l3 ON l2.parent_id = l3.id where l.type=3 ) t ON t.id = ar.location 
+		where s.id=#{id}
+	</select>
+	<sql id="queryDetail">
+		<where>
+			<if test="id!=null and id!=''">
+				AND S.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND S.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="url!=null and url!=''">
+				AND S.url LIKE CONCAT('%', #{url}, '%')
+			</if>
+			<if test="locationId!=null and locationId!=''">
+				AND S.location_id LIKE CONCAT('%', #{locationId}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND S.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND S.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND S.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND S.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND S.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			AND ar.type=0  AND ar.`status`=0 AND s.`status`=0  
+		</where>
+	</sql>
+	
+	<!-- <select id="getSiteGoodsDetail" resultMap="getSiteGoodsDetail">
+		SELECT 
+			p.id product_id,
+			p.platform_id product_platform_id,
+			p.title product_title,
+			p.sort product_sort,
+			p.status product_status,
+			p.remark product_remark,
+			s.id good_id,
+			s.title good_title,
+			s.sub_title good_sub_title,
+			s.product_id good_product_id,
+			s.content good_content,
+			s.tool good_tool,
+			s.insurance good_insurance,
+			s.tijian_type_id good_tijian_type_id,
+			s.tijian_hospital_id good_tijian_hospital_id,
+			s.type good_type,
+			s.grade_type good_grade_type,
+			s.sort good_sort,
+			s.status good_status,
+			s.remark good_remark,
+			s.create_time good_create_time,
+			s.creator_id good_creator_id,
+			s.creator_name good_creator_name,
+			e.id price_id,
+			e.site_id price_site_id,
+			e.goods_id price_goods_id,
+			e.price price_price,
+			e.old_price price_old_price,
+			e.profit price_profit,
+			e.title price_title,
+			e.grade price_grade,
+			e.service_number price_service_number,
+			e.service_time price_service_time,
+			e.unit price_unit,
+			e.sort price_sort,
+			e.remark price_remark,
+			e.create_time price_create_time,
+			e.status price_status,
+			e.creator_id price_creator_id,
+			e.creator_name creator_name
+		FROM
+			product p
+		LEFT JOIN `goods` s ON s.product_id = p.id 
+		LEFT JOIN `price` e ON e.goods_id = s.id 
+	</select> -->
+		<select id="getSiteList" resultType="java.util.HashMap">
+		SELECT id,name FROM site WHERE `status` =0 ORDER BY create_time
+	</select>
+</mapper>

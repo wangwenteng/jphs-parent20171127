@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-07-19 15:01:20
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.information.dao.InformationChannelDao">
+	
+	<sql id="field">
+		IC.id, IC.name, IC.sort, IC.status, 
+		IC.create_time, IC.creator_id, IC.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		IC.id IC_id, IC.name IC_name, 
+		IC.sort IC_sort, IC.status IC_status, 
+		IC.create_time IC_create_time, IC.creator_id IC_creator_id, 
+		IC.creator_name IC_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		IC.id id, IC.name name, 
+		IC.sort sort, IC.status status, 
+		IC.create_time createTime, IC.creator_id creatorId, 
+		IC.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND IC.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND IC.name=#{name}
+		</if>
+		<if test="sort!=null">
+			AND IC.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND IC.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND IC.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND IC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND IC.creator_name=#{creatorName}
+		</if>
+		AND (IC.status=0 or IC.status=1)
+	</sql>
+	
+	<sql id="conditions">
+		<if test="id!=null and id!=''">
+			AND IC.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND IC.name=#{name}
+		</if>
+		<if test="sort!=null">
+			AND IC.sort=#{sort}
+		</if>
+		<if test="status!=null">
+			AND IC.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND IC.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND IC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND IC.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="dynamicWheres">
+		<where>
+			<include refid="conditions"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND IC.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND IC.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sort!=null">
+				AND IC.sort=#{sort}
+			</if>
+			<if test="status!=null">
+				AND IC.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND IC.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND IC.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND IC.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				IC.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				IC.name=#{name}, 
+		   </if>
+           <if test="sort!=null">
+				IC.sort=#{sort}, 
+		   </if>
+           <if test="status!=null">
+				IC.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				IC.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				IC.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				IC.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="informationChannel" type="com.jinpaihushi.jphs.information.model.InformationChannel">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="informationChannelGlobal" type="com.jinpaihushi.jphs.information.model.InformationChannel">
+		<result property="id" column="IC_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="IC_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sort" column="IC_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="IC_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="IC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="IC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="IC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.information.model.InformationChannel">
+		INSERT INTO `INFORMATION_CHANNEL`(
+			id, name, 
+			sort, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `INFORMATION_CHANNEL`(
+			id, name, 
+			sort, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.sort,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE IC FROM `INFORMATION_CHANNEL` IC WHERE IC.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `INFORMATION_CHANNEL` IC
+		SET 
+		IC.STATUS = -1
+		WHERE IC.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `INFORMATION_CHANNEL` IC
+		<include refid="dynamicSet" /> 
+	    WHERE IC.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="informationChannel">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_CHANNEL` IC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `INFORMATION_CHANNEL` IC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="informationChannel">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_CHANNEL` IC
+		<include refid="dynamicWheres" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="informationChannel">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_CHANNEL` IC
+		<include refid="dynamicWhere" />
+		ORDER BY IC.create_time desc
+		<!-- <include refid="orderby" /> -->
+	</select>
+	
+	<select id="loadById" resultMap="informationChannel">
+		SELECT <include refid="field"/>
+		FROM `INFORMATION_CHANNEL` IC
+		WHERE IC.ID = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-07-03 11:18:42 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.health.dao.HealthLogDao">
+
+	<sql id="field">
+		HL.id, HL.type, HL.user_id, HL.order_id, HL.advise,
+		HL.evaluate_content, HL.disease_causes, HL.physical_symptoms,
+		HL.present_illness, HL.diseases_history, HL.medication_remind,
+		HL.appointment_time, HL.notes, HL.creator_name, HL.creator_id,
+		HL.create_time, HL.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		HL.id HL_id, HL.type HL_type, HL.user_id HL_user_id,
+		HL.order_id HL_order_id, HL.advise HL_advise, HL.evaluate_content
+		HL_evaluate_content, HL.disease_causes HL_disease_causes,
+		HL.physical_symptoms HL_physical_symptoms, HL.present_illness
+		HL_present_illness, HL.diseases_history HL_diseases_history,
+		HL.medication_remind HL_medication_remind, HL.appointment_time
+		HL_appointment_time, HL.notes HL_notes, HL.creator_name
+		HL_creator_name, HL.creator_id HL_creator_id, HL.create_time
+		HL_create_time, HL.status HL_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		HL.id id, HL.type type, HL.user_id userId, HL.order_id
+		orderId, HL.advise advise, HL.evaluate_content evaluateContent,
+		HL.disease_causes diseaseCauses, HL.physical_symptoms
+		physicalSymptoms, HL.present_illness presentIllness,
+		HL.diseases_history diseasesHistory, HL.medication_remind
+		medicationRemind, HL.appointment_time appointmentTime, HL.notes notes,
+		HL.creator_name creatorName, HL.creator_id creatorId, HL.create_time
+		createTime, HL.status status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND HL.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND HL.type=#{type}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND HL.user_id=#{userId}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND HL.order_id=#{orderId}
+		</if>
+		<if test="advise!=null and advise!=''">
+			AND HL.advise=#{advise}
+		</if>
+		<if test="evaluateContent!=null and evaluateContent!=''">
+			AND HL.evaluate_content=#{evaluateContent}
+		</if>
+		<if test="diseaseCauses!=null and diseaseCauses!=''">
+			AND HL.disease_causes=#{diseaseCauses}
+		</if>
+		<if test="physicalSymptoms!=null and physicalSymptoms!=''">
+			AND HL.physical_symptoms=#{physicalSymptoms}
+		</if>
+		<if test="presentIllness!=null and presentIllness!=''">
+			AND HL.present_illness=#{presentIllness}
+		</if>
+		<if test="diseasesHistory!=null and diseasesHistory!=''">
+			AND HL.diseases_history=#{diseasesHistory}
+		</if>
+		<if test="medicationRemind!=null and medicationRemind!=''">
+			AND HL.medication_remind=#{medicationRemind}
+		</if>
+		<if test="appointmentTime!=null">
+			AND HL.appointment_time=#{appointmentTime}
+		</if>
+		<if test="notes!=null and notes!=''">
+			AND HL.notes=#{notes}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND HL.creator_name=#{creatorName}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND HL.creator_id=#{creatorId}
+		</if>
+		<if test="createTime!=null">
+			AND HL.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND HL.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND HL.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND HL.type=#{type}
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND HL.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND HL.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="advise!=null and advise!=''">
+				AND HL.advise LIKE CONCAT('%', #{advise}, '%')
+			</if>
+			<if test="evaluateContent!=null and evaluateContent!=''">
+				AND HL.evaluate_content LIKE CONCAT('%',
+				#{evaluateContent}, '%')
+			</if>
+			<if test="diseaseCauses!=null and diseaseCauses!=''">
+				AND HL.disease_causes LIKE CONCAT('%', #{diseaseCauses},
+				'%')
+			</if>
+			<if test="physicalSymptoms!=null and physicalSymptoms!=''">
+				AND HL.physical_symptoms LIKE CONCAT('%',
+				#{physicalSymptoms}, '%')
+			</if>
+			<if test="presentIllness!=null and presentIllness!=''">
+				AND HL.present_illness LIKE CONCAT('%',
+				#{presentIllness}, '%')
+			</if>
+			<if test="diseasesHistory!=null and diseasesHistory!=''">
+				AND HL.diseases_history LIKE CONCAT('%',
+				#{diseasesHistory}, '%')
+			</if>
+			<if test="medicationRemind!=null and medicationRemind!=''">
+				AND HL.medication_remind LIKE CONCAT('%',
+				#{medicationRemind}, '%')
+			</if>
+			<if test="appointmentTime!=null">
+				AND HL.appointment_time=#{appointmentTime}
+			</if>
+			<if test="notes!=null and notes!=''">
+				AND HL.notes LIKE CONCAT('%', #{notes}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND HL.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND HL.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND HL.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND HL.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				HL.id=#{id},
+			</if>
+			<if test="type!=null">
+				HL.type=#{type},
+			</if>
+			<if test="userId!=null">
+				HL.user_id=#{userId},
+			</if>
+			<if test="orderId!=null">
+				HL.order_id=#{orderId},
+			</if>
+			<if test="advise!=null">
+				HL.advise=#{advise},
+			</if>
+			<if test="evaluateContent!=null">
+				HL.evaluate_content=#{evaluateContent},
+			</if>
+			<if test="diseaseCauses!=null">
+				HL.disease_causes=#{diseaseCauses},
+			</if>
+			<if test="physicalSymptoms!=null">
+				HL.physical_symptoms=#{physicalSymptoms},
+			</if>
+			<if test="presentIllness!=null">
+				HL.present_illness=#{presentIllness},
+			</if>
+			<if test="diseasesHistory!=null">
+				HL.diseases_history=#{diseasesHistory},
+			</if>
+			<if test="medicationRemind!=null">
+				HL.medication_remind=#{medicationRemind},
+			</if>
+			<if test="appointmentTime!=null">
+				HL.appointment_time=#{appointmentTime},
+			</if>
+			<if test="notes!=null">
+				HL.notes=#{notes},
+			</if>
+			<if test="creatorName!=null">
+				HL.creator_name=#{creatorName},
+			</if>
+			<if test="creatorId!=null">
+				HL.creator_id=#{creatorId},
+			</if>
+			<if test="createTime!=null">
+				HL.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				HL.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="healthLog" type="com.jinpaihushi.jphs.health.model.HealthLog">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="userId" column="user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="advise" column="advise" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="evaluateContent" column="evaluate_content"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diseaseCauses" column="disease_causes"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="physicalSymptoms" column="physical_symptoms"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="presentIllness" column="present_illness"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diseasesHistory" column="diseases_history"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="medicationRemind" column="medication_remind"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="notes" column="notes" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<resultMap id="healthLogGlobal" type="com.jinpaihushi.jphs.health.model.HealthLog">
+		<result property="id" column="HL_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="type" column="HL_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="userId" column="HL_user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="HL_order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="advise" column="HL_advise" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="evaluateContent" column="HL_evaluate_content"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diseaseCauses" column="HL_disease_causes"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="physicalSymptoms" column="HL_physical_symptoms"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="presentIllness" column="HL_present_illness"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diseasesHistory" column="HL_diseases_history"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="medicationRemind" column="HL_medication_remind"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="HL_appointment_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="notes" column="HL_notes" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="HL_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="HL_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="HL_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="HL_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.health.model.HealthLog">
+		INSERT INTO `HEALTH_LOG`(
+		id, type, user_id, order_id,
+		advise, evaluate_content, disease_causes,
+		physical_symptoms,
+		present_illness, diseases_history,
+		medication_remind, appointment_time,
+		notes, creator_name, creator_id,
+		create_time, status )VALUES(
+		#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
+		#{userId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{advise,jdbcType=VARCHAR},
+		#{evaluateContent,jdbcType=VARCHAR},
+		#{diseaseCauses,jdbcType=VARCHAR},
+		#{physicalSymptoms,jdbcType=VARCHAR},
+		#{presentIllness,jdbcType=VARCHAR},
+		#{diseasesHistory,jdbcType=VARCHAR},
+		#{medicationRemind,jdbcType=VARCHAR},
+		#{appointmentTime,jdbcType=TIMESTAMP}, #{notes,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `HEALTH_LOG`(
+			id, type, 
+			user_id, order_id, 
+			advise, evaluate_content, 
+			disease_causes, physical_symptoms, 
+			present_illness, diseases_history, 
+			medication_remind, appointment_time, 
+			notes, creator_name, 
+			creator_id, create_time, 
+			status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.type,jdbcType=INTEGER}, #{item.userId,jdbcType=VARCHAR},
+			#{item.orderId,jdbcType=VARCHAR}, #{item.advise,jdbcType=VARCHAR},
+			#{item.evaluateContent,jdbcType=VARCHAR},
+			#{item.diseaseCauses,jdbcType=VARCHAR},
+			#{item.physicalSymptoms,jdbcType=VARCHAR},
+			#{item.presentIllness,jdbcType=VARCHAR},
+			#{item.diseasesHistory,jdbcType=VARCHAR},
+			#{item.medicationRemind,jdbcType=VARCHAR},
+			#{item.appointmentTime,jdbcType=TIMESTAMP},
+			#{item.notes,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE HL FROM `HEALTH_LOG` HL WHERE HL.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `HEALTH_LOG` HL
+		SET
+		HL.STATUS = -1
+		WHERE HL.ID =
+		#{id}
+	</update>
+
+	<update id="update">
+		UPDATE `HEALTH_LOG` HL
+		<include refid="dynamicSet" />
+		WHERE HL.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="healthLog">
+		SELECT
+		<include refid="field" />
+		FROM `HEALTH_LOG` HL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `HEALTH_LOG` HL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="healthLog">
+		SELECT
+		<include refid="field" />
+		FROM `HEALTH_LOG` HL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="healthLog">
+		SELECT
+		<include refid="field" />
+		FROM `HEALTH_LOG` HL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="healthLog">
+		SELECT
+		<include refid="field" />
+		FROM `HEALTH_LOG` HL
+		WHERE HL.ID = #{id}
+	</select>
+	<select id="getHealthLog" resultType="java.util.HashMap">
+		SELECT
+		hl.user_id,
+		u.`name` userName,
+		u.sex sex,
+		ni.url headPicture,
+		IFNULL(o.accept_time, '') accept_time,
+		<if test="id!=null and id!=''">
+			IFNULL(o.accept_user_id, '') nurseId,
+			IFNULL(ua.`name`, '') nurseName,
+			IFNULL(ua.phone, '') nursePhone,
+			<if test="type==2">
+				IFNULL(hl.evaluate_content,'')evaluate_content,
+				IFNULL(hl.advise,'') advise,
+			</if>
+		</if>
+		CASE
+		WHEN
+		u.birthday IS NOT NULL THEN
+		(
+		(
+		YEAR (now()) - YEAR
+		(u.birthday) - 1
+		) + (
+		DATE_FORMAT(u.birthday, '%m%d') &lt;=
+		DATE_FORMAT(NOW(), '%m%d')
+		)
+		)
+		ELSE
+		''
+		END AS age
+		FROM
+		health_log hl
+		LEFT JOIN `user` u ON hl.user_id = u.id
+		LEFT JOIN nurse_images ni ON u.id = ni.source_id
+		LEFT JOIN `order` o ON hl.order_id = o.id
+		<if test="id!=null and id!=''">
+			LEFT JOIN `user` ua ON o.accept_user_id = ua.id
+		</if>
+		<where>
+			<if test="type!=null">
+				AND hl.type =#{type}
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND hl.user_id = #{userId}
+			</if>
+		</where>
+		ORDER BY hl.create_time DESC
+	</select>
+</mapper>

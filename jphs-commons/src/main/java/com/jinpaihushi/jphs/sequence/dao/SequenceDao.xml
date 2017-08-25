@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-30 13:56:20
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.sequence.dao.SequenceDao">
+	
+	<sql id="field">
+		S.seq_name, S.current_val, S.increment_val
+	</sql>
+
+	<sql id="fieldGlobal">
+		S.seq_name S_seq_name, S.current_val S_current_val, 
+		S.increment_val S_increment_val
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		S.seq_name seqName, S.current_val currentVal, 
+		S.increment_val incrementVal
+	</sql>
+	
+	<sql id="condition">
+		<if test="seqName!=null and seqName!=''">
+			AND S.seq_name=#{seqName}
+		</if>
+		<if test="currentVal!=null">
+			AND S.current_val=#{currentVal}
+		</if>
+		<if test="incrementVal!=null">
+			AND S.increment_val=#{incrementVal}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="seqName!=null and seqName!=''">
+				AND S.seq_name LIKE CONCAT('%', #{seqName}, '%')
+			</if>
+			<if test="currentVal!=null">
+				AND S.current_val=#{currentVal}
+			</if>
+			<if test="incrementVal!=null">
+				AND S.increment_val=#{incrementVal}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="seqName!=null">
+				S.seq_name=#{seqName}, 
+		   </if>
+           <if test="currentVal!=null">
+				S.current_val=#{currentVal}, 
+		   </if>
+           <if test="incrementVal!=null">
+				S.increment_val=#{incrementVal}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="sequence" type="com.jinpaihushi.jphs.sequence.model.Sequence">
+		<result property="seqName" column="seq_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="currentVal" column="current_val" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="incrementVal" column="increment_val" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="sequenceGlobal" type="com.jinpaihushi.jphs.sequence.model.Sequence">
+		<result property="seqName" column="S_seq_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="currentVal" column="S_current_val" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="incrementVal" column="S_increment_val" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.sequence.model.Sequence">
+		INSERT INTO `SEQUENCE`(
+			seq_name, current_val, 
+			increment_val
+		)VALUES(
+			#{seqName,jdbcType=VARCHAR}, #{currentVal,jdbcType=INTEGER}, 
+			#{incrementVal,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `SEQUENCE`(
+			seq_name, current_val, 
+			increment_val
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.seqName,jdbcType=VARCHAR}, #{item.currentVal,jdbcType=INTEGER}, 
+			#{item.incrementVal,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE S FROM `SEQUENCE` S WHERE S.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `SEQUENCE` S
+		SET 
+		S.STATUS = -1
+		WHERE S.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `SEQUENCE` S
+		<include refid="dynamicSet" /> 
+	    WHERE S.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="sequence">
+		SELECT <include refid="field"/>
+		FROM `SEQUENCE` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `SEQUENCE` S
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="sequence">
+		SELECT <include refid="field"/>
+		FROM `SEQUENCE` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="sequence">
+		SELECT <include refid="field"/>
+		FROM `SEQUENCE` S
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="sequence">
+		SELECT <include refid="field"/>
+		FROM `SEQUENCE` S
+		WHERE S.ID = #{id}
+	</select>
+	<select id="getCurrentVal" resultType="java.lang.String">
+		SELECT
+		current_val+increment_val as current_val
+		FROM
+			`sequence`
+		WHERE
+			seq_name = CONCAT('seq_', #{tableName}, '_id');
+	</select>
+</mapper>

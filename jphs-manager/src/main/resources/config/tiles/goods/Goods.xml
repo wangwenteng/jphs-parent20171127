@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="product/goods/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/product/goods/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/product/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/product/goods/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="product/goods/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/product/goods/edit/index.jsp" />
+		<put-attribute type="template" name="left" value="/WEB-INF/view/product/left.jsp" />
+		
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/umeditor/themes/default/css/umeditor.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/product/goods/edit.js" />
+			<add-attribute value="/static/js/ajaxfileupload.js" />
+			<add-attribute value="/static/js/img.js" />
+			<add-attribute value="/static/umeditor/umeditor.config.js" />
+			<add-attribute value="/static/umeditor/umeditor.min.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="product/goods/jobtitle" extends="empty.layout">
+		<put-attribute type="string" name="title" value="职称" />
+		<put-attribute type="template" name="body" value="/WEB-INF/view/product/goods/edit/jobtitle.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/product/goods/jobtitle.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="product/goods/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/product/goods/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/product/left.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/umeditor/themes/default/css/umeditor.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/product/goods/detail.js" />
+			<add-attribute value="/static/umeditor/umeditor.config.js" />
+			<add-attribute value="/static/umeditor/umeditor.min.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

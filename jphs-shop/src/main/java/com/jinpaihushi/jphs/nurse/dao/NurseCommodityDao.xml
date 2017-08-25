@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-08-14 10:02:02
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseCommodityDao">
+	
+	<sql id="field">
+		NC.id, NC.commodity_id, NC.status, NC.browser, 
+		NC.shareNumber, NC.creator_id, NC.creator_name, NC.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		NC.id NC_id, NC.commodity_id NC_commodity_id, 
+		NC.status NC_status, NC.browser NC_browser, 
+		NC.shareNumber NC_shareNumber, NC.creator_id NC_creator_id, 
+		NC.creator_name NC_creator_name, NC.create_time NC_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NC.id id, NC.commodity_id commodityId, 
+		NC.status status, NC.browser browser, 
+		NC.shareNumber sharenumber, NC.creator_id creatorId, 
+		NC.creator_name creatorName, NC.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NC.id=#{id}
+		</if>
+		<if test="commodityId!=null and commodityId!=''">
+			AND NC.commodity_id=#{commodityId}
+		</if>
+		<if test="status!=null">
+			AND NC.status=#{status}
+		</if>
+		<if test="browser!=null">
+			AND NC.browser=#{browser}
+		</if>
+		<if test="sharenumber!=null">
+			AND NC.shareNumber=#{sharenumber}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND NC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND NC.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND NC.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NC.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="commodityId!=null and commodityId!=''">
+				AND NC.commodity_id LIKE CONCAT('%', #{commodityId}, '%')
+			</if>
+			<if test="status!=null">
+				AND NC.status=#{status}
+			</if>
+			<if test="browser!=null">
+				AND NC.browser=#{browser}
+			</if>
+			<if test="sharenumber!=null">
+				AND NC.shareNumber=#{sharenumber}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NC.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NC.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND NC.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NC.id=#{id}, 
+		   </if>
+           <if test="commodityId!=null">
+				NC.commodity_id=#{commodityId}, 
+		   </if>
+           <if test="status!=null">
+				NC.status=#{status}, 
+		   </if>
+           <if test="browser!=null">
+				NC.browser=#{browser}, 
+		   </if>
+           <if test="sharenumber!=null">
+				NC.shareNumber=#{sharenumber}, 
+		   </if>
+           <if test="creatorId!=null">
+				NC.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				NC.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				NC.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseCommodity" type="com.jinpaihushi.jphs.nurse.model.NurseCommodity">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="browser" column="browser" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sharenumber" column="shareNumber" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="nurseCommodityGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseCommodity">
+		<result property="id" column="NC_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="NC_commodity_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="NC_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="browser" column="NC_browser" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sharenumber" column="NC_shareNumber" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="NC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="NC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseCommodity">
+		INSERT INTO `NURSE_COMMODITY`(
+			id, commodity_id, 
+			status, browser, 
+			shareNumber, creator_id, 
+			creator_name, create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{browser,jdbcType=INTEGER}, 
+			#{sharenumber,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_COMMODITY`(
+			id, commodity_id, 
+			status, browser, 
+			shareNumber, creator_id, 
+			creator_name, create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityId,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.browser,jdbcType=INTEGER}, 
+			#{item.sharenumber,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NC FROM `NURSE_COMMODITY` NC WHERE NC.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_COMMODITY` NC
+		SET 
+		NC.STATUS = -1
+		WHERE NC.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_COMMODITY` NC
+		<include refid="dynamicSet" /> 
+	    WHERE NC.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseCommodity">
+		SELECT <include refid="field"/>
+		FROM `NURSE_COMMODITY` NC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_COMMODITY` NC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseCommodity">
+		SELECT <include refid="field"/>
+		FROM `NURSE_COMMODITY` NC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseCommodity">
+		SELECT <include refid="field"/>
+		FROM `NURSE_COMMODITY` NC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseCommodity">
+		SELECT <include refid="field"/>
+		FROM `NURSE_COMMODITY` NC
+		WHERE NC.ID = #{id}
+	</select>
+	
+	
+	<select id="getBrowser" resultType="java.lang.Integer">
+		SELECT 
+		 SUM(nc.browser)
+		FROM nurse_commodity nc
+		WHERE nc.creator_id = #{creatorId}
+		AND nc.commodity_id = #{commodityId}
+	</select>
+	
+	
+	<select id="getShareNumber" resultType="java.lang.Integer">
+		SELECT 
+		 SUM(nc.shareNumber)
+		FROM nurse_commodity nc
+		WHERE nc.creator_id = #{creatorId}
+		AND nc.commodity_id = #{commodityId}
+	</select>
+	
+	
+	<update id="updateBrowser">
+	    UPDATE `NURSE_COMMODITY` NC
+		SET 
+		NC.browser = browser + 1
+		WHERE <!-- NC.CREATOR_ID = #{creatorId} -->
+		AND NC.COMMODITY_ID = #{commodityId}
+	</update>
+	
+	<update id="updateShareNumber">
+	    UPDATE `NURSE_COMMODITY` NC
+		SET 
+		NC.shareNumber = shareNumber + 1
+		WHERE <!-- NC.CREATOR_ID = #{creatorId} -->
+		AND NC.COMMODITY_ID = #{commodityId}
+	</update>
+	
+</mapper>

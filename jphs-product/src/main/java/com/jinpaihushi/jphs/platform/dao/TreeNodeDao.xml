@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-21 15:30:04
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.platform.dao.TreeNodeDao">
+	<resultMap id="treeNode" type="com.jinpaihushi.jphs.platform.model.TreeNode">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="text" column="text" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="parentId" column="parentId" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<select id="getProduct" resultMap="treeNode">
+		SELECT id,0 as parentId,title text FROM product  WHERE `status`=1 ;
+	</select>
+	<select id="getGoods" resultMap="treeNode">
+		SELECT id,product_id parentId,title text FROM goods  WHERE `status`=1 ;
+	</select>
+</mapper>

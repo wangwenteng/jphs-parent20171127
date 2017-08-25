@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-06-28 08:54:36
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.area.dao.AreaDao">
+	
+	<sql id="field">
+		A.id, A.source_id, A.location, A.type, 
+		A.creator_id, A.creator_name, A.create_time, A.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		A.id A_id, A.source_id A_source_id, 
+		A.location A_location, A.type A_type, 
+		A.creator_id A_creator_id, A.creator_name A_creator_name, 
+		A.create_time A_create_time, A.status A_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		A.id id, A.source_id sourceId, 
+		A.location location, A.type type, 
+		A.creator_id creatorId, A.creator_name creatorName, 
+		A.create_time createTime, A.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND A.id=#{id}
+		</if>
+		<if test="sourceId!=null and sourceId!=''">
+			AND A.source_id=#{sourceId}
+		</if>
+		<if test="location!=null and location!=''">
+			AND A.location=#{location}
+		</if>
+		<if test="type!=null">
+			AND A.type=#{type}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND A.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND A.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND A.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND A.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND A.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="sourceId!=null and sourceId!=''">
+				AND A.source_id LIKE CONCAT('%', #{sourceId}, '%')
+			</if>
+			<if test="location!=null and location!=''">
+				AND A.location LIKE CONCAT('%', #{location}, '%')
+			</if>
+			<if test="type!=null">
+				AND A.type=#{type}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND A.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND A.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND A.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND A.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				A.id=#{id}, 
+		   </if>
+           <if test="sourceId!=null">
+				A.source_id=#{sourceId}, 
+		   </if>
+           <if test="location!=null">
+				A.location=#{location}, 
+		   </if>
+           <if test="type!=null">
+				A.type=#{type}, 
+		   </if>
+           <if test="creatorId!=null">
+				A.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				A.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				A.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				A.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="area" type="com.jinpaihushi.jphs.area.model.Area">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="location" column="location" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="areaGlobal" type="com.jinpaihushi.jphs.area.model.Area">
+		<result property="id" column="A_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sourceId" column="A_source_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="location" column="A_location" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="A_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="A_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="A_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="A_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="A_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.area.model.Area">
+		INSERT INTO `AREA`(
+			id, source_id, 
+			location, type, 
+			creator_id, creator_name, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{sourceId,jdbcType=VARCHAR}, 
+			#{location,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `AREA`(
+			id, source_id, 
+			location, type, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.sourceId,jdbcType=VARCHAR}, 
+			#{item.location,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE A FROM `AREA` A WHERE A.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `AREA` A
+		SET 
+		A.STATUS = -1
+		WHERE A.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `AREA` A
+		<include refid="dynamicSet" /> 
+	    WHERE A.ID = #{id}
+	</update>
+	<update id="updateQuery">
+		UPDATE `AREA` A
+		<include refid="dynamicSet" /> 
+	    WHERE A.source_id = #{sourceId}
+	</update>
+	<select id="load" resultMap="area">
+		SELECT <include refid="field"/>
+		FROM `AREA` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `AREA` A
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="area">
+		SELECT <include refid="field"/>
+		FROM `AREA` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="area">
+		SELECT <include refid="field"/>
+		FROM `AREA` A
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="area">
+		SELECT <include refid="field"/>
+		FROM `AREA` A
+		WHERE A.ID = #{id}
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://code.alibabatech.com/schema/dubbo
+		classpath:schema/dubbo.xsd
+        ">
+
+	<dubbo:reference id="nurseService" interface="com.jinpaihushi.jphs.nurse.service.NurseService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="nurseImagesService" interface="com.jinpaihushi.jphs.nurse.service.NurseImagesService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="nurseSkillService" interface="com.jinpaihushi.jphs.nurse.service.NurseSkillService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="nurseSkillsService" interface="com.jinpaihushi.jphs.nurse.service.NurseSkillsService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="skillsService" interface="com.jinpaihushi.jphs.skills.service.SkillsService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="skillService" interface="com.jinpaihushi.jphs.skill.service.SkillService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 审核 -->
+	<dubbo:reference id="aptitudeService" interface="com.jinpaihushi.jphs.aptitude.service.AptitudeService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="auditService" interface="com.jinpaihushi.jphs.audit.service.AuditService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 科室 -->
+	<dubbo:reference id="departmentService" interface="com.jinpaihushi.jphs.department.service.DepartmentService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 职称 -->
+	<dubbo:reference id="jobtitleService" interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="jobtitleTypeService" interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="nurseJobtitleService" interface="com.jinpaihushi.jphs.nurse.service.NurseJobtitleService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- priceNurseService -->	
+	<dubbo:reference id="priceNurseService" interface="com.jinpaihushi.jphs.price.service.PriceNurseService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="jobtitleGoodsService" interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleGoodsService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="nurseCommodityService" interface="com.jinpaihushi.jphs.nurse.service.NurseCommodityService"
+		timeout="${dubbo.timeout}" check="false" />
+</beans>

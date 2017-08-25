@@ -1,0 +1,673 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : yangsong date : 2017-08-09 11:50:37 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityDao">
+
+	<sql id="field">
+		C.id, C.business_id, C.commodity_type_id, C.title,
+		C.sub_title, C.model, C.content, C.quality, C.privacy, C.security,
+		C.parameter, C.support_voucher, C.limit_number, C.protect_day, C.sort,
+		C.remark, C.status, C.create_time, C.creator_id, C.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		C.id C_id, C.business_id C_business_id, C.commodity_type_id
+		C_commodity_type_id, C.title C_title, C.sub_title C_sub_title, C.model
+		C_model, C.content C_content, C.quality C_quality, C.privacy
+		C_privacy, C.security C_security, C.parameter C_parameter,
+		C.support_voucher C_support_voucher, C.limit_number C_limit_number,
+		C.protect_day C_protect_day, C.sort C_sort, C.remark C_remark,
+		C.status C_status, C.create_time C_create_time, C.creator_id
+		C_creator_id, C.creator_name C_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		C.id id, C.business_id businessId, C.commodity_type_id
+		commodityTypeId, C.title title, C.sub_title subTitle, C.model model,
+		C.content content, C.quality quality, C.privacy privacy, C.security
+		security, C.parameter parameter, C.support_voucher supportVoucher,
+		C.limit_number limitNumber, C.protect_day protectDay, C.sort sort,
+		C.remark remark, C.status status, C.create_time createTime,
+		C.creator_id creatorId, C.creator_name creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND C.id=#{id}
+		</if>
+		<if test="businessId!=null and businessId!=''">
+			AND C.business_id=#{businessId}
+		</if>
+		<if test="commodityTypeId!=null and commodityTypeId!=''">
+			AND C.commodity_type_id=#{commodityTypeId}
+		</if>
+		<if test="title!=null and title!=''">
+			AND C.title=#{title}
+		</if>
+		<if test="subTitle!=null and subTitle!=''">
+			AND C.sub_title=#{subTitle}
+		</if>
+		<if test="model!=null and model!=''">
+			AND C.model=#{model}
+		</if>
+		<if test="content!=null and content!=''">
+			AND C.content=#{content}
+		</if>
+		<if test="quality!=null">
+			AND C.quality=#{quality}
+		</if>
+		<if test="privacy!=null">
+			AND C.privacy=#{privacy}
+		</if>
+		<if test="security!=null">
+			AND C.security=#{security}
+		</if>
+		<if test="parameter!=null and parameter!=''">
+			AND C.parameter=#{parameter}
+		</if>
+		<if test="supportVoucher!=null">
+			AND C.support_voucher=#{supportVoucher}
+		</if>
+		<if test="limitNumber!=null">
+			AND C.limit_number=#{limitNumber}
+		</if>
+		<if test="protectDay!=null">
+			AND C.protect_day=#{protectDay}
+		</if>
+		<if test="sort!=null">
+			AND C.sort=#{sort}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND C.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND C.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND C.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND C.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND C.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND C.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="businessId!=null and businessId!=''">
+				AND C.business_id LIKE CONCAT('%', #{businessId}, '%')
+			</if>
+			<if test="commodityTypeId!=null and commodityTypeId!=''">
+				AND C.commodity_type_id LIKE CONCAT('%',
+				#{commodityTypeId}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND C.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="subTitle!=null and subTitle!=''">
+				AND C.sub_title LIKE CONCAT('%', #{subTitle}, '%')
+			</if>
+			<if test="model!=null and model!=''">
+				AND C.model LIKE CONCAT('%', #{model}, '%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND C.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="quality!=null">
+				AND C.quality=#{quality}
+			</if>
+			<if test="privacy!=null">
+				AND C.privacy=#{privacy}
+			</if>
+			<if test="security!=null">
+				AND C.security=#{security}
+			</if>
+			<if test="parameter!=null and parameter!=''">
+				AND C.parameter LIKE CONCAT('%', #{parameter}, '%')
+			</if>
+			<if test="supportVoucher!=null">
+				AND C.support_voucher=#{supportVoucher}
+			</if>
+			<if test="limitNumber!=null">
+				AND C.limit_number=#{limitNumber}
+			</if>
+			<if test="protectDay!=null">
+				AND C.protect_day=#{protectDay}
+			</if>
+			<if test="sort!=null">
+				AND C.sort=#{sort}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND C.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND C.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND C.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND C.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND C.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				C.id=#{id},
+			</if>
+			<if test="businessId!=null">
+				C.business_id=#{businessId},
+			</if>
+			<if test="commodityTypeId!=null">
+				C.commodity_type_id=#{commodityTypeId},
+			</if>
+			<if test="title!=null">
+				C.title=#{title},
+			</if>
+			<if test="subTitle!=null">
+				C.sub_title=#{subTitle},
+			</if>
+			<if test="model!=null">
+				C.model=#{model},
+			</if>
+			<if test="content!=null">
+				C.content=#{content},
+			</if>
+			<if test="quality!=null">
+				C.quality=#{quality},
+			</if>
+			<if test="privacy!=null">
+				C.privacy=#{privacy},
+			</if>
+			<if test="security!=null">
+				C.security=#{security},
+			</if>
+			<if test="parameter!=null">
+				C.parameter=#{parameter},
+			</if>
+			<if test="supportVoucher!=null">
+				C.support_voucher=#{supportVoucher},
+			</if>
+			<if test="limitNumber!=null">
+				C.limit_number=#{limitNumber},
+			</if>
+			<if test="protectDay!=null">
+				C.protect_day=#{protectDay},
+			</if>
+			<if test="sort!=null">
+				C.sort=#{sort},
+			</if>
+			<if test="remark!=null">
+				C.remark=#{remark},
+			</if>
+			<if test="status!=null">
+				C.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				C.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				C.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				C.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodity"
+		type="com.jinpaihushi.jphs.commodity.model.Commodity">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="businessId" column="business_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityTypeId" column="commodity_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="model" column="model" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="quality" column="quality" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="privacy" column="privacy" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="security" column="security" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="parameter" column="parameter" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="supportVoucher" column="support_voucher"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="limitNumber" column="limit_number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="protectDay" column="protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="commodityGlobal"
+		type="com.jinpaihushi.jphs.commodity.model.Commodity">
+		<result property="id" column="C_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="businessId" column="C_business_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityTypeId" column="C_commodity_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="C_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="C_sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="model" column="C_model" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="C_content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="quality" column="C_quality" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="privacy" column="C_privacy" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="security" column="C_security" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="parameter" column="C_parameter" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="supportVoucher" column="C_support_voucher"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="limitNumber" column="C_limit_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="protectDay" column="C_protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sort" column="C_sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="C_remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="C_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="C_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="C_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="C_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+
+	<resultMap id="shop"
+		type="com.jinpaihushi.jphs.commodity.model.Commodity">
+		<result property="id" column="commodityId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="businessId" column="business_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityTypeId" column="commodity_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="model" column="model" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="quality" column="quality" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="privacy" column="privacy" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="security" column="security" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="parameter" column="parameter" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="supportVoucher" column="support_voucher"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="limitNumber" column="limit_number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="DetailUrl" column="DetailUrl" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<association property="commodityImages"
+			javaType="com.jinpaihushi.jphs.commodity.model.CommodityImages">
+			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="sourceId" column="source_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="url" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="path" column="path" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="deviceType" column="device_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="type" column="type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="sort" column="sort" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="remarks" column="remarks" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</association>
+		<collection property="commodityPrice"
+			ofType="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
+			<result property="id" column="cpId" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="commodityId" column="commodity_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="name" column="name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="number" column="number" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="costPrice" column="cost_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="oldPrice" column="old_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="profit" column="profit" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="sort" column="sort" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="creator_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+		</collection>
+
+
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.commodity.model.Commodity">
+		INSERT INTO `COMMODITY`(
+		id, business_id,
+		commodity_type_id, title, sub_title, model, content,
+		quality, privacy,
+		security, parameter, support_voucher, limit_number,
+		protect_day, sort,
+		remark, status, create_time, creator_id,
+		creator_name )VALUES(
+		#{id,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR},
+		#{commodityTypeId,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},
+		#{subTitle,jdbcType=VARCHAR},
+		#{model,jdbcType=VARCHAR},
+		#{content,jdbcType=VARCHAR},
+		#{quality,jdbcType=INTEGER},
+		#{privacy,jdbcType=INTEGER},
+		#{security,jdbcType=INTEGER},
+		#{parameter,jdbcType=VARCHAR},
+		#{supportVoucher,jdbcType=INTEGER},
+		#{limitNumber,jdbcType=INTEGER},
+		#{protectDay,jdbcType=INTEGER},
+		#{sort,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY`(
+			id, business_id, 
+			commodity_type_id, title, 
+			sub_title, model, 
+			content, quality, 
+			privacy, security, 
+			parameter, support_voucher, 
+			limit_number, protect_day, 
+			sort, remark, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.businessId,jdbcType=VARCHAR},
+			#{item.commodityTypeId,jdbcType=VARCHAR},
+			#{item.title,jdbcType=VARCHAR}, #{item.subTitle,jdbcType=VARCHAR},
+			#{item.model,jdbcType=VARCHAR}, #{item.content,jdbcType=VARCHAR},
+			#{item.quality,jdbcType=INTEGER}, #{item.privacy,jdbcType=INTEGER},
+			#{item.security,jdbcType=INTEGER},
+			#{item.parameter,jdbcType=VARCHAR},
+			#{item.supportVoucher,jdbcType=INTEGER},
+			#{item.limitNumber,jdbcType=INTEGER},
+			#{item.protectDay,jdbcType=INTEGER}, #{item.sort,jdbcType=INTEGER},
+			#{item.remark,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE C FROM `COMMODITY` C WHERE C.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `COMMODITY` C
+		SET
+		C.STATUS = -1
+		WHERE C.ID =
+		#{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY` C
+		<include refid="dynamicSet" />
+		WHERE C.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodity">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY` C
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY` C
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodity">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY` C
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodity">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY` C
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="commodity">
+		SELECT
+		<include refid="field" />
+		FROM `COMMODITY` C
+		WHERE C.ID = #{id}
+	</select>
+
+	<select id="getShopList" resultType="java.util.HashMap">
+		SELECT
+		com.id commodityId,
+		com.title,
+		com.sub_title,
+		cp.id cpId,
+		cp.old_price,
+		cp.price,
+		ci.url,
+		cp.profit,
+		com.`status`,
+
+		(
+		SELECT
+		SUM(nc.browser)
+		FROM
+		nurse_commodity nc
+		WHERE
+		nc.commodity_id = com.id
+		) browser,
+		(
+		SELECT
+		SUM(nc.shareNumber)
+		FROM
+		nurse_commodity nc
+		WHERE
+		nc.commodity_id = com.id
+		) shareNumber,
+		(
+		SELECT
+		SUM(coi.number)
+		FROM
+		commodity_order_info coi
+		WHERE
+		coi.commodity_id = com.id
+		AND coi.`status` =1
+		) counts
+		FROM
+		commodity com
+		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
+		LEFT JOIN commodity_images ci ON (ci.source_id = com.id)
+		LEFT JOIN `column` c ON (1 = 1)
+		LEFT JOIN column_service cs ON (c.id = cs.column_id)
+		WHERE
+		cs.link = com.id
+		AND ci.type = '1'
+		AND c.id = #{columnId}
+		AND c.`status` = 1
+		AND cs.`status` = 1
+
+		<if test="sort !=null">
+			${sort}
+		</if>
+
+	</select>
+
+
+	<select id="getShopDetail" resultMap="shop">
+		SELECT
+		com.id commodityId,
+		com.title,
+		com.sub_title,
+		com.quality,
+		com.privacy,
+		com.`security`,
+		ci.url,
+		ci.type,
+		cp.id cpId,
+		cp.price,
+		cp.`name`
+		FROM
+		commodity com
+		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
+		LEFT
+		JOIN commodity_images ci ON (com.id = ci.source_id)
+		WHERE
+		  ci.type = '1'
+		AND
+		com.id =#{commodityId}
+		ORDER BY price desc
+	</select>
+
+	<select id="getSaleByNurse" resultMap="shop">
+		SELECT
+		com.id commodityId,
+		com.title,
+		com.sub_title,
+		com.`status`,
+		nc.browser,
+		nc.shareNumber,
+		cp.price,
+		ci.url
+		FROM
+		nurse_commodity nc
+		LEFT JOIN commodity com ON (com.id = nc.commodity_id)
+		LEFT JOIN
+		commodity_price cp ON(com.id = cp.commodity_id)
+		LEFT JOIN
+		commodity_images ci ON (com.id = ci.source_id)
+		where nc.id=#{nurseId}
+	</select>
+
+	<select id="getSaleCount" resultType="java.lang.Integer">
+		SELECT
+		SUM(number)
+		FROM
+		commodity_order_info coi
+		WHERE
+		coi.commodity_id = #{commodityId}
+		AND
+		coi.user_id = #{nurseId}
+	</select>
+
+	<select id="getNurseSale" resultMap="shop">
+		SELECT
+		coi.title,
+		coi.create_time,
+		coi.profit,
+		ci.url,
+		co.`schedule`
+		FROM commodity_order_info coi
+		LEFT JOIN commodity_order co ON( coi.commodity_order_id = co.id)
+		LEFT JOIN
+		commodity_images ci ON (coi.commodity_id = ci.source_id)
+		WHERE
+		coi.user_id = #{userId}
+		AND coi.commodity_id = #{commodityId}
+		<if test="schedule!=null">
+			AND co.`schedule` = #{schedule}
+		</if>
+	</select>
+</mapper>

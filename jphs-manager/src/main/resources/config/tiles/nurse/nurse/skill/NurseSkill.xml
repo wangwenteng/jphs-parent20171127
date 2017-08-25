@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="nurse/nurse/skill/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="发布技能表管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/nurse/skill/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/nurse/skill/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="nurse/nurse/skill/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="发布技能表编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/nurse/skill/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/nurse/skill/edit.js" />
+			<add-attribute value="/static/js/ajaxfileupload.js" />
+			<add-attribute value="/static/js/img.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="nurse/nurse/skill/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="发布技能表详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/nurse/nurse/skill/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/nurse/nurse/skill/detail.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

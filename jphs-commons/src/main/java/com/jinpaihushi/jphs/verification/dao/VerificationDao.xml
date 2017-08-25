@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-07-12 11:55:26 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.verification.dao.VerificationDao">
+
+	<sql id="field">
+		V.id, V.phone, V.code, V.valid_time, 
+		V.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		V.id V_id, V.phone V_phone, 
+		V.code V_code, V.valid_time V_valid_time, 
+		V.status V_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		V.id id, V.phone phone, 
+		V.code code, V.valid_time validTime, 
+		V.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND V.id=#{id}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND V.phone=#{phone}
+		</if>
+		<if test="code!=null and code!=''">
+			AND V.code=#{code}
+		</if>
+		<if test="validTime!=null">
+			AND V.valid_time=#{validTime}
+		</if>
+		<if test="status!=null">
+			AND V.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND V.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND V.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="code!=null and code!=''">
+				AND V.code LIKE CONCAT('%', #{code}, '%')
+			</if>
+			<if test="validTime!=null">
+				AND V.valid_time=#{validTime}
+			</if>
+			<if test="status!=null">
+				AND V.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				V.id=#{id}, 
+		   </if>
+           <if test="phone!=null">
+				V.phone=#{phone}, 
+		   </if>
+           <if test="code!=null">
+				V.code=#{code}, 
+		   </if>
+           <if test="validTime!=null">
+				V.valid_time=#{validTime}, 
+		   </if>
+           <if test="status!=null">
+				V.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="verification" type="com.jinpaihushi.jphs.verification.model.Verification">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="validTime" column="valid_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="verificationGlobal" type="com.jinpaihushi.jphs.verification.model.Verification">
+		<result property="id" column="V_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="V_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="V_code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="validTime" column="V_valid_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="V_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.verification.model.Verification">
+		INSERT INTO `VERIFICATION`(
+			id, phone, 
+			code, valid_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+			#{code,jdbcType=VARCHAR}, #{validTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `VERIFICATION`(
+			id, phone, 
+			code, valid_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR}, 
+			#{item.code,jdbcType=VARCHAR}, #{item.validTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE V FROM `VERIFICATION` V WHERE V.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `VERIFICATION` V
+		SET 
+		V.STATUS = -1
+		WHERE V.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `VERIFICATION` V
+		<include refid="dynamicSet" /> 
+	    WHERE V.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="verification">
+		SELECT <include refid="field"/>
+		FROM `VERIFICATION` V
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `VERIFICATION` V
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="verification">
+		SELECT <include refid="field"/>
+		FROM `VERIFICATION` V
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="verification">
+		SELECT <include refid="field"/>
+		FROM `VERIFICATION` V
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="verification">
+		SELECT <include refid="field"/>
+		FROM `VERIFICATION` V
+		WHERE V.ID = #{id}
+	</select>
+	<select id="countVerification" resultType="java.lang.Integer">
+		select count(*) from
+		verification where
+		date_format(valid_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') and
+		phone =#{phone}
+	</select>
+
+	<select id="getLastRecord" resultMap="verification">
+		select * from verification
+		where phone= #{phone} order by valid_time desc limit 1;
+	</select>
+</mapper>

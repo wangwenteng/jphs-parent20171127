@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="analysis.access.log.showdata.day" extends="default.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/statistics/left.jsp" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/day/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/day/showDataByDay.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.week" extends="default.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/statistics/left.jsp" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/week/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/week/showDataByWeek.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.month" extends="default.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/statistics/left.jsp" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/month/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>	
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/month/showDataByMonth.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.year" extends="default.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/statistics/left.jsp" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/year/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/year/showDataByYear.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.day.empty" extends="empty.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/day/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/day/showDataByDay.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.week.empty" extends="empty.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/week/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/week/showDataByWeek.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.month.empty" extends="empty.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/month/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>	
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/month/showDataByMonth.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="analysis.access.log.showdata.year.empty" extends="empty.layout">
+		<put-attribute type="string" name="title" value="平台日志数据展示" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/statistics/access/log/year/index.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/access/log/access.css" />					
+		</put-list-attribute>
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/analysis/access/access/log/showdata.js" />
+			<add-attribute value="/static/js/analysis/access/access/log/year/showDataByYear.js" />
+		</put-list-attribute>
+	</definition>
+</tiles-definitions>

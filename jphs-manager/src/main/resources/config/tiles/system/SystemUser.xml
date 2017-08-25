@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="system/system/user/list" extends="default.layout">
+		<put-attribute type="string" name="title" value="系统用户表（用户可以通过邮箱和手机号登录）管理" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/user/list/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/user/list.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="system/system/user/edit" extends="default.layout">
+		<put-attribute type="string" name="title" value="系统用户表（用户可以通过邮箱和手机号登录）编辑" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/user/edit/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/user/edit.js" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="system/system/user/detail" extends="default.layout">
+		<put-attribute type="string" name="title" value="系统用户表（用户可以通过邮箱和手机号登录）详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/user/detail/index.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/user/detail.js" />
+		</put-list-attribute>
+	</definition>
+	<definition name="system/system/user/editPassword" extends="default.layout">
+		<put-attribute type="string" name="title" value="系统用户表（用户可以通过邮箱和手机号登录）详情" />
+		<put-attribute type="template" name="body"
+			value="/WEB-INF/view/system/system/user/edit/editPassword.jsp" />
+		<put-attribute type="template" name="left"
+			value="/WEB-INF/view/system/left.jsp" />
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/static/js/system/system/user/editPassword.js" />
+		</put-list-attribute>
+	</definition>
+	
+</tiles-definitions>

@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwt date : 2017-07-13 13:43:01 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.jobtitle.dao.JobtitleTypeDao">
+
+	<sql id="field">
+		JT.id, JT.name, JT.creator_id, JT.creator_name,
+		JT.create_time, JT.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		JT.id JT_id, JT.name JT_name, JT.creator_id JT_creator_id,
+		JT.creator_name JT_creator_name, JT.create_time JT_create_time,
+		JT.status JT_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		JT.id id, JT.name name, JT.creator_id creatorId,
+		JT.creator_name creatorName, JT.create_time createTime, JT.status
+		status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND JT.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND JT.name=#{name}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND JT.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND JT.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND JT.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND JT.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND JT.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND JT.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND JT.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND JT.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND JT.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND JT.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				JT.id=#{id},
+			</if>
+			<if test="name!=null">
+				JT.name=#{name},
+			</if>
+			<if test="creatorId!=null">
+				JT.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				JT.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				JT.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				JT.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="jobtitleType"
+		type="com.jinpaihushi.jphs.jobtitle.model.JobtitleType">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+	<resultMap id="jobtitleDetail"
+		type="com.jinpaihushi.jphs.jobtitle.model.JobtitleType">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<collection property="jobtitle"
+			ofType="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
+			<result property="id" column="jobtitle_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="name" column="jobtitle_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="jobtitleTypeId" column="jobtitle_type_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorId" column="jobtitle_creator_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="jobtitle_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="jobtitle_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="jobtitle_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</collection>
+	</resultMap>
+
+	<resultMap id="jobtitleTypeGlobal"
+		type="com.jinpaihushi.jphs.jobtitle.model.JobtitleType">
+		<result property="id" column="JT_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="JT_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="JT_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="JT_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="JT_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="JT_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.jobtitle.model.JobtitleType">
+		INSERT INTO `JOBTITLE_TYPE`(
+		id, name, creator_id,
+		creator_name, create_time, status )VALUES(
+		#{id,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `JOBTITLE_TYPE`(
+			id, name, 
+			creator_id, creator_name, 
+			create_time, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE JT FROM `JOBTITLE_TYPE` JT WHERE JT.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `JOBTITLE_TYPE` JT
+		SET
+		JT.STATUS = -1
+		WHERE JT.ID
+		= #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `JOBTITLE_TYPE` JT
+		<include refid="dynamicSet" />
+		WHERE JT.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="jobtitleType">
+		SELECT
+		<include refid="field" />
+		FROM `JOBTITLE_TYPE` JT
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `JOBTITLE_TYPE` JT
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="jobtitleType">
+		SELECT
+		<include refid="field" />
+		FROM `JOBTITLE_TYPE` JT
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="jobtitleType">
+		SELECT
+		<include refid="field" />
+		FROM `JOBTITLE_TYPE` JT
+		<where>
+			AND (JT.status=0 OR JT.status=1)
+			<if test="name!=null and name!=''">
+				AND JT.name LIKE CONCAT(#{name}, '%')
+			</if>
+		</where>
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="jobtitleType">
+		SELECT
+		<include refid="field" />
+		FROM `JOBTITLE_TYPE` JT
+		WHERE JT.ID = #{id}
+	</select>
+	<select id="getJobtitleDetail" resultMap="jobtitleDetail">
+		SELECT
+		jt.id,
+		jt.`name`,
+		j.id jobtitle_id,
+		j.`name` AS jobtitle_name,
+		j.create_time jobtitle_create_time,
+		j.creator_name
+		jobtitle_creator_name,
+		j.`status` jobtitle_status
+		FROM
+		jobtitle_type jt
+		LEFT JOIN jobtitle j ON j.jobtitle_type_id = jt.id
+		<where>
+			jt.`status` = 1
+			AND (j.`status` = 0 OR j.`status` = 1)
+			<if test="jobtitle!=null">
+				<if test="jobtitle.name!=null and jobtitle.name!=''">
+					AND j.`name` LIKE CONCAT('%', #{jobtitle.name},
+					'%')
+				</if>
+				<if test="jobtitle.jobtitleTypeId!=null and jobtitle.jobtitleTypeId!=''">
+					AND j.jobtitle_type_id = #{jobtitle.jobtitleTypeId}
+
+				</if>
+			</if>
+		</where>
+		ORDER BY j.create_time
+	</select>
+
+	<select id="checkName" resultType="java.lang.Integer">
+		SELECT
+		count(JT.name)
+		FROM
+		jobtitle_type JT
+		<where>
+			<if test="id!=null and id!=''">
+				AND JT.id !=#{id}
+			</if>
+			<if test="name!=null and name!=''">
+				AND JT.name=#{name}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND JT.creator_id=#{creatorId}
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND JT.creator_name=#{creatorName}
+			</if>
+			<if test="createTime!=null">
+				AND JT.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND JT.status=#{status}
+			</if>
+		</where>
+	</select>
+</mapper>
