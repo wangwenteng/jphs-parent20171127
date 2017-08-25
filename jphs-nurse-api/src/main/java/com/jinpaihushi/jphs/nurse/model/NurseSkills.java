@@ -25,10 +25,6 @@ import com.jinpaihushi.model.BaseModel;
 public class NurseSkills extends BaseModel implements Predicate<NurseSkills>,
 		Updator<NurseSkills> {
 
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
     /**  */
 	@Length(max = 50, message = "{nurseSkills.skillsId.illegal.length}")
 	private String skillsId;

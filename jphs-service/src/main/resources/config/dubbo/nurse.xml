@@ -14,7 +14,6 @@
 		ref="nurseImagesService" />
 	<dubbo:service ref="nurseSkillService"
 		interface="com.jinpaihushi.jphs.nurse.service.NurseSkillService" />
-<<<<<<< HEAD
 	<dubbo:service ref="nurseSkillsService"
 		interface="com.jinpaihushi.jphs.nurse.service.NurseSkillsService" />
 	<dubbo:service ref="skillService"
@@ -43,12 +42,4 @@
 		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleGoodsService" />
 	<dubbo:service ref="nurseCommodityService"
 		interface="com.jinpaihushi.jphs.nurse.service.NurseCommodityService" />
-=======
-	<dubbo:service ref="skillService"
-		interface="com.jinpaihushi.jphs.skill.service.SkillService" />
-	<dubbo:service ref="jobtitleService"
-		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleService" />
-	<dubbo:service ref="jobtitleTypeService"
-		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService" />
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </beans>

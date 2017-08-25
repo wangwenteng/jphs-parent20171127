@@ -17,7 +17,6 @@ import com.jinpaihushi.jphs.platform.model.Platform;
 @Repository("platformDao")
 public interface PlatformDao extends BaseDao<Platform> {
 
-<<<<<<< HEAD
     List<Map<String, Object>> getProductList(Map<String, Object> query);
 
     /**
@@ -29,9 +28,4 @@ public interface PlatformDao extends BaseDao<Platform> {
      * @return
      */
     List<Map<String, Object>> getAllGoods(Map<String, Object> query);
-=======
-	List<Map<String, Object>> getProductList(Map<String, Object> query);
-
-	List<Map<String, Object>> getAllGoods(Map<String, Object> query);
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

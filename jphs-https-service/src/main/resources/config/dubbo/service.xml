@@ -6,7 +6,6 @@
         http://code.alibabatech.com/schema/dubbo
 		classpath:schema/dubbo.xsd
         ">
-<<<<<<< HEAD
 	<dubbo:reference id="goodsService" interface="com.jinpaihushi.jphs.goods.service.GoodsService" 
 		timeout="${dubbo.timeout}" check="false" />
 	<dubbo:reference id="productService" interface="com.jinpaihushi.jphs.product.service.ProductService"
@@ -20,19 +19,4 @@
  	<dubbo:reference id="serviceImagesService" interface="com.jinpaihushi.jphs.service.service.ServiceImagesService"
 		timeout="${dubbo.timeout}" check="false" />
  	
-=======
-	<dubbo:reference id="goodsService"
-		interface="com.jinpaihushi.jphs.goods.service.GoodsService" timeout="${dubbo.timeout}"
-		check="false" />
-	<dubbo:reference id="productService"
-		interface="com.jinpaihushi.jphs.product.service.ProductService"
-		timeout="${dubbo.timeout}" check="false" />
-	<dubbo:reference id="locationService"
-		interface="com.jinpaihushi.jphs.location.service.LocationService"
-		timeout="${dubbo.timeout}" check="false" />
-	<dubbo:reference id="platformService" interface="com.jinpaihushi.jphs.platform.service.PlatformService"
-		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="siteService" interface="com.jinpaihushi.jphs.site.service.SiteService"
-		timeout="${dubbo.timeout}" check="false" />
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </beans>

@@ -26,13 +26,10 @@ public class CommodityOrderInfoServiceImpl extends BaseServiceImpl<CommodityOrde
 		return commodityOrderInfoDao;
 	}
 
-<<<<<<< HEAD
 	@Override
 	public Integer updateByOrderNo(CommodityOrderInfo commodityOrderInfo) {
 		// TODO Auto-generated method stub
 		return commodityOrderInfoDao.updateByOrderNo(commodityOrderInfo);
 	}
 	
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

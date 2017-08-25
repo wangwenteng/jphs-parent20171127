@@ -17,15 +17,12 @@ import com.jinpaihushi.jphs.car.model.Car;
 public interface CarDao extends BaseDao<Car> {
 
 	List<Car> getList(String creatorId);
-<<<<<<< HEAD
 
 	Car lookup(Car car);
 
 	boolean updateNumber(Car car);
 
 	boolean successOrder(String id);
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	
 	
 	

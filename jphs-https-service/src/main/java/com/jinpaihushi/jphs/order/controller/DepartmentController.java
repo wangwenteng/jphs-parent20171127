@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.department.service.DepartmentService;
-<<<<<<< HEAD
-=======
-import com.jinpaihushi.jphs.user.model.User;
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 

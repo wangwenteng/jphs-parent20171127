@@ -15,12 +15,9 @@ public interface CarService extends BaseService<Car> {
 
 	List<Car> getList(String creatorId);
 
-<<<<<<< HEAD
 	Car lookup(Car car);
 	
 	boolean updateNumber(Car car);
 	
 	boolean successOrder(String Ids);
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

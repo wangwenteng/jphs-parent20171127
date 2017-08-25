@@ -240,7 +240,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			car.number,
 			com.title,
 			com.`status`,
-<<<<<<< HEAD
 			com.model,
 			com.sub_title,
 			cp.`name`,
@@ -289,24 +288,4 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SET car.`status`  = 0
 		 where car.id = #{id}
 	</update>
-=======
-			com.sub_title,
-			cp.price,
-			cp.number,
-			ci.url
-		FROM
-			car
-		LEFT JOIN commodity com ON (com.id = car.commodity_id)
-		LEFT JOIN commodity_images ci ON (
-			ci.source_id = car.commodity_id
-		)
-		LEFT JOIN commodity_price cp ON (
-			cp.commodity_id = car.commodity_id
-		)
-		WHERE
-			ci.type = 1
-		AND car.creator_id = #{creatorId}
-		AND car.`status` = 0
-	</select>
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </mapper>

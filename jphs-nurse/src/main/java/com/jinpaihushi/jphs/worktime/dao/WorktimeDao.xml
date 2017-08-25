@@ -581,11 +581,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE W.ID = #{id}
 	</select>
 	<delete id="deleteByCalendar">
-<<<<<<< HEAD
 		DELETE W FROM `WORKTIME` W WHERE W.calendar = #{calendar} AND userId=0
-=======
-		DELETE W FROM `WORKTIME` W WHERE W.calendar = #{calendar}
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	</delete>
 	<select id="getAllNurse" resultType="java.lang.String">
 		SELECT DISTINCT userId FROM `worktime` WHERE userId !=0 ;

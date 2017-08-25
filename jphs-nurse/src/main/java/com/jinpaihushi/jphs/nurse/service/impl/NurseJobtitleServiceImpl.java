@@ -34,11 +34,8 @@ public class NurseJobtitleServiceImpl extends BaseServiceImpl<NurseJobtitle> imp
 		return nurseJobtitleDao.getNurseList(query);
 	}
 	
-<<<<<<< HEAD
 	public List<NurseJobtitle> getNurseAuditing(Map<String,Object> map){
 		return nurseJobtitleDao.getNurseAuditing(map);
 	}
 	
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 }

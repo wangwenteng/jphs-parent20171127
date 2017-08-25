@@ -27,10 +27,6 @@ public interface NurseJobtitleDao extends BaseDao<NurseJobtitle> {
 	 */
 	List<Map<String, Object>> getNurseList(Map<String, Object> query);
 	
-<<<<<<< HEAD
 	List<NurseJobtitle> getNurseAuditing(Map<String,Object> map);
-=======
-	
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	
 }

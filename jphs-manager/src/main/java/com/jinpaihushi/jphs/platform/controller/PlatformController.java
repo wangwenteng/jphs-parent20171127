@@ -73,11 +73,7 @@ public class PlatformController extends BaseController<Platform> {
 	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
 	public String redirectAddPage(ModelMap modelMap) {
 		JSONObject message = new JSONObject();
-<<<<<<< HEAD
 		List<TreeNode> list=platformService.getAllGoodsList(null);
-=======
-		List<TreeNode> list=platformService.getGoodsList(null);
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 		List<Site> site = platformService.getSelectSite(null);
 		message.put("treeData", list);
 		modelMap.put("data", message);

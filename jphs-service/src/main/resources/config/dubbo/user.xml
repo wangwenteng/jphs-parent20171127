@@ -18,7 +18,6 @@
 		interface="com.jinpaihushi.jphs.voucher.service.VoucherService" />
 	<dubbo:service ref="voucherRepertoryService"
 		interface="com.jinpaihushi.jphs.voucher.service.VoucherRepertoryService" />
-<<<<<<< HEAD
 
 	<!-- 工作时间 -->
 	<dubbo:service ref="worktimeService"
@@ -26,6 +25,4 @@
 	<!-- 短信 -->
 	<dubbo:service ref="verificationService"
 		interface="com.jinpaihushi.jphs.verification.service.VerificationService" />
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </beans>

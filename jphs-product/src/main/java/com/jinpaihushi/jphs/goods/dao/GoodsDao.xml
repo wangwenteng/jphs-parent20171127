@@ -995,7 +995,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND pp.site_id = 0
 		AND pp.`status` = 1
 		AND jg.`status` = 1
-<<<<<<< HEAD
 		AND pn.`status` = 0
 		AND si.device_type = 2
 		AND jg.jobtitle_id IN (
@@ -1013,20 +1012,5 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getGoodsByProduct" resultType="java.util.HashMap">
 	SELECT DISTINCT id,title FROM goods WHERE product_id =#{productId}
-=======
-		AND si.device_type = 2
-		AND jg.jobtitle_id IN (
-			SELECT
-				nj.jobtitle_id
-			FROM
-				nurse_jobtitle nj
-			WHERE
-				nj.creator_id = #{creatorId}
-		)
-		ORDER BY
-			jg.goods_id,
-			p.grade_name,
-			p.service_number
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 	</select>
 </mapper>

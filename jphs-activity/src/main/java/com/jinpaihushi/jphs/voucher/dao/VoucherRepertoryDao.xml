@@ -332,10 +332,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		vu.amount DESC,
 		vu.end_time
 	</select>
-<<<<<<< HEAD
 	<update id="updataUseTime">
 		UPDATE voucher_use vu SET vu.use_time = NULL AND vu.`status` =0 WHERE vu.id =#{id}
 	</update>
-=======
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </mapper>

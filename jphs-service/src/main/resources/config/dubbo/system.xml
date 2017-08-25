@@ -6,7 +6,6 @@
         http://code.alibabatech.com/schema/dubbo
 		classpath:schema/dubbo.xsd
         ">
-<<<<<<< HEAD
 	<dubbo:service ref="systemUserService"
 		interface="com.jinpaihushi.jphs.system.service.SystemUserService" />
 	<dubbo:service ref="systemModuleService"
@@ -16,14 +15,4 @@
 	<dubbo:service ref="sysversionService"
 		interface="com.jinpaihushi.jphs.sysversion.service.SysversionService" />
 
-=======
-    <dubbo:service ref="systemUserService"
-		interface="com.jinpaihushi.jphs.system.service.SystemUserService" />    
-    <dubbo:service ref="systemModuleService"
-		interface="com.jinpaihushi.jphs.system.service.SystemModuleService" />
-	<dubbo:service ref="systemRoleService"
-		interface="com.jinpaihushi.jphs.system.service.SystemRoleService" />
-		
-		
->>>>>>> branch 'master1' of https://github.com/120591516/jphs-parent.git
 </beans>
