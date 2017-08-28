@@ -507,7 +507,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		n.creator_id
 		LEFT JOIN position p ON u.id = p.creator_id
 		<where>
-			AND n.status =1
+			AND n.status =1 AND SUBSTR(u.address, 4 ,2) =#{position}
 			<if test="goodsId!=null and goodsId!=''">
 				AND nj.jobtitle_id in (SELECT DISTINCT jg.jobtitle_id
 				FROM `jobtitle_goods` jg WHERE jg.goods_id =#{goodsId} )
