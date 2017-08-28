@@ -24,4 +24,10 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	
 	Integer updateShopOrderSchedule(CommodityOrder commodityOrder);
 	
+	Integer updateRemindTime(CommodityOrder commodityOrder);
+	
+	Integer confimOrder(CommodityOrder commodityOrder);
+	
+	Integer deleteOrder(CommodityOrder commodityOrder);
+	
 }

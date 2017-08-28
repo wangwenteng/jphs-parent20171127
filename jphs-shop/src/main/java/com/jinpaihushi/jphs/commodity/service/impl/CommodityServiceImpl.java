@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.car.dao.CarDao;
+import com.jinpaihushi.jphs.car.model.Car;
 import com.jinpaihushi.jphs.commodity.dao.CommodityDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
@@ -34,7 +37,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 	@Autowired
 	private CommodityImagesDao commodityImagesDao;
 	@Autowired
-	private NurseCommodityDao nurseCommodityDao;
+	private CarDao carDao;
 	
 	@Override
 	protected BaseDao<Commodity> getDao(){
@@ -99,6 +102,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		CommodityImages commodityImages = new CommodityImages();
 		commodityImages.setType(2);
 		commodityImages.setSourceId(commodityId);
+		commodityImages.setStatus(0);
 		Page<CommodityImages> query = commodityImagesDao.query(commodityImages);
 		if(query.size() >0){
 			commodity.setDetailUrl(query.get(0).getUrl());
@@ -135,6 +139,44 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		List<Commodity> list = commodityDao.getNurseSale(map);
 		
 		return list;
+	}
+
+	@Override
+	public List<Commodity> getListByCar(String ids) {
+		
+		String[] idArr = ids.split(",");
+		List<Commodity> list = new ArrayList<Commodity>();
+		for (int i = 0; i < idArr.length; i++) {
+			Car car = carDao.loadById(idArr[i]);
+			String commodityId = car.getCommodityId();
+			Commodity com = commodityDao.getInfo(commodityId);
+			com.setCount(car.getNumber());
+			com.setPrice(car.getNumber()*com.getOldPrice());
+			list.add(com);
+		}
+		
+		 
+		return list;
+	}
+
+	@Override
+	public Commodity getOneDetail(String commodityId, String cpId) {
+		 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("commodityId", commodityId);
+		map.put("cpId", cpId);
+		Commodity commodity = commodityDao.getOneDetail(map);
+		
+		CommodityImages commodityImages = new CommodityImages();
+		commodityImages.setType(2);
+		commodityImages.setSourceId(commodityId);
+		commodityImages.setStatus(0);
+		Page<CommodityImages> query = commodityImagesDao.query(commodityImages);
+		if(query.size() >0){
+			commodity.setDetailUrl(query.get(0).getUrl());
+		}
+		return commodity;
+		
 	}
 
 }

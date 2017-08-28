@@ -55,4 +55,11 @@ public interface NurseService extends BaseService<Nurse> {
      */
     List<Map<String, Object>> getRecommendNurse(Map<String, Object> query);
 
+    /**
+     * 获取护士的发布的服务的价格列表
+     * @param query
+     * @return
+     */
+    List<Map<String, Object>> getNurseServicePrice(Map<String, Object> query);
+
 }

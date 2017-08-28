@@ -109,7 +109,7 @@ public class UserController extends BaseController<User> {
             img = nurseImagesService.load(img);
             if (img != null)
                 user.setHeadPicture(img.getUrl());
-            //            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
             //            if (!flag) {
             //                // 身份认证失败,返回错误信息
             //                return JSONUtil.toJSONResult(2, "身份认证失败", null);
@@ -133,7 +133,7 @@ public class UserController extends BaseController<User> {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("user.updateUserInfo.json");
             }
-            boolean flag=false;
+            boolean flag = false;
             String token = req.getHeader("token");
             //            if (StringUtils.isEmpty(token)) {
             //                return JSONUtil.toJSONResult(3, "非法请求", null);
@@ -141,7 +141,7 @@ public class UserController extends BaseController<User> {
             User seesion = (User) req.getSession().getAttribute("user");
             if (seesion == null)
                 seesion = userService.loadById(user.getId());
-//            boolean flag = Common.CheckPerson(seesion.getPhone(), seesion.getPassword(), token);
+            //            boolean flag = Common.CheckPerson(seesion.getPhone(), seesion.getPassword(), token);
             //            if (!flag) {
             //                // 身份认证失败,返回错误信息
             //                return JSONUtil.toJSONResult(2, "身份认证失败", null);
@@ -178,17 +178,17 @@ public class UserController extends BaseController<User> {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             String token = req.getHeader("token");
-            if (StringUtils.isEmpty(token)) {
-                return JSONUtil.toJSONResult(3, "非法请求", null);
-            }
+            //            if (StringUtils.isEmpty(token)) {
+            //                return JSONUtil.toJSONResult(3, "非法请求", null);
+            //            }
             User user = (User) req.getSession().getAttribute("user");
             if (user == null)
                 user = userService.loadById(userId);
             boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
-            if (!flag) {
-                // 身份认证失败,返回错误信息
-                return JSONUtil.toJSONResult(2, "身份认证失败", null);
-            }
+            //            if (!flag) {
+            //                // 身份认证失败,返回错误信息
+            //                return JSONUtil.toJSONResult(2, "身份认证失败", null);
+            //            }
             Account account = new Account();
             account.setCreatorId(userId);
             Account result = accountService.load(account);

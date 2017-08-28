@@ -416,7 +416,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="VARCHAR"></result>
 		</collection>
 
-
+	</resultMap>
+	
+	
+	<resultMap id="info"
+		type="com.jinpaihushi.jphs.commodity.model.Commodity">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cpId" column="cpId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="url" column="url"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="oldPrice" column="oldPrice" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		<result property="name" column="name" javaType="String"
+				jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+				jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
@@ -670,4 +687,53 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND co.`schedule` = #{schedule}
 		</if>
 	</select>
+	
+	
+	<select id="getInfo" resultMap="info">
+	 	SELECT
+			ci.url,
+			com.id ,
+			cp.id cpId,
+			cp.price oldPrice,
+			cp.`name` ,
+			com.title,
+			com.sub_title
+		FROM
+			commodity com
+		LEFT JOIN commodity_images ci ON (com.id = ci.source_id)
+		LEFT JOIN commodity_price cp ON (cp.commodity_id = com.id)
+		WHERE
+			com.id = #{commodityId}
+		AND ci.type = 1;
+	
+	</select>
+	
+	<select id="getOneDetail" resultMap="shop">
+		SELECT
+		com.id commodityId,
+		com.title,
+		com.sub_title,
+		com.quality,
+		com.privacy,
+		com.`security`,
+		ci.url,
+		ci.type,
+		cp.id cpId,
+		cp.price,
+		cp.`name`
+		FROM
+		commodity com
+		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
+		LEFT
+		JOIN commodity_images ci ON (com.id = ci.source_id)
+		WHERE
+		  ci.type = '1'
+		AND
+		com.id =#{commodityId}
+		AND cp.id = #{cpId}
+		ORDER BY price desc
+	</select>
+	
+	
+	
 </mapper>

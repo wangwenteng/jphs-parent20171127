@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.activity.model.VoucherUse;
@@ -60,7 +61,7 @@ public class OrderController {
                 Util.debugLog.debug("order.createOrder.json");
             }
 
-            if (orderInfo == null || !ObjectVerification.verification(orderInfo)) {
+            if (orderInfo == null ) {
                 return JSONUtil.toJSONResult(0, "请核对参数信息", null);
             }
             /*String token = req.getHeader("token");
@@ -256,15 +257,18 @@ public class OrderController {
     @RequestMapping(path = "/orderPay.json", name = "订单支付")
     @ResponseBody
     public byte[] orderPay(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsName,
-            String orderNo, String return_url, Double payParice, Integer type, String userId) {
+            String orderNo, String return_url, Double payParice, Integer type, String userId,
+            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source) {
         try {
-            if (type == null) {
+            if (type == null || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(userId)
+                    || StringUtils.isEmpty(return_url) || payParice == null) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("order.orderPay.json goodsName=" + goodsName + " orderNo=" + orderNo
-                        + " return_url=" + return_url + " payParice=" + payParice + " type=" + type);
+                Util.debugLog
+                        .debug("order.orderPay.json goodsName=" + goodsName + " orderNo=" + orderNo + " return_url="
+                                + return_url + " payParice=" + payParice + " type=" + type + " source=" + source);
             }
             String token = req.getHeader("token");
             if (StringUtils.isEmpty(token)) {
@@ -301,7 +305,7 @@ public class OrderController {
                 sParaTemp.put("subject", goodsName);
                 sParaTemp.put("total_fee", payParice);
 
-                byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY", "1");
+                byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY", source.toString());
                 return s;
             }
 
@@ -322,7 +326,7 @@ public class OrderController {
         }
         catch (Exception e) {
             Util.failLog.error("order.orderPay.json goodsName=" + goodsName + " orderNo=" + orderNo + " return_url="
-                    + return_url + " payParice=" + payParice + " type=" + type, e);
+                    + return_url + " payParice=" + payParice + " type=" + type + " source=" + source, e);
         }
         return null;
     }

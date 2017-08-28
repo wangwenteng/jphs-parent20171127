@@ -21,4 +21,7 @@ public interface CommodityService extends BaseService<Commodity> {
 
 	List<Commodity> getNurseSale(String nurseId,String commodityId,String schedule);
 	
+	List<Commodity> getListByCar(String ids);
+
+	Commodity getOneDetail(String commodityId,String cpId);
 }

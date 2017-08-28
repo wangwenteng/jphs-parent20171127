@@ -75,6 +75,13 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 
     /**  */
 	private Integer sort;
+	
+	private Integer number;
+	
+	private Integer price;
+	
+	private Integer oldPrice;
+	
 
     /** 备注 */
 	@Length(max = 500, message = "{commodity.remark.illegal.length}")
@@ -93,7 +100,13 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	private Integer shareNumber;
 	
 	private Double money;
+	
+	private String url;
+	
+	private String cpId;
 
+	private String name;
+	
 	public Commodity(){}
 
 	public Commodity(String id){
@@ -373,6 +386,62 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 
 	public void setMoney(Double money) {
 		this.money = money;
+	}
+	
+	
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getCpId() {
+		return cpId;
+	}
+
+	public void setCpId(String cpId) {
+		this.cpId = cpId;
+	}
+	
+	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+	
+	
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	
+	
+	public Integer getOldPrice() {
+		return oldPrice;
+	}
+
+	public void setOldPrice(Integer oldPrice) {
+		this.oldPrice = oldPrice;
 	}
 
 	public String toString() {

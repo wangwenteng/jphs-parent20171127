@@ -346,31 +346,19 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 		this.commodityImages = commodityImages;
 	}
 
+	 
+    @Override
 	public String toString() {
-		return new StringBuilder().append("CommodityOrder{").
-			append("id=").append(id).
-			append(",orderNo=").append(orderNo).
-			append(",payPrice=").append(payPrice).
-			append(",payTime=").append(payTime).
-			append(",sendTime=").append(sendTime).
-			append(",takeTime=").append(takeTime).
-			append(",confirmTime=").append(confirmTime).
-			append(",remindTime=").append(remindTime).
-			append(",protectDay=").append(protectDay).
-			append(",protectTime=").append(protectTime).
-			append(",voucherUseId=").append(voucherUseId).
-			append(",voucherPrice=").append(voucherPrice).
-			append(",schedule=").append(schedule).
-			append(",status=").append(status).
-			append(",createTime=").append(createTime).
-			append(",creatorId=").append(creatorId).
-			append(",creatorName=").append(creatorName).
-			append(",address=").append(address).
-			append(",detailAddress=").append(detailAddress).
-			append('}').toString();
-    }
-	
-    /**
+		return "CommodityOrder [orderNo=" + orderNo + ", payPrice=" + payPrice + ", payTime=" + payTime + ", sendTime="
+				+ sendTime + ", takeTime=" + takeTime + ", confirmTime=" + confirmTime + ", remindTime=" + remindTime
+				+ ", protectDay=" + protectDay + ", protectTime=" + protectTime + ", voucherUseId=" + voucherUseId
+				+ ", voucherPrice=" + voucherPrice + ", schedule=" + schedule + ", address=" + address
+				+ ", detailAddress=" + detailAddress + ", coiList=" + coiList + ", count=" + count + ", payment="
+				+ payment + ", phone=" + phone + ", receiveName=" + receiveName + ", commodityImages=" + commodityImages
+				+ "]";
+	}
+
+	/**
 	 * 复制字段：
 	 * id, orderNo, payPrice, payTime, 
 	 * sendTime, takeTime, confirmTime, remindTime, 

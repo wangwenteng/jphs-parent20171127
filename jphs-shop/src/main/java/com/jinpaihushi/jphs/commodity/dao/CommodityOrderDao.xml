@@ -11,7 +11,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.protect_day, CO.protect_time, CO.voucher_use_id, CO.voucher_price,
 		CO.schedule, CO.status, CO.create_time, CO.creator_id,
 		CO.creator_name, CO.address, CO.detail_address, CO.phone,
-		CO. receiveName
+		CO.receiveName
 	</sql>
 
 	<sql id="fieldGlobal">
@@ -25,7 +25,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.create_time CO_create_time, CO.creator_id CO_creator_id,
 		CO.creator_name CO_creator_name, CO.address CO_address,
 		CO.detail_address CO_detail_address, CO.phone CO_phone,
-		CO. receiveName CO_ receiveName
+		CO.receiveName CO_receiveName
 	</sql>
 
 	<sql id="fieldWithAlias">
@@ -39,7 +39,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.create_time createTime, CO.creator_id creatorId,
 		CO.creator_name creatorName, CO.address address,
 		CO.detail_address detailAddress, CO.phone phone,
-		CO. receiveName receivename
+		CO.receiveName receiveName
 	</sql>
 
 	<sql id="condition">
@@ -103,8 +103,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="phone!=null and phone!=''">
 			AND CO.phone=#{phone}
 		</if>
-		<if test=" receivename!=null and  receivename!=''">
-			AND CO. receiveName=#{ receivename}
+		<if test="receiveName!=null and receiveName!=''">
+			AND CO.receiveName=#{receiveName}
 		</if>
 	</sql>
 
@@ -178,8 +178,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="phone!=null and phone!=''">
 				AND CO.phone LIKE CONCAT('%', #{phone}, '%')
 			</if>
-			<if test=" receivename!=null and  receivename!=''">
-				AND CO. receiveName LIKE CONCAT('%', #{ receivename},
+			<if test="receiveName!=null and receiveName!=''">
+				AND CO.receiveName LIKE CONCAT('%', #{receiveName},
 				'%')
 			</if>
 		</where>
@@ -247,8 +247,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="phone!=null">
 				CO.phone=#{phone},
 			</if>
-			<if test=" receivename!=null">
-				CO. receiveName=#{ receivename},
+			<if test="receiveName!=null">
+				CO.receiveName=#{receiveName},
 			</if>
 		</set>
 	</sql>
@@ -300,7 +300,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="phone" column="phone" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property=" receivename" column=" receiveName" javaType="String"
+		<result property="receiveName" column="receiveName" javaType="String"
 			jdbcType="VARCHAR"></result>
 	</resultMap>
 
@@ -346,7 +346,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="phone" column="CO_phone" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property=" receivename" column="CO_ receiveName"
+		<result property="receiveName" column="CO_receiveName"
 			javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 
@@ -393,6 +393,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="detailAddress" column="detail_address"
 			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="receiveName" column="receiveName"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone"
+			javaType="String" jdbcType="VARCHAR"></result>
 		<association property="commodityImages"
 			javaType="com.jinpaihushi.jphs.commodity.model.CommodityImages">
 			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
@@ -422,6 +426,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="VARCHAR"></result>
 			<result property="userId" column="user_id" javaType="String"
 				jdbcType="VARCHAR"></result>
+			<result property="name" column="name" javaType="String"
+				jdbcType="VARCHAR"></result>
 			<result property="profit" column="profit" javaType="Double"
 				jdbcType="DECIMAL"></result>
 			<result property="title" column="title" javaType="String"
@@ -445,6 +451,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<result property="creatorId" column="creator_id" javaType="String"
 				jdbcType="VARCHAR"></result>
 			<result property="creatorName" column="creator_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="url" javaType="String"
 				jdbcType="VARCHAR"></result>
 		</collection>
 	</resultMap>
@@ -474,7 +482,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
 		#{detailAddress,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-		#{ receivename,jdbcType=VARCHAR}
+		#{receiveName,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -491,7 +499,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			create_time, creator_id, 
 			creator_name, address, 
 			detail_address, phone, 
-			 receiveName
+			receiveName
         )]]>
 		VALUES
 		<foreach collection="list" item="item" index="index"
@@ -515,7 +523,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.address,jdbcType=VARCHAR},
 			#{item.detailAddress,jdbcType=VARCHAR},
 			#{item.phone,jdbcType=VARCHAR},
-			#{item. receivename,jdbcType=VARCHAR}
+			#{item.receiveName,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>
@@ -586,16 +594,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		co.id commodityOrderId,
 		co.`schedule`,
 		co.create_time,
+		co.order_no,
+		co.remind_time,
 		coi.commodity_id,
 		coi.title,
 		coi.price,
 		coi.commodity_model,
+		coi.commodity_price_name,
 		coi.number,
-		coi.status
+		coi.status,
+		ci.url
 		FROM commodity_order co
 		LEFT JOIN commodity_order_info coi ON (co.id =
 		coi.commodity_order_id)
+		LEFT JOIN commodity_images ci ON(ci.source_id = coi.commodity_id)
 		WHERE co.creator_id = #{userId}
+		AND ci.type = 1
 		<if test="schedule!=null">
 			AND co.`schedule` = #{schedule}
 		</if>
@@ -606,23 +620,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT
 		co.id commodityOrderId,
 		co.phone,
-		co.` receiveName` ,
+		co.`receiveName`,
 		co.address,
 		co.detail_address,
 		co.`schedule`,
 		co.pay_price,
 		co.order_no,
 		co.create_time,
+		co.pay_time,
+		co.send_time,
 		ci.url,
 		coi.title,
 		coi.price,
 		coi.commodity_model,
 		coi.commodity_id,
-		coi.number
+		coi.number,
+		cp.`name`
 		FROM
 		commodity_order co
 		LEFT JOIN commodity_order_info coi ON (co.id = coi.commodity_order_id)
 		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
+		LEFT JOIN commodity_price cp ON (cp.commodity_id =coi.commodity_id )
 		WHERE co.id=#{orderId}
 		AND ci.type = 1
 	</select>
@@ -655,5 +673,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			commodity_order co  
 		SET co.`schedule` = #{schedule} 
 		WHERE co.id = #{id}
+	</update>
+	
+	<update id="updateRemindTime">
+		UPDATE 
+			commodity_order co  
+		SET co.remind_time = #{remindTime} 
+		WHERE co.id = #{id}
+	</update>
+	
+	<update id="confimOrder">
+		UPDATE 
+			commodity_order co  
+		SET co.take_time = #{takeTime},
+				co.`schedule` = 4,
+				co.`status` = 1
+		WHERE co.id =  #{id}
+	</update>
+	
+		<update id="deleteOrder">
+		UPDATE 
+			commodity_order co  
+		SET  co.`schedule` = 5
+			,co.confirm_time=#{confirmTime}
+		WHERE co.id =  #{id}
 	</update>
 </mapper>

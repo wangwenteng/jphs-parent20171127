@@ -360,4 +360,9 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
         return nursePojoDao.getRecommendNurse(query);
     }
 
+    @Override
+    public List<Map<String, Object>> getNurseServicePrice(Map<String, Object> query) {
+        return nurseDao.getNurseServicePrice(query);
+    }
+
 }

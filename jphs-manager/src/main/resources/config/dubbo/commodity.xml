@@ -6,17 +6,15 @@
         http://code.alibabatech.com/schema/dubbo
 		classpath:schema/dubbo.xsd
         ">
-	<dubbo:reference id="goodsService" interface="com.jinpaihushi.jphs.goods.service.GoodsService" 
+
+	<dubbo:reference id="commodityReturnService" interface="com.jinpaihushi.jphs.commodity.service.CommodityReturnService" 
 		timeout="${dubbo.timeout}" check="false" />
-	<dubbo:reference id="productService" interface="com.jinpaihushi.jphs.product.service.ProductService"
+	<dubbo:reference id="commodityService" interface="com.jinpaihushi.jphs.commodity.service.CommodityService" 
 		timeout="${dubbo.timeout}" check="false" />
-	<dubbo:reference id="locationService" interface="com.jinpaihushi.jphs.location.service.LocationService"
+	<dubbo:reference id="commodityOrderService" interface="com.jinpaihushi.jphs.commodity.service.CommodityOrderService"
 		timeout="${dubbo.timeout}" check="false" />
-	<dubbo:reference id="platformService" interface="com.jinpaihushi.jphs.platform.service.PlatformService"
+	<dubbo:reference id="commodityOrderInfoService" interface="com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="siteService" interface="com.jinpaihushi.jphs.site.service.SiteService"
+	<dubbo:reference id="carService" interface="com.jinpaihushi.jphs.car.service.CarService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="serviceImagesService" interface="com.jinpaihushi.jphs.service.service.ServiceImagesService"
-		timeout="${dubbo.timeout}" check="false" />
- 	
 </beans>

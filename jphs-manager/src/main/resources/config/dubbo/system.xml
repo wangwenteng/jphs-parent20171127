@@ -12,4 +12,6 @@
 		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="systemRoleService" interface="com.jinpaihushi.jphs.system.service.SystemRoleService"
 		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="sysversionService" interface="com.jinpaihushi.jphs.sysversion.service.SysversionService"
+		timeout="${dubbo.timeout}" check="false" />
 </beans>

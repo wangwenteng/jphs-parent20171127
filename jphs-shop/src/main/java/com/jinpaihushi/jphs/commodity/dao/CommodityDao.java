@@ -29,4 +29,9 @@ public interface CommodityDao extends BaseDao<Commodity> {
 	List<Commodity> getNurseSale(Map<String, Object> map);
 
 	Integer updateShopOrderSchedule(CommodityOrder commodityOrder);
+
+	Commodity getInfo(String commodityId);
+
+	Commodity getOneDetail(Map<String, Object> map);
+
 }

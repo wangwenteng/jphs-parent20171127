@@ -154,4 +154,60 @@ public class CommodityController extends BaseController<Commodity> {
 		return null;
 	}
 
+
+	@RequestMapping(name = "获取商品列表", path = "/getListByCar.json")
+	@ResponseBody
+	public byte[] getListByCar(
+			String ids) {
+			 
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.getListByCar.json,ids =" + ids );
+			}
+			if (StringUtils.isEmpty(ids)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			 
+		 
+			List<Commodity> list = commodityService.getListByCar(ids);
+			
+			
+			if (list == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", list);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.getListByCar.json,ids =" + ids , e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "获取商品列表", path = "/getOneDetail.json")
+	@ResponseBody
+	public byte[] getOneDetail(HttpSession hs, HttpServletRequest req,
+			HttpServletResponse resp, ModelMap modelMap,
+			String commodityId,String cpId, Integer p) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.getOneDetail.json,commodityId =" + commodityId +",cpId =" + cpId);
+			}
+			if (StringUtils.isEmpty(commodityId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if (StringUtils.isEmpty(cpId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			Commodity commodity = commodityService.getOneDetail(commodityId,cpId);
+			if (commodity == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", commodity);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.getOneDetail.json,commodityId =" + commodityId +",cpId = "+cpId, e);
+		}
+		return null;
+	}
+
+
 }

@@ -67,6 +67,10 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
     /** 备注 */
 	@Length(max = 65535, message = "{commodityOrderInfo.remark.illegal.length}")
 	private String remark;
+	
+	private String url;
+	
+	private String name;
 
 	public CommodityOrderInfo(){}
 
@@ -227,8 +231,28 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 	public void setRemark(String remark) {
     	this.remark = remark;
     }
+	
+	
 
-    public String toString() {
+    public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("CommodityOrderInfo{").
 			append("id=").append(id).
 			append(",commodityOrderId=").append(commodityOrderId).

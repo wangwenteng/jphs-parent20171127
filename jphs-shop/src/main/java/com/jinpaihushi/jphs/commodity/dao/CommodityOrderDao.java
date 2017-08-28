@@ -22,5 +22,11 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	List<CommodityOrder> getOrderList(Map<String, Object> map);
 
 	CommodityOrder getOrderDetail(String orderId);
+
+	Integer updateRemindTime(CommodityOrder commodityOrder);
+
+	Integer confimOrder(CommodityOrder commodityOrder);
+
+	Integer deleteOrder(CommodityOrder commodityOrder);
 	
 }

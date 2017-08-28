@@ -111,6 +111,7 @@ public class FileUploadController {
                         if (StringUtils.isNotEmpty(userId)) {
                             NurseImages nurseImage = new NurseImages();
                             nurseImage.setSourceId(userId);
+                            nurseImage = nurseImagesService.load(nurseImage);
                             nurseImage.setUrl(URL + SAVE_KEY);
                             boolean b = nurseImagesService.update(nurseImage);
                             if (b) {

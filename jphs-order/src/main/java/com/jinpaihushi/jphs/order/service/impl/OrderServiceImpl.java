@@ -291,7 +291,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         Order order = new Order();
         order.setOrderNo(orderNo);
         Order orderDetail = orderDao.getUserOrderDetail(order);
-        if (orderDetail.getOrderGoods().getPayPrice() == payParice)
+        if (DoubleUtils.sub(orderDetail.getOrderGoods().getPayPrice() ,  payParice)==0)
             return true;
         return false;
     }
@@ -329,7 +329,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         Price price = priceDao.loadById(pricePart.getPriceId());
         Double onePrice = DoubleUtils.div(pricePart.getPrice(), price.getServiceNumber(), 2);
         //用户优惠券的价格
-        VoucherUse voucherUse = voucherUseDao.loadById(orderInfo.getVoucherUseId());
+        VoucherUse voucherUse=null;
+       if(StringUtils.isNotEmpty(orderInfo.getVoucherUseId())){
+    	   voucherUse = voucherUseDao.loadById(orderInfo.getVoucherUseId());
+       }
         //先获取商品的基本信息
         Goods goods = goodsDao.getGoodsByPricePart(orderInfo.getPricePartId());
         Order order = new Order();
@@ -340,7 +343,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             order.setOrderNo(Common.getOrderNumber());
             order.setSchedule(0);
             order.setStatus(1);
-            order.setVoucherPrice(voucherUse.getAmount());
+            order.setVoucherPrice(voucherUse==null?0.00:voucherUse.getAmount());
+            order.setVoucherUseId(voucherUse==null?null:orderInfo.getVoucherUseId());
             if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
                 order.setAcceptUserId(orderInfo.getExpectorId());
             order.setCreateTime(new Date());

@@ -20,4 +20,6 @@ public interface CarService extends BaseService<Car> {
 	boolean updateNumber(Car car);
 	
 	boolean successOrder(String Ids);
+	
+	
 }

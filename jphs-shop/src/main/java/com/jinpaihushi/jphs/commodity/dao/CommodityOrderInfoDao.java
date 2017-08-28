@@ -18,9 +18,11 @@ public interface CommodityOrderInfoDao extends BaseDao<CommodityOrderInfo> {
 
 	Integer updateByOrderNo(CommodityOrderInfo commodityOrderInfo);
 	
-	Integer getAllNumber(String commodityOrderId);
+	Integer getAllNumber(String id);
 	
 	Integer getAllNumberByCommoditById(CommodityOrderInfo commodityOrderInfo);
 	
 	Double getMoneyByNurse(Map<String, Object> map);
+
+	 
 }

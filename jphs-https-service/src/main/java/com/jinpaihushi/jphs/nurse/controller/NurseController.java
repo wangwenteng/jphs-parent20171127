@@ -83,7 +83,8 @@ public class NurseController {
             @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("nurse.getRecommendNurse.json userId=" + goodsId);
+                Util.debugLog.debug("nurse.getRecommendNurse.json goodsId=" + goodsId + " lon=" + lon + " lat=" + lat
+                        + " priceId=" + priceId + " time=" + time + " p=" + p + " n=" + n);
             }
             if (StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(time) || StringUtils.isEmpty(priceId)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
@@ -105,7 +106,32 @@ public class NurseController {
             return JSONUtil.toJSONResult(1, "操作成功！", page);
         }
         catch (Exception e) {
-            Util.failLog.error("nurse.getRecommendNurse.json userId=" + goodsId, e);
+            Util.failLog.error("nurse.getRecommendNurse.json goodsId=" + goodsId + " lon=" + lon + " lat=" + lat
+                    + " priceId=" + priceId + " time=" + time + " p=" + p + " n=" + n, e);
+        }
+        return null;
+    }
+
+    @RequestMapping(path = "/getNurseServicePrice.json", name = "获取护士的发布的服务价格列表")
+    @ResponseBody
+    public byte[] getNurseServicePrice(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsId,
+            String userId) {
+        try {
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("nurse.getNurseServicePrice.json goodsId=" + goodsId + " userId=" + userId);
+            }
+            if (StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(userId)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            //护士基本信息
+            Map<String, Object> query = new HashMap<>();
+            query.put("goodsId", goodsId);
+            query.put("userId", userId);
+            List<Map<String, Object>> servicePrice = nurseService.getNurseServicePrice(query);
+            return JSONUtil.toJSONResult(1, "操作成功！", servicePrice);
+        }
+        catch (Exception e) {
+            Util.failLog.error("nurse.getNurseServicePrice.json goodsId=" + goodsId + " userId=" + userId, e);
         }
         return null;
     }

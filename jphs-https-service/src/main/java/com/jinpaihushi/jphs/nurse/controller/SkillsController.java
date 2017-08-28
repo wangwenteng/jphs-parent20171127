@@ -33,10 +33,23 @@ public class SkillsController {
 	@Autowired
 	NurseSkillsService nurseSkillsService;
 	
+	
+	/**
+	 * my_skills=选择技能
+kf_skills=选择技能
+hs_skills=选择技能
+	 * @param req
+	 * @param resp
+	 * @param authCode
+	 * @param user
+	 * @param nurseType
+	 * @param skills
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(name = "护士设置技能" ,path = "/setNurseSkills")
 	@Transactional
-	public byte[] nurseSkills(HttpServletRequest req, HttpServletResponse resp,String authCode,User user,Integer nurseType,String skills){
+	public byte[] nurseSkills(HttpServletRequest req, HttpServletResponse resp,String authCode,User user,String my_skills,String kf_skills,String hs_skills){
 		try{
 			String token = "";
 			try {
@@ -48,9 +61,7 @@ public class SkillsController {
 				Util.debugLog.debug("skills.setNurseSkills.json,user="+user.getPhone()+" authCode="+authCode+" token="+token);
 			}
 			// 查空
-			if(StringUtils.isEmpty(skills)
-					||StringUtils.isEmpty(nurseType.toString())
-						||StringUtils.isEmpty(user.getId())
+			if(StringUtils.isEmpty(user.getId())
 							||StringUtils.isEmpty(user.getPassword())
 								||StringUtils.isEmpty(user.getPhone())/*
 									||StringUtils.isEmpty(token)*/){
@@ -71,14 +82,52 @@ public class SkillsController {
 				}
 			}
 			
-			String [] skill_arr = skills.split(",");
-			for(int a=0;a<skill_arr.length;a++){
-				if(skill_arr[a] != null && !skill_arr[a].equals("")){
+			String [] skill_arr_my = my_skills.split(",");
+			for(int a=0;a<skill_arr_my.length;a++){
+				if(skill_arr_my[a] != null && !skill_arr_my[a].equals("")){
 
 					NurseSkills nurseNkill = new NurseSkills();
 					nurseNkill.setId(UUID.randomUUID().toString());
-					nurseNkill.setSkillsId(skill_arr[a]);
-					nurseNkill.setType(nurseType);
+					nurseNkill.setSkillsId(skill_arr_my[a]);
+					nurseNkill.setType(1);
+					nurseNkill.setCreateTime(new Date());
+					try {
+						nurseNkill.setCreatorName(user.getName());
+					} catch (Exception e) {
+					}
+					nurseNkill.setCreatorId(user.getId());
+					nurseNkill.setStatus(1);
+					nurseSkillsService.insert(nurseNkill);
+				}
+			}
+			
+			String [] skill_arr_kf = kf_skills.split(",");
+			for(int a=0;a<skill_arr_kf.length;a++){
+				if(skill_arr_kf[a] != null && !skill_arr_kf[a].equals("")){
+
+					NurseSkills nurseNkill = new NurseSkills();
+					nurseNkill.setId(UUID.randomUUID().toString());
+					nurseNkill.setSkillsId(skill_arr_kf[a]);
+					nurseNkill.setType(2);
+					nurseNkill.setCreateTime(new Date());
+					try {
+						nurseNkill.setCreatorName(user.getName());
+					} catch (Exception e) {
+					}
+					nurseNkill.setCreatorId(user.getId());
+					nurseNkill.setStatus(1);
+					nurseSkillsService.insert(nurseNkill);
+				}
+			}
+			
+			String [] skill_arr_hs = hs_skills.split(",");
+			for(int a=0;a<skill_arr_hs.length;a++){
+				if(skill_arr_hs[a] != null && !skill_arr_hs[a].equals("")){
+
+					NurseSkills nurseNkill = new NurseSkills();
+					nurseNkill.setId(UUID.randomUUID().toString());
+					nurseNkill.setSkillsId(skill_arr_hs[a]);
+					nurseNkill.setType(2);
 					nurseNkill.setCreateTime(new Date());
 					try {
 						nurseNkill.setCreatorName(user.getName());

@@ -348,7 +348,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		UPDATE 
 			commodity_order_info coi 
 		SET 
-			coi.status = {status}
+			coi.status = #{status}
 		WHERE coi.commodity_order_id = #{commodityOrderId}
 	</update>
 	
@@ -356,7 +356,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		 SELECT 
 	 		SUM(coi.number)
 		FROM commodity_order_info coi
-		WHERE coi.commodity_order_id = #{commodityOrderId}
+		WHERE coi.commodity_order_id = #{id}
 	</select>
 	
 	<select id="getAllNumberByCommoditById" resultType="java.lang.Integer">
@@ -373,4 +373,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE coi.commodity_id = #{commodityId}
 		 AND coi.user_id = #{userId}
 	</select>
+	
+	 
 </mapper>
