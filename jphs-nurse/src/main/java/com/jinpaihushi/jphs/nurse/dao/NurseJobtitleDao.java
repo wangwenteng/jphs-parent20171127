@@ -16,17 +16,18 @@ import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
  */
 @Repository("nurseJobtitleDao")
 public interface NurseJobtitleDao extends BaseDao<NurseJobtitle> {
-	/**
-	 * goodsId 服务id 默认不传
-	 * type 排序规则 1、离我最近 2、服务次数最多 3、护龄最长 默认不传
-	 * lon 经度
-	 * lat 纬度
-	 * nurseName 护士姓名
-	 * @param query
-	 * @return
-	 */
-	List<Map<String, Object>> getNurseList(Map<String, Object> query);
-	
-	List<NurseJobtitle> getNurseAuditing(Map<String,Object> map);
-	
+    /**
+     * goodsId 服务id 默认不传
+     * type 排序规则 1、离我最近 2、服务次数最多 3、护龄最长 默认不传
+     * lon 经度
+     * lat 纬度
+     * nurseName 护士姓名
+     * position 定位区域
+     * @param query
+     * @return
+     */
+    List<Map<String, Object>> getNurseList(Map<String, Object> query);
+
+    List<NurseJobtitle> getNurseAuditing(Map<String, Object> map);
+
 }

@@ -320,7 +320,8 @@ public class UserController extends BaseController<User> {
             @RequestParam(value = "lat", defaultValue = "39.914492", required = true) String lat, String goodsId,
             @RequestParam(value = "type", defaultValue = "0", required = true) Integer type, String nurseName,
             @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
-            @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
+            @RequestParam(value = "n", defaultValue = "10", required = true) Integer n,
+            @RequestParam(value = "position", defaultValue = "北京", required = true) String position) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId
@@ -349,6 +350,7 @@ public class UserController extends BaseController<User> {
             query.put("goodsId", goodsId);
             query.put("type", type);
             query.put("nurseName", nurseName);
+            query.put("position", position);
             if (StringUtils.isNotEmpty(nurseName)) {
                 query.put("type", 1);
             }
