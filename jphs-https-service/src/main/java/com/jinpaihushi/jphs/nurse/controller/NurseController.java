@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.price.service.PriceNurseService;
 import com.jinpaihushi.jphs.worktime.model.Worktime;
@@ -127,7 +128,7 @@ public class NurseController {
             Map<String, Object> query = new HashMap<>();
             query.put("goodsId", goodsId);
             query.put("userId", userId);
-            List<Map<String, Object>> servicePrice = nurseService.getNurseServicePrice(query);
+            List<Grade> servicePrice = nurseService.getNurseServicePrice(query);
             return JSONUtil.toJSONResult(1, "操作成功！", servicePrice);
         }
         catch (Exception e) {

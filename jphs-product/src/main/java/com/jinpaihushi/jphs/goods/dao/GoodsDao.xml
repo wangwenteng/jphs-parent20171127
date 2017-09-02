@@ -7,17 +7,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<sql id="field">
 		G.id, G.product_id, G.title, G.sub_title, 
-		G.content, G.tijian_type_id, G.tijian_hospital_id, G.tool, 
-		G.insurance, G.must, G.type, G.grade_type, 
-		G.sort, G.is_bg, G.is_prove, G.remark, 
-		G.status, G.create_time, G.creator_id, G.creator_name
+		G.content, G.tijian_type_id, G.tijian_hospital_id, G.dz_tool, 
+		G.order_template_id, G.hl_tool, G.insurance, G.must, 
+		G.type, G.grade_type, G.sort, G.is_bg, 
+		G.is_prove, G.remark, G.status, G.create_time, 
+		G.creator_id, G.creator_name
 	</sql>
 
 	<sql id="fieldGlobal">
 		G.id G_id, G.product_id G_product_id, 
 		G.title G_title, G.sub_title G_sub_title, 
 		G.content G_content, G.tijian_type_id G_tijian_type_id, 
-		G.tijian_hospital_id G_tijian_hospital_id, G.tool G_tool, 
+		G.tijian_hospital_id G_tijian_hospital_id, G.dz_tool G_dz_tool, 
+		G.order_template_id G_order_template_id, G.hl_tool G_hl_tool, 
 		G.insurance G_insurance, G.must G_must, 
 		G.type G_type, G.grade_type G_grade_type, 
 		G.sort G_sort, G.is_bg G_is_bg, 
@@ -30,7 +32,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		G.id id, G.product_id productId, 
 		G.title title, G.sub_title subTitle, 
 		G.content content, G.tijian_type_id tijianTypeId, 
-		G.tijian_hospital_id tijianHospitalId, G.tool tool, 
+		G.tijian_hospital_id tijianHospitalId, G.dz_tool dzTool, 
+		G.order_template_id orderTemplateId, G.hl_tool hlTool, 
 		G.insurance insurance, G.must must, 
 		G.type type, G.grade_type gradeType, 
 		G.sort sort, G.is_bg isBg, 
@@ -61,8 +64,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="tijianHospitalId!=null and tijianHospitalId!=''">
 			AND G.tijian_hospital_id=#{tijianHospitalId}
 		</if>
-		<if test="tool!=null">
-			AND G.tool=#{tool}
+		<if test="dzTool!=null">
+			AND G.dz_tool=#{dzTool}
+		</if>
+		<if test="orderTemplateId!=null and orderTemplateId!=''">
+			AND G.order_template_id=#{orderTemplateId}
+		</if>
+		<if test="hlTool!=null">
+			AND G.hl_tool=#{hlTool}
 		</if>
 		<if test="insurance!=null">
 			AND G.insurance=#{insurance}
@@ -131,8 +140,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="tijianHospitalId!=null and tijianHospitalId!=''">
 				AND G.tijian_hospital_id LIKE CONCAT('%', #{tijianHospitalId}, '%')
 			</if>
-			<if test="tool!=null">
-				AND G.tool=#{tool}
+			<if test="dzTool!=null">
+				AND G.dz_tool=#{dzTool}
+			</if>
+			<if test="orderTemplateId!=null and orderTemplateId!=''">
+				AND G.order_template_id LIKE CONCAT('%', #{orderTemplateId}, '%')
+			</if>
+			<if test="hlTool!=null">
+				AND G.hl_tool=#{hlTool}
 			</if>
 			<if test="insurance!=null">
 				AND G.insurance=#{insurance}
@@ -196,8 +211,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="tijianHospitalId!=null">
 				G.tijian_hospital_id=#{tijianHospitalId}, 
 		   </if>
-           <if test="tool!=null">
-				G.tool=#{tool}, 
+           <if test="dzTool!=null">
+				G.dz_tool=#{dzTool}, 
+		   </if>
+           <if test="orderTemplateId!=null">
+				G.order_template_id=#{orderTemplateId}, 
+		   </if>
+           <if test="hlTool!=null">
+				G.hl_tool=#{hlTool}, 
 		   </if>
            <if test="insurance!=null">
 				G.insurance=#{insurance}, 
@@ -246,43 +267,52 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="goods" type="com.jinpaihushi.jphs.goods.model.Goods">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="productId" column="product_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="title" column="title" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="subTitle" column="sub_title" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="content" column="content" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="tijianTypeId" column="tijian_type_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tijianHospitalId" column="tijian_hospital_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tool" column="tool" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="insurance" column="insurance" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="must" column="must" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="type" column="type" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="gradeType" column="gradeType" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="isBg" column="is_bg" javaType="Integer"
-			jdbcType="INTEGER"></result>
+		<result property="productId" column="product_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianTypeId" column="tijian_type_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianHospitalId" column="tijian_hospital_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dzTool" column="dz_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="orderTemplateId" column="order_template_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="insurance" column="insurance" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="must" column="must" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="gradeType" column="grade_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isBg" column="is_bg" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="isProve" column="is_prove" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="sort" column="sort" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="remark" column="remark" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="goodsGlobal" type="com.jinpaihushi.jphs.goods.model.Goods">
+		<result property="id" column="G_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="productId" column="G_product_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="G_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="G_sub_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="G_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianTypeId" column="G_tijian_type_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="tijianHospitalId" column="G_tijian_hospital_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dzTool" column="G_dz_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="orderTemplateId" column="G_order_template_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="hlTool" column="G_hl_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="insurance" column="G_insurance" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="must" column="G_must" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="G_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="gradeType" column="G_grade_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sort" column="G_sort" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isBg" column="G_is_bg" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isProve" column="G_is_prove" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="G_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="G_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="G_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="G_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="G_creator_name" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<resultMap id="goodsDetail" type="com.jinpaihushi.jphs.goods.model.Goods">
@@ -299,7 +329,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="tijianHospitalId" column="tijian_hospital_id"
 			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tool" column="tool" javaType="Integer"
+		<result property="dzTool" column="dz_tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
@@ -380,7 +412,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="tijianHospitalId" column="tijian_hospital_id"
 			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tool" column="tool" javaType="Integer"
+		<result property="dzTool" column="dz_tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
@@ -434,46 +468,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 
-	<resultMap id="goodsGlobal" type="com.jinpaihushi.jphs.goods.model.Goods">
-		<result property="id" column="G_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="productId" column="G_product_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="title" column="G_title" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="subTitle" column="G_sub_title" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="content" column="G_content" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="tijianTypeId" column="G_tijian_type_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tijianHospitalId" column="G_tijian_hospital_id"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tool" column="G_tool" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="insurance" column="G_insurance" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="must" column="G_must" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="type" column="G_type" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="gradeType" column="G_gradeType" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="sort" column="G_sort" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="isBg" column="G.is_bg" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="isProve" column="G_is_prove" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="remark" column="G_remark" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="status" column="G_status" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="createTime" column="G_create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="G_creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="G_creator_name"
-			javaType="String" jdbcType="VARCHAR"></result>
-	</resultMap>
 	
 	
 	<resultMap id="goodsInfo" type="com.jinpaihushi.jphs.goods.model.Goods">
@@ -490,7 +484,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="tijianHospitalId" column="tijian_hospital_id"
 			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="tool" column="tool" javaType="Integer"
+		<result property="dzTool" column="dz_tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="url" column="url" javaType="String"
 				jdbcType="VARCHAR"></result>
@@ -552,13 +548,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		
 	</resultMap>
 
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
-		parameterType="com.jinpaihushi.jphs.goods.model.Goods">
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.goods.model.Goods">
 		INSERT INTO `GOODS`(
 			id, product_id, 
 			title, sub_title, 
 			content, tijian_type_id, 
-			tijian_hospital_id, tool, 
+			tijian_hospital_id, dz_tool, 
+			order_template_id, hl_tool, 
 			insurance, must, 
 			type, grade_type, 
 			sort, is_bg, 
@@ -569,7 +565,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
 			#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
 			#{content,jdbcType=VARCHAR}, #{tijianTypeId,jdbcType=VARCHAR}, 
-			#{tijianHospitalId,jdbcType=VARCHAR}, #{tool,jdbcType=INTEGER}, 
+			#{tijianHospitalId,jdbcType=VARCHAR}, #{dzTool,jdbcType=INTEGER}, 
+			#{orderTemplateId,jdbcType=VARCHAR}, #{hlTool,jdbcType=INTEGER}, 
 			#{insurance,jdbcType=INTEGER}, #{must,jdbcType=INTEGER}, 
 			#{type,jdbcType=INTEGER}, #{gradeType,jdbcType=INTEGER}, 
 			#{sort,jdbcType=INTEGER}, #{isBg,jdbcType=INTEGER}, 
@@ -578,14 +575,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
 		)
 	</insert>
-
-	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
         <![CDATA[
         INSERT INTO `GOODS`(
 			id, product_id, 
 			title, sub_title, 
 			content, tijian_type_id, 
-			tijian_hospital_id, tool, 
+			tijian_hospital_id, dz_tool, 
+			order_template_id, hl_tool, 
 			insurance, must, 
 			type, grade_type, 
 			sort, is_bg, 
@@ -600,7 +599,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.id,jdbcType=VARCHAR}, #{item.productId,jdbcType=VARCHAR}, 
 			#{item.title,jdbcType=VARCHAR}, #{item.subTitle,jdbcType=VARCHAR}, 
 			#{item.content,jdbcType=VARCHAR}, #{item.tijianTypeId,jdbcType=VARCHAR}, 
-			#{item.tijianHospitalId,jdbcType=VARCHAR}, #{item.tool,jdbcType=INTEGER}, 
+			#{item.tijianHospitalId,jdbcType=VARCHAR}, #{item.dzTool,jdbcType=INTEGER}, 
+			#{item.orderTemplateId,jdbcType=VARCHAR}, #{item.hlTool,jdbcType=INTEGER}, 
 			#{item.insurance,jdbcType=INTEGER}, #{item.must,jdbcType=INTEGER}, 
 			#{item.type,jdbcType=INTEGER}, #{item.gradeType,jdbcType=INTEGER}, 
 			#{item.sort,jdbcType=INTEGER}, #{item.isBg,jdbcType=INTEGER}, 
@@ -610,27 +610,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			)
 		</foreach>
 	</insert>
-
+	
 	<delete id="deleteById">
-		DELETE G FROM `GOODS` G WHERE G.ID = #{id}
+		DELETE G FROM `GOODS` G WHERE G.ID = #{id} 
 	</delete>
-
+	
 	<update id="disableById">
-		UPDATE `GOODS` G
-		SET
+	    UPDATE `GOODS` G
+		SET 
 		G.STATUS = -1
 		WHERE G.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `GOODS` G
-		<include refid="dynamicSet" />
-		WHERE G.ID = #{id}
+		<include refid="dynamicSet" /> 
+	    WHERE G.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="goods">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `GOODS` G
 		<include refid="dynamicWhere" />
 	</select>
@@ -641,24 +640,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="goods">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `GOODS` G
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="goods">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `GOODS` G
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-
+	
 	<select id="loadById" resultMap="goods">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `GOODS` G
 		WHERE G.ID = #{id}
 	</select>
@@ -670,7 +666,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.sub_title,
 		s.product_id,
 		s.content,
-		s.tool,
+		s.dz_tool,
+		s.hl_tool,
 		s.insurance,
 		s.tijian_type_id,
 		s.tijian_hospital_id,
@@ -728,7 +725,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.sub_title,
 		s.product_id,
 		s.content,
-		s.tool,
+		s.dz_tool,
+		s.hl_tool,
 		s.insurance,
 		IFNULL(s.tijian_type_id,'') tijian_type_id,
 		s.tijian_hospital_id,
@@ -805,7 +803,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.sub_title,
 		s.product_id,
 		s.content,
-		s.tool,
+		s.dz_tool,
+		s.hl_tool,
 		s.insurance,
 		s.tijian_type_id,
 		s.tijian_hospital_id,
@@ -854,7 +853,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.sub_title,
 		s.product_id,
 		s.content,
-		s.tool,
+		s.dz_tool,
+		s.hl_tool,
 		s.insurance,
 		s.tijian_type_id,
 		s.tijian_hospital_id,

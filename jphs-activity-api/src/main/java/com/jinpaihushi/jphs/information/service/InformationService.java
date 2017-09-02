@@ -14,30 +14,35 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface InformationService extends BaseService<Information> {
 
-	/**
-	 * 获取资讯列表
-	 * @param channelId 频道id
-	 * @param page 页数
-	 * @return
-	 */
-	List<Map<String, Object>> getTopList(String channelId,Integer page);
+    /**
+     * 获取资讯列表
+     * @param channelId 频道id
+     * @param page 页数
+     * @return
+     */
+    List<Map<String, Object>> getTopList(String channelId, Integer page);
 
-	/**
-	 * 获取置顶的资讯
-	 * @param information
-	 * @return
-	 */
-	List<Map<String, Object>> getLatestformation(String channelId,Integer num);
+    /**
+     * 获取置顶的资讯
+     * @param information
+     * @return
+     */
+    List<Map<String, Object>> getLatestformation(String channelId, Integer num);
 
-	/**
-	 * 资讯详情 
-	 * @param id 资讯id
-	 * @return
-	 */
-	Information getInformationDetail(String id);
+    /**
+     * 资讯详情 
+     * @param id 资讯id
+     * @return
+     */
+    Information getInformationDetail(String id);
 
-	List<Map<String,Object>> listapp(Map<String, Object> query);
+    List<Map<String, Object>> listapp(Map<String, Object> query);
 
-	List<Map<String, Object>> getCollection(String userId);
-	int deleteCollection(String userId, String inforationIds);
+    List<Map<String, Object>> getCollection(String userId);
+
+    int deleteCollection(String userId, String inforationIds);
+
+    Map<String, Object> getHomeInformation(String channelId);
+
+    Map<String, Object> getInformationList(String channelId, Integer page);
 }

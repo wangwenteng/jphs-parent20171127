@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,8 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	Integer confimOrder(CommodityOrder commodityOrder);
 
 	Integer deleteOrder(CommodityOrder commodityOrder);
+
+	List<CommodityOrder> getListByOrderNo(String orderNo);
 	
+	List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder);
 }

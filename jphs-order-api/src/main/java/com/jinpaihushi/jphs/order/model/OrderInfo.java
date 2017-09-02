@@ -389,5 +389,4 @@ public class OrderInfo extends BaseModel {
 	public void setImages(String images) {
 		this.images = images;
 	}
-	
 }

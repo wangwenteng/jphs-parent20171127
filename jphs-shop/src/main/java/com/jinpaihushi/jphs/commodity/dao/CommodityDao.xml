@@ -599,17 +599,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN commodity_images ci ON (ci.source_id = com.id)
 		LEFT JOIN `column` c ON (1 = 1)
 		LEFT JOIN column_service cs ON (c.id = cs.column_id)
+		LEFT JOIN nurse_commodity nc ON (nc.commodity_id = com.id)
 		WHERE
 		cs.link = com.id
 		AND ci.type = '1'
 		AND c.id = #{columnId}
 		AND c.`status` = 1
 		AND cs.`status` = 1
-
+		GROUP BY com.id
+		<if test="nurseId !=null">
+			AND nc.creator_id = #{nurseId} 
+		</if>
 		<if test="sort !=null">
 			${sort}
 		</if>
-
+		
 	</select>
 
 
@@ -704,7 +708,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN commodity_price cp ON (cp.commodity_id = com.id)
 		WHERE
 			com.id = #{commodityId}
-		AND ci.type = 1;
+		AND CP.Id=#{commodityPriceId}
+		AND ci.type = 1
 	
 	</select>
 	

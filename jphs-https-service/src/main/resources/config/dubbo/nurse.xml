@@ -41,4 +41,10 @@
 		timeout="${dubbo.timeout}" check="false" />
 	<dubbo:reference id="nurseCommodityService" interface="com.jinpaihushi.jphs.nurse.service.NurseCommodityService"
 		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="cancelOrderService" interface="com.jinpaihushi.jphs.cancel.service.CancelOrderService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="personManagerService" timeout="${dubbo.timeout}" check="false"
+		interface="com.jinpaihushi.jphs.person.service.PersonManagerService" />
+	<dubbo:reference id="personGroupService" timeout="${dubbo.timeout}" check="false"
+		interface="com.jinpaihushi.jphs.person.service.PersonGroupService" />
 </beans>

@@ -71,7 +71,7 @@ public class CarController extends BaseController<Car> {
 			if(model!=null){
 				Integer number = model.getNumber();
 				 
-				model.setNumber(number+1);
+				model.setNumber(number+car.getNumber());
 				boolean b = carService.updateNumber(model);
 				
 				if (!b) {

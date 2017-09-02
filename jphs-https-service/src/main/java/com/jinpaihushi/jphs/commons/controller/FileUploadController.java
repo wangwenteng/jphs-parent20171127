@@ -25,6 +25,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
 import com.jinpaihushi.utils.JSONUtil;
+import com.jinpaihushi.utils.UUIDUtils;
 
 import main.java.com.upyun.FormUploader;
 import main.java.com.upyun.Params;
@@ -111,11 +112,28 @@ public class FileUploadController {
                         if (StringUtils.isNotEmpty(userId)) {
                             NurseImages nurseImage = new NurseImages();
                             nurseImage.setSourceId(userId);
+                            nurseImage.setType(1);
                             nurseImage = nurseImagesService.load(nurseImage);
-                            nurseImage.setUrl(URL + SAVE_KEY);
-                            boolean b = nurseImagesService.update(nurseImage);
-                            if (b) {
-                                return JSONUtil.toJSONResult(1, "上传成功", URL + SAVE_KEY);
+                            if (nurseImage != null) {
+                                nurseImage.setUrl(URL + SAVE_KEY);
+                                boolean b = nurseImagesService.update(nurseImage);
+                                if (b) {
+                                    return JSONUtil.toJSONResult(1, "上传成功", URL + SAVE_KEY);
+                                }
+                            }
+                            else {
+                                nurseImage = new NurseImages();
+                                nurseImage.setUrl(URL + SAVE_KEY);
+                                nurseImage.setSourceId(userId);
+                                nurseImage.setCreatorId(userId);
+                                nurseImage.setId(UUIDUtils.getId());
+                                nurseImage.setCreateTime(new Date());
+                                nurseImage.setStatus(0);
+                                nurseImage.setType(1);
+                                String insert = nurseImagesService.insert(nurseImage);
+                                if (insert.length() > 0) {
+                                    return JSONUtil.toJSONResult(1, "上传成功", URL + SAVE_KEY);
+                                }
                             }
                         }
                         return JSONUtil.toJSONResult(1, "上传成功", URL + SAVE_KEY);

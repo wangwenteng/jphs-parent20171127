@@ -96,7 +96,7 @@ public class WorktimeController {
     public byte[] insertNurseWorkTime(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("worktime.findNurseWorkTime.json userId=" + userId);
+                Util.debugLog.debug("worktime.insertNurseWorkTime.json userId=" + userId);
             }
             if (StringUtils.isEmpty(userId)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
@@ -105,7 +105,7 @@ public class WorktimeController {
             return JSONUtil.toJSONResult(1, "操作成功！", result1);
         }
         catch (Exception e) {
-            Util.failLog.error("worktime.findNurseWorkTime.json userId=" + userId, e);
+            Util.failLog.error("worktime.insertNurseWorkTime.json userId=" + userId, e);
         }
         return null;
     }

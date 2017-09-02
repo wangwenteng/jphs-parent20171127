@@ -12,6 +12,7 @@ import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.area.dao.AreaDao;
 import com.jinpaihushi.jphs.area.model.Area;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.jobtitle.dao.JobtitleTypeDao;
 import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 import com.jinpaihushi.jphs.jobtitle.model.JobtitleType;
@@ -361,7 +362,7 @@ public class NurseServiceImpl extends BaseServiceImpl<Nurse> implements NurseSer
     }
 
     @Override
-    public List<Map<String, Object>> getNurseServicePrice(Map<String, Object> query) {
+    public List<Grade> getNurseServicePrice(Map<String, Object> query) {
         return nurseDao.getNurseServicePrice(query);
     }
 

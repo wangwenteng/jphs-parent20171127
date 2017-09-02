@@ -124,6 +124,7 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
                     if (bg.doubleValue() > salePrice) {
                         // 不满足要求移除改优惠券
                         vocherList.remove(i);
+                        i=-1;break;
                     }
                 }
                 if (((Integer) vocherList.get(i).get("type")) == 3) {
@@ -131,6 +132,7 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
                     if (bg.doubleValue() > salePrice) {
                         // 不满足要求移除改优惠券
                         vocherList.remove(i);
+                        i=-1;break;
                     }
                 }
             }

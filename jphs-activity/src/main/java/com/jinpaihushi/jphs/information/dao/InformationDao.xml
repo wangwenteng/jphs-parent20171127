@@ -441,7 +441,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ic.`status` =-1
 		<where>
 			<if test="ids!=null and ids!=''">
-			AND	ic.id
+			AND	ic.information_id
 				<foreach collection="ids" item="id" open="in (" close=")"
 					separator=",">
 					#{id}
@@ -452,4 +452,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</update>
+	<select id="queryList" resultMap="information">
+		SELECT * FROM information WHERE find_in_set(#{channelId},
+		information_channel_id )
+		AND `status` =1
+		<if test="top!=null">
+			AND top =#{top}
+			ORDER BY top_time DESC
+		</if>
+		<if test="top==null">
+			ORDER BY create_time DESC
+		</if>
+		LIMIT #{num}
+	</select>
 </mapper>

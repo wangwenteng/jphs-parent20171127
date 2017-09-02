@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwenteng date : 2017-09-01 14:02:33 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.person.dao.PersonGroupDao">
+
+	<sql id="field">
+		PG.id, PG.name, PG.sort, PG.is_default, PG.status,
+		PG.create_time, PG.creator_id, PG.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		PG.id PG_id, PG.name PG_name, PG.sort PG_sort,
+		PG.is_default PG_is_default, PG.status PG_status, PG.create_time
+		PG_create_time, PG.creator_id PG_creator_id, PG.creator_name
+		PG_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		PG.id id, PG.name name, PG.sort sort, PG.is_default
+		isDefault, PG.status status, PG.create_time createTime, PG.creator_id
+		creatorId, PG.creator_name creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PG.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND PG.name=#{name}
+		</if>
+		<if test="sort!=null">
+			AND PG.sort=#{sort}
+		</if>
+		<if test="isDefault!=null">
+			AND PG.is_default=#{isDefault}
+		</if>
+		<if test="status!=null">
+			AND PG.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND PG.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PG.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PG.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PG.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND PG.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sort!=null">
+				AND PG.sort=#{sort}
+			</if>
+			<if test="isDefault!=null">
+				AND PG.is_default=#{isDefault}
+			</if>
+			<if test="status!=null">
+				AND PG.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND PG.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				PG.id=#{id},
+			</if>
+			<if test="name!=null">
+				PG.name=#{name},
+			</if>
+			<if test="sort!=null">
+				PG.sort=#{sort},
+			</if>
+			<if test="isDefault!=null">
+				PG.is_default=#{isDefault},
+			</if>
+			<if test="status!=null">
+				PG.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				PG.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				PG.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				PG.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="personGroup" type="com.jinpaihushi.jphs.person.model.PersonGroup">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isDefault" column="is_default" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="personGroupGlobal" type="com.jinpaihushi.jphs.person.model.PersonGroup">
+		<result property="id" column="PG_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="PG_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="PG_sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isDefault" column="PG_is_default" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="PG_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="PG_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PG_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PG_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.person.model.PersonGroup">
+		INSERT INTO `PERSON_GROUP`(
+		id, name, sort, is_default, status, create_time, creator_id, creator_name
+		)VALUES(
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+		#{isDefault,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `PERSON_GROUP`(
+			id, name, 
+			sort, is_default, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR}, #{item.sort,jdbcType=INTEGER},
+			#{item.isDefault,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE PG FROM `PERSON_GROUP` PG WHERE PG.ID = #{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `PERSON_GROUP` PG
+		SET
+		PG.STATUS = -1
+		WHERE PG.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PERSON_GROUP` PG
+		<include refid="dynamicSet" />
+		WHERE PG.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="personGroup">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_GROUP` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PERSON_GROUP` PG
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="personGroup">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_GROUP` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="personGroup">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_GROUP` PG
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="personGroup">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_GROUP` PG
+		WHERE PG.ID = #{id}
+	</select>
+	<resultMap id="groupNurse" type="com.jinpaihushi.jphs.person.model.PersonGroup">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isDefault" column="is_default" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<collection property="manager"
+			ofType="com.jinpaihushi.jphs.person.model.PersonManager">
+			<result property="id" column="m_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="personGroupId" column="m_person_group_id"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="userId" column="m_user_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="name" column="m_user_name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="isLeader" column="m_is_leader" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="isRead" column="m_is_read" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="status" column="m_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="createTime" column="m_create_time" javaType="Date"
+				jdbcType="TIMESTAMP"></result>
+			<result property="creatorId" column="m_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="m_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="url" column="m_url"
+				javaType="String" jdbcType="VARCHAR"></result>
+		</collection>
+	</resultMap>
+	<sql id="groupNurseQuery">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PG.id LIKE = #{id}
+			</if>
+			<if test="name!=null and name!=''">
+				AND PG.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sort!=null">
+				AND PG.sort=#{sort}
+			</if>
+			<if test="isDefault!=null">
+				AND PG.is_default=#{isDefault}
+			</if>
+			<if test="status!=null">
+				AND PG.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND PG.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			AND (pm.`status` IS NULL or pm.`status`=1)
+		</where>
+	</sql>
+	<select id="listNurse" resultMap="groupNurse">
+		SELECT
+		pg.*, pm.user_id m_user_id,
+		u.`name` m_user_name,
+		pm.`status` m_status,
+		pm.is_leader m_is_leader,
+		(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type =1) m_url
+		FROM
+		`person_group` PG
+		LEFT JOIN person_manager pm ON pm.person_group_id = PG.id
+		LEFT JOIN `user` u ON pm.user_id = u.id
+		<include refid="groupNurseQuery" />
+		<include refid="orderby" />
+	</select>
+</mapper>

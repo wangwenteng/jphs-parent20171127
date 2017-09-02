@@ -374,5 +374,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		 AND coi.user_id = #{userId}
 	</select>
 	
-	 
+	<select id="getListByCoId" resultMap="commodityOrderInfo">
+		SELECT
+			coi.title
+		FROM
+			commodity_order_info coi
+		WHERE coi.commodity_order_id = #{coId};
+	</select>
 </mapper>

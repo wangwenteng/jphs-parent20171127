@@ -20,6 +20,10 @@ public class GoodsDetail extends BaseModel {
     @Length(max = 100, message = "{goods.title.illegal.length}")
     private String title;
 
+    /** 订单模板id */
+    @Length(max = 50, message = "{goods.orderTemplateId.illegal.length}")
+    private String orderTemplateId;
+
     /** 标题 */
     private Integer must;
 
@@ -34,7 +38,10 @@ public class GoodsDetail extends BaseModel {
     private String content;
 
     /** 是否需要服务工具 */
-    private Integer tool;
+    private Integer dzTool;
+
+    /** 是否需要服务工具 */
+    private Integer hlTool;
 
     /** 服务类型，1-标准服务，2-等级服务 */
     private Integer gradeType;
@@ -127,12 +134,20 @@ public class GoodsDetail extends BaseModel {
         this.content = content;
     }
 
-    public Integer getTool() {
-        return tool;
+    public Integer getDzTool() {
+        return dzTool;
     }
 
-    public void setTool(Integer tool) {
-        this.tool = tool;
+    public void setDzTool(Integer dzTool) {
+        this.dzTool = dzTool;
+    }
+
+    public Integer getHlTool() {
+        return hlTool;
+    }
+
+    public void setHlTool(Integer hlTool) {
+        this.hlTool = hlTool;
     }
 
     public Integer getGradeType() {
@@ -253,6 +268,14 @@ public class GoodsDetail extends BaseModel {
 
     public void setTijianHospitalId(String tijianHospitalId) {
         this.tijianHospitalId = tijianHospitalId;
+    }
+
+    public String getOrderTemplateId() {
+        return orderTemplateId;
+    }
+
+    public void setOrderTemplateId(String orderTemplateId) {
+        this.orderTemplateId = orderTemplateId;
     }
 
 }

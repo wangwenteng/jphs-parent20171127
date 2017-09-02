@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -23,6 +24,8 @@ public interface CommodityOrderInfoDao extends BaseDao<CommodityOrderInfo> {
 	Integer getAllNumberByCommoditById(CommodityOrderInfo commodityOrderInfo);
 	
 	Double getMoneyByNurse(Map<String, Object> map);
+
+	List<CommodityOrderInfo> getListByCoId(String coId);
 
 	 
 }

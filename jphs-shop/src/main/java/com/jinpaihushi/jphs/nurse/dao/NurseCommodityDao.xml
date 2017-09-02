@@ -253,7 +253,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    UPDATE `NURSE_COMMODITY` NC
 		SET 
 		NC.browser = browser + 1
-		WHERE <!-- NC.CREATOR_ID = #{creatorId} -->
+		WHERE   NC.CREATOR_ID = #{creatorId}  
 		AND NC.COMMODITY_ID = #{commodityId}
 	</update>
 	
@@ -261,7 +261,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	    UPDATE `NURSE_COMMODITY` NC
 		SET 
 		NC.shareNumber = shareNumber + 1
-		WHERE <!-- NC.CREATOR_ID = #{creatorId} -->
+		WHERE  NC.CREATOR_ID = #{creatorId} 
 		AND NC.COMMODITY_ID = #{commodityId}
 	</update>
 	

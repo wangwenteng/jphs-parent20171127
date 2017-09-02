@@ -27,14 +27,14 @@ public  class AlipaySign {
 			sParaTemp.put("_input_charset", "utf-8");
 			sParaTemp.put("body", "goods");
 			sParaTemp.put("notify_url", "https://s.jinpaihushi.com/alipay/otherNotify.json");
-			sParaTemp.put("out_trade_no", "JP2017189369997");
+			sParaTemp.put("out_trade_no", "JP2017189369457");
 			sParaTemp.put("payment_type", "1");
 			sParaTemp.put("return_url", "site.jinpaihushi.com"); 
 			sParaTemp.put("show_url", "site.jinpaihushi.com");
 			sParaTemp.put("subject", "eason");
 			sParaTemp.put("total_fee","0.01");
 		
-		byte[] s = getAlisign(sParaTemp.toString(),"PRIVATE_KEY","1");
+		byte[] s = getAlisign(sParaTemp.toString(),"PRIVATE_KEY","4");
 		String t = new String(s);
 		System.out.println(JSONObject.fromObject(t));
 		System.out.println(JSONObject.fromObject(t).getJSONObject("result").getString("sign_from"));

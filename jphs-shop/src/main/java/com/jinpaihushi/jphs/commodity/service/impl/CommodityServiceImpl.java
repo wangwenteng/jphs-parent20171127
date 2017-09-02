@@ -17,8 +17,9 @@ import com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityImages;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
-import com.jinpaihushi.jphs.nurse.dao.NurseCommodityDao;
+import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 
 /**
@@ -49,6 +50,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		 ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("columnId", columnId);
+		map.put("nurseId", nurseId);
 		
 		if(sort == ""){
 			sort = "";
@@ -72,21 +74,19 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 
 		List<Commodity> list = commodityDao.getShopList(map);
 		
-		/*if(nurseId != null){
+		 if(nurseId != null){
 			NurseCommodity nurseCommodity = new NurseCommodity();
 			CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
 			nurseCommodity.setCreatorId(nurseId);
 			for(int i = 0;i < list.size();i++ ){
 				commodityOrderInfo.setCommodityId(list.get(i).getId());
 				nurseCommodity.setCommodityId(list.get(i).getId());
-				Integer browser = nurseCommodityDao.getBrowser(nurseCommodity);
-				Integer shareNumber = nurseCommodityDao.getShareNumber(nurseCommodity);
+				 
 				Integer count = commodityOrderInfoDao.getAllNumberByCommoditById(commodityOrderInfo);
-				list.get(i).setBrowser(browser);
-				list.get(i).setShareNumber(shareNumber);
+				 
 				list.get(i).setCount(count);
 			}
-		}*/
+		} 
 		
 		return list;
 	}
@@ -149,7 +149,11 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		for (int i = 0; i < idArr.length; i++) {
 			Car car = carDao.loadById(idArr[i]);
 			String commodityId = car.getCommodityId();
-			Commodity com = commodityDao.getInfo(commodityId);
+			String commodityPriceId = car.getCommodityPriceId();
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("commodityId", commodityId);
+			map.put("commodityPriceId", commodityPriceId);
+			Commodity com = commodityDao.getInfo(map);
 			com.setCount(car.getNumber());
 			com.setPrice(car.getNumber()*com.getOldPrice());
 			list.add(com);

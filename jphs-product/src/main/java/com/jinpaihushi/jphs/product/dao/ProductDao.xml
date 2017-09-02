@@ -318,7 +318,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					<result property="content" column="good_content" javaType="String" jdbcType="VARCHAR"></result>
 					<result property="tijianTypeId" column="good_tijian_type_id" javaType="String" jdbcType="VARCHAR"></result>
 					<result property="tijianHospitalId" column="good_tijian_hospital_id" javaType="String" jdbcType="VARCHAR"></result>
-					<result property="tool" column="good_tool" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="dzTool" column="good_dzTool" javaType="Integer" jdbcType="INTEGER"></result>
+					<result property="hlTool" column="good_hlTool" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="insurance" column="good_insurance" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="type" column="good_type" javaType="Integer" jdbcType="INTEGER"></result>
 					<result property="gradeType" column="good_gradeType" javaType="Integer" jdbcType="INTEGER"></result>
@@ -473,7 +474,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			G.sub_title good_sub_title,
 			G.product_id good_product_id,
 			G.content good_content,
-			G.tool good_tool,
+			G.dz_tool good_dzTool,
+			G.hl_tool good_hlTool,
 			G.insurance good_insurance,
 			G.tijian_type_id good_tijian_type_id,
 			G.tijian_hospital_id good_tijian_hospital_id,
@@ -515,8 +517,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="tijianHospitalId!=null and tijianHospitalId!=''">
 				AND G.tijian_hospital_id LIKE CONCAT('%', #{tijianHospitalId}, '%')
 			</if>
-			<if test="tool!=null">
-				AND G.tool=#{tool}
+			<if test="dzTool!=null">
+				AND G.dzTool=#{dzTool}
+			</if>
+			<if test="hlTool!=null">
+				AND G.hlTool=#{hlTool}
 			</if>
 			<if test="insurance!=null">
 				AND G.insurance=#{insurance}

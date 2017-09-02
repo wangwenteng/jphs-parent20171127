@@ -89,7 +89,7 @@ public class LoginController {
             if (!user.getPassword().equals(MD5.md5crypt(MD5.md5crypt(password)))) {
                 return JSONUtil.toJSONResult(0, "账号密码不匹配。", null);
             }
-            if (tid == 2) {
+            if (tid == 0) {
                 Nurse nurse_s = new Nurse();
                 nurse_s.setCreatorId(user.getId());
                 Nurse n = nurseService.load(nurse_s);
@@ -243,7 +243,7 @@ public class LoginController {
                 img.setStatus(1);
                 img = nurseImagesService.load(img);
             }
-            if (tid == 2) {
+            if (tid == 0) {
                 Nurse nurse_s = new Nurse();
                 nurse_s.setCreatorId(user.getId());
                 Nurse n = nurseService.load(nurse_s);

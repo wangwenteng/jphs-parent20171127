@@ -11,54 +11,65 @@ import com.jinpaihushi.model.BaseModel;
  *
  */
 @SuppressWarnings("serial")
-public class Grade extends BaseModel{
-	private String name;
-	private Integer grade;
-	private String siUrl;
-	private List<GoodsPrice> goodsPrice;
+public class Grade extends BaseModel {
+    private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String goodsName;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Integer grade;
 
-	public Integer getGrade() {
-		return grade;
-	}
+    private String siUrl;
 
-	public void setGrade(Integer grade) {
-		this.grade = grade;
-	}
+    private String productId;
 
-	public List<GoodsPrice> getGoodsPrice() {
-		return goodsPrice;
-	}
+    private List<GoodsPrice> goodsPrice;
 
-	public void setGoodsPrice(List<GoodsPrice> goodsPrice) {
-		this.goodsPrice = goodsPrice;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getSiUrl() {
-		return siUrl;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSiUrl(String siUrl) {
-		this.siUrl = siUrl;
-	}
+    public Integer getGrade() {
+        return grade;
+    }
 
-	
-	public static void main(String[] args) {
-		
-		String a1 = "22,333";
-		String a2 = "22";
-		
-		String[] split = a1.split(",");
-		String[] split2 = a2.split(",");
-		System.out.println(split.length);
-		System.out.println(split2.length);
-	}
-	
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public List<GoodsPrice> getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(List<GoodsPrice> goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+
+    public String getSiUrl() {
+        return siUrl;
+    }
+
+    public void setSiUrl(String siUrl) {
+        this.siUrl = siUrl;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
 }

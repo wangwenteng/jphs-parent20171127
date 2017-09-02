@@ -14,11 +14,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="subTitle" column="sub_title" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="orderTemplateId" column="order_template_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="gradeType" column="grade_type" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="content" column="content" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property="tool" column="tool" javaType="Integer"
+		<result property="dzTool" column="dz_tool" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
@@ -76,7 +80,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		g.title,
 		g.insurance,
 		g.grade_type,
-		g.tool,
+		g.dz_tool,
+		g.hl_tool,
+		g.order_template_id,
 		g.must,
 		g.sub_title,
 		g.is_prove,

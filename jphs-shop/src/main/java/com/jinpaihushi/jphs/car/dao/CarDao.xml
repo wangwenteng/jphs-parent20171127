@@ -253,7 +253,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			ci.source_id = car.commodity_id
 		)
 		LEFT JOIN commodity_price cp ON (
-			cp.commodity_id = car.commodity_id
+			cp.id = car.commodity_price_id
 		)
 		WHERE
 			ci.type = 1

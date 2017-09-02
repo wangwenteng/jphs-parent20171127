@@ -40,6 +40,14 @@ public class OrderPojo extends BaseModel {
     @Length(max = 50, message = "{orderOther.address.illegal.length}")
     private String addressId;
 
+    /** 地址-省 */
+    @Length(max = 50, message = "{orderOther.address.illegal.length}")
+    private String province;
+
+    /** 地址-省 */
+    @Length(max = 50, message = "{orderOther.address.illegal.length}")
+    private String address = "";
+
     /** 备注 */
     @Length(max = 500, message = "{order.remarks.illegal.length}")
     private String remarks;
@@ -62,6 +70,10 @@ public class OrderPojo extends BaseModel {
 
     private String goodsId;
 
+    private String tool;
+
+    private String drug;
+
     // 受保人
     private String name;
 
@@ -70,8 +82,24 @@ public class OrderPojo extends BaseModel {
 
     private String pricePartId;
 
-    /** 图片地址*/
+    /** 图片地址 */
     private String images = "";
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getVoucherUseId() {
         return voucherUseId;
@@ -207,6 +235,22 @@ public class OrderPojo extends BaseModel {
 
     public void setImages(String images) {
         this.images = images;
+    }
+
+    public String getTool() {
+        return tool;
+    }
+
+    public void setTool(String tool) {
+        this.tool = tool;
+    }
+
+    public String getDrug() {
+        return drug;
+    }
+
+    public void setDrug(String drug) {
+        this.drug = drug;
     }
 
 }

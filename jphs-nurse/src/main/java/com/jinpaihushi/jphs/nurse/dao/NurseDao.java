@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 
 /**
@@ -29,6 +30,6 @@ public interface NurseDao extends BaseDao<Nurse> {
 
     List<Map<String, Object>> getBasicInfo(Map<String, Object> map);
 
-    List<Map<String, Object>> getNurseServicePrice(Map<String, Object> query);
+    List<Grade> getNurseServicePrice(Map<String, Object> query);
 
 }

@@ -62,7 +62,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     @Override
     public void updateUserWorkTime() {
         try {
-        	System.out.println("开始更新用户日程信息-------");
+            System.out.println("开始更新用户日程信息-------");
             // 将当前日期的数据删除（如果是每天凌晨执行）
             String yesterday = CycleTimeUtils.getPastDate(1);
             worktimeDao.deleteByCalendar(yesterday);
@@ -109,7 +109,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateAllNurseWorkTime() {
-    	System.out.println("开始更新护士日程信息-------");
+        System.out.println("开始更新护士日程信息-------");
         List<String> list = worktimeDao.getAllNurse();
         String startDay = CycleTimeUtils.getFetureDate(7);
         String endDays = CycleTimeUtils.getFetureDate(13);
@@ -283,44 +283,46 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             userWorktime.setCalendar(sdf.format(date));
             userWorktime.setUserid(userId);
             userWorktime = worktimeDao.load(userWorktime);
-            int hour24 = ca.get(Calendar.HOUR_OF_DAY);
-            switch (hour24) {
-            case 21:
-                userWorktime.setH21(1);
-            case 20:
-                userWorktime.setH20(1);
-            case 19:
-                userWorktime.setH19(1);
-            case 18:
-                userWorktime.setH18(1);
-            case 17:
-                userWorktime.setH17(1);
-            case 16:
-                userWorktime.setH16(1);
-            case 15:
-                userWorktime.setH15(1);
-            case 14:
-                userWorktime.setH14(1);
-            case 13:
-                userWorktime.setH13(1);
-            case 12:
-                userWorktime.setH12(1);
-            case 11:
-                userWorktime.setH11(1);
-            case 10:
-                userWorktime.setH10(1);
-            case 9:
-                userWorktime.setH9(1);
-            default:
-                break;
-            }
-            int i = worktimeDao.update(userWorktime);
-            if (i > 0) {
-                userWorktime = new Worktime();
-                userWorktime.setUserid(userId);
-                userWorktime.setCalendar(sdf.format(date));
-                userWorktime.setOrderby("W.calendar ASC");
-                result = worktimeDao.queryByTime(userWorktime);
+            if (userWorktime != null) {
+                int hour24 = ca.get(Calendar.HOUR_OF_DAY);
+                switch (hour24) {
+                case 21:
+                    userWorktime.setH21(1);
+                case 20:
+                    userWorktime.setH20(1);
+                case 19:
+                    userWorktime.setH19(1);
+                case 18:
+                    userWorktime.setH18(1);
+                case 17:
+                    userWorktime.setH17(1);
+                case 16:
+                    userWorktime.setH16(1);
+                case 15:
+                    userWorktime.setH15(1);
+                case 14:
+                    userWorktime.setH14(1);
+                case 13:
+                    userWorktime.setH13(1);
+                case 12:
+                    userWorktime.setH12(1);
+                case 11:
+                    userWorktime.setH11(1);
+                case 10:
+                    userWorktime.setH10(1);
+                case 9:
+                    userWorktime.setH9(1);
+                default:
+                    break;
+                }
+                int i = worktimeDao.update(userWorktime);
+                if (i > 0) {
+                    userWorktime = new Worktime();
+                    userWorktime.setUserid(userId);
+                    userWorktime.setCalendar(sdf.format(date));
+                    userWorktime.setOrderby("W.calendar ASC");
+                    result = worktimeDao.queryByTime(userWorktime);
+                }
             }
         }
         catch (Exception e) {

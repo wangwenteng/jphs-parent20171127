@@ -61,10 +61,14 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 		return commodityOrderDao;
 	}
 
+	public List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder){
+		return commodityOrderDao.loadS(commodityOrder);
+	}
+	
 	@Override
 	public String createCommodityOrder(String userId, String commodityIds, String userAddressId, String cpIds,
-			String guideId, Integer number, String remark) {
-		 	
+			String guideId, Integer number, String remark,double payPrice) {
+		 	String orderNo = "";
 		try {
 			String[] commodityIdArr = commodityIds.split(",");
 			String[] cpIdArr = cpIds.split(",");
@@ -98,13 +102,16 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 
 			Set<String> keys = map.keySet();
 			Iterator<String> iterator = keys.iterator();
+			// 按时间格式生成orderNo
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			orderNo = sdf.format(date);
+			orderNo = "CM"+orderNo + (Math.random()*9000+1000+"").substring(0, 4);
+			Integer i= 0;
 			while (iterator.hasNext()) {
 				
 				String id = UUID.randomUUID().toString();
-				// 按时间格式生成orderNo
-				Date date = new Date();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-				String orderNo = sdf.format(date);
+				
 				
 				String key = iterator.next();
 				List<String> arrayList = map.get(key);
@@ -112,17 +119,30 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 				User user = userDao.loadById(userId);
 				
 				CommodityOrder comObj = null;
+				
 				for (String comAndCp : arrayList) {
 					String[] comAndCpArr = comAndCp.split(",");
 					
 					Commodity commodity = commodityDao.loadById(comAndCpArr[0]);
-					 
+					 i++;
 					
+					/* Car car = null;
+						if(number ==null){
+							Car carModel = new Car();
+							carModel.setCommodityId(comAndCpArr[0]);
+							carModel.setCommodityPriceId(comAndCpArr[1]);
+							carModel.setStatus(1);
+							carModel.setCreatorId(userId);
+							car = carDao.lookup(carModel);
+						}*/
+						
 					CommodityPrice commodityPrice = commodityPriceDao.loadById(comAndCpArr[1]);
 					CommodityOrder commodityOrder = new CommodityOrder();
 					commodityOrder.setId(id);
-					commodityOrder.setOrderNo(orderNo);
-					commodityOrder.setPayPrice(commodityPrice.getPrice());
+					commodityOrder.setOrderNo(orderNo+"-"+i);
+					System.out.println(commodityPrice.getPrice());
+					System.out.println(number);
+					commodityOrder.setPayPrice(payPrice);
 					commodityOrder.setProtectDay(commodity.getProtectDay());
 					commodityOrder.setVoucherUseId("");
 					// commodityOrder.setVoucherPrice(0);
@@ -138,7 +158,7 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 					commodityOrder.setReceiveName(userAddress.getName());
 					int insert = commodityOrderDao.insert(commodityOrder);
 					Map<String, Object> modelMap = new HashMap<>();
-					modelMap.put("orderNo", orderNo);
+					modelMap.put("orderNo", orderNo+"-"+i);
 					comObj = commodityOrderDao.getObjectByOrder(modelMap);
 
 					if (insert < 0) {
@@ -150,13 +170,16 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 				
 				for (String comAndCp : arrayList) {
 					String[] comAndCpArr = comAndCp.split(",");
-					
-					Car carModel = new Car();
-					carModel.setCommodityId(comAndCpArr[0]);
-					carModel.setCommodityPriceId(comAndCpArr[1]);
-					carModel.setStatus(1);
-					carModel.setCreatorId(userId);
-					Car car = carDao.lookup(carModel);
+					Car car = null;
+					if(number ==null){
+						Car carModel = new Car();
+						carModel.setCommodityId(comAndCpArr[0]);
+						carModel.setCommodityPriceId(comAndCpArr[1]);
+						carModel.setStatus(1);
+						carModel.setCreatorId(userId);
+						car = carDao.lookup(carModel);
+					}
+				
 					Commodity commodity = commodityDao.loadById(comAndCpArr[0]);
 					CommodityPrice commodityPrice = commodityPriceDao.loadById(comAndCpArr[1]);
 					// 创建详细订单
@@ -172,14 +195,19 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 					commodityOrderInfo.setPrice(commodityPrice.getPrice());
 					commodityOrderInfo.setCommodityPriceName(commodityPrice.getName());
 					commodityOrderInfo.setCommodityModel(commodity.getModel());
-					commodityOrderInfo.setNumber(car.getNumber());
+					if(car!= null){
+						commodityOrderInfo.setNumber(car.getNumber());
+					}else{
+						commodityOrderInfo.setNumber(number);
+					}
+					
 					commodityOrderInfo.setRemark(remark);
 					commodityOrderInfo.setStatus(1);
 					commodityOrderInfo.setCreatorId(userId);
 					commodityOrderInfo.setCreatorName(user.getName());
 					commodityOrderInfo.setCreateTime(date);
 					int insert2 = commodityOrderInfoDao.insert(commodityOrderInfo);
-					 
+					 System.out.println(insert2);
 					if (insert2 < 0) {
 						return "创建失败";
 					}  
@@ -189,76 +217,11 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 			}
 			
 
-		/*		for (int i = 0; i < commodityIdArr.length; i++) {
-					String id = UUID.randomUUID().toString();
-					// 按时间格式生成orderNo
-					Date date = new Date();
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-					String orderNo = sdf.format(date);
-
-					User user = userDao.loadById(userId);
-
-					Commodity commodity = commodityDao.loadById(commodityIdArr[i]);
-					 
-					UserAddress userAddress = userAddressDao.loadById(userAddressId);
-					CommodityPrice commodityPrice = commodityPriceDao.loadById(cpIdArr[i]);
-
-					// 创建主订单
-					CommodityOrder commodityOrder = new CommodityOrder();
-					commodityOrder.setId(id);
-					commodityOrder.setOrderNo(orderNo);
-					commodityOrder.setPayPrice(commodityPrice.getPrice());
-					commodityOrder.setProtectDay(commodity.getProtectDay());
-					commodityOrder.setVoucherUseId("");
-					// commodityOrder.setVoucherPrice(0);
-					commodityOrder.setSchedule(0);
-					commodityOrder.setStatus(0);
-					commodityOrder.setAddress(userAddress.getProvince() + "，" + userAddress.getCity() + "，"
-							+ userAddress.getArea() + "，");
-					commodityOrder.setDetailAddress(userAddress.getDetailaddress());
-					commodityOrder.setCreatorId(userId);
-					commodityOrder.setCreatorName(user.getName());
-					commodityOrder.setCreateTime(date);
-
-					int insert = commodityOrderDao.insert(commodityOrder);
-
-					Map<String, Object> modelMap = new HashMap<>();
-					modelMap.put("orderNo", orderNo);
-					CommodityOrder comObj = commodityOrderDao.getObjectByOrder(modelMap);
-
-					if (insert < 0) {
-						return "创建失败";
-					}
-					// 创建详细订单
-					CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
-
-					commodityOrderInfo.setId(UUID.randomUUID().toString());
-					commodityOrderInfo.setCommodityOrderId(comObj.getId());
-					commodityOrderInfo.setCommodityId(commodityIdArr[i]);
-					commodityOrderInfo.setUserId(guideId);
-					commodityOrderInfo.setProfit(commodityPrice.getProfit());
-					commodityOrderInfo.setTitle(commodity.getTitle());
-					commodityOrderInfo.setOldPrice(commodityPrice.getOldPrice());
-					commodityOrderInfo.setPrice(commodityPrice.getPrice());
-					commodityOrderInfo.setCommodityPriceName(commodityPrice.getName());
-					commodityOrderInfo.setCommodityModel(commodity.getModel());
-					commodityOrderInfo.setNumber(number);
-					commodityOrderInfo.setRemark(remark);
-					commodityOrderInfo.setCreatorId(userId);
-					commodityOrderInfo.setCreatorName(user.getName());
-					commodityOrderInfo.setCreateTime(date);
-					int insert2 = commodityOrderInfoDao.insert(commodityOrderInfo);
-					if (insert2 < 0) {
-						return "创建失败";
-					} else {
-						return orderNo;
-					}
-				}
-			*/
 		} catch (Exception e) {
+			orderNo = "";
 			e.printStackTrace();
 		}
-		return "创建失败";
+		return orderNo;
 	}
 
 	@Override
@@ -367,4 +330,10 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 		return result;
 	}
 
+	@Override
+	public List<CommodityOrder> getListByOrderNo(String OrderNo) {
+		 
+		return commodityOrderDao.getListByOrderNo(OrderNo);
+	}
+	
 }

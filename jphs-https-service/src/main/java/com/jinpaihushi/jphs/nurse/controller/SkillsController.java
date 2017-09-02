@@ -28,172 +28,212 @@ import com.jinpaihushi.utils.Util;
 @RequestMapping("/skills")
 public class SkillsController {
 
-	@Autowired
-	SkillsService skillsService;
-	@Autowired
-	NurseSkillsService nurseSkillsService;
-	
-	
-	/**
-	 * my_skills=选择技能
-kf_skills=选择技能
-hs_skills=选择技能
-	 * @param req
-	 * @param resp
-	 * @param authCode
-	 * @param user
-	 * @param nurseType
-	 * @param skills
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(name = "护士设置技能" ,path = "/setNurseSkills")
-	@Transactional
-	public byte[] nurseSkills(HttpServletRequest req, HttpServletResponse resp,String authCode,User user,String my_skills,String kf_skills,String hs_skills){
-		try{
-			String token = "";
-			try {
-				token = req.getHeader("token");
-			} catch (Exception e) {
-			}
-			// 记录日志-debug
-			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("skills.setNurseSkills.json,user="+user.getPhone()+" authCode="+authCode+" token="+token);
-			}
-			// 查空
-			if(StringUtils.isEmpty(user.getId())
-							||StringUtils.isEmpty(user.getPassword())
-								||StringUtils.isEmpty(user.getPhone())/*
-									||StringUtils.isEmpty(token)*/){
-				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
-			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
-				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}
-			NurseSkills nurseSkills = new NurseSkills();
-			nurseSkills.setCreatorId(user.getId());
-			nurseSkills.setStatus(1);
-			List<NurseSkills> nurseSkills_list = nurseSkillsService.list(nurseSkills);
-			if(nurseSkills_list != null){
-				for(int a =0;a<nurseSkills_list.size();a++){
-					nurseSkills.setId(nurseSkills_list.get(a).getId());
-					nurseSkills.setStatus(0);
-					nurseSkillsService.update(nurseSkills);
-				}
-			}
-			
-			String [] skill_arr_my = my_skills.split(",");
-			for(int a=0;a<skill_arr_my.length;a++){
-				if(skill_arr_my[a] != null && !skill_arr_my[a].equals("")){
+    @Autowired
+    SkillsService skillsService;
 
-					NurseSkills nurseNkill = new NurseSkills();
-					nurseNkill.setId(UUID.randomUUID().toString());
-					nurseNkill.setSkillsId(skill_arr_my[a]);
-					nurseNkill.setType(1);
-					nurseNkill.setCreateTime(new Date());
-					try {
-						nurseNkill.setCreatorName(user.getName());
-					} catch (Exception e) {
-					}
-					nurseNkill.setCreatorId(user.getId());
-					nurseNkill.setStatus(1);
-					nurseSkillsService.insert(nurseNkill);
-				}
-			}
-			
-			String [] skill_arr_kf = kf_skills.split(",");
-			for(int a=0;a<skill_arr_kf.length;a++){
-				if(skill_arr_kf[a] != null && !skill_arr_kf[a].equals("")){
+    @Autowired
+    NurseSkillsService nurseSkillsService;
 
-					NurseSkills nurseNkill = new NurseSkills();
-					nurseNkill.setId(UUID.randomUUID().toString());
-					nurseNkill.setSkillsId(skill_arr_kf[a]);
-					nurseNkill.setType(2);
-					nurseNkill.setCreateTime(new Date());
-					try {
-						nurseNkill.setCreatorName(user.getName());
-					} catch (Exception e) {
-					}
-					nurseNkill.setCreatorId(user.getId());
-					nurseNkill.setStatus(1);
-					nurseSkillsService.insert(nurseNkill);
-				}
-			}
-			
-			String [] skill_arr_hs = hs_skills.split(",");
-			for(int a=0;a<skill_arr_hs.length;a++){
-				if(skill_arr_hs[a] != null && !skill_arr_hs[a].equals("")){
+    /**
+     * my_skills=选择技能
+    kf_skills=选择技能
+    hs_skills=选择技能
+     * @param req
+     * @param resp
+     * @param authCode
+     * @param user
+     * @param nurseType
+     * @param skills
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(name = "护士设置技能", path = "/setNurseSkills")
+    @Transactional
+    public byte[] nurseSkills(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
+            String my_skills, String kf_skills, String hs_skills) {
+        try {
+            String token = "";
+            try {
+                token = req.getHeader("token");
+            }
+            catch (Exception e) {
+            }
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("skills.setNurseSkills.json,user=" + user.getPhone() + " authCode=" + authCode
+                        + " token=" + token);
+            }
+            // 查空
+            if (StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.getPassword())
+                    || StringUtils.isEmpty(user.getPhone())/*
+                                                           ||StringUtils.isEmpty(token)*/) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            if (!Common.CheckPerson(user.getPhone(), user.getPassword(), token)) {
+                return JSONUtil.toJSONResult(0, "token验证失败", null);
+            }
+            NurseSkills nurseSkills = new NurseSkills();
+            nurseSkills.setCreatorId(user.getId());
+            nurseSkills.setStatus(1);
+            List<NurseSkills> nurseSkills_list = nurseSkillsService.list(nurseSkills);
+            if (nurseSkills_list != null) {
+                for (int a = 0; a < nurseSkills_list.size(); a++) {
+                    nurseSkillsService.deleteById(nurseSkills_list.get(a).getId());
+                }
+            }
 
-					NurseSkills nurseNkill = new NurseSkills();
-					nurseNkill.setId(UUID.randomUUID().toString());
-					nurseNkill.setSkillsId(skill_arr_hs[a]);
-					nurseNkill.setType(2);
-					nurseNkill.setCreateTime(new Date());
-					try {
-						nurseNkill.setCreatorName(user.getName());
-					} catch (Exception e) {
-					}
-					nurseNkill.setCreatorId(user.getId());
-					nurseNkill.setStatus(1);
-					nurseSkillsService.insert(nurseNkill);
-				}
-			}
-			
-			return JSONUtil.toJSONResult(1, "成功", null);
-		} catch (Exception e) {
-			// 记录日志-fail
-			Util.debugLog.debug("skills.setNurseSkills.json",e);
-		}
-		return null;
-	}
-	
-	@ResponseBody
-	@RequestMapping(name = "获取技能列表", path = "/getskills.json")
-	public byte[] getSkills(HttpServletRequest req, HttpServletResponse resp,String authCode,User user,Integer nurseType){
-		
-		try{
-			String token = "";
-			try {
-				token = req.getHeader("token");
-			} catch (Exception e) {
-				System.out.println(token);
-			}
-			// 记录日志-debug
-			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("skills.getskills.json,authCode=" + authCode);
-			}
-			
-			// 查空
-			if ( StringUtils.isEmpty(authCode)	
-					||StringUtils.isEmpty(user.getId())
-						||StringUtils.isEmpty(user.getPassword())
-							||StringUtils.isEmpty(user.getPhone())/*
-								||StringUtils.isEmpty(token)*/) {
-				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
-			/*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
-				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}*/
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("nurseId", user.getId());
-			map.put("type", nurseType);
-			List<Map<String,Object>> skills_list = skillsService.getNurseSkills(map);
-			/**
-			 * ifnot	护士是否勾选了该技能	0：未勾选
-			 * 							1：已勾选
-			 * nstype	是否擅长还是普通		1：普通
-			 * 							2擅长
-			 * 
-			 * type	该技能属于那种职称	
-			 * 1.护士，2.康复师，3.母婴师
-			 */
-			return JSONUtil.toJSONResult(1, "查询成功", skills_list);
-		} catch (Exception e) {
-			// 记录日志-fail
-			Util.failLog.error("skills.getskills.json,authCode=" + authCode,e);
-		}
-		
-		return null;
-	}
-	
+            if (!StringUtils.isEmpty(my_skills)) {
+                String[] skill_arr_my = my_skills.split(",");
+                for (int a = 0; a < skill_arr_my.length; a++) {
+                    if (skill_arr_my[a] != null && !skill_arr_my[a].equals("")) {
+
+                        NurseSkills nurseNkill = new NurseSkills();
+                        nurseNkill.setId(UUID.randomUUID().toString());
+                        nurseNkill.setSkillsId(skill_arr_my[a]);
+                        nurseNkill.setType(1);
+                        nurseNkill.setCreateTime(new Date());
+                        try {
+                            nurseNkill.setCreatorName(user.getName());
+                        }
+                        catch (Exception e) {
+                        }
+                        nurseNkill.setCreatorId(user.getId());
+                        nurseNkill.setStatus(1);
+                        nurseSkillsService.insert(nurseNkill);
+                    }
+                }
+            }
+
+            if (!StringUtils.isEmpty(kf_skills)) {
+                String[] skill_arr_kf = kf_skills.split(",");
+                for (int a = 0; a < skill_arr_kf.length; a++) {
+                    if (skill_arr_kf[a] != null && !skill_arr_kf[a].equals("")) {
+
+                        NurseSkills nurseNkill = new NurseSkills();
+                        nurseNkill.setId(UUID.randomUUID().toString());
+                        nurseNkill.setSkillsId(skill_arr_kf[a]);
+                        nurseNkill.setType(2);
+                        nurseNkill.setCreateTime(new Date());
+                        try {
+                            nurseNkill.setCreatorName(user.getName());
+                        }
+                        catch (Exception e) {
+                        }
+                        nurseNkill.setCreatorId(user.getId());
+                        nurseNkill.setStatus(1);
+                        nurseSkillsService.insert(nurseNkill);
+                    }
+                }
+            }
+
+            if (!StringUtils.isEmpty(hs_skills)) {
+                String[] skill_arr_hs = hs_skills.split(",");
+                for (int a = 0; a < skill_arr_hs.length; a++) {
+                    if (skill_arr_hs[a] != null && !skill_arr_hs[a].equals("")) {
+
+                        NurseSkills nurseNkill = new NurseSkills();
+                        nurseNkill.setId(UUID.randomUUID().toString());
+                        nurseNkill.setSkillsId(skill_arr_hs[a]);
+                        nurseNkill.setType(2);
+                        nurseNkill.setCreateTime(new Date());
+                        try {
+                            nurseNkill.setCreatorName(user.getName());
+                        }
+                        catch (Exception e) {
+                        }
+                        nurseNkill.setCreatorId(user.getId());
+                        nurseNkill.setStatus(1);
+                        nurseSkillsService.insert(nurseNkill);
+                    }
+                }
+            }
+            return JSONUtil.toJSONResult(1, "成功", null);
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.debugLog.debug("skills.setNurseSkills.json", e);
+        }
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(name = "获取技能列表", path = "/getskills.json")
+    public byte[] getSkills(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
+            Integer nurseType) {
+
+        try {
+            String token = "";
+            try {
+                token = req.getHeader("token");
+            }
+            catch (Exception e) {
+                System.out.println(token);
+            }
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("skills.getskills.json,authCode=" + authCode);
+            }
+
+            // 查空
+            if (StringUtils.isEmpty(authCode) || StringUtils.isEmpty(user.getId())
+                    || StringUtils.isEmpty(user.getPassword())
+                    || StringUtils.isEmpty(user.getPhone())/*
+                                                           ||StringUtils.isEmpty(token)*/) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            /*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+            	return JSONUtil.toJSONResult(0, "token验证失败", null);
+            }*/
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("nurseId", user.getId());
+            map.put("type", nurseType);
+            List<Map<String, Object>> skills_list = skillsService.getNurseSkills(map);
+            /**
+             * ifnot	护士是否勾选了该技能	0：未勾选
+             * 							1：已勾选
+             * skills_type	是否擅长还是普通	1：普通
+             * 							2擅长
+             * 
+             * type	该技能属于那种职称	
+             * 1.护士，2.康复师，3.母婴师
+             */
+            return JSONUtil.toJSONResult(1, "查询成功", skills_list);
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("skills.getskills.json,authCode=" + authCode, e);
+        }
+
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(name = "获取技能列表", path = "/getSkillsDetail.json")
+    public byte[] getSkillsDetail(HttpServletRequest req, HttpServletResponse resp, String authCode, String userId) {
+
+        try {
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("skills.getskills.json,authCode=" + authCode + " userId=" + userId);
+            }
+
+            // 查空
+            if (StringUtils.isEmpty(userId)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            /*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+                return JSONUtil.toJSONResult(0, "token验证失败", null);
+            }*/
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("nurseId", userId);
+            List<Map<String, Object>> skills_list = skillsService.getNurseSkills(map);
+            return JSONUtil.toJSONResult(1, "查询成功", skills_list);
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("skills.getskills.json,authCode=" + authCode + " userId=" + userId, e);
+        }
+
+        return null;
+    }
 }

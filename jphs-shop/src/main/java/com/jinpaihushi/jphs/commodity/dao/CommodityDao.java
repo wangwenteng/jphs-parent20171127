@@ -30,7 +30,7 @@ public interface CommodityDao extends BaseDao<Commodity> {
 
 	Integer updateShopOrderSchedule(CommodityOrder commodityOrder);
 
-	Commodity getInfo(String commodityId);
+	Commodity getInfo(Map<String, Object> map);
 
 	Commodity getOneDetail(Map<String, Object> map);
 

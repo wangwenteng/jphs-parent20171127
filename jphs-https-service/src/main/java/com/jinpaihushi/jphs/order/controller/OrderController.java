@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jinpaihushi.jphs.activity.model.VoucherUse;
 import com.jinpaihushi.jphs.activity.service.VoucherUseService;
 import com.jinpaihushi.jphs.order.model.Order;
@@ -30,7 +32,6 @@ import com.jinpaihushi.pay.wechatpay.WechatPay;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
-import com.jinpaihushi.utils.ObjectVerification;
 import com.jinpaihushi.utils.Util;
 
 import net.sf.json.JSONObject;
@@ -61,7 +62,7 @@ public class OrderController {
                 Util.debugLog.debug("order.createOrder.json");
             }
 
-            if (orderInfo == null ) {
+            if (orderInfo == null /*|| !ObjectVerification.verification(orderInfo)*/) {
                 return JSONUtil.toJSONResult(0, "请核对参数信息", null);
             }
             /*String token = req.getHeader("token");
@@ -104,7 +105,7 @@ public class OrderController {
             if (result == null) {
                 return JSONUtil.toJSONResult(0, "操作失败！", null);
             }
-            return JSONUtil.toJSONResult(1, "操作成功！", result);
+            return JSONUtil.toJSONResult(1, "" + "成功！", result);
         }
         catch (Exception e) {
             Util.failLog.error("order.createOrder.json", e);
@@ -115,7 +116,8 @@ public class OrderController {
     @RequestMapping(path = "/getUserOrder.json", name = "订单列表")
     @ResponseBody
     public byte[] getUserOrder(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,
-            Integer schedule) {
+            Integer schedule, @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
+            @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
@@ -139,7 +141,9 @@ public class OrderController {
             Map<String, Object> query = new HashMap<>();
             query.put("userId", userId);
             query.put("schedule", schedule);
-            List<Map<String, Object>> result = orderService.getUserOrder(query);
+            PageHelper.startPage(p, n);
+            List<Map<String, Object>> list = orderService.getUserOrder(query);
+            PageInfo<Map<String, Object>> result = new PageInfo<Map<String, Object>>(list);
             return JSONUtil.toJSONResult(1, "操作成功！", result);
         }
         catch (
@@ -254,36 +258,59 @@ public class OrderController {
         return null;
     }
 
+    /**
+     * @param hs
+     * @param req
+     * @param resp
+     * @param goodsName 商品名称
+     * @param orderNo 订单编号
+     * @param return_url 支付成功回调地址
+     * @param payParice 支付金额
+     * @param type 支付平台 微信2 支付宝1
+     * @param userId 用户id
+     * @param show_url 商品展示页
+     * @param source 支付类型 
+     * @param serviceType 服务是1 商品是2
+     * @return
+     */
     @RequestMapping(path = "/orderPay.json", name = "订单支付")
     @ResponseBody
     public byte[] orderPay(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsName,
-            String orderNo, String return_url, Double payParice, Integer type, String userId,
-            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source) {
+            String orderNo, String return_url, Double payParice, Integer type, String userId, String show_url,
+            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source, Integer serviceType) {
         try {
             if (type == null || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(userId)
-                    || StringUtils.isEmpty(return_url) || payParice == null) {
+                    || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(show_url) || serviceType == null
+                    || payParice == null) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog
-                        .debug("order.orderPay.json goodsName=" + goodsName + " orderNo=" + orderNo + " return_url="
-                                + return_url + " payParice=" + payParice + " type=" + type + " source=" + source);
+                Util.debugLog.debug("order.orderPay.json goodsName=" + goodsName + " orderNo=" + orderNo
+                        + " return_url=" + return_url + " show_url=" + show_url + " payParice=" + payParice + " type="
+                        + type + " source=" + source + " serviceType=" + serviceType);
             }
             String token = req.getHeader("token");
-            if (StringUtils.isEmpty(token)) {
-                return JSONUtil.toJSONResult(3, "非法请求", null);
-            }
+            //            if (StringUtils.isEmpty(token)) {
+            //                return JSONUtil.toJSONResult(3, "非法请求", null);
+            //            }
             User user = (User) req.getSession().getAttribute("user");
             if (user == null)
                 user = userService.loadById(userId);
-            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
-            if (!flag) {
-                // 身份认证失败,返回错误信息
-                return JSONUtil.toJSONResult(2, "身份认证失败", null);
-            }
+//            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+            boolean flag = true;
+            //            if (!flag) {
+            //                // 身份认证失败,返回错误信息
+            //                return JSONUtil.toJSONResult(2, "身份认证失败", null);
+            //            }
             //判断支付金额
-            flag = orderService.checkPrice(orderNo, payParice);
+            String notify_url = "";
+            if (serviceType == 1) {
+                flag = orderService.checkPrice(orderNo, payParice);
+                notify_url = "https://s.jinpaihushi.com/alipay/otherNotify.json";
+            } else {
+                notify_url = "https://s.jinpaihushi.com/alipay/otherNotifyGoods.json";
+            }
             if (!flag) {
                 return JSONUtil.toJSONResult(2, "非法请求！！", null);
             }
@@ -297,13 +324,14 @@ public class OrderController {
                 JSONObject sParaTemp = new JSONObject();
                 sParaTemp.put("_input_charset", "utf-8");
                 sParaTemp.put("body", goodsName);
-                sParaTemp.put("notify_url", "https://s.jinpaihushi.com/alipay/otherNotify.json");
+                sParaTemp.put("notify_url", notify_url);
                 sParaTemp.put("out_trade_no", orderNo);
                 sParaTemp.put("payment_type", "1");
                 sParaTemp.put("return_url", return_url);
-                sParaTemp.put("show_url", "https://site.jinpaihushi.com");
+                sParaTemp.put("show_url", show_url);
                 sParaTemp.put("subject", goodsName);
                 sParaTemp.put("total_fee", payParice);
+                sParaTemp.put("serviceType", serviceType);
 
                 byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY", source.toString());
                 return s;
@@ -314,10 +342,13 @@ public class OrderController {
                 if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(goodsName) || payParice == null) {
                     return JSONUtil.toJSONResult(0, "参数不能为空", null);
                 }
+                String remoteAddr = req.getRemoteAddr();
+                System.out.println(remoteAddr);
                 JSONObject sParaTemp = new JSONObject();
                 sParaTemp.put("body", goodsName);
                 sParaTemp.put("out_trade_no", orderNo);
                 sParaTemp.put("price", payParice * 100);
+                sParaTemp.put("CREATE_IP", remoteAddr);
 
                 byte[] s = WechatPay.weixin_pay(sParaTemp.toString());
                 return s;

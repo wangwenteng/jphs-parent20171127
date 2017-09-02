@@ -56,6 +56,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<!-- delete -->
+		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>	
 		
 				
 		<dependency>

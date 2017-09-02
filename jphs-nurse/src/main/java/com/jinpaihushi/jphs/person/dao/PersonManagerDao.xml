@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : wangwenteng date : 2017-09-01 15:49:09 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.person.dao.PersonManagerDao">
+
+	<sql id="field">
+		PM.id, PM.person_group_id, PM.user_id, PM.is_leader,
+		PM.is_read, PM.status, PM.create_time, PM.creator_id, PM.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		PM.id PM_id, PM.person_group_id PM_person_group_id,
+		PM.user_id PM_user_id, PM.is_leader PM_is_leader, PM.is_read
+		PM_is_read, PM.status PM_status, PM.create_time PM_create_time,
+		PM.creator_id PM_creator_id, PM.creator_name PM_creator_name
+	</sql>
+
+	<sql id="fieldWithAlias">
+		PM.id id, PM.person_group_id personGroupId, PM.user_id
+		userId, PM.is_leader isLeader, PM.is_read isRead, PM.status status,
+		PM.create_time createTime, PM.creator_id creatorId, PM.creator_name
+		creatorName
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND PM.id=#{id}
+		</if>
+		<if test="personGroupId!=null and personGroupId!=''">
+			AND PM.person_group_id=#{personGroupId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND PM.user_id=#{userId}
+		</if>
+		<if test="isLeader!=null">
+			AND PM.is_leader=#{isLeader}
+		</if>
+		<if test="isRead!=null">
+			AND PM.is_read=#{isRead}
+		</if>
+		<if test="status!=null">
+			AND PM.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND PM.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND PM.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND PM.creator_name=#{creatorName}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND PM.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="personGroupId!=null and personGroupId!=''">
+				AND PM.person_group_id LIKE CONCAT('%', #{personGroupId},
+				'%')
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND PM.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="isLeader!=null">
+				AND PM.is_leader=#{isLeader}
+			</if>
+			<if test="isRead!=null">
+				AND PM.is_read=#{isRead}
+			</if>
+			<if test="status!=null">
+				AND PM.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND PM.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PM.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND PM.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				PM.id=#{id},
+			</if>
+			<if test="personGroupId!=null">
+				PM.person_group_id=#{personGroupId},
+			</if>
+			<if test="userId!=null">
+				PM.user_id=#{userId},
+			</if>
+			<if test="isLeader!=null">
+				PM.is_leader=#{isLeader},
+			</if>
+			<if test="isRead!=null">
+				PM.is_read=#{isRead},
+			</if>
+			<if test="status!=null">
+				PM.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				PM.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				PM.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				PM.creator_name=#{creatorName},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="personManager"
+		type="com.jinpaihushi.jphs.person.model.PersonManager">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="personGroupId" column="person_group_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="isLeader" column="is_leader" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isRead" column="is_read" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<resultMap id="personManagerGlobal"
+		type="com.jinpaihushi.jphs.person.model.PersonManager">
+		<result property="id" column="PM_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="personGroupId" column="PM_person_group_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="PM_user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="isLeader" column="PM_is_leader" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="isRead" column="PM_is_read" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="status" column="PM_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="PM_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="PM_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="PM_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.person.model.PersonManager">
+		INSERT INTO `PERSON_MANAGER`(
+		id, person_group_id,
+		user_id, is_leader, is_read, status, create_time,
+		creator_id,
+		creator_name )VALUES(
+		#{id,jdbcType=VARCHAR},
+		#{personGroupId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+		#{isLeader,jdbcType=INTEGER}, #{isRead,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `PERSON_MANAGER`(
+			id, person_group_id, 
+			user_id, is_leader, 
+			is_read, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.personGroupId,jdbcType=VARCHAR},
+			#{item.userId,jdbcType=VARCHAR}, #{item.isLeader,jdbcType=INTEGER},
+			#{item.isRead,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR} )
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE PM FROM `PERSON_MANAGER` PM WHERE PM.ID =
+		#{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `PERSON_MANAGER` PM
+		SET
+		PM.STATUS = -1
+		WHERE
+		PM.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `PERSON_MANAGER` PM
+		<include refid="dynamicSet" />
+		WHERE PM.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="personManager">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_MANAGER` PM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `PERSON_MANAGER` PM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="personManager">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_MANAGER` PM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="personManager">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_MANAGER` PM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="personManager">
+		SELECT
+		<include refid="field" />
+		FROM `PERSON_MANAGER` PM
+		WHERE PM.ID = #{id}
+	</select>
+	<update id="updateIsRead">
+		UPDATE `PERSON_MANAGER` PM
+		SET
+		PM.is_read =1
+		WHERE
+		PM.user_id =#{userId}
+	</update>
+	<select id="getNurseList" resultType="java.util.HashMap">
+		SELECT
+		pm.user_id,
+		u.`name`,
+		pm.`status`,
+		pm.is_leader,
+		(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type =1) url
+		FROM
+		person_manager pm
+		LEFT JOIN `user` u ON pm.user_id = u.id
+		<where>
+			AND pm.`status`=1
+			<if test="personGroupId!=null and personGroupId!=''">
+				AND pm.person_group_id =#{personGroupId}
+			</if>
+			<if test="search!=null and search!=''">
+				AND (u.id =#{search} OR u.phone =#{search})
+			</if>
+			<if test="userId!=null and userId!=''">
+				pm.creator_id =#{userId}
+			</if>
+		</where>
+	</select>
+	<select id="noticeList" resultMap="personManager">
+		SELECT
+		<include refid="field" />
+		,(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type
+		=1) url,u.sex
+		FROM `PERSON_MANAGER` PM
+		LEFT JOIN `user` u ON u.id = PM.creator_id
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	<select id="searchNurse" resultType="java.util.HashMap">
+		SELECT
+		u.id,
+		u.`name`,
+		u.sex,
+		0 AS `status`,
+		(
+		SELECT
+		url
+		FROM
+		nurse_images
+		WHERE
+		source_id = u.id
+		AND type = 1
+		) url
+		FROM
+		`user` u
+		LEFT JOIN nurse n ON n.creator_id = u.id
+		WHERE
+		u.id NOT IN (
+		SELECT
+		user_id
+		FROM
+		person_manager
+		WHERE status=1 ) AND (u.id =#{searchName} OR u.phone =#{searchName} ) AND n.`status` =1 
+	</select>
+	<update id="updateLeaderStatus">
+		UPDATE `PERSON_MANAGER` PM
+		<include refid="dynamicSet" />
+		<where>
+			<if test="userId!=null and userId!=''">
+				AND PM.user_id = #{userId}
+			</if>
+			<if test="isLeader!=null">
+				AND PM.is_leader=#{isLeader}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND PM.creator_id = #{creatorId}
+			</if>
+		</where>
+	</update>
+</mapper>

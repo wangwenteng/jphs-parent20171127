@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityOrderService extends BaseService<CommodityOrder> {
 
-	String createCommodityOrder(String userId, String commodityId, String userAddressId, String cpId, String guideId,Integer number,String remark);
+	String createCommodityOrder(String userId, String commodityId, String userAddressId, String cpId, String guideId,Integer number,String remark,double payPrice);
 
 	String cancelShopOrder(String orderNo);
 	
@@ -30,4 +31,11 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	
 	Integer deleteOrder(CommodityOrder commodityOrder);
 	
+ 
+	List<CommodityOrder> getListByOrderNo(String OrderNo);
+	
+ 
+	List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder);
+	
+ 
 }

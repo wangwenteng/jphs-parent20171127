@@ -279,7 +279,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         // 查询订单的服务情况
         com.jinpaihushi.jphs.order.model.OrderService orderService = new com.jinpaihushi.jphs.order.model.OrderService();
         orderService.setOrderId(orderId);
-        orderService.setStatus(0);
+        orderService.setStatus(1);
+        orderService.setOrderby("schedule DESC");
         List<com.jinpaihushi.jphs.order.model.OrderService> serviceList = orderServiceDao.list(orderService);
         if (orderDetail != null)
             orderDetail.setOrderServiceList(serviceList);
@@ -291,7 +292,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         Order order = new Order();
         order.setOrderNo(orderNo);
         Order orderDetail = orderDao.getUserOrderDetail(order);
-        if (DoubleUtils.sub(orderDetail.getOrderGoods().getPayPrice() ,  payParice)==0)
+        if (DoubleUtils.sub(orderDetail.getOrderGoods().getPayPrice(), payParice) == 0)
             return true;
         return false;
     }
@@ -320,19 +321,32 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     @Override
     public Map<String, Object> createOrderNew(OrderPojo orderInfo) {
         Map<String, Object> result = new HashMap<>();
-        //获取地址
-        UserAddress userAddress = userAddressDao.loadById(orderInfo.getAddressId());
-        String address = userAddress.getProvince() + "," + userAddress.getCity() + "," + userAddress.getArea();
+        String address = "";
+        String detailAddress = "";
+        if (StringUtils.isNotEmpty(orderInfo.getAddressId())) {
+            //获取地址
+            UserAddress userAddress = userAddressDao.loadById(orderInfo.getAddressId());
+            address = userAddress.getProvince() + "," + userAddress.getCity() + "," + userAddress.getArea();
+            detailAddress = userAddress.getDetailaddress();
+        }
+        if (StringUtils.isNotEmpty(orderInfo.getHospital())) {
+            address = "";
+            detailAddress = "";
+        }
+        if (StringUtils.isNotEmpty(orderInfo.getProvince())) {
+            address = orderInfo.getProvince();
+            detailAddress = orderInfo.getAddress();
+        }
         //详细价格
         PricePart pricePart = pricePartDao.loadById(orderInfo.getPricePartId());
         //获取价格基本信息
         Price price = priceDao.loadById(pricePart.getPriceId());
         Double onePrice = DoubleUtils.div(pricePart.getPrice(), price.getServiceNumber(), 2);
         //用户优惠券的价格
-        VoucherUse voucherUse=null;
-       if(StringUtils.isNotEmpty(orderInfo.getVoucherUseId())){
-    	   voucherUse = voucherUseDao.loadById(orderInfo.getVoucherUseId());
-       }
+        VoucherUse voucherUse = null;
+        if (StringUtils.isNotEmpty(orderInfo.getVoucherUseId())) {
+            voucherUse = voucherUseDao.loadById(orderInfo.getVoucherUseId());
+        }
         //先获取商品的基本信息
         Goods goods = goodsDao.getGoodsByPricePart(orderInfo.getPricePartId());
         Order order = new Order();
@@ -343,8 +357,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             order.setOrderNo(Common.getOrderNumber());
             order.setSchedule(0);
             order.setStatus(1);
-            order.setVoucherPrice(voucherUse==null?0.00:voucherUse.getAmount());
-            order.setVoucherUseId(voucherUse==null?null:orderInfo.getVoucherUseId());
+            order.setVoucherPrice(voucherUse == null ? 0.00 : voucherUse.getAmount());
+            order.setVoucherUseId(voucherUse == null ? null : orderInfo.getVoucherUseId());
             if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
                 order.setAcceptUserId(orderInfo.getExpectorId());
             order.setCreateTime(new Date());
@@ -366,6 +380,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 orderGoods.setStatus(1);
                 orderGoods.setPayPrice(payPrice);
                 orderGoods.setGoodsId(goods.getId());
+                if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
+                    orderGoods.setExpectorId(orderInfo.getExpectorId());
                 orderGoods.setTitle(goods.getTitle());
                 orderGoods.setPrice(pricePart.getPrice());
                 orderGoods.setProfit(pricePart.getProfit());
@@ -378,16 +394,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     orderOther.setCreateTime(new Date());
                     orderOther.setOrderId(order.getId());
                     orderOther.setAddress(address);
-                    orderOther.setDetailAddress(userAddress.getDetailaddress());
+                    orderOther.setDetailAddress(detailAddress);
                     //判断商品的信息中是否需要工具药品
-                    if (goods.getTool() == 1) {
-                        orderOther.setDrug("是");
-                        orderOther.setTool("是");
-                    }
-                    else {
-                        orderOther.setDrug("否");
-                        orderOther.setTool("否");
-                    }
                     i = orderOtherDao.insert(orderOther);
                     //判断是否需要上传就医证明
                     //如果IsProve =3 不需要上传 2需要一张 1 需要三张
@@ -405,7 +413,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     ServiceImages serviceImages = null;
                     if (i > 0) {
                         serviceImages = new ServiceImages();
-                        serviceImages.setUrl(goods.getUrl());
+                        //判断下单客户端 
+                        if (orderInfo.getDevice() == 5) {
+                            serviceImages.setDevice_type(1);
+                        }
+                        else {
+                            serviceImages.setDevice_type(2);
+                        }
+                        serviceImages.setSourceId(goods.getId());
+                        serviceImages = serviceImagesDao.load(serviceImages);
+                        serviceImages.setUrl(serviceImages.getUrl());
                         serviceImages.setId(UUID.randomUUID().toString());
                         serviceImages.setCreatorId(order.getCreatorId());
                         serviceImages.setCreatorName(order.getCreatorName());
@@ -460,6 +477,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                             orderService.setId(UUIDUtils.getId());
                             orderService.setSchedule(0);
                             orderService.setStatus(1);
+                            orderService.setCreateTime(new Date());
+                            if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
+                                orderService.setNurseId(orderInfo.getExpectorId());
                             i = orderServiceDao.insert(orderService);
                         }
                     }

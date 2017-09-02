@@ -561,12 +561,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		o.create_time,
 		og.goods_id
 		goods_id,
+		p.grade_name gradeName,
+		p.title priceTitle,
 		og.title,
 		g.sub_title,
+		IFNULL(u.`name`,'') name,
+		IFNULL(u.phone,'') phone,
 		g.content,
-		si.url,
+		IFNULL(si.url,'') url,
 		og.pay_price,
-		oo.detail_address,
+		IFNULL(oo.address,'') address,
+		IFNULL(oo.detail_address,'') detail_address,
 		og.price,
 		t.pay_type,
 		o. SCHEDULE
@@ -578,14 +583,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN goods g ON og.goods_id = g.id
 		LEFT JOIN
 		service_images si ON o.id = si.source_id
+		LEFT JOIN price_part pp ON og.price_part_id =pp.id
+		LEFT JOIN price p ON pp.price_id = p.id
+		LEFT JOIN user u ON o.accept_user_id = u.id
 		LEFT JOIN `transaction` t ON
 		o.id = t.order_id
 		WHERE
 		o.creator_id = #{userId}
 		AND o.`status` = 1
 		<if test="schedule!=null">
-			AND o.schedule = #{schedule}
+			<choose>
+				<when test="schedule==20">
+					AND (o.schedule = 1 OR o.schedule = 2 )
+				</when>
+				<otherwise>
+					AND o.schedule = #{schedule}
+				</otherwise>
+			</choose>
+			<if test="schedule==0">
+				AND TIMESTAMPDIFF( Hour, o.create_time, NOW()) &lt; 2
+			</if>
 		</if>
+		ORDER BY o.create_time DESC
 	</select>
 	<resultMap id="orderDetail" type="com.jinpaihushi.jphs.order.model.Order">
 		<result property="id" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
@@ -617,6 +636,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<result property="payPrice" column="og_pay_price" javaType="Double" jdbcType="DECIMAL"></result>
 			<result property="profit" column="og_profit" javaType="Double" jdbcType="DECIMAL"></result>
 			<result property="expectorId" column="og_expector_id" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="gradeName" column="gradeName" javaType="String" jdbcType="VARCHAR"></result>
+			<result property="priceTitle" column="priceTitle" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="executorId" column="og_executor_id" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="status" column="og_status" javaType="Integer" jdbcType="INTEGER"></result>
 			<result property="createTime" column="og_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -646,7 +667,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<result property="content" column="g_content" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="tijianTypeId" column="g_tijian_type_id" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="tijianHospitalId" column="g_tijian_hospital_id" javaType="String" jdbcType="VARCHAR"></result>
-			<result property="tool" column="g_tool" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="dzTool" column="g_dzTool" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="hlTool" column="g_hlTool" javaType="Integer" jdbcType="INTEGER"></result>
+			<result property="orderTemplateId" column="g_order_template_id" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="insurance" column="g_insurance" javaType="Integer" jdbcType="INTEGER"></result>
 			<result property="must" column="g_must" javaType="Integer" jdbcType="INTEGER"></result>
 			<result property="type" column="g_type" javaType="Integer" 	jdbcType="INTEGER"></result>
@@ -887,6 +910,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		og.profit AS og_profit,
 		og.expector_id AS
 		og_expector_id,
+		p.grade_name gradeName,
+		p.title priceTitle,
 		og.executor_id AS og_executor_id,
 		og.`status` AS
 		og_status,
@@ -922,7 +947,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		g.tijian_type_id AS g_tijian_type_id,
 		g.tijian_hospital_id AS
 		g_tijian_hospital_id,
-		g.tool AS g_tool,
+		g.dz_tool AS g_dzTool,
+		g.hl_tool AS g_hlTool,
+		g.order_template_id AS g_order_template_id,
 		g.insurance AS g_insurance,
 		g.must AS g_must,
 		g.type AS g_type,
@@ -966,6 +993,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN order_service os ON o.id =os.order_id
 		LEFT JOIN `user`
 		u ON o.accept_user_id = u.id
+		LEFT JOIN price_part pp ON og.price_part_id =pp.id
+		LEFT JOIN price p ON pp.price_id = p.id
 		LEFT JOIN
 		`transaction` t ON t.order_id =
 		o.id
@@ -1111,7 +1140,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				LEFT JOIN `user` u ON o.`creator_id`=u.`id` 
 				LEFT JOIN service_images si ON og.`goods_id`=si.`source_id`
 				WHERE o.status=1
-				 AND o.accept_user_id=#{acceptUserId}
+				<if test="acceptUserId !=null and acceptUserId != ''">
+					 AND o.accept_user_id=#{acceptUserId}
+				</if>
 				 AND si.`device_type`=2 
 				 AND o.id=#{id}
 				 ORDER BY o.appointment_time DESC 

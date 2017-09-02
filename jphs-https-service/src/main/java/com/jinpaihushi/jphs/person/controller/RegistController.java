@@ -151,28 +151,27 @@ public class RegistController {
             account.setStatus(0);
             accountService.insert(account);
 
-            
-                // 1.根据 name，password,type查询完整信息
-                User user_login = userService.findUser(user);
-                if (user_login == null) {
+            // 1.根据 name，password,type查询完整信息
+            User user_login = userService.findUser(user);
+            if (user_login == null) {
 
+                return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
+            }
+            // 设置token
+            String token = "";
+            token = Common.getToken(user_login.getPhone(), user_login.getPassword());// 生成token
+            user_login.setToken(token);
+            if (type_id == 0) {
+                Nurse nurse_s = new Nurse();
+                nurse_s.setCreatorId(user_login.getId());
+                nurse_s = nurseService.load(nurse_s);
+                if (nurse_s == null) {
                     return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
                 }
-                // 设置token
-                String token = "";
-                token = Common.getToken(user_login.getPhone(), user_login.getPassword());// 生成token
-                user_login.setToken(token);
-                if (type_id == 0) {
-	                Nurse nurse_s = new Nurse();
-	                nurse_s.setCreatorId(user_login.getId());
-	                nurse_s = nurseService.load(nurse_s);
-	                if (nurse_s == null) {
-	                    return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
-	                }
-	                user_login.setNurse(new JSONObject().fromObject(nurse_s));
+                user_login.setNurse(new JSONObject().fromObject(nurse_s));
 
-	            } 
-                return JSONUtil.toJSONResult(1, "注册成功！", user_login);
+            }
+            return JSONUtil.toJSONResult(1, "注册成功！", user_login);
 
         }
         catch (Exception e) {
@@ -184,35 +183,18 @@ public class RegistController {
     }
 
     //	http://192.168.7.66:8059/regist/updatePwd.json?phone=手机号&verificattionCode=验证码&password=密码&type=2
-    @RequestMapping(name = "更新密码", path = "/updatePwd")
+    @RequestMapping(name = "更新密码", path = "/updatePwd.json")
     @ResponseBody
     public byte[] updatePwd(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
-            String verificattionCode, String password, String type) {
+            String password, String type) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("regist.updatePwd.json 请求参数-phone" + phone + " verificattionCode"
-                        + verificattionCode + " password" + password);
+                Util.debugLog.debug("regist.updatePwd.json 请求参数-phone" + phone + " password" + password);
             }
             // 查空
-            if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password) || StringUtils.isEmpty(type)
-                    || StringUtils.isEmpty(verificattionCode)) {
+            if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password) || StringUtils.isEmpty(type)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
-            }
-            // 获取该手机号最新一条短信
-            Verification vc = verificationService.getLastRecordByPhone(phone);
-            if (!verificattionCode.equals(vc.getCode())) {
-                // 验证码不对
-                return JSONUtil.toJSONResult(0, "验证码不正确", null);
-            }
-            int t = Common.beforeNow(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vc.getValidTime()));
-            if (t == 0) {
-                // 无效
-                return JSONUtil.toJSONResult(0, "验证码已失效", null);
-            }
-            else if (t == -1) {
-                // 失败
-                return JSONUtil.toJSONResult(0, "判断验证码有效时间失败", null);
             }
             int type_id = 0; // type
             try {
@@ -254,7 +236,7 @@ public class RegistController {
      * @param validateCode
      * @return
      */
-    @RequestMapping(name = "判断验证码是否正确", path = "/ifValidateCode")
+    @RequestMapping(name = "判断验证码是否正确", path = "/ifValidateCode.json")
     @ResponseBody
     public byte[] ifValidateCode(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
             String verificattionCode) {

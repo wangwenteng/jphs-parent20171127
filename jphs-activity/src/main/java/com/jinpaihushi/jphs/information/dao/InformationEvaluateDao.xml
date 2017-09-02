@@ -393,8 +393,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		IE.essence,
 		IE.create_time,
 		IE.creator_id,
-		REPLACE(IE.creator_name,SUBSTR(IE.creator_name,4,4),'****')
-		creator_name,
+		CASE
+		WHEN LENGTH(IE.creator_name + 0) = 11 THEN
+			REPLACE (
+				IE.creator_name,
+				SUBSTR(IE.creator_name, 4, 4),
+				'****'
+			)
+		ELSE
+			IE.creator_name
+		END AS creator_name,
 		IE.`status`
 		FROM
 		information_evaluate IE
@@ -408,11 +416,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					AND IE.information_id =
 					#{informationEvaluate.informationId}
 				</if>
-				AND ( IE.`status` =1
-				<if test="userId!=null and userId!=''">
-					OR(IE.creator_id=#{userId} AND IE.status =0)
-				</if>
-				)
+				AND   IE.`status` !=-1
 			</if>
 		</where>
 		<if test="informationEvaluate.orderby != null">

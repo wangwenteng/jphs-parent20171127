@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.pagehelper.Page;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.jobtitle.model.JobtitleType;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.service.BaseService;
@@ -60,6 +61,6 @@ public interface NurseService extends BaseService<Nurse> {
      * @param query
      * @return
      */
-    List<Map<String, Object>> getNurseServicePrice(Map<String, Object> query);
+    List<Grade> getNurseServicePrice(Map<String, Object> query);
 
 }
