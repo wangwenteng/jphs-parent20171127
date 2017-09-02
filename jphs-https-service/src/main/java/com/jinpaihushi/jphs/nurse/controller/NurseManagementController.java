@@ -240,7 +240,12 @@ public class NurseManagementController {
             manager.setStatus(1);
             list = personManagerService.list(manager);
             if (list.size() > 0) {
-                return JSONUtil.toJSONResult(0, "你已经被别人添加！！", null);
+                if (personManager.getIsLeader() == 0) {
+                    return JSONUtil.toJSONResult(0, "你已经被别人添加！！", null);
+                }
+                else {
+                    return JSONUtil.toJSONResult(0, "该护士已经被别人添加！！", null);
+                }
             }
             //判断被添加者是否已经添加过添加者
             manager = new PersonManager();
