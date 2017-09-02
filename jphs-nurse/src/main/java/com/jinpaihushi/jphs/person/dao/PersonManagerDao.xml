@@ -297,7 +297,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="noticeList" resultMap="personManager">
 		SELECT
-		<include refid="field" />
+		PM.id, PM.person_group_id, PM.user_id, PM.is_leader,
+		PM.is_read, PM.status, PM.create_time, PM.creator_id, u.name creator_name
 		,(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type
 		=1) url,u.sex
 		FROM `PERSON_MANAGER` PM
