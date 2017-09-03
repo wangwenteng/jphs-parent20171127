@@ -12,13 +12,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
+import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
+import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
@@ -29,6 +30,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private OrderGoodsService orderGoodsService;
@@ -192,14 +196,13 @@ public class AccountController {
     @RequestMapping(path = "/balancePayment.json", name = "余额支付")
     @ResponseBody
     public byte[] balancePayment(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String orderId,
-            Double payParice, Integer type, String userId,
-            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source) {
+            Double payParice, String userId, String orderNo) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("account.getTranByMonth.json orderId=" + orderId + " payParice=" + payParice
-                        + "userId=" + userId);
+                Util.debugLog.debug("account.balancePayment.json orderId=" + orderId + " payParice=" + payParice
+                        + "userId=" + userId + " orderNo=" + orderNo);
             }
-            if (StringUtils.isEmpty(userId)) {
+            if (StringUtils.isEmpty(userId) || StringUtils.isEmpty(orderId) || payParice == null) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             //          String token = req.getHeader("token");
@@ -216,9 +219,9 @@ public class AccountController {
             //          }
             OrderGoods orderGoods = new OrderGoods();
             orderGoods.setOrderId(orderId);
-            OrderGoods order = orderGoodsService.load(orderGoods);
+            orderGoods = orderGoodsService.load(orderGoods);
             //判断支付金额跟订单金额
-            if (DoubleUtils.sub(order.getPayPrice(), payParice) != 0) {
+            if (DoubleUtils.sub(orderGoods.getPayPrice(), payParice) != 0) {
 
                 return JSONUtil.toJSONResult(0, "非法请求", null);
             }
@@ -228,12 +231,18 @@ public class AccountController {
             if (DoubleUtils.sub(account.getBalance(), payParice) < 0) {
                 return JSONUtil.toJSONResult(0, "余额不足，请充值后再操作！", null);
             }
-            return JSONUtil.toJSONResult(1, "操作成功！", null);
+            Double balance = DoubleUtils.sub(account.getBalance(), payParice);
+            account.setBalance(balance);
+            accountService.update(account);
+            Order order = new Order();
+            order.setId(orderId);
+            order.setSchedule(1);
+            orderService.update(order);
+            return JSONUtil.toJSONResult(1, "支付成功！", null);
         }
         catch (Exception e) {
-            Util.failLog.error(
-                    "account.getTranByMonth.json orderId=" + orderId + " payParice=" + payParice + "userId=" + userId,
-                    e);
+            Util.failLog.error("account.balancePayment.json orderId=" + orderId + " payParice=" + payParice + "userId="
+                    + userId + " orderNo=" + orderNo, e);
         }
         return null;
     }

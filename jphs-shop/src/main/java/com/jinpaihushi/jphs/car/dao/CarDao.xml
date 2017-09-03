@@ -10,20 +10,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.car.dao.CarDao">
 	
 	<sql id="field">
-		C.id, C.commodity_id, C.commodity_price_id, C.number, 
+		C.id, C.commodity_id, C.commodity_price_id,C.user_id, C.number, 
 		C.status, C.create_time, C.creator_id, C.creator_name
 	</sql>
 
 	<sql id="fieldGlobal">
 		C.id C_id, C.commodity_id C_commodity_id, 
-		C.commodity_price_id C_commodity_price_id, C.number C_number, 
+		C.commodity_price_id C_commodity_price_id,C.user_id C_user_id,,
+		C.number C_number, 
 		C.status C_status, C.create_time C_create_time, 
 		C.creator_id C_creator_id, C.creator_name C_creator_name
 	</sql>
 	
 	<sql id="fieldWithAlias">
 		C.id id, C.commodity_id commodityId, 
-		C.commodity_price_id commodityPriceId, C.number number, 
+		C.commodity_price_id commodityPriceId, C.user_id userId,
+		C.number number, 
 		C.status status, C.create_time createTime, 
 		C.creator_id creatorId, C.creator_name creatorName
 	</sql>
@@ -37,6 +39,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="commodityPriceId!=null and commodityPriceId!=''">
 			AND C.commodity_price_id=#{commodityPriceId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND C.user_id=#{userId}
 		</if>
 		<if test="number!=null">
 			AND C.number=#{number}
@@ -72,6 +77,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="commodityPriceId!=null and commodityPriceId!=''">
 				AND C.commodity_price_id LIKE CONCAT('%', #{commodityPriceId}, '%')
 			</if>
+			<if test="userId!=null and userId!=''">
+				AND C.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
 			<if test="number!=null">
 				AND C.number=#{number}
 			</if>
@@ -101,6 +109,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="commodityPriceId!=null">
 				C.commodity_price_id=#{commodityPriceId}, 
 		   </if>
+		   <if test="userId!=null">
+				C.user_id=#{userId}, 
+		   </if>
            <if test="number!=null">
 				C.number=#{number}, 
 		   </if>
@@ -129,6 +140,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="commodityId" column="commodity_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="commodityPriceId" column="commodity_price_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="number" column="number" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -140,6 +152,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="id" column="C_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="commodityId" column="C_commodity_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="commodityPriceId" column="C_commodity_price_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="C_user_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="number" column="C_number" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="status" column="C_status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="createTime" column="C_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -150,12 +163,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.car.model.Car">
 		INSERT INTO `CAR`(
 			id, commodity_id, 
-			commodity_price_id, number, 
+			commodity_price_id,user_id, number, 
 			status, create_time, 
 			creator_id, creator_name
 		)VALUES(
 			#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, 
-			#{commodityPriceId,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+			#{commodityPriceId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+			#{number,jdbcType=INTEGER}, 
 			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
 			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
 		)
@@ -166,7 +180,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <![CDATA[
         INSERT INTO `CAR`(
 			id, commodity_id, 
-			commodity_price_id, number, 
+			commodity_price_id,user_id, 
+			number, 
 			status, create_time, 
 			creator_id, creator_name
         )]]>
@@ -175,7 +190,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR}, #{item.commodityId,jdbcType=VARCHAR}, 
-			#{item.commodityPriceId,jdbcType=VARCHAR}, #{item.number,jdbcType=INTEGER}, 
+			#{item.commodityPriceId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR},
+			#{item.number,jdbcType=INTEGER}, 
 			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
 			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
 			)

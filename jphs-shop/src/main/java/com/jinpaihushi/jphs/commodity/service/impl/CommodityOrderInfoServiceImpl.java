@@ -39,5 +39,23 @@ public class CommodityOrderInfoServiceImpl extends BaseServiceImpl<CommodityOrde
 		// TODO Auto-generated method stub
 		return commodityOrderInfoDao.getListByCoId(coId);
 	}
+
+	@Override
+	public List<CommodityOrderInfo> judgeProfit(CommodityOrderInfo commodityOrderInfo) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.judgeProfit(commodityOrderInfo);
+	}
+
+	@Override
+	public Integer confimOrder(String comId) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.confimOrder(comId);
+	}
+
+	@Override
+	public List<CommodityOrderInfo> getList(String coId) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.getList(coId);
+	}
 	
 }

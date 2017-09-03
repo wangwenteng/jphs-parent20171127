@@ -228,7 +228,7 @@ public class OrderController {
     @RequestMapping(path = "/cancelOrder.json", name = "取消订单")
     @ResponseBody
     public byte[] cancelOrder(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String orderId,
-            String userId) {
+            String userId, String remark) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
@@ -249,7 +249,9 @@ public class OrderController {
             //                // 身份认证失败,返回错误信息
             //                return JSONUtil.toJSONResult(2, "身份认证失败", null);
             //            }
-            Map<String, Object> result = orderService.cancelOrder(orderId);
+            Map<String, Object> result = orderService.cancelOrder(orderId, remark);
+            //需要发短信
+            //需要极光推送
             return JSONUtil.toJSONResult(1, "操作成功！", result);
         }
         catch (Exception e) {
@@ -297,7 +299,7 @@ public class OrderController {
             User user = (User) req.getSession().getAttribute("user");
             if (user == null)
                 user = userService.loadById(userId);
-//            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+            //            boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
             boolean flag = true;
             //            if (!flag) {
             //                // 身份认证失败,返回错误信息
@@ -308,7 +310,8 @@ public class OrderController {
             if (serviceType == 1) {
                 flag = orderService.checkPrice(orderNo, payParice);
                 notify_url = "https://s.jinpaihushi.com/alipay/otherNotify.json";
-            } else {
+            }
+            else {
                 notify_url = "https://s.jinpaihushi.com/alipay/otherNotifyGoods.json";
             }
             if (!flag) {

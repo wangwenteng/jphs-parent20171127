@@ -1,41 +1,30 @@
 package com.jinpaihushi.jphs.commodity.controller;
 
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
-import com.jinpaihushi.service.BaseService;
+import com.jinpaihushi.jphs.car.service.CarService;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
-import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
+import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
 import com.jinpaihushi.logistics.KdniaoTrackQueryAPI;
-import com.jinpaihushi.jphs.car.service.CarService;
-import com.jinpaihushi.utils.PageInfos;
-import com.github.pagehelper.Page;
-
-import java.text.SimpleDateFormat;
+import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
-import java.util.Date;
 /**
  * 
  * @author yangsong
@@ -61,7 +50,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 	@RequestMapping(name = "创建商品订单", path = "/createShopOrder.json")
 	@ResponseBody
 	public byte[] createShopOrder(
-			String carIds ,String userId,String commodityIds,String userAddressId,String cpIds,String guideId,Integer number,String remark,double payPrice) {
+			String carIds ,String userId,String commodityIds,String userAddressId,String cpIds,String guideId,Integer number,String remark,double payPrice,String code,Integer device,String platformId) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("commodityOrder.createShopOrder.json,userId =" + userId + ",commodityId = "+commodityIds + ",userAddressId = "+userAddressId +",cpId = " + cpIds);
@@ -82,15 +71,18 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			}
 			
 			 
-			String result = commodityOrderService.createCommodityOrder(userId,commodityIds,userAddressId,cpIds,guideId,number,remark,payPrice);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-System.out.println(result);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+			String result = commodityOrderService.createCommodityOrder(userId,commodityIds,userAddressId,cpIds,guideId,number,remark,payPrice,code,device,platformId);
+			
+ 
+			
 			if (result.length() <= 0) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}else{
+			 
+			 
 				if(!(StringUtils.isEmpty(carIds))){
 					boolean b = carService.successOrder(carIds);	
+						 
 					if(!b){
 						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 					}
@@ -100,12 +92,16 @@ System.out.println(result);
 			
 			List<CommodityOrder> list = commodityOrderService.getListByOrderNo(result);
 			String goodsName = "";
+			
 			Set<String> set = new HashSet<String>();
 			for (int i = 0;i<list.size();i++ ){
+				double money = 0.0;
 					List<CommodityOrderInfo> coiList = commodityOrderInfoService.getListByCoId(list.get(i).getId());
 					for (int j = 0;j<coiList.size();j++ ){
-							set.add(coiList.get(j).getTitle());
+						set.add(coiList.get(j).getTitle());
+						money += coiList.get(j).getNumber() * coiList.get(j).getPrice();
 					}
+				 commodityOrderService.toUpdatePayPrice(list.get(i).getId(),money);
 			}
 			 for (String str : set) {  
 				  goodsName += "，"+str;
@@ -281,7 +277,7 @@ System.out.println(result);
 			}
 		*/	 
 			Integer result = commodityOrderService.confimOrder(commodityOrder);
-			
+					result = commodityOrderInfoService.confimOrder(commodityOrder.getId());
 			if (result < 0) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
 			}
@@ -310,6 +306,7 @@ System.out.println(result);
 			}
 		*/	 
 			Integer result = commodityOrderService.deleteOrder(commodityOrder);
+					
 			
 			if (result < 0) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);

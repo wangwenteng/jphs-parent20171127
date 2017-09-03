@@ -27,5 +27,9 @@ public interface CommodityOrderInfoDao extends BaseDao<CommodityOrderInfo> {
 
 	List<CommodityOrderInfo> getListByCoId(String coId);
 
-	 
+	List<CommodityOrderInfo> judgeProfit(CommodityOrderInfo commodityOrderInfo);
+
+	Integer confimOrder(String comId);
+	
+	List<CommodityOrderInfo> getList(String coId);
 }

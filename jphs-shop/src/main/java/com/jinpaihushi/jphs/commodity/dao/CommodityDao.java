@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
 
 /**
@@ -33,5 +34,6 @@ public interface CommodityDao extends BaseDao<Commodity> {
 	Commodity getInfo(Map<String, Object> map);
 
 	Commodity getOneDetail(Map<String, Object> map);
-
+	
+	List<CommodityMap> getList(Map<String, Object> map);
 }

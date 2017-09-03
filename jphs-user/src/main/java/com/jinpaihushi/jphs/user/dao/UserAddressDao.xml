@@ -319,6 +319,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="defaultAddress!=null ">
 		  AND ua.default_address = #{defaultAddress}
 		    </if>
+		   
 		 ORDER BY ua.default_address DESC,ua.create_time DESC
 	</select>
 	

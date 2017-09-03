@@ -233,7 +233,7 @@ public class WechatController {
 								i = 0;
 								// 记录日志-debug
 								if (Util.debugLog.isDebugEnabled()) {
-									Util.debugLog.debug("wechat.notify.json;下单失败！total_fee_ali="+total_fee_wc+";total_fee_ord="+total_fee_ord);
+									Util.debugLog.debug("wechat.notify.json;下单失败！total_fee_wc="+total_fee_wc+";total_fee_ord="+total_fee_ord);
 								}
 							}
 						} catch (Exception e) {

@@ -25,4 +25,6 @@
 	<!-- 短信 -->
 	<dubbo:service ref="verificationService"
 		interface="com.jinpaihushi.jphs.verification.service.VerificationService" />
+	<dubbo:service ref="transactionService"
+		interface="com.jinpaihushi.jphs.transaction.service.TransactionService" />
 </beans>

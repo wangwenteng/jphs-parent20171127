@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.utils.PageInfos;
 import com.github.pagehelper.Page;
@@ -64,10 +65,10 @@ public class CommodityController extends BaseController<Commodity> {
 				p = 1;
 			}
 			PageHelper.startPage(p, 10);
-			List<Commodity> list = commodityService.getCommodityList(columnId,nurseId,sort);
+			List<CommodityMap> list = commodityService.getCommodityList(columnId,nurseId,sort);
 			
 
-			PageInfo<Commodity> page = new PageInfo<>(list);
+			PageInfo<CommodityMap> page = new PageInfo<CommodityMap>(list);
 			if (list == null) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}

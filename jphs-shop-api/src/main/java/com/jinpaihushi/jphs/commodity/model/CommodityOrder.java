@@ -84,6 +84,10 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	
 	private String receiveName;
 	
+	private Integer device;
+	
+	private String platformId;
+	
 	private CommodityImages commodityImages;
 	
 	public CommodityOrder(){}
@@ -347,7 +351,24 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	}
 
 	 
-    @Override
+	
+    public Integer getDevice() {
+		return device;
+	}
+
+	public void setDevice(Integer device) {
+		this.device = device;
+	}
+
+	public String getPlatformId() {
+		return platformId;
+	}
+
+	public void setPlatformId(String platformId) {
+		this.platformId = platformId;
+	}
+
+	@Override
 	public String toString() {
 		return "CommodityOrder [orderNo=" + orderNo + ", payPrice=" + payPrice + ", payTime=" + payTime + ", sendTime="
 				+ sendTime + ", takeTime=" + takeTime + ", confirmTime=" + confirmTime + ", remindTime=" + remindTime

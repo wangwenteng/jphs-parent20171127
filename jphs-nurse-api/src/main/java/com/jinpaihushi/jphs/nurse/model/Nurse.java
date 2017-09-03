@@ -23,6 +23,10 @@ import com.jinpaihushi.model.BaseModel;
 @SuppressWarnings("serial")
 public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse> {
 
+	/** 机构id */
+	@Length(max = 50, message = "{nurse.nurseInstitutionsId.illegal.length}")
+	private String nurseInstitutionsId;
+	
 	/** 身份证 */
 	@Length(max = 50, message = "{nurse.sfz.illegal.length}")
 	private String sfz;
@@ -57,6 +61,9 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 	private String aptitude_negative;//资格证反面
 	private String id_positive;//身份证反面
 	private String id_negative;//身份证反面
+	
+	private Integer serviceNumber;//	服务次数
+	private String nurseJobtitle;//		职称
 	/**
 	 * 护士相关图片字段结束
 	 */
@@ -73,6 +80,19 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 	private String recommendName;
 	private String workYear;
 	
+	/**
+	 * 获取机构id
+	 */
+	public String getNurseInstitutionsId() {
+    	return nurseInstitutionsId;
+    }
+  	
+	/**
+	 * 设置机构id
+	 */
+	public void setNurseInstitutionsId(String nurseInstitutionsId) {
+    	this.nurseInstitutionsId = nurseInstitutionsId;
+    }
 
 	public User getUser() {
 		return user;
@@ -87,6 +107,34 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
 
 	public Nurse(String id) {
 		this.id = id;
+	}
+	
+	/**
+	 * 获取服务次数
+	 */
+	public String getNurseJobtitle() {
+		return nurseJobtitle;
+	}
+
+	/**
+	 * 设置服务次数
+	 */
+	public void setNurseJobtitle(String nurseJobtitle) {
+		this.nurseJobtitle = nurseJobtitle;
+	}
+	
+	/**
+	 * 获取服务次数
+	 */
+	public Integer getServiceNumber() {
+		return serviceNumber;
+	}
+
+	/**
+	 * 设置服务次数
+	 */
+	public void setServiceNumber(Integer serviceNumber) {
+		this.serviceNumber = serviceNumber;
 	}
 
 	/**

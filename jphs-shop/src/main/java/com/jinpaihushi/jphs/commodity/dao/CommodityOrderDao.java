@@ -33,4 +33,6 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	List<CommodityOrder> getListByOrderNo(String orderNo);
 	
 	List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder);
+
+	Integer toUpdatePayPrice(Map<String, Object> map);
 }

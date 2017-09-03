@@ -78,11 +78,14 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	
 	private Integer number;
 	
-	private Integer price;
+	private double price;
 	
-	private Integer oldPrice;
+	private double oldPrice;
+	private double onePrice;
 	
-
+	private String cpId;
+	
+	private String commodityId;
     /** 备注 */
 	@Length(max = 500, message = "{commodity.remark.illegal.length}")
 	private String remark;
@@ -103,14 +106,24 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	
 	private String url;
 	
-	private String cpId;
-
 	private String name;
+	
+	private double profit;
 	
 	public Commodity(){}
 
 	public Commodity(String id){
 		this.id = id;
+	}
+
+	
+	
+	public double getProfit() {
+		return profit;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
 	}
 
 	/**
@@ -426,22 +439,42 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	
 	
 
-	public Integer getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
 	
 	
-	public Integer getOldPrice() {
+	 
+
+	public double getOnePrice() {
+		return onePrice;
+	}
+
+	public void setOnePrice(double onePrice) {
+		this.onePrice = onePrice;
+	}
+
+	public double getOldPrice() {
 		return oldPrice;
 	}
 
-	public void setOldPrice(Integer oldPrice) {
+	public void setOldPrice(double oldPrice) {
 		this.oldPrice = oldPrice;
+	}
+
+	
+	
+	public String getCommodityId() {
+		return commodityId;
+	}
+
+	public void setCommodityId(String commodityId) {
+		this.commodityId = commodityId;
 	}
 
 	public String toString() {

@@ -40,7 +40,6 @@ import com.jinpaihushi.jphs.service.dao.ServiceImagesDao;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.user.dao.UserAddressDao;
 import com.jinpaihushi.jphs.user.dao.UserDao;
-import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.model.UserAddress;
 import com.jinpaihushi.jphs.voucher.dao.VoucherRepertoryDao;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
@@ -499,37 +498,88 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     }
 
     @Override
-    public Map<String, Object> cancelOrder(String orderId) {
+    public Map<String, Object> cancelOrder(String orderId, String remarks) {
         Map<String, Object> result = new HashMap<>();
         //根据订单id查询订单状态
         Order order = orderDao.loadById(orderId);
+        //获取订单商品信息
+        OrderGoods orderGoods = new OrderGoods();
+        orderGoods.setOrderId(orderId);
+        orderGoods = orderGoodsDao.load(orderGoods);
+        Double refundMoney = orderGoods.getPayPrice();
         if (order != null) {
             //判断订单状态
             //如果是未支付状态的可以直接取消
             if (order.getSchedule() == 0) {
                 //判断该订单是否使用优惠券
-                if (StringUtils.isNotEmpty(order.getVoucherUseId())) {
-                    //将优惠券的使用时间以及状态修改为未使用状态
-                    voucherRepertoryDao.updataUseTime(order.getVoucherUseId());
-                    //修改子订单状态
-                    com.jinpaihushi.jphs.order.model.OrderService orderService = new com.jinpaihushi.jphs.order.model.OrderService();
-                    orderService.setOrderId(orderId);
-                    orderService.setCreatorId(order.getCreatorId());
-                    List<com.jinpaihushi.jphs.order.model.OrderService> list = orderServiceDao.list(orderService);
-                    for (com.jinpaihushi.jphs.order.model.OrderService orderService2 : list) {
-                        orderService2.setSchedule(4);
-                        orderServiceDao.update(orderService2);
-                    }
-                }
+                resetVouvher(orderId, order);
+            }
+            if (order.getSchedule() == 0) {
                 //判断该订单是否有护士接单
                 if (StringUtils.isNotEmpty(order.getAcceptUserId())) {
-                    //获取护士的信息
-                    User user = userDao.loadById(order.getAcceptUserId());
-                    result.put("phone", user.getPhone());
+                    //判断护士是否已经出发
+                    com.jinpaihushi.jphs.order.model.OrderService service = new com.jinpaihushi.jphs.order.model.OrderService();
+                    service.setOrderId(orderId);
+                    service.setOrderby("setout_time DESC");
+                    List<com.jinpaihushi.jphs.order.model.OrderService> list = orderServiceDao.list(service);
+                    int count = 0;
+                    for (com.jinpaihushi.jphs.order.model.OrderService orderService : list) {
+                        if (null != orderService.getSetoutTime()) {
+                            count += 1;
+                        }
+                    }
+                    Date serviceTime = order.getAppointmentTime();
+                    //护士已经出发
+                    if (count > 0) {
+                        //判断出发时间到服务时间的小时数
+                        /**
+                         * 距离服务时间
+                         * 2小时内 扣除70%
+                         * 2-4小时 扣50%
+                         * 4 小时以上不扣
+                         */
+                        Long time = (serviceTime.getTime() - new Date().getTime()) / 3600 / 1000;
+                        Double hour = Math.floor(time);
+                        if (hour > 4) {
+                            resetVouvher(orderId, order);
+                        }
+                        if (2 < hour && hour < 4) {
+                            refundMoney = DoubleUtils.mul(refundMoney, 0.5);
+                            resetVouvher(orderId, order);
+                        }
+                        if (2 > hour) {
+                            refundMoney = DoubleUtils.mul(refundMoney, 0.3);
+                            resetVouvher(orderId, order);
+                        }
+                    }
+
+                }
+                else {
+                    //没有接单可以直接取消
+                    resetVouvher(orderId, order);
                 }
             }
         }
         return null;
+    }
+
+    private void resetVouvher(String orderId, Order order) {
+        if (StringUtils.isNotEmpty(order.getVoucherUseId())) {
+            //将优惠券的使用时间以及状态修改为未使用状态
+            voucherRepertoryDao.updataUseTime(order.getVoucherUseId());
+            //修改子订单状态
+            com.jinpaihushi.jphs.order.model.OrderService orderService = new com.jinpaihushi.jphs.order.model.OrderService();
+            orderService.setOrderId(orderId);
+            orderService.setCreatorId(order.getCreatorId());
+            List<com.jinpaihushi.jphs.order.model.OrderService> list = orderServiceDao.list(orderService);
+            for (com.jinpaihushi.jphs.order.model.OrderService orderService2 : list) {
+                orderService2.setSchedule(4);
+                orderServiceDao.update(orderService2);
+            }
+            //修改主订单进度
+            order.setSchedule(6);
+            orderDao.update(order);
+        }
     }
 
 }

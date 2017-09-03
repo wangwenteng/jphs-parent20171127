@@ -32,7 +32,7 @@ public class InformationEvaluate extends BaseModel implements Predicate<Informat
 
     /** 头像 */
 	@Length(max = 255, message = "{informationEvaluate.headPicture.illegal.length}")
-	private String headPicture;
+	private String headPicture="";
 
     /** 评价内容 */
 	@Length(max = 65535, message = "{informationEvaluate.content.illegal.length}")

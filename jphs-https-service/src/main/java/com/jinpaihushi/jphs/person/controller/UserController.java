@@ -138,7 +138,7 @@ public class UserController extends BaseController<User> {
                         break;
                     }
                 }
-                roleName = roleName.substring(0, roleName.length() - 1);
+                if(roleName.length()>0)roleName = roleName.substring(0, roleName.length() - 1);
                 user.getNurse().put("roleName", roleName);
             }
 

@@ -9,7 +9,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.id, CO.order_no, CO.pay_price, CO.pay_time,
 		CO.send_time, CO.take_time, CO.confirm_time, CO.remind_time,
 		CO.protect_day, CO.protect_time, CO.voucher_use_id, CO.voucher_price,
-		CO.schedule, CO.status, CO.create_time, CO.creator_id,
+		CO.schedule, CO.status, 
+		CO.device, CO.platform_id, 
+		CO.create_time, CO.creator_id,
 		CO.creator_name, CO.address, CO.detail_address, CO.phone,
 		CO.receiveName
 	</sql>
@@ -22,6 +24,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.protect_day CO_protect_day, CO.protect_time CO_protect_time,
 		CO.voucher_use_id CO_voucher_use_id, CO.voucher_price CO_voucher_price,
 		CO.schedule CO_schedule, CO.status CO_status,
+		CO.device CO_device,
+		CO.platform_id CO_platform_id, 
 		CO.create_time CO_create_time, CO.creator_id CO_creator_id,
 		CO.creator_name CO_creator_name, CO.address CO_address,
 		CO.detail_address CO_detail_address, CO.phone CO_phone,
@@ -36,6 +40,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		CO.protect_day protectDay, CO.protect_time protectTime,
 		CO.voucher_use_id voucherUseId, CO.voucher_price voucherPrice,
 		CO.schedule schedule, CO.status status,
+		CO.device device,
+		CO.platform_id platformId, 
 		CO.create_time createTime, CO.creator_id creatorId,
 		CO.creator_name creatorName, CO.address address,
 		CO.detail_address detailAddress, CO.phone phone,
@@ -84,6 +90,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="status!=null">
 			AND CO.status=#{status}
+		</if>
+		<if test="device!=null">
+			AND CO.device=#{device}
+		</if>
+		<if test="platformId!=null">
+			AND CO.platform_d=#{platformId}
 		</if>
 		<if test="createTime!=null">
 			AND CO.create_time=#{createTime}
@@ -159,6 +171,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				AND CO.status=#{status}
 			</if>
+			<if test="device!=null">
+				AND CO.device=#{device}
+			</if>
+			<if test="platformId!=null">
+				AND CO.platform_id=#{platformId}
+			</if>
 			<if test="createTime!=null">
 				AND CO.create_time=#{createTime}
 			</if>
@@ -229,6 +247,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="status!=null">
 				CO.status=#{status},
 			</if>
+			<if test="device!=null">
+				CO.device=#{device},
+			</if>
+			<if test="platformId!=null">
+				CO.platform_id=#{platformId},
+			</if>
 			<if test="createTime!=null">
 				CO.create_time=#{createTime},
 			</if>
@@ -288,6 +312,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="device" column="device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="platformId" column="platform_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
@@ -334,6 +362,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="status" column="CO_status" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="device" column="CO_device" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="platformId" column="CO_platform_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="createTime" column="CO_create_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="CO_creator_id" javaType="String"
@@ -467,6 +499,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		protect_day, protect_time,
 		voucher_use_id, voucher_price,
 		schedule, status,
+		device,platform_id,
 		create_time, creator_id,
 		creator_name, address,
 		detail_address, phone,
@@ -479,6 +512,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{protectDay,jdbcType=INTEGER}, #{protectTime,jdbcType=TIMESTAMP},
 		#{voucherUseId,jdbcType=VARCHAR}, #{voucherPrice,jdbcType=DECIMAL},
 		#{schedule,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{device,jdbcType=INTEGER},#{platformId,jdbcType=TIMESTAMP},
 		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
 		#{detailAddress,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
@@ -495,7 +529,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			confirm_time, remind_time, 
 			protect_day, protect_time, 
 			voucher_use_id, voucher_price, 
-			schedule, status, 
+			schedule, status, device,platform_id,
 			create_time, creator_id, 
 			creator_name, address, 
 			detail_address, phone, 
@@ -516,7 +550,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.protectTime,jdbcType=TIMESTAMP},
 			#{item.voucherUseId,jdbcType=VARCHAR},
 			#{item.voucherPrice,jdbcType=DECIMAL},
-			#{item.schedule,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+			#{item.schedule,jdbcType=INTEGER},
+			#{item.status,jdbcType=INTEGER},
+		    #{item.device,jdbcType=INTEGER},
+			#{item.platformId,jdbcType=TIMESTAMP},
 			#{item.createTime,jdbcType=TIMESTAMP},
 			#{item.creatorId,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR},
@@ -557,7 +594,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT
 		<include refid="field" />
 		FROM `COMMODITY_ORDER` CO 
-		where CO.order_no=concat(#{orderNo},'%') AND CO.schedule=#{schedule} AND CO.status=#{status}
+		where CO.order_no like concat(#{orderNo},'%') AND CO.schedule=#{schedule} AND CO.status=#{status}
 	</select>
 
 	<select id="count" resultType="java.lang.Integer">
@@ -716,4 +753,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE
 			co.order_no LIKE CONCAT('%', #{orderNo}, '%')
 	</select>
+	
+		<update id="toUpdatePayPrice">
+		UPDATE commodity_order co
+		SET co.pay_price = #{payPrice}
+		WHERE
+			co.id = #{id}
+	</update>
 </mapper>

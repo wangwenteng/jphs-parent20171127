@@ -17,6 +17,7 @@ import com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityImages;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
@@ -46,7 +47,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 	}
 
 	@Override
-	public List<Commodity> getCommodityList(String columnId,String nurseId,String sort
+	public List<CommodityMap> getCommodityList(String columnId,String nurseId,String sort
 		 ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("columnId", columnId);
@@ -72,17 +73,18 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		
 		 
 
-		List<Commodity> list = commodityDao.getShopList(map);
+		List<CommodityMap> list = commodityDao.getList(map);
 		
 		 if(nurseId != null){
 			NurseCommodity nurseCommodity = new NurseCommodity();
 			CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
 			nurseCommodity.setCreatorId(nurseId);
 			for(int i = 0;i < list.size();i++ ){
-				commodityOrderInfo.setCommodityId(list.get(i).getId());
+				//System.out.println(list.get(i).getCommodityId());
+				commodityOrderInfo.setCommodityId(list.get(i).getCommodityId());
 				nurseCommodity.setCommodityId(list.get(i).getId());
-				 
-				Integer count = commodityOrderInfoDao.getAllNumberByCommoditById(commodityOrderInfo);
+				Integer count = 0;
+				count = commodityOrderInfoDao.getAllNumberByCommoditById(commodityOrderInfo);
 				 
 				list.get(i).setCount(count);
 			}
@@ -155,7 +157,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 			map.put("commodityPriceId", commodityPriceId);
 			Commodity com = commodityDao.getInfo(map);
 			com.setCount(car.getNumber());
-			com.setPrice(car.getNumber()*com.getOldPrice());
+			com.setOldPrice(car.getNumber()*com.getOldPrice());
 			list.add(com);
 		}
 		

@@ -67,7 +67,7 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 	
 	@Override
 	public String createCommodityOrder(String userId, String commodityIds, String userAddressId, String cpIds,
-			String guideId, Integer number, String remark,double payPrice) {
+			String guideId, Integer number, String remark,double payPrice,String code,Integer device,String platformId) {
 		 	String orderNo = "";
 		try {
 			String[] commodityIdArr = commodityIds.split(",");
@@ -145,6 +145,8 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 					commodityOrder.setPayPrice(payPrice);
 					commodityOrder.setProtectDay(commodity.getProtectDay());
 					commodityOrder.setVoucherUseId("");
+					commodityOrder.setDevice(device);
+					commodityOrder.setPlatformId(platformId);
 					// commodityOrder.setVoucherPrice(0);
 					commodityOrder.setSchedule(0);
 					commodityOrder.setStatus(1);
@@ -184,10 +186,11 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 					CommodityPrice commodityPrice = commodityPriceDao.loadById(comAndCpArr[1]);
 					// 创建详细订单
 					CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
-
+					
 					commodityOrderInfo.setId(UUID.randomUUID().toString());
 					commodityOrderInfo.setCommodityOrderId(comObj.getId());
 					commodityOrderInfo.setCommodityId(comAndCpArr[0]);
+					commodityOrderInfo.setCode(code);
 					commodityOrderInfo.setUserId(guideId);
 					commodityOrderInfo.setProfit(commodityPrice.getProfit());
 					commodityOrderInfo.setTitle(commodity.getTitle());
@@ -334,6 +337,15 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 	public List<CommodityOrder> getListByOrderNo(String OrderNo) {
 		 
 		return commodityOrderDao.getListByOrderNo(OrderNo);
+	}
+
+	@Override
+	public Integer toUpdatePayPrice(String id, double payPrice) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", id);
+		map.put("payPrice", payPrice);
+		return commodityOrderDao.toUpdatePayPrice(map);
 	}
 	
 }

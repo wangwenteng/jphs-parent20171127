@@ -43,6 +43,10 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	@Length(max = 50, message = "{nurseJobtitle.hospital.illegal.length}")
 	private String hospital;
 
+    /** 机构ID */
+	@Length(max = 50, message = "{nurseJobtitle.nurseInstitutionsId.illegal.length}")
+	private String nurseInstitutionsId;
+
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.departmentId.illegal.length}")
 	private String departmentId;
@@ -64,6 +68,7 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	
 	private List<NurseImages> nurseImages;
 	
+	private String sculpture;
 	/**	身份证-正面	*/
 	private String sfzz;
 	/**	身份证-反面	*/
@@ -94,6 +99,13 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	}
 	public void setNurseImages(List<NurseImages> nurseImages) {
 		this.nurseImages = nurseImages;
+	}
+	
+	public String getSculpture() {
+		return sculpture;
+	}
+	public void setSculpture(String sculpture) {
+		this.sculpture = sculpture;
 	}
 	
 	public String getSfzz() {
@@ -207,6 +219,20 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
     	this.hospital = hospital;
     }
 
+	/**
+	 * 获取机构ID
+	 */
+	public String getNurseInstitutionsId() {
+    	return nurseInstitutionsId;
+    }
+  	
+	/**
+	 * 设置机构ID
+	 */
+	public void setNurseInstitutionsId(String nurseInstitutionsId) {
+    	this.nurseInstitutionsId = nurseInstitutionsId;
+    }
+	
 	/**
 	 * 获取
 	 */

@@ -2,9 +2,7 @@ package com.jinpaihushi.jphs.commodity.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -52,6 +50,9 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 
     /** 销售价 */
 	private Double price;
+	
+	@Length(max = 65535, message = "{commodityOrderInfo.remark.illegal.length}")
+	private String code;
 
     /** 商品sku */
 	@Length(max = 255, message = "{commodityOrderInfo.commodityPriceName.illegal.length}")
@@ -250,6 +251,15 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String toString() {

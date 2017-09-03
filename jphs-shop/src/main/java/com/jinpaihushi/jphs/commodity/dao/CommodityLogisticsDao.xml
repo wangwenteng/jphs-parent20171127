@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	yangsong
+	date	:	2017-09-02 09:23:34
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityLogisticsDao">
+	
+	<sql id="field">
+		CL.id, CL.commodity_order_id, CL.logistics_id, CL.no, 
+		CL.price, CL.schedule, CL.remark, CL.type, 
+		CL.status, CL.create_time, CL.creator_id, CL.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		CL.id CL_id, CL.commodity_order_id CL_commodity_order_id, 
+		CL.logistics_id CL_logistics_id, CL.no CL_no, 
+		CL.price CL_price, CL.schedule CL_schedule, 
+		CL.remark CL_remark, CL.type CL_type, 
+		CL.status CL_status, CL.create_time CL_create_time, 
+		CL.creator_id CL_creator_id, CL.creator_name CL_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		CL.id id, CL.commodity_order_id commodityOrderId, 
+		CL.logistics_id logisticsId, CL.no no, 
+		CL.price price, CL.schedule schedule, 
+		CL.remark remark, CL.type type, 
+		CL.status status, CL.create_time createTime, 
+		CL.creator_id creatorId, CL.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND CL.id=#{id}
+		</if>
+		<if test="commodityOrderId!=null and commodityOrderId!=''">
+			AND CL.commodity_order_id=#{commodityOrderId}
+		</if>
+		<if test="logisticsId!=null and logisticsId!=''">
+			AND CL.logistics_id=#{logisticsId}
+		</if>
+		<if test="no!=null and no!=''">
+			AND CL.no=#{no}
+		</if>
+		<if test="price!=null">
+			AND CL.price=#{price}
+		</if>
+		<if test="schedule!=null">
+			AND CL.schedule=#{schedule}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND CL.remark=#{remark}
+		</if>
+		<if test="type!=null">
+			AND CL.type=#{type}
+		</if>
+		<if test="status!=null">
+			AND CL.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND CL.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND CL.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND CL.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND CL.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="commodityOrderId!=null and commodityOrderId!=''">
+				AND CL.commodity_order_id LIKE CONCAT('%', #{commodityOrderId}, '%')
+			</if>
+			<if test="logisticsId!=null and logisticsId!=''">
+				AND CL.logistics_id LIKE CONCAT('%', #{logisticsId}, '%')
+			</if>
+			<if test="no!=null and no!=''">
+				AND CL.no LIKE CONCAT('%', #{no}, '%')
+			</if>
+			<if test="price!=null">
+				AND CL.price=#{price}
+			</if>
+			<if test="schedule!=null">
+				AND CL.schedule=#{schedule}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND CL.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="type!=null">
+				AND CL.type=#{type}
+			</if>
+			<if test="status!=null">
+				AND CL.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND CL.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND CL.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND CL.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				CL.id=#{id}, 
+		   </if>
+           <if test="commodityOrderId!=null">
+				CL.commodity_order_id=#{commodityOrderId}, 
+		   </if>
+           <if test="logisticsId!=null">
+				CL.logistics_id=#{logisticsId}, 
+		   </if>
+           <if test="no!=null">
+				CL.no=#{no}, 
+		   </if>
+           <if test="price!=null">
+				CL.price=#{price}, 
+		   </if>
+           <if test="schedule!=null">
+				CL.schedule=#{schedule}, 
+		   </if>
+           <if test="remark!=null">
+				CL.remark=#{remark}, 
+		   </if>
+           <if test="type!=null">
+				CL.type=#{type}, 
+		   </if>
+           <if test="status!=null">
+				CL.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				CL.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				CL.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				CL.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="commodityLogistics" type="com.jinpaihushi.jphs.commodity.model.CommodityLogistics">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="logisticsId" column="logistics_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityLogisticsGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityLogistics">
+		<result property="id" column="CL_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="CL_commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="logisticsId" column="CL_logistics_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="no" column="CL_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="CL_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="CL_schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="CL_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="CL_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="CL_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="CL_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CL_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CL_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityLogistics">
+		INSERT INTO `COMMODITY_LOGISTICS`(
+			id, commodity_order_id, 
+			logistics_id, no, 
+			price, schedule, 
+			remark, type, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR}, 
+			#{logisticsId,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, 
+			#{price,jdbcType=DECIMAL}, #{schedule,jdbcType=INTEGER}, 
+			#{remark,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `COMMODITY_LOGISTICS`(
+			id, commodity_order_id, 
+			logistics_id, no, 
+			price, schedule, 
+			remark, type, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderId,jdbcType=VARCHAR}, 
+			#{item.logisticsId,jdbcType=VARCHAR}, #{item.no,jdbcType=VARCHAR}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.schedule,jdbcType=INTEGER}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE CL FROM `COMMODITY_LOGISTICS` CL WHERE CL.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `COMMODITY_LOGISTICS` CL
+		SET 
+		CL.STATUS = -1
+		WHERE CL.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `COMMODITY_LOGISTICS` CL
+		<include refid="dynamicSet" /> 
+	    WHERE CL.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="commodityLogistics">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_LOGISTICS` CL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `COMMODITY_LOGISTICS` CL
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="commodityLogistics">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_LOGISTICS` CL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="commodityLogistics">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_LOGISTICS` CL
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="commodityLogistics">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_LOGISTICS` CL
+		WHERE CL.ID = #{id}
+	</select>
+	
+</mapper>

@@ -151,7 +151,7 @@ public class AlipaySignController {
 						try {
 							Order order = new Order();
 							order.setOrderNo(no);
-							order.setStatus(0);
+							order.setStatus(1);
 							order.setSchedule(0);
 							Order orders = orderService.load(order);
 							
@@ -164,7 +164,7 @@ public class AlipaySignController {
 								}
 								OrderGoods orderGoods = new OrderGoods();
 								orderGoods.setOrderId(orders.getId());
-								orderGoods.setStatus(0);
+								orderGoods.setStatus(1);
 								OrderGoods orderGoods_ny = orderGoodsService.load(orderGoods);
 								if(orderGoods_ny != null && !"".equals(orderGoods_ny)){
 									// 记录日志-debug
@@ -206,6 +206,7 @@ public class AlipaySignController {
 											transaction.setCreatorName(order.getCreatorName());
 											transaction.setCreateTime(new Date());
 											transaction.setStatus(1);
+											transaction.setType(1);
 											// 记录日志-debug
 											if (Util.debugLog.isDebugEnabled()) {
 												Util.debugLog.debug("alipay.notify.json;transaction="+JSONObject.fromObject(transaction).toString());
@@ -395,6 +396,10 @@ public class AlipaySignController {
 								String userId = "";
 								for(int a = 0;a<commodityOrders_list.size();a++){
 									HashMap<String,Object> map_c = commodityOrders_list.get(a);
+									// 记录日志-debug
+									if (Util.debugLog.isDebugEnabled()) {
+										Util.debugLog.debug("alipay.notify.json;"+a+"-map_c="+JSONObject.fromObject(map_c).toString());
+									}
 									if(a==0){
 										userId = map_c.get("creator_id").toString();
 									}
@@ -422,21 +427,29 @@ public class AlipaySignController {
 									transaction.setPayType(1);
 									transaction.setOutTradeNo(trade_no);
 									transaction.setCreatorId(map_c.get("creator_id").toString());
-									transaction.setCreatorName(map_c.get("creator_Name").toString());
+									transaction.setCreatorName(map_c.get("creator_name").toString());
 									transaction.setCreateTime(new Date());
 									transaction.setStatus(1);
-								}
-								try {
-									User user = new User();
-									user.setId(userId);
-									User orderUser = userService.load(user);
+									transaction.setType(2);
 									// 记录日志-debug
 									if (Util.debugLog.isDebugEnabled()) {
-										Util.debugLog.debug("alipay.notify.json;订单用户信息orderUser="+JSONObject.fromObject(orderUser).toString());
+										Util.debugLog.debug("alipay.notify.json;transaction="+JSONObject.fromObject(transaction).toString());
 									}
-									if(orderUser != null){
-										// 发送验证码
-										DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的您的订单：" + no + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + no + "\"}");
+									transactionService.insert(transaction).length();
+								}
+								try {
+									if(userId != null && !userId.equals("")){
+										User user = new User();
+										user.setId(userId);
+										User orderUser = userService.load(user);
+										if(orderUser != null){
+											// 记录日志-debug
+											if (Util.debugLog.isDebugEnabled()) {
+												Util.debugLog.debug("alipay.notify.json;订单用户信息orderUser="+JSONObject.fromObject(orderUser).toString());
+											}
+											// 发送验证码
+											DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的您的订单：" + no + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + no + "\"}");
+										}
 									}
 									response.getWriter().write("success");
 								} catch (Exception e) {
@@ -453,7 +466,7 @@ public class AlipaySignController {
 						} catch (Exception e) {
 							// 记录日志-debug
 							if (Util.debugLog.isDebugEnabled()) {
-								Util.debugLog.debug("alipay.notify.json;下单失败！异常"+e);
+								Util.debugLog.debug("alipay.notify.json;下单失败！异常"+e,e);
 							}
 						}
 					}else {

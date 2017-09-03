@@ -15,7 +15,7 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityOrderService extends BaseService<CommodityOrder> {
 
-	String createCommodityOrder(String userId, String commodityId, String userAddressId, String cpId, String guideId,Integer number,String remark,double payPrice);
+	String createCommodityOrder(String userId, String commodityId, String userAddressId, String cpId, String guideId,Integer number,String remark,double payPrice,String code,Integer device,String platformId);
 
 	String cancelShopOrder(String orderNo);
 	
@@ -37,5 +37,5 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
  
 	List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder);
 	
- 
+	Integer toUpdatePayPrice(String id,double payPrice);
 }

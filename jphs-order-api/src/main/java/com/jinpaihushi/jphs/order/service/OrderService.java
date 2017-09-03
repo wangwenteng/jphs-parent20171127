@@ -68,7 +68,8 @@ public interface OrderService extends BaseService<Order> {
     /**
      * 取消订单
      * @param orderId
+     * @param remark 
      * @return
      */
-    Map<String, Object> cancelOrder(String orderId);
+    Map<String, Object> cancelOrder(String orderId, String remark);
 }

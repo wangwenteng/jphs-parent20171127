@@ -6,7 +6,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseDao">
 
 	<sql id="field">
-		N.id,N.sfz, N.work_years,
+		N.id, N.nurse_institutions_id,N.sfz, N.work_years,
 		N.details,
 		N.hospital,
 		N.department_id,
@@ -16,7 +16,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<sql id="fieldGlobal">
-		N.id N_id,
+		N.id N_id,N.nurse_institutions_id N_nurse_institutions_id, 
 		N.sfz N_sfz, N.work_years
 		N_work_years,
 		N.details
@@ -32,7 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<sql id="fieldWithAlias">
-		N.id id,
+		N.id id,N.nurse_institutions_id nurseInstitutionsId, 
 		N.sfz sfz, N.work_years workYears,
 		N.details
 		details,
@@ -50,6 +50,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND N.id=#{id}
+		</if>
+		<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+			AND N.nurse_institutions_id=#{nurseInstitutionsId}
 		</if>
 		<if test="sfz!=null and sfz!=''">
 			AND N.sfz=#{sfz}
@@ -94,6 +97,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="id!=null and id!=''">
 				AND N.id LIKE CONCAT('%', #{id}, '%')
 			</if>
+			<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+				AND N.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
+			</if>
 			<if test="sfz!=null and sfz!=''">
 				AND N.sfz LIKE CONCAT('%', #{sfz}, '%')
 			</if>
@@ -133,6 +139,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="id!=null">
 				N.id=#{id},
 			</if>
+			<if test="nurseInstitutionsId!=null">
+				N.nurse_institutions_id=#{nurseInstitutionsId}, 
+		  	</if>
 			<if test="sfz!=null">
 				N.sfz=#{sfz},
 			</if>
@@ -174,6 +183,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="nurse" type="com.jinpaihushi.jphs.nurse.model.Nurse">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="workYears" column="work_years" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
@@ -196,6 +206,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<resultMap id="nurseDetail" type="com.jinpaihushi.jphs.nurse.model.Nurse">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="workYears" column="work_years" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
@@ -268,6 +279,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="id" column="N_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="sfz" column="N_sfz" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="N_nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="workYears" column="N_work_years" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="details" column="N_details" javaType="String"
@@ -290,7 +302,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
 		INSERT INTO `NURSE`(
-		id,
+		id,nurse_institutions_id, 
 		sfz, work_years,
 		details,
 		hospital, department_id,
@@ -300,7 +312,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		status
 		)VALUES(
 		#{id,jdbcType=VARCHAR},
-
+		#{nurseInstitutionsId,jdbcType=VARCHAR}, 
 		#{sfz,jdbcType=VARCHAR},
 		#{workYears,jdbcType=TIMESTAMP},
 		#{details,jdbcType=VARCHAR},
@@ -316,7 +328,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `NURSE`(
-			id,  
+			id, nurse_institutions_id, 
 			sfz, work_years, 
 			 details, 
 			hospital, department_id, 
@@ -329,6 +341,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR},
+			#{item.nurseInstitutionsId,jdbcType=VARCHAR}, 
 			#{item.sfz,jdbcType=VARCHAR},
 			#{item.workYears,jdbcType=TIMESTAMP},
 			#{item.details,jdbcType=VARCHAR},
@@ -386,12 +399,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `NURSE` N
 		WHERE N.ID = #{id}
 	</select>
-	<select id="getNurseDetail" resultMap="nurseDetail"
-		parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
+	<select id="getNurseDetail" resultMap="nurseDetail" parameterType="com.jinpaihushi.jphs.nurse.model.Nurse">
 		SELECT DISTINCT
 		u.type,
 		u.phone user_phone,
 		n.id,
+		n.nurse_institutions_id,
 		n.creator_id,
 		u.id
 		user_id,
@@ -488,6 +501,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				<if test="nurse.id!=null and nurse.id!=''">
 					AND N.id = #{nurse.id}
 				</if>
+				<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+					AND N.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
+				</if>
 				<if test="nurse.type!=null">
 					AND N.type=#{nurse.type}
 				</if>
@@ -548,6 +564,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<where>
 			<if test="id!=null and id!=''">
 				AND N.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+				AND N.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
 			</if>
 			<if test="type!=null">
 				AND N.type=#{type}

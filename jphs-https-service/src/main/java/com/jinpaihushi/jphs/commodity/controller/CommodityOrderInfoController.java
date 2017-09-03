@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.commodity.controller;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,4 +101,58 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 		return null;
 	}
 
+
+	
+	@RequestMapping(name = "提交退货商品原因", path = "/judgeProfit.json")
+	@ResponseBody
+	public byte[] judgeProfit(CommodityOrderInfo coi) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.order.info.judgeProfit.json,coId="+coi.getUserId() );
+			}
+
+			if (StringUtils.isEmpty(coi.getUserId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			
+			
+			List<CommodityOrderInfo> coiList = commodityOrderInfoService.judgeProfit(coi);
+			if (coiList.size() <= 0) {
+				// 跳转到错误页
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
+			}
+			 
+			return JSONUtil.toJSONResult(1, "操作成功！", coiList);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.order.info.judgeProfit.json,coId="+coi.getUserId(),e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "获取订单商品", path = "/getCom.json")
+	@ResponseBody
+	public byte[] getCom(CommodityOrderInfo coi) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.order.info.getCom.json,coId="+coi.getCommodityOrderId() );
+			}
+
+			if (StringUtils.isEmpty(coi.getCommodityOrderId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			
+			
+			List<CommodityOrderInfo> coiList = commodityOrderInfoService.getList(coi.getCommodityOrderId());
+			if (coiList.size() <= 0) {
+				// 跳转到错误页
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
+			}
+			 
+			return JSONUtil.toJSONResult(1, "操作成功！", coiList);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.order.info.getCom.json,coId="+coi.getCommodityOrderId(),e);
+		}
+		return null;
+	}
 }

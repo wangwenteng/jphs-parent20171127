@@ -312,6 +312,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		u.`name`,
 		u.sex,
 		0 AS `status`,
+		u.address,
+	IFNULL(n.hospital,'') hospital,
 		(
 		SELECT
 		url

@@ -25,4 +25,7 @@
 	<!-- 短信 -->
 	<dubbo:reference id="verificationService" interface="com.jinpaihushi.jphs.verification.service.VerificationService"
 		timeout="${dubbo.timeout}" check="false" />
+		<!--交易明细  -->
+	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
+		timeout="${dubbo.timeout}" check="false" />
 </beans>

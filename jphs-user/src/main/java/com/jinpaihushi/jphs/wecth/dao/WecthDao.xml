@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-03 09:50:11
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.wecth.dao.WecthDao">
+	
+	<sql id="field">
+		W.id, W.type, W.appid, W.access_token, 
+		W.ticket, W.expires_in, W.errcode, W.errmsg, 
+		W.create_time, W.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		W.id W_id, W.type W_type, 
+		W.appid W_appid, W.access_token W_access_token, 
+		W.ticket W_ticket, W.expires_in W_expires_in, 
+		W.errcode W_errcode, W.errmsg W_errmsg, 
+		W.create_time W_create_time, W.status W_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		W.id id, W.type type, 
+		W.appid appid, W.access_token accessToken, 
+		W.ticket ticket, W.expires_in expiresIn, 
+		W.errcode errcode, W.errmsg errmsg, 
+		W.create_time createTime, W.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND W.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND W.type=#{type}
+		</if>
+		<if test="appid!=null and appid!=''">
+			AND W.appid=#{appid}
+		</if>
+		<if test="accessToken!=null and accessToken!=''">
+			AND W.access_token=#{accessToken}
+		</if>
+		<if test="ticket!=null and ticket!=''">
+			AND W.ticket=#{ticket}
+		</if>
+		<if test="expiresIn!=null and expiresIn!=''">
+			AND W.expires_in=#{expiresIn}
+		</if>
+		<if test="errcode!=null and errcode!=''">
+			AND W.errcode=#{errcode}
+		</if>
+		<if test="errmsg!=null and errmsg!=''">
+			AND W.errmsg=#{errmsg}
+		</if>
+		<if test="createTime!=null">
+			AND W.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND W.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND W.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND W.type=#{type}
+			</if>
+			<if test="appid!=null and appid!=''">
+				AND W.appid LIKE CONCAT('%', #{appid}, '%')
+			</if>
+			<if test="accessToken!=null and accessToken!=''">
+				AND W.access_token LIKE CONCAT('%', #{accessToken}, '%')
+			</if>
+			<if test="ticket!=null and ticket!=''">
+				AND W.ticket LIKE CONCAT('%', #{ticket}, '%')
+			</if>
+			<if test="expiresIn!=null and expiresIn!=''">
+				AND W.expires_in LIKE CONCAT('%', #{expiresIn}, '%')
+			</if>
+			<if test="errcode!=null and errcode!=''">
+				AND W.errcode LIKE CONCAT('%', #{errcode}, '%')
+			</if>
+			<if test="errmsg!=null and errmsg!=''">
+				AND W.errmsg LIKE CONCAT('%', #{errmsg}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND W.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND W.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				W.id=#{id}, 
+		   </if>
+           <if test="type!=null">
+				W.type=#{type}, 
+		   </if>
+           <if test="appid!=null">
+				W.appid=#{appid}, 
+		   </if>
+           <if test="accessToken!=null">
+				W.access_token=#{accessToken}, 
+		   </if>
+           <if test="ticket!=null">
+				W.ticket=#{ticket}, 
+		   </if>
+           <if test="expiresIn!=null">
+				W.expires_in=#{expiresIn}, 
+		   </if>
+           <if test="errcode!=null">
+				W.errcode=#{errcode}, 
+		   </if>
+           <if test="errmsg!=null">
+				W.errmsg=#{errmsg}, 
+		   </if>
+           <if test="createTime!=null">
+				W.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				W.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="wecth" type="com.jinpaihushi.jphs.wecth.model.Wecth">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="appid" column="appid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="accessToken" column="access_token" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="ticket" column="ticket" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expiresIn" column="expires_in" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errcode" column="errcode" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errmsg" column="errmsg" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="wecthGlobal" type="com.jinpaihushi.jphs.wecth.model.Wecth">
+		<result property="id" column="W_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="W_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="appid" column="W_appid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="accessToken" column="W_access_token" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="ticket" column="W_ticket" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="expiresIn" column="W_expires_in" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errcode" column="W_errcode" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errmsg" column="W_errmsg" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="W_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="W_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.wecth.model.Wecth">
+		INSERT INTO `WECTH`(
+			id, type, 
+			appid, access_token, 
+			ticket, expires_in, 
+			errcode, errmsg, 
+			create_time, status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{appid,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
+			#{ticket,jdbcType=VARCHAR}, #{expiresIn,jdbcType=VARCHAR}, 
+			#{errcode,jdbcType=VARCHAR}, #{errmsg,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `WECTH`(
+			id, type, 
+			appid, access_token, 
+			ticket, expires_in, 
+			errcode, errmsg, 
+			create_time, status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.appid,jdbcType=VARCHAR}, #{item.accessToken,jdbcType=VARCHAR}, 
+			#{item.ticket,jdbcType=VARCHAR}, #{item.expiresIn,jdbcType=VARCHAR}, 
+			#{item.errcode,jdbcType=VARCHAR}, #{item.errmsg,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE W FROM `WECTH` W WHERE W.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `WECTH` W
+		SET 
+		W.STATUS = -1
+		WHERE W.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `WECTH` W
+		<include refid="dynamicSet" /> 
+	    WHERE W.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="wecth">
+		SELECT <include refid="field"/>
+		FROM `WECTH` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `WECTH` W
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="wecth">
+		SELECT <include refid="field"/>
+		FROM `WECTH` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="wecth">
+		SELECT <include refid="field"/>
+		FROM `WECTH` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="wecth">
+		SELECT <include refid="field"/>
+		FROM `WECTH` W
+		WHERE W.ID = #{id}
+	</select>
+	
+</mapper>

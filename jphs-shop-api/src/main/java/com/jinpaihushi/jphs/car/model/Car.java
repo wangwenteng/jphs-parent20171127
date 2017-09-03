@@ -2,9 +2,7 @@ package com.jinpaihushi.jphs.car.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -38,6 +36,8 @@ public class Car extends BaseModel implements Predicate<Car>,
 
     /** 数量 */
 	private Integer number;
+	
+	private String userId;
 
 	public Car(){}
 
@@ -86,8 +86,18 @@ public class Car extends BaseModel implements Predicate<Car>,
 	public void setNumber(Integer number) {
     	this.number = number;
     }
+	
+	
 
-    public String toString() {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("Car{").
 			append("id=").append(id).
 			append(",commodityId=").append(commodityId).
