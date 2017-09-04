@@ -12,8 +12,6 @@
 		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="tijianHealthLogService" interface="com.jinpaihushi.jphs.tijian.service.TijianHealthLogService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
-		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="insuranceService" interface="com.jinpaihushi.jphs.insurance.service.InsuranceService"
 		timeout="${dubbo.timeout}" check="false" />
 	<dubbo:reference id="informationService" interface="com.jinpaihushi.jphs.information.service.InformationService" 

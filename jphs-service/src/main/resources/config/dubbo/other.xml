@@ -17,8 +17,6 @@
 	<dubbo:service ref="healthLogService"
 		interface="com.jinpaihushi.jphs.health.service.HealthLogService" />
 
-	<dubbo:service ref="transactionService"
-		interface="com.jinpaihushi.jphs.transaction.service.TransactionService" />
 	<dubbo:service ref="insuranceService"
 		interface="com.jinpaihushi.jphs.insurance.service.InsuranceService" />
 

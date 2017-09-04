@@ -56,6 +56,11 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
 			<version>2.5.3</version>
