@@ -25,7 +25,6 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
-import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -44,7 +43,6 @@ public class NurseIndexController extends BaseController<Nurse> {
 	@Autowired
 	private InformationService informationService;
 	
-	
 	@Override
 	protected BaseService<Nurse> getService() {
 	    // TODO Auto-generated method stub
@@ -61,7 +59,7 @@ public class NurseIndexController extends BaseController<Nurse> {
 	 */
 	@ResponseBody
 	@RequestMapping(name="护士首页",path="/spearorder.json")
-	public byte[] spearorder( HttpServletRequest req, HttpServletResponse resp,String columnId, String authCode,User user,Integer p,Integer n){
+	public byte[] spearorder( HttpServletRequest req, HttpServletResponse resp,String authCode,User user,Integer p,Integer n){
 
 		try{
 			String token = "";
@@ -71,19 +69,18 @@ public class NurseIndexController extends BaseController<Nurse> {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseindex.neworder.json,columnId"+columnId+" user="+user.getPhone()+" authCode="+authCode+" token="+token);
+				Util.debugLog.debug("nurseindex.neworder.json,user="+user.getPhone()+" authCode="+authCode+" token="+token);
 			}
 			// 查空
-			if(StringUtils.isEmpty(columnId)
-					||StringUtils.isEmpty(user.getId())
+			if(StringUtils.isEmpty(user.getId())
 						||StringUtils.isEmpty(user.getPassword())
 							||StringUtils.isEmpty(user.getPhone())/*
 								||StringUtils.isEmpty(token)*/){
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
+			}/*
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}
+			}*/
 
 			//	抢单列表
 			Map<String , Object> q_o_map = new HashMap<String , Object>();
@@ -111,7 +108,7 @@ public class NurseIndexController extends BaseController<Nurse> {
 	 */
 	@ResponseBody
 	@RequestMapping(name="护士首页",path="/neworder.json")
-	public byte[] neworder( HttpServletRequest req, HttpServletResponse resp,String columnId, String authCode,User user){
+	public byte[] neworder( HttpServletRequest req, HttpServletResponse resp,String authCode,User user){
 
 		try{
 			String token = "";
@@ -121,19 +118,18 @@ public class NurseIndexController extends BaseController<Nurse> {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseindex.neworder.json,columnId"+columnId+" user="+user.getPhone()+" authCode="+authCode+" token="+token);
+				Util.debugLog.debug("nurseindex.neworder.json, user="+user.getPhone()+" authCode="+authCode+" token="+token);
 			}
 			// 查空
-			if(StringUtils.isEmpty(columnId)
-					||StringUtils.isEmpty(user.getId())
+			if(StringUtils.isEmpty(user.getId())
 						||StringUtils.isEmpty(user.getPassword())
 							||StringUtils.isEmpty(user.getPhone())/*
 								||StringUtils.isEmpty(token)*/){
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
+			}/*
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}
+			}*/
 			//	最新待服务订单
 			Map<String , Object> o_map = new HashMap<String , Object>();
 			o_map.put("acceptUserId", user.getId());

@@ -22,6 +22,8 @@ import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.order.service.OrderServiceService;
+import com.jinpaihushi.jphs.service.model.ServiceImages;
+import com.jinpaihushi.jphs.service.service.ServiceImagesService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.utils.Common;
@@ -42,6 +44,8 @@ public class NurseOrderController {
 	private OrderService orderService;
 	@Autowired
 	private OrderServiceService orderServiceService;
+	@Autowired
+	private ServiceImagesService serviceImagesService;
 	
 	@ResponseBody
 	@RequestMapping(name="完成服务",path="/fulfilService")
@@ -314,6 +318,13 @@ public class NurseOrderController {
 			if(order == null){
 				return JSONUtil.toJSONResult(0, "查询详情失败", null);
 			}
+			ServiceImages serviceImages = new ServiceImages();
+			serviceImages.setSourceId(order.getId());
+			List<ServiceImages> serviceImagesLists = serviceImagesService.list(serviceImages);
+			if(serviceImagesLists != null){
+				order.setServiceOrderImages(serviceImagesLists);
+			}
+			
 			return JSONUtil.toJSONResult(1, "查询成功", order);
 		} catch (Exception e) {
 			// 记录日志-fail

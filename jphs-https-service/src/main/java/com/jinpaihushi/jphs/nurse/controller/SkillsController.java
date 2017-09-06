@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.nurse.model.NurseSkills;
 import com.jinpaihushi.jphs.nurse.service.NurseSkillsService;
-import com.jinpaihushi.jphs.skills.model.Skills;
 import com.jinpaihushi.jphs.skills.service.SkillsService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.utils.Common;
@@ -46,7 +45,7 @@ public class SkillsController {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseindex.neworder.json,user="+user.getPhone()+" authCode="+authCode+" token="+token);
+				Util.debugLog.debug("skills.setNurseSkills.json,user="+user.getPhone()+" authCode="+authCode+" token="+token);
 			}
 			// 查空
 			if(StringUtils.isEmpty(skills)
@@ -94,7 +93,7 @@ public class SkillsController {
 			return JSONUtil.toJSONResult(1, "成功", null);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.debugLog.debug("nurseindex.neworder.json",e);
+			Util.debugLog.debug("skills.setNurseSkills.json",e);
 		}
 		return null;
 	}
@@ -108,6 +107,7 @@ public class SkillsController {
 			try {
 				token = req.getHeader("token");
 			} catch (Exception e) {
+				System.out.println(token);
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
@@ -129,7 +129,15 @@ public class SkillsController {
 			map.put("nurseId", user.getId());
 			map.put("type", nurseType);
 			List<Map<String,Object>> skills_list = skillService.getNurseSkills(map);
-			
+			/**
+			 * ifnot	护士是否勾选了该技能	0：未勾选
+			 * 							1：已勾选
+			 * nstype	是否擅长还是普通		1：普通
+			 * 							2擅长
+			 * 
+			 * type	该技能属于那种职称	
+			 * 1.护士，2.康复师，3.母婴师
+			 */
 			return JSONUtil.toJSONResult(1, "查询成功", skills_list);
 		} catch (Exception e) {
 			// 记录日志-fail

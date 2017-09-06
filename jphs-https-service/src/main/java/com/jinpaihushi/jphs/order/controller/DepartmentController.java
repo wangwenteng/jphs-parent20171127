@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.department.service.DepartmentService;
-import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
