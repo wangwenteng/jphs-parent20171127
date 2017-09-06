@@ -26,6 +26,7 @@ import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.goods.service.GoodsService;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
+import com.jinpaihushi.jphs.platform.service.PlatformService;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
@@ -49,6 +50,9 @@ public class GoodsController extends BaseController<Goods> {
     @Autowired
     private OrderGoodsService orderGoodsService;
 
+    @Autowired
+    private PlatformService platformService;
+
     @Override
     protected BaseService<Goods> getService() {
         // TODO Auto-generated method stub
@@ -56,7 +60,7 @@ public class GoodsController extends BaseController<Goods> {
     }
 
     @ResponseBody
-    @RequestMapping(name = "服务基本信息", path = "/getOneGoodsDetail.json")
+    @RequestMapping(name = "服务详细信息", path = "/getOneGoodsDetail.json")
     public byte[] getOneGoodsDetail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String siteId,
             String goodsId, Integer deviceType) {
 
@@ -90,6 +94,51 @@ public class GoodsController extends BaseController<Goods> {
             // 3.信息无误，封装信息以及生成token，返回前端
 
             return JSONUtil.toJSONResult(1, "操作成功！", data);
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("goods.getOneGoodsDetail.json,goodsId=" + goodsId + " siteId=" + siteId + " deviceType="
+                    + deviceType, e);
+            try {
+                return JSONUtil.toJSONResult(0, "非法请求", null);
+            }
+            catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(name = "服务详细信息", path = "/getBaseGoods.json")
+    public byte[] getBaseGoods(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String siteId,
+            String goodsId, Integer deviceType) {
+
+        try {
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("goods.getOneGoodsDetail.json,goodsId=" + goodsId + " siteId=" + siteId
+                        + " deviceType=" + deviceType);
+            }
+            // 查空
+            if (StringUtils.isEmpty(goodsId) || StringUtils.isEmpty(siteId) || deviceType == null) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            // 商品的详情
+            Map<String, Object> query = new HashMap<>();
+            query.put("goodsId", goodsId);
+            query.put("deviceType", deviceType);
+            query.put("siteId", siteId);
+            Map<String, Object> result = platformService.getAllGoodsList(query).get(0);
+            if (result == null) {
+                return JSONUtil.toJSONResult(0, "此商品该站点还没有设置销售价", null);
+            }
+            // 1.根据 name，password,type查询完整信息
+            // 2.错误N种情况判断及返回前端
+            // 3.信息无误，封装信息以及生成token，返回前端
+
+            return JSONUtil.toJSONResult(1, "操作成功！", result);
         }
         catch (Exception e) {
             // 记录日志-fail
@@ -245,7 +294,7 @@ public class GoodsController extends BaseController<Goods> {
     }
 
     @ResponseBody
-    @RequestMapping(name = "服务评价", path = "/getAllGoods.json")
+    @RequestMapping(name = "所有商品", path = "/getAllGoods.json")
     public byte[] getAllGoods(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, Goods goods) {
 
         try {
@@ -270,7 +319,7 @@ public class GoodsController extends BaseController<Goods> {
     }
 
     @ResponseBody
-    @RequestMapping(name = "服务评价", path = "/getMyServices.json")
+    @RequestMapping(name = "我的服务", path = "/getMyServices.json")
     public byte[] getMyServices(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String creatorId) {
 
         try {

@@ -1,10 +1,12 @@
 package com.jinpaihushi.listener;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.jinpaihushi.context.SpringContext;
 import com.jinpaihushi.context.SpringHelper;
+import com.jinpaihushi.jphs.wechat.service.WechatService;
 
 /**
  * 上下文初始化监听器
@@ -41,12 +43,17 @@ public class StartupListener extends AbstractApplicationListener<ContextRefreshe
 	private SystemModuleService systemModuleService;
 	@Autowired
 	private SystemRoleModuleService systemRoleModuleService;*/
+	@Autowired
+	private WechatService wechatService;
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		logger.info("===========context-refresh===============");
 		SpringHelper.setContext(event.getApplicationContext());
 		SpringContext.setContext(event.getApplicationContext());
 		logger.info("=========================================");
+		// 获取微信公众号token
+		wechatService.getTokens();
 		logger.info("初始化结束");
 		// 初始化之后创建超级管理员
 			/*String userId = systemUserService.initSystemUser();

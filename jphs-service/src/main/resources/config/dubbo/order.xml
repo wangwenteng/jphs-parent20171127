@@ -8,7 +8,7 @@
         ">
 	<!-- 服务订单 -->
 	<dubbo:service ref="orderService"
-		interface="com.jinpaihushi.jphs.order.service.OrderService" />	
+		interface="com.jinpaihushi.jphs.order.service.OrderService" />
 	<dubbo:service ref="orderGoodsService"
 		interface="com.jinpaihushi.jphs.order.service.OrderGoodsService" />
 	<dubbo:service ref="orderOtherService"
@@ -17,9 +17,8 @@
 		interface="com.jinpaihushi.jphs.order.service.OrderServiceService" />
 	<dubbo:service ref="customServiceService"
 		interface="com.jinpaihushi.jphs.custom.service.CustomServiceService" />
-	
-	
-	<!-- 商品订单 -->
+	<dubbo:service ref="evaluationService"
+		interface="com.jinpaihushi.jphs.evaluation.service.EvaluationService" />
 
 
 

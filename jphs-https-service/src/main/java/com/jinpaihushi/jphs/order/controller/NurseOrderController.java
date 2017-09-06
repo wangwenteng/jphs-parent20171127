@@ -316,7 +316,12 @@ public class NurseOrderController {
 			order.setAcceptUserId(user.getId());
 			order = orderService.nurseOrderDetails(order);
 			if(order == null){
-				return JSONUtil.toJSONResult(0, "查询详情失败", null);
+				Order orders = new Order();
+				orders.setId(orderId);
+				order = orderService.nurseOrderDetails(orders);
+				if(order == null){
+					return JSONUtil.toJSONResult(0, "查询详情失败", null);
+				}
 			}
 			ServiceImages serviceImages = new ServiceImages();
 			serviceImages.setSourceId(order.getId());
@@ -369,7 +374,7 @@ public class NurseOrderController {
 			List<Map<String,Object>> re_map = orderService.nurseOrderList(map_o);
 			PageInfo<Map<String,Object>> page = new PageInfo<Map<String,Object>>(re_map);
 			
-			return JSONUtil.toJSONResult(0, "成功", page);
+			return JSONUtil.toJSONResult(1, "成功", page);
 			
 		} catch (Exception e) {
 			// 记录日志-fail
@@ -404,7 +409,7 @@ public class NurseOrderController {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseOrder.grabOrder.json,user"+user.getId()+" user="+user.getPhone()+" authCode="+authCode+" user.getType()="+user.getType()+" token"+token);
+				Util.debugLog.debug("nurseOrder.grab.json,user"+user.getId()+" user="+user.getPhone()+" authCode="+authCode+" user.getType()="+user.getType()+" token"+token);
 			}
 			
 			// 查空
@@ -493,7 +498,7 @@ public class NurseOrderController {
 		} catch (Exception e){
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseOrder.grabOrder.json,user"+user.getId()+" user="+user.getPhone()+" authCode="+authCode+" e="+e);
+				Util.debugLog.debug("nurseOrder.grab.json,user"+user.getId()+" user="+user.getPhone()+" authCode="+authCode+" e=",e);
 			}
 		}
 		return null;

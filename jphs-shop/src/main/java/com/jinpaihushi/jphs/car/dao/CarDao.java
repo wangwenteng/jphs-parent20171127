@@ -17,6 +17,12 @@ import com.jinpaihushi.jphs.car.model.Car;
 public interface CarDao extends BaseDao<Car> {
 
 	List<Car> getList(String creatorId);
+
+	Car lookup(Car car);
+
+	boolean updateNumber(Car car);
+
+	boolean successOrder(String id);
 	
 	
 	

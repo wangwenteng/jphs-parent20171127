@@ -52,7 +52,7 @@ public class CarController extends BaseController<Car> {
 	public byte[] insertCar(Car car) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("car.insertCar.json,commodityId =" + car.getCommodityId() +",commodityPriceId =" + car.getCommodityPriceId()+",number = "+car.getNumber());
+				Util.debugLog.debug("car.insertCar.json,commodityId =" + car.getCommodityId() +",commodityPriceId =" + car.getCommodityPriceId()+",number = "+car.getNumber() + ",creatorId = "+car.getCreatorId());
 			}
 			if (StringUtils.isEmpty(car.getCommodityId())) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
@@ -60,18 +60,39 @@ public class CarController extends BaseController<Car> {
 			if (StringUtils.isEmpty(car.getCommodityPriceId())) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
+			if (StringUtils.isEmpty(car.getCreatorId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
 			if (car.getNumber()<=0) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			car.setCreateTime(new Date());
 			car.setStatus(1);
-			String result = carService.insert(car);
-			if (result.length()>0) {
-				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			Car model = carService.lookup(car);
+			if(model!=null){
+				Integer number = model.getNumber();
+				 
+				model.setNumber(number+car.getNumber());
+				boolean b = carService.updateNumber(model);
+				
+				if (!b) {
+					return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+				}
+			}else{
+				car.setCreateTime(new Date());
+				car.setStatus(1);
+				car.setId(UUID.randomUUID().toString());
+				String result = carService.insert(car);
+				
+				if (result.length()<0) {
+					return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+				}
 			}
-			return JSONUtil.toJSONResult(1, "操作成功！", "添加成功");
+
+			 
+			
+			return JSONUtil.toJSONResult(1, "操作成功！", 1);
 		} catch (Exception e) {
-			Util.failLog.error("car.insertCar.json,commodityId =" + car.getCommodityId() +",commodityPriceId =" + car.getCommodityPriceId()+",number = "+car.getNumber(), e);
+			Util.failLog.error("car.insertCar.json,commodityId =" + car.getCommodityId() +",commodityPriceId =" + car.getCommodityPriceId()+",number = "+car.getNumber() + ",creatorId = "+car.getCreatorId(), e);
 		}
 		return null;
 	}
@@ -139,6 +160,64 @@ public class CarController extends BaseController<Car> {
 			return JSONUtil.toJSONResult(1, "操作成功！",list);
 		} catch (Exception e) {
 			Util.failLog.error("car.carList.json,creatorId =" + creatorId, e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "购物车列表", path = "/updateNumber.json")
+	@ResponseBody
+	public byte[] updateNumber(Car car) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("car.updateNumber.json,id =" + car.getId());
+			}
+			if (StringUtils.isEmpty(car.getId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if ( car.getNumber()<0) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			 
+			 boolean b = carService.updateNumber(car);
+				
+			if (!b) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", b);
+		} catch (Exception e) {
+			Util.failLog.error("car.updateNumber.json,id =" + car.getId(), e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "删除购物车商品", path = "/deleteIds.json")
+	@ResponseBody
+	public byte[] deleteIds(String ids) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("car.deleteIds.json,carId =" + ids);
+			}
+			if (StringUtils.isEmpty(ids)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			Car car = new Car();
+			car.setStatus(-1);
+			String[] idArr = ids.split(",");
+			System.out.println(idArr.length);
+			boolean result = true;
+			for(int i = 0;i<idArr.length;i++){
+				car.setId(idArr[i]);
+				result = carService.update(car); 
+				if (result == false) {
+					return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+				}
+			}
+			
+			return JSONUtil.toJSONResult(1, "操作成功！", "添加成功");
+		} catch (Exception e) {
+			Util.failLog.error("car.deleteIds.json,carId =" + ids, e);
 		}
 		return null;
 	}

@@ -231,6 +231,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		DATE_FORMAT(t.create_time, '%c月') month,
 		<if test="month!=null and month!=''">
 			o.order_no,
+			t.operate,
+			t.operate_source,
 			g.id,
 			g.title,
 			DATE_FORMAT(o.accept_time,
@@ -254,7 +256,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="operate!=null">
 				AND t.operate = #{operate}
 			</if>
-			<if test="">
+			<if test="month!=null and month!=''">
 				AND DATE_FORMAT(t.create_time, '%Y-%m') = #{month}
 			</if>
 		</where>

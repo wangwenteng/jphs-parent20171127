@@ -15,4 +15,11 @@ public interface CarService extends BaseService<Car> {
 
 	List<Car> getList(String creatorId);
 
+	Car lookup(Car car);
+	
+	boolean updateNumber(Car car);
+	
+	boolean successOrder(String Ids);
+	
+	
 }

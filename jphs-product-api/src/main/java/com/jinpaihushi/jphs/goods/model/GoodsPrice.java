@@ -6,112 +6,124 @@ import com.jinpaihushi.model.BaseModel;
 
 @SuppressWarnings("serial")
 public class GoodsPrice extends BaseModel {
-	/** 销售价 */
-	private Double price;
+    /** 销售价 */
+    private Double price;
 
-	/** 成本价 */
-	private Double costPrice;
-	/** 原价 */
-	private Double oldPrice;
-	/** 利润 */
-	private Double profit;
+    private String priceId;
 
-	/** 利润 */
-	private Double maxPrice;
-	/** 服务次数 */
-	private Integer serviceNumber;
-	
-	private Double pnPrice;
+    /** 成本价 */
+    private Double costPrice;
 
-	/** 服务时长 */
-	private Integer serviceTime;
-	/** 单位 */
-	@Length(max = 50, message = "{price.unit.illegal.length}")
-	private String unit;
+    /** 原价 */
+    private Double oldPrice;
 
-	/** 标题 */
-	@Length(max = 50, message = "{price.title.illegal.length}")
-	private String title;
-	
-	public Double getOldPrice() {
-		return oldPrice;
-	}
+    /** 利润 */
+    private Double profit;
 
-	public void setOldPrice(Double oldPrice) {
-		this.oldPrice = oldPrice;
-	}
+    /** 利润 */
+    private Double maxPrice;
 
-	public Double getProfit() {
-		return profit;
-	}
+    /** 服务次数 */
+    private Integer serviceNumber;
 
-	public void setProfit(Double profit) {
-		this.profit = profit;
-	}
+    private Double pnPrice;
 
-	public Double getPrice() {
-		return price;
-	}
+    /** 服务时长 */
+    private Integer serviceTime;
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    /** 单位 */
+    @Length(max = 50, message = "{price.unit.illegal.length}")
+    private String unit;
 
-	public Double getCostPrice() {
-		return costPrice;
-	}
+    /** 标题 */
+    @Length(max = 50, message = "{price.title.illegal.length}")
+    private String title;
 
-	public void setCostPrice(Double costPrice) {
-		this.costPrice = costPrice;
-	}
+    public Double getOldPrice() {
+        return oldPrice;
+    }
 
-	public Integer getServiceNumber() {
-		return serviceNumber;
-	}
+    public void setOldPrice(Double oldPrice) {
+        this.oldPrice = oldPrice;
+    }
 
-	public void setServiceNumber(Integer serviceNumber) {
-		this.serviceNumber = serviceNumber;
-	}
+    public Double getProfit() {
+        return profit;
+    }
 
-	public Integer getServiceTime() {
-		return serviceTime;
-	}
+    public void setProfit(Double profit) {
+        this.profit = profit;
+    }
 
-	public void setServiceTime(Integer serviceTime) {
-		this.serviceTime = serviceTime;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public String getUnit() {
-		return unit;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+    public Double getCostPrice() {
+        return costPrice;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setCostPrice(Double costPrice) {
+        this.costPrice = costPrice;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Integer getServiceNumber() {
+        return serviceNumber;
+    }
 
-	public Double getMaxPrice() {
-		return maxPrice;
-	}
+    public void setServiceNumber(Integer serviceNumber) {
+        this.serviceNumber = serviceNumber;
+    }
 
-	public void setMaxPrice(Double maxPrice) {
-		this.maxPrice = maxPrice;
-	}
+    public Integer getServiceTime() {
+        return serviceTime;
+    }
 
-	public Double getPnPrice() {
-		return pnPrice;
-	}
+    public void setServiceTime(Integer serviceTime) {
+        this.serviceTime = serviceTime;
+    }
 
-	public void setPnPrice(Double pnPrice) {
-		this.pnPrice = pnPrice;
-	}
+    public String getUnit() {
+        return unit;
+    }
 
-	
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public Double getPnPrice() {
+        return pnPrice;
+    }
+
+    public void setPnPrice(Double pnPrice) {
+        this.pnPrice = pnPrice;
+    }
+
+    public String getPriceId() {
+        return priceId;
+    }
+
+    public void setPriceId(String priceId) {
+        this.priceId = priceId;
+    }
 }

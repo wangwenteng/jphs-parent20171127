@@ -6,12 +6,13 @@
         http://code.alibabatech.com/schema/dubbo
 		classpath:schema/dubbo.xsd
         ">
-    <dubbo:service ref="systemUserService"
-		interface="com.jinpaihushi.jphs.system.service.SystemUserService" />    
-    <dubbo:service ref="systemModuleService"
+	<dubbo:service ref="systemUserService"
+		interface="com.jinpaihushi.jphs.system.service.SystemUserService" />
+	<dubbo:service ref="systemModuleService"
 		interface="com.jinpaihushi.jphs.system.service.SystemModuleService" />
 	<dubbo:service ref="systemRoleService"
 		interface="com.jinpaihushi.jphs.system.service.SystemRoleService" />
-		
-		
+	<dubbo:service ref="sysversionService"
+		interface="com.jinpaihushi.jphs.sysversion.service.SysversionService" />
+
 </beans>

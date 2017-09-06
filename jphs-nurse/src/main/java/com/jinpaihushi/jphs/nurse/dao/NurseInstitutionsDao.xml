@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-03 13:35:33
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseInstitutionsDao">
+	
+	<sql id="field">
+		NI.id, NI.name, NI.charge_id, NI.contacts_name, 
+		NI.contacts_phone, NI.address, NI.remark, NI.status, 
+		NI.create_time, NI.creator_id, NI.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		NI.id NI_id, NI.name NI_name, 
+		NI.charge_id NI_charge_id, NI.contacts_name NI_contacts_name, 
+		NI.contacts_phone NI_contacts_phone, NI.address NI_address, 
+		NI.remark NI_remark, NI.status NI_status, 
+		NI.create_time NI_create_time, NI.creator_id NI_creator_id, 
+		NI.creator_name NI_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NI.id id, NI.name name, 
+		NI.charge_id chargeId, NI.contacts_name contactsName, 
+		NI.contacts_phone contactsPhone, NI.address address, 
+		NI.remark remark, NI.status status, 
+		NI.create_time createTime, NI.creator_id creatorId, 
+		NI.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NI.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND NI.name=#{name}
+		</if>
+		<if test="chargeId!=null and chargeId!=''">
+			AND NI.charge_id=#{chargeId}
+		</if>
+		<if test="contactsName!=null and contactsName!=''">
+			AND NI.contacts_name=#{contactsName}
+		</if>
+		<if test="contactsPhone!=null and contactsPhone!=''">
+			AND NI.contacts_phone=#{contactsPhone}
+		</if>
+		<if test="address!=null and address!=''">
+			AND NI.address=#{address}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND NI.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND NI.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND NI.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND NI.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND NI.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NI.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND NI.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="chargeId!=null and chargeId!=''">
+				AND NI.charge_id LIKE CONCAT('%', #{chargeId}, '%')
+			</if>
+			<if test="contactsName!=null and contactsName!=''">
+				AND NI.contacts_name LIKE CONCAT('%', #{contactsName}, '%')
+			</if>
+			<if test="contactsPhone!=null and contactsPhone!=''">
+				AND NI.contacts_phone LIKE CONCAT('%', #{contactsPhone}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND NI.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND NI.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND NI.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND NI.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NI.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NI.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NI.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				NI.name=#{name}, 
+		   </if>
+           <if test="chargeId!=null">
+				NI.charge_id=#{chargeId}, 
+		   </if>
+           <if test="contactsName!=null">
+				NI.contacts_name=#{contactsName}, 
+		   </if>
+           <if test="contactsPhone!=null">
+				NI.contacts_phone=#{contactsPhone}, 
+		   </if>
+           <if test="address!=null">
+				NI.address=#{address}, 
+		   </if>
+           <if test="remark!=null">
+				NI.remark=#{remark}, 
+		   </if>
+           <if test="status!=null">
+				NI.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				NI.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				NI.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				NI.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseInstitutions" type="com.jinpaihushi.jphs.nurse.model.NurseInstitutions">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="chargeId" column="charge_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="contacts_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="nurseInstitutionsGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseInstitutions">
+		<result property="id" column="NI_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="NI_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="chargeId" column="NI_charge_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsName" column="NI_contacts_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="contactsPhone" column="NI_contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="address" column="NI_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remark" column="NI_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="NI_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="NI_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="NI_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NI_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseInstitutions">
+		INSERT INTO `NURSE_INSTITUTIONS`(
+			id, name, 
+			charge_id, contacts_name, 
+			contacts_phone, address, 
+			remark, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{chargeId,jdbcType=VARCHAR}, #{contactsName,jdbcType=VARCHAR}, 
+			#{contactsPhone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+			#{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_INSTITUTIONS`(
+			id, name, 
+			charge_id, contacts_name, 
+			contacts_phone, address, 
+			remark, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.chargeId,jdbcType=VARCHAR}, #{item.contactsName,jdbcType=VARCHAR}, 
+			#{item.contactsPhone,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NI FROM `NURSE_INSTITUTIONS` NI WHERE NI.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_INSTITUTIONS` NI
+		SET 
+		NI.STATUS = -1
+		WHERE NI.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_INSTITUTIONS` NI
+		<include refid="dynamicSet" /> 
+	    WHERE NI.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseInstitutions">
+		SELECT <include refid="field"/>
+		FROM `NURSE_INSTITUTIONS` NI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_INSTITUTIONS` NI
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseInstitutions">
+		SELECT <include refid="field"/>
+		FROM `NURSE_INSTITUTIONS` NI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseInstitutions">
+		SELECT <include refid="field"/>
+		FROM `NURSE_INSTITUTIONS` NI
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseInstitutions">
+		SELECT <include refid="field"/>
+		FROM `NURSE_INSTITUTIONS` NI
+		WHERE NI.ID = #{id}
+	</select>
+	
+</mapper>

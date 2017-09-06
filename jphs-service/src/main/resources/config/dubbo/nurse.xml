@@ -14,10 +14,38 @@
 		ref="nurseImagesService" />
 	<dubbo:service ref="nurseSkillService"
 		interface="com.jinpaihushi.jphs.nurse.service.NurseSkillService" />
+	<dubbo:service ref="nurseSkillsService"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseSkillsService" />
 	<dubbo:service ref="skillService"
 		interface="com.jinpaihushi.jphs.skill.service.SkillService" />
+	<dubbo:service ref="skillsService"
+		interface="com.jinpaihushi.jphs.skills.service.SkillsService" />
 	<dubbo:service ref="jobtitleService"
 		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleService" />
 	<dubbo:service ref="jobtitleTypeService"
 		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService" />
+	<!-- 审核 -->
+	<dubbo:service ref="aptitudeService"
+		interface="com.jinpaihushi.jphs.aptitude.service.AptitudeService" />
+	<dubbo:service ref="auditService"
+		interface="com.jinpaihushi.jphs.audit.service.AuditService" />
+	<!-- 科室 -->
+	<dubbo:service ref="departmentService"
+		interface="com.jinpaihushi.jphs.department.service.DepartmentService" />
+	<!-- 职称 -->
+	<dubbo:service ref="nurseJobtitleService"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseJobtitleService" />
+	<!-- priceNurseService -->
+	<dubbo:service ref="priceNurseService"
+		interface="com.jinpaihushi.jphs.price.service.PriceNurseService" />
+	<dubbo:service ref="jobtitleGoodsService"
+		interface="com.jinpaihushi.jphs.jobtitle.service.JobtitleGoodsService" />
+	<dubbo:service ref="nurseCommodityService"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseCommodityService" />
+	<dubbo:service ref="personManagerService"
+		interface="com.jinpaihushi.jphs.person.service.PersonManagerService" />
+	<dubbo:service ref="personGroupService"
+		interface="com.jinpaihushi.jphs.person.service.PersonGroupService" />
+	<dubbo:service ref="cancelOrderService"
+		interface="com.jinpaihushi.jphs.cancel.service.CancelOrderService" />
 </beans>

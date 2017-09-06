@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.goods.model.Grade;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 
 /**
@@ -19,13 +20,16 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 @Repository("nurseDao")
 public interface NurseDao extends BaseDao<Nurse> {
 
-	Page<Nurse> getNurseDetail(@Param("nurse")Nurse nurse);
-	
-	List<Map<String, Object>> queryNurseOrder(Nurse nurse);
-	List<Map<String, Object>> queryNurseIncome(Nurse nurse);
+    Page<Nurse> getNurseDetail(@Param("nurse") Nurse nurse);
 
-	List<Nurse> getSomeNurse(Nurse nurse);
+    List<Map<String, Object>> queryNurseOrder(Nurse nurse);
 
-	List<Map<String, Object>> getBasicInfo(Map<String, Object> map);
-	
+    List<Map<String, Object>> queryNurseIncome(Nurse nurse);
+
+    List<Nurse> getSomeNurse(Nurse nurse);
+
+    List<Map<String, Object>> getBasicInfo(Map<String, Object> map);
+
+    List<Grade> getNurseServicePrice(Map<String, Object> query);
+
 }

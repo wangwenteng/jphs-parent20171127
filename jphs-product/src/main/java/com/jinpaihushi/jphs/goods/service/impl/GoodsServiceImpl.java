@@ -431,23 +431,41 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods>implements GoodsServ
 		List<Goods> allGoods = goodsDao.getAllGoods(goods);
 		PriceNurse priceNurse = new PriceNurse();
 		List<Goods> allGoodsList = new ArrayList<Goods>();
-		
+		priceNurse.setCreatorId(goods.getCreatorId());
+		priceNurse.setStatus(0);
+		Page<PriceNurse> query = priceNurseDao.query(priceNurse);
 		for (int i = 0; i < allGoods.size(); i++) {
-			priceNurse.setCreatorId(goods.getCreatorId());
-			priceNurse.setGoodsId(allGoods.get(i).getId());
-			priceNurse.setStatus(0);
-			Page<PriceNurse> query = priceNurseDao.query(priceNurse);
-			 
+			
 				for (int j = 0; j < query.size(); j++) {
-				 
-					if(!query.get(j).getGoodsId().equals(allGoods.get(i).getId())){
+					
+					
+					if((query.get(j).getGoodsId().equals(allGoods.get(i).getId()))){
+						System.out.println(allGoods.get(i).getId());
+						break;
+					}else{
+						System.out.println("--------"+allGoods.get(i).getId()+"-----------------");
+						break;
+					}
+					
+					/*System.out.println("...........................");
+					System.out.println(query.get(j).getGoodsId().equals(allGoods.get(i).getId()));
+					System.out.println(".........................");
+					if(!(query.get(j).getGoodsId().equals(allGoods.get(i).getId()))){
+						System.out.println(allGoods.get(i).getId());
+					} else{
+						System.out.println("---------------");
+						System.out.println(allGoods.get(i).getId());
+						System.out.println("---------------");
 						allGoodsList.add(allGoods.get(i));
-					} 
+					}*/
 				}
 			 
 		}
 		
-		return allGoods;
+		
+		 
+		
+		return allGoodsList;
 	}
 
 	@Override

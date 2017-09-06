@@ -1,14 +1,13 @@
 package com.jinpaihushi.jphs.commodity.model;
 
+import java.util.Date;
+import java.util.List;
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
-import java.util.Date;
 
 /**
  * COMMODITY_ORDER 
@@ -69,12 +68,28 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 
     /** 省 */
 	@Length(max = 255, message = "{commodityOrder.province.illegal.length}")
-	private String province;
+	private String address;
 
     /** 详细地址 */
 	@Length(max = 255, message = "{commodityOrder.detailAddress.illegal.length}")
 	private String detailAddress;
 
+	private List<CommodityOrderInfo> coiList;
+	
+	private Integer count;
+	
+	private Double payment;
+	
+	private String phone;
+	
+	private String receiveName;
+	
+	private Integer device;
+	
+	private String platformId;
+	
+	private CommodityImages commodityImages;
+	
 	public CommodityOrder(){}
 
 	public CommodityOrder(String id){
@@ -252,16 +267,16 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	/**
 	 * 获取省
 	 */
-	public String getProvince() {
-    	return province;
-    }
+	public String getAddress() {
+		return address;
+	}
   	
 	/**
 	 * 设置省
 	 */
-	public void setProvince(String province) {
-    	this.province = province;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	/**
 	 * 获取详细地址
@@ -270,6 +285,8 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
     	return detailAddress;
     }
   	
+	
+	
 	/**
 	 * 设置详细地址
 	 */
@@ -277,31 +294,92 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
     	this.detailAddress = detailAddress;
     }
 
-    public String toString() {
-		return new StringBuilder().append("CommodityOrder{").
-			append("id=").append(id).
-			append(",orderNo=").append(orderNo).
-			append(",payPrice=").append(payPrice).
-			append(",payTime=").append(payTime).
-			append(",sendTime=").append(sendTime).
-			append(",takeTime=").append(takeTime).
-			append(",confirmTime=").append(confirmTime).
-			append(",remindTime=").append(remindTime).
-			append(",protectDay=").append(protectDay).
-			append(",protectTime=").append(protectTime).
-			append(",voucherUseId=").append(voucherUseId).
-			append(",voucherPrice=").append(voucherPrice).
-			append(",schedule=").append(schedule).
-			append(",status=").append(status).
-			append(",createTime=").append(createTime).
-			append(",creatorId=").append(creatorId).
-			append(",creatorName=").append(creatorName).
-			append(",province=").append(province).
-			append(",detailAddress=").append(detailAddress).
-			append('}').toString();
-    }
 	
-    /**
+	
+    public List<CommodityOrderInfo> getCoiList() {
+		return coiList;
+	}
+
+	public void setCoiList(List<CommodityOrderInfo> coiList) {
+		this.coiList = coiList;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public Double getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Double payment) {
+		this.payment = payment;
+	}
+	
+	
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	
+	
+	public String getReceiveName() {
+		return receiveName;
+	}
+
+	public void setReceiveName(String receiveName) {
+		this.receiveName = receiveName;
+	}
+
+	
+	
+	public CommodityImages getCommodityImages() {
+		return commodityImages;
+	}
+
+	public void setCommodityImages(CommodityImages commodityImages) {
+		this.commodityImages = commodityImages;
+	}
+
+	 
+	
+    public Integer getDevice() {
+		return device;
+	}
+
+	public void setDevice(Integer device) {
+		this.device = device;
+	}
+
+	public String getPlatformId() {
+		return platformId;
+	}
+
+	public void setPlatformId(String platformId) {
+		this.platformId = platformId;
+	}
+
+	@Override
+	public String toString() {
+		return "CommodityOrder [orderNo=" + orderNo + ", payPrice=" + payPrice + ", payTime=" + payTime + ", sendTime="
+				+ sendTime + ", takeTime=" + takeTime + ", confirmTime=" + confirmTime + ", remindTime=" + remindTime
+				+ ", protectDay=" + protectDay + ", protectTime=" + protectTime + ", voucherUseId=" + voucherUseId
+				+ ", voucherPrice=" + voucherPrice + ", schedule=" + schedule + ", address=" + address
+				+ ", detailAddress=" + detailAddress + ", coiList=" + coiList + ", count=" + count + ", payment="
+				+ payment + ", phone=" + phone + ", receiveName=" + receiveName + ", commodityImages=" + commodityImages
+				+ "]";
+	}
+
+	/**
 	 * 复制字段：
 	 * id, orderNo, payPrice, payTime, 
 	 * sendTime, takeTime, confirmTime, remindTime, 
@@ -328,7 +406,7 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
      	commodityOrder.createTime = this.createTime;
      	commodityOrder.creatorId = this.creatorId;
      	commodityOrder.creatorName = this.creatorName;
-     	commodityOrder.province = this.province;
+     	commodityOrder.address = this.address;
      	commodityOrder.detailAddress = this.detailAddress;
 		return commodityOrder;
 	}
@@ -361,7 +439,7 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 				&& (this.createTime == null || this.createTime.equals(t.createTime))
 				&& (this.creatorId == null || this.creatorId.equals(t.creatorId))
 				&& (this.creatorName == null || this.creatorName.equals(t.creatorName))
-				&& (this.province == null || this.province.equals(t.province))
+				&& (this.address == null || this.address.equals(t.address))
 				&& (this.detailAddress == null || this.detailAddress.equals(t.detailAddress))
 		;
 	}
@@ -421,8 +499,8 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 		if (this.creatorName != null && !this.creatorName.isEmpty()) {
 			element.creatorName = this.creatorName;
 		}
-		if (this.province != null && !this.province.isEmpty()) {
-			element.province = this.province;
+		if (this.address != null && !this.address.isEmpty()) {
+			element.address = this.address;
 		}
 		if (this.detailAddress != null && !this.detailAddress.isEmpty()) {
 			element.detailAddress = this.detailAddress;

@@ -140,6 +140,7 @@ public class WechatController {
                 //////////执行自己的业务逻辑////////////////  
                 String mch_id = (String)packageParams.get("mch_id");  
                 String openid = (String)packageParams.get("openid");  
+                String attach = (String)packageParams.get("attach");  
                 String is_subscribe = (String)packageParams.get("is_subscribe");  
                 String out_trade_no = (String)packageParams.get("out_trade_no");  
                 String total_fee = (String)packageParams.get("total_fee");  
@@ -148,7 +149,7 @@ public class WechatController {
         		if (Util.debugLog.isDebugEnabled()) {
         			Util.debugLog.debug("wechat.notify.json:mch_id="+mch_id+",openid="+openid+",is_subscribe="+is_subscribe
         					+",out_trade_no="+out_trade_no
-        					+",total_fee="+total_fee);
+        					+",total_fee="+total_fee+"-------attach="+attach);
         		}
                 //////////执行自己的业务逻辑////////////////  
                   
@@ -233,7 +234,7 @@ public class WechatController {
 								i = 0;
 								// 记录日志-debug
 								if (Util.debugLog.isDebugEnabled()) {
-									Util.debugLog.debug("wechat.notify.json;下单失败！total_fee_ali="+total_fee_wc+";total_fee_ord="+total_fee_ord);
+									Util.debugLog.debug("wechat.notify.json;下单失败！total_fee_wc="+total_fee_wc+";total_fee_ord="+total_fee_ord);
 								}
 							}
 						} catch (Exception e) {

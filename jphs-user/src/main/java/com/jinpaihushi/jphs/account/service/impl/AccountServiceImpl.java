@@ -1,6 +1,5 @@
 package com.jinpaihushi.jphs.account.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,19 +19,20 @@ import com.jinpaihushi.service.impl.BaseServiceImpl;
  * @version 1.0
  */
 @Service("accountService")
-public class AccountServiceImpl extends BaseServiceImpl<Account> implements AccountService{
+public class AccountServiceImpl extends BaseServiceImpl<Account> implements AccountService {
 
-	@Autowired
-	private AccountDao accountDao;
-	
-	@Override
-	protected BaseDao<Account> getDao(){
-		return accountDao;
-	}
+    @Autowired
+    private AccountDao accountDao;
 
-	@Override
-	public List<Map<String, Object>> getMonthList(Map<String, Object> map) {
-		List<Map<String, Object>> result=accountDao.getMonthList(map);
-		return result;
-	}
+    @Override
+    protected BaseDao<Account> getDao() {
+        return accountDao;
+    }
+
+    @Override
+    public List<Map<String, Object>> getMonthList(Map<String, Object> map) {
+        List<Map<String, Object>> result = accountDao.getMonthList(map);
+        return result;
+    }
+
 }

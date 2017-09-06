@@ -34,4 +34,35 @@ public class CarServiceImpl extends BaseServiceImpl<Car> implements CarService{
 		return carDao.getList(creatorId);
 	}
 
+	@Override
+	public Car lookup(Car car) {
+		 
+		return carDao.lookup(car);
+	}
+	
+	@Override
+	public boolean updateNumber(Car car) {
+		// TODO Auto-generated method stub
+		return carDao.updateNumber(car);
+	}
+
+	@Override
+	public boolean successOrder(String Ids) {
+		
+		boolean result = false;
+		
+		String[] idArr = Ids.split(",");
+		
+		for (int i = 0; i < idArr.length; i++) {
+			if(!("".equals(idArr[i]))){
+				result =  carDao.successOrder(idArr[i]);
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	 
+
 }

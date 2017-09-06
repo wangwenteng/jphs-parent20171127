@@ -14,7 +14,6 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface AccountService extends BaseService<Account> {
 
-	List<Map<String, Object>> getMonthList(Map<String, Object> map);
-
+    List<Map<String, Object>> getMonthList(Map<String, Object> map);
 
 }

@@ -34,7 +34,7 @@ public class CommodityImages extends BaseModel implements Predicate<CommodityIma
 	private String sourceId;
 
     /** 图片地址 */
-	@Length(max = 500, message = "{commodityImages.url.illegal.length}")
+	@Length(max = 65535, message = "{commodityImages.url.illegal.length}")
 	private String url;
 
     /** 物理地址 */

@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.jobtitle.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,10 @@ public class JobtitleServiceImpl extends BaseServiceImpl<Jobtitle> implements Jo
 	@Override
 	public int checkName(Jobtitle jobtitle) {
 		return jobtitleDao.checkName(jobtitle);
+	}
+	
+	public List<Jobtitle> jobtitleSelectList(){
+		return jobtitleDao.jobtitleSelectList();
 	}
 	
 }

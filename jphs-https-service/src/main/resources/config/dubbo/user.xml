@@ -19,4 +19,13 @@
 		timeout="${dubbo.timeout}" check="false" />
 	<dubbo:reference id="voucherRepertoryService" interface="com.jinpaihushi.jphs.voucher.service.VoucherRepertoryService"
 		timeout="${dubbo.timeout}" check="false" />
+	<!-- 工作时间 -->
+	<dubbo:reference id="worktimeService" interface="com.jinpaihushi.jphs.worktime.service.WorktimeService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 短信 -->
+	<dubbo:reference id="verificationService" interface="com.jinpaihushi.jphs.verification.service.VerificationService"
+		timeout="${dubbo.timeout}" check="false" />
+		<!--交易明细  -->
+	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
+		timeout="${dubbo.timeout}" check="false" />
 </beans>

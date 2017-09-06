@@ -29,6 +29,8 @@ public class Skills extends BaseModel implements Predicate<Skills>,
     /**  */
 	@Length(max = 50, message = "{skills.name.illegal.length}")
 	private String name;
+	
+	private Integer skillsType;
 
 	public Skills(){}
 
@@ -36,6 +38,20 @@ public class Skills extends BaseModel implements Predicate<Skills>,
 		this.id = id;
 	}
 
+	/**
+	 * 获取
+	 */
+	public Integer getSkillsType() {
+    	return skillsType;
+    }
+  	
+	/**
+	 * 设置
+	 */
+	public void setSkillsType(Integer skillsType) {
+    	this.skillsType = skillsType;
+    }
+	
 	/**
 	 * 获取
 	 */

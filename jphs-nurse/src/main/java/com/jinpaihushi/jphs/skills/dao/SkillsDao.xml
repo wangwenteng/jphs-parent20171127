@@ -228,8 +228,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			s.creator_id,
 			s.creator_name,
 			s.id,
-			(SELECT COUNT(id) FROM nurse_skills ns WHERE ns.creator_id=#{nurseId} AND ns.skills_id =s.id AND ns.status=1  ) ifnot,
-			(SELECT nss.type FROM nurse_skills nss WHERE nss.creator_id=#{nurseId} AND nss.skills_id =s.id AND nss.status=1 ) nstype
+			s.skills_type,
+			(SELECT COUNT(id) FROM nurse_skills ns WHERE ns.creator_id=#{nurseId} AND ns.skills_id =s.id AND ns.status=1  ) ifnot
 			FROM skills s WHERE s.status=1 
 			<if test="type !=null and type !=''">
 				AND s.type=#{type}

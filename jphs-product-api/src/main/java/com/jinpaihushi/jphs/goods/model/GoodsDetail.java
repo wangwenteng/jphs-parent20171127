@@ -8,162 +8,274 @@ import com.jinpaihushi.model.BaseModel;
 
 @SuppressWarnings("serial")
 public class GoodsDetail extends BaseModel {
-	/** 平台id */
-	@Length(max = 50, message = "{goods.productId.illegal.length}")
-	private String productId;
-	/** 平台name */
-	@Length(max = 50, message = "{goods.productId.illegal.length}")
-	private String productName;
+    /** 平台id */
+    @Length(max = 50, message = "{goods.productId.illegal.length}")
+    private String productId;
 
-	/** 标题 */
-	@Length(max = 100, message = "{goods.title.illegal.length}")
-	private String title;
+    /** 平台name */
+    @Length(max = 50, message = "{goods.productId.illegal.length}")
+    private String productName;
 
-	/** 标题 */
-	private Integer must;
+    /** 标题 */
+    @Length(max = 100, message = "{goods.title.illegal.length}")
+    private String title;
 
-	/** 副标题 */
-	@Length(max = 100, message = "{goods.subTitle.illegal.length}")
-	private String subTitle;
+    /** 订单模板id */
+    @Length(max = 50, message = "{goods.orderTemplateId.illegal.length}")
+    private String orderTemplateId;
 
-	/** 文字内容 */
-	@Length(max = 65535, message = "{goods.content.illegal.length}")
-	private String content;
-	/** 是否需要服务工具 */
-	private Integer tool;
+    /** 标题 */
+    private Integer must;
 
-	/** 服务类型，1-标准服务，2-等级服务 */
-	private Integer gradeType;
+    private Integer isProve;
 
-	/** 是否需要上保险 */
-	private Integer insurance;
+    /** 副标题 */
+    @Length(max = 100, message = "{goods.subTitle.illegal.length}")
+    private String subTitle;
 
-	/** 备注 */
-	@Length(max = 255, message = "{goods.remark.illegal.length}")
-	private String remark;
-	
-	/**
-	 * 用来存储平台但客户端的图片信息
-	 * eg：官网PC端的图片  
-	 */
-	private Images images;
-	
-	private List<Grade> grade;
-	/**
-	 * 订单数量
-	 */
-	private Integer orderNumer =0;
-	private Integer level;
-	public String getProductId() {
-		return productId;
-	}
+    /** 文字内容 */
+    @Length(max = 65535, message = "{goods.content.illegal.length}")
+    private String content;
 
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-	
-	public String getProductName() {
-		return productName;
-	}
+    /** 是否需要服务工具 */
+    private Integer dzTool;
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
+    /** 是否需要服务工具 */
+    private Integer hlTool;
 
-	public String getTitle() {
-		return title;
-	}
+    /** 服务类型，1-标准服务，2-等级服务 */
+    private Integer gradeType;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    /** 是否需要上保险 */
+    private Integer insurance;
 
-	public Integer getMust() {
-		return must;
-	}
+    /** 备注 */
+    @Length(max = 255, message = "{goods.remark.illegal.length}")
+    private String remark;
 
-	public void setMust(Integer must) {
-		this.must = must;
-	}
+    /**
+     * 用来存储平台但客户端的图片信息
+     * eg：官网PC端的图片  
+     */
+    private Images images;
 
-	public String getSubTitle() {
-		return subTitle;
-	}
+    private List<Grade> grade;
 
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
-	}
+    /**
+     * 订单数量
+     */
+    private Integer orderNumer = 0;
 
-	public String getContent() {
-		return content;
-	}
+    private Integer level;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    private Integer numberLen;
 
-	public Integer getTool() {
-		return tool;
-	}
+    private Double prive;
 
-	public void setTool(Integer tool) {
-		this.tool = tool;
-	}
+    private Double service_number;
 
-	public Integer getGradeType() {
-		return gradeType;
-	}
+    private Double service_time;
 
-	public void setGradeType(Integer gradeType) {
-		this.gradeType = gradeType;
-	}
+    private String unit;
 
-	public Integer getInsurance() {
-		return insurance;
-	}
+    /** 体检医院id */
+    @Length(max = 50, message = "{goods.tijianHospitalName.illegal.length}")
+    private String tijianHospitalName;
 
-	public void setInsurance(Integer insurance) {
-		this.insurance = insurance;
-	}
+    /** 体检医院id */
+    @Length(max = 50, message = "{goods.tijianHospitalId.illegal.length}")
+    private String tijianHospitalId;
 
-	public String getRemark() {
-		return remark;
-	}
+    public String getProductId() {
+        return productId;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
-	public Images getImages() {
-		return images;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public void setImages(Images images) {
-		this.images = images;
-	}
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
-	public List<Grade> getGrade() {
-		return grade;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setGrade(List<Grade> grade) {
-		this.grade = grade;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public Integer getOrderNumer() {
-		return orderNumer;
-	}
+    public Integer getMust() {
+        return must;
+    }
 
-	public void setOrderNumer(Integer orderNumer) {
-		this.orderNumer = orderNumer;
-	}
+    public void setMust(Integer must) {
+        this.must = must;
+    }
 
-	public Integer getLevel() {
-		return level;
-	}
+    public String getSubTitle() {
+        return subTitle;
+    }
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
-		
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getDzTool() {
+        return dzTool;
+    }
+
+    public void setDzTool(Integer dzTool) {
+        this.dzTool = dzTool;
+    }
+
+    public Integer getHlTool() {
+        return hlTool;
+    }
+
+    public void setHlTool(Integer hlTool) {
+        this.hlTool = hlTool;
+    }
+
+    public Integer getGradeType() {
+        return gradeType;
+    }
+
+    public void setGradeType(Integer gradeType) {
+        this.gradeType = gradeType;
+    }
+
+    public Integer getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Integer insurance) {
+        this.insurance = insurance;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Images getImages() {
+        return images;
+    }
+
+    public void setImages(Images images) {
+        this.images = images;
+    }
+
+    public List<Grade> getGrade() {
+        return grade;
+    }
+
+    public void setGrade(List<Grade> grade) {
+        this.grade = grade;
+    }
+
+    public Integer getOrderNumer() {
+        return orderNumer;
+    }
+
+    public void setOrderNumer(Integer orderNumer) {
+        this.orderNumer = orderNumer;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getNumberLen() {
+        return numberLen;
+    }
+
+    public void setNumberLen(Integer numberLen) {
+        this.numberLen = numberLen;
+    }
+
+    public Double getPrive() {
+        return prive;
+    }
+
+    public void setPrive(Double prive) {
+        this.prive = prive;
+    }
+
+    public Double getService_number() {
+        return service_number;
+    }
+
+    public void setService_number(Double service_number) {
+        this.service_number = service_number;
+    }
+
+    public Double getService_time() {
+        return service_time;
+    }
+
+    public void setService_time(Double service_time) {
+        this.service_time = service_time;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Integer getIsProve() {
+        return isProve;
+    }
+
+    public void setIsProve(Integer isProve) {
+        this.isProve = isProve;
+    }
+
+    public String getTijianHospitalName() {
+        return tijianHospitalName;
+    }
+
+    public void setTijianHospitalName(String tijianHospitalName) {
+        this.tijianHospitalName = tijianHospitalName;
+    }
+
+    public String getTijianHospitalId() {
+        return tijianHospitalId;
+    }
+
+    public void setTijianHospitalId(String tijianHospitalId) {
+        this.tijianHospitalId = tijianHospitalId;
+    }
+
+    public String getOrderTemplateId() {
+        return orderTemplateId;
+    }
+
+    public void setOrderTemplateId(String orderTemplateId) {
+        this.orderTemplateId = orderTemplateId;
+    }
+
 }

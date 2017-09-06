@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.commodity.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +28,34 @@ public class CommodityOrderInfoServiceImpl extends BaseServiceImpl<CommodityOrde
 		return commodityOrderInfoDao;
 	}
 
+	@Override
+	public Integer updateByOrderNo(CommodityOrderInfo commodityOrderInfo) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.updateByOrderNo(commodityOrderInfo);
+	}
+
+	@Override
+	public List<CommodityOrderInfo> getListByCoId(String coId) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.getListByCoId(coId);
+	}
+
+	@Override
+	public List<CommodityOrderInfo> judgeProfit(CommodityOrderInfo commodityOrderInfo) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.judgeProfit(commodityOrderInfo);
+	}
+
+	@Override
+	public Integer confimOrder(String comId) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.confimOrder(comId);
+	}
+
+	@Override
+	public List<CommodityOrderInfo> getList(String coId) {
+		// TODO Auto-generated method stub
+		return commodityOrderInfoDao.getList(coId);
+	}
+	
 }

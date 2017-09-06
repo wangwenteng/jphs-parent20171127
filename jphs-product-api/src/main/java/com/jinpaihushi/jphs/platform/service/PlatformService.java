@@ -18,29 +18,30 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface PlatformService extends BaseService<Platform> {
 
-	PageInfo<Platform> queryByPage(Integer p, Integer n, Platform platform);
+    PageInfo<Platform> queryByPage(Integer p, Integer n, Platform platform);
 
-	List<TreeNode> getGoodsList(Platform platform);
+    List<TreeNode> getGoodsList(Platform platform);
 
-	String insertPlatform(Platform platform);
-	
-	List<Site> getSelectSite(Platform platform);
+    String insertPlatform(Platform platform);
 
-	boolean updatePlatform(Platform platform);
-	/**
-	 * 获取平台的二级导航
-	 * @param platformId 平台id
-	 * @return
-	 */
-	List<Product> getNavigation(String platformId,Integer deviceType);
+    List<Site> getSelectSite(Platform platform);
 
-	/**
-	 * 获取品类信息
-	 * @param platformId
-	 * @param deviceType
-	 * @return
-	 */
-	List<Map<String, Object>> getProductList(String platformId, Integer deviceType);
+    boolean updatePlatform(Platform platform);
 
-	List<Map<String, Object>> getGoodsList(String platformId, String productId, Integer deviceType,String siteId);
+    /**
+     * 获取平台的二级导航
+     * @param platformId 平台id
+     * @return
+     */
+    List<Product> getNavigation(String platformId, Integer deviceType);
+
+    /**
+     * 获取品类信息
+     * @param platformId
+     * @param deviceType
+     * @return
+     */
+    List<Map<String, Object>> getProductList(String platformId, Integer deviceType);
+
+    List<Map<String, Object>> getAllGoodsList(Map<String, Object> query);
 }

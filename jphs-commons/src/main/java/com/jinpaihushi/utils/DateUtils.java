@@ -1,6 +1,7 @@
 package com.jinpaihushi.utils;
 
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -546,7 +548,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return beginTime.getTime();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 //		System.out.println(getYesterdayDateStr("yyyy-MM-dd 23:00:00"));
 		// beforeOneHourTime();
 		// System.out.println(dateStrToWeekDay("20141030"));
@@ -606,13 +608,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 //		System.out.println(parseDateTime("2017-2-32 11:33:30", "y-M-d H:m:s"));
 		
-		Date date = new Date();
-		//LocalDateTime ldt = LocalDateTime.now();
-		LocalDateTime dateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-		Date convertToDate = Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
-		System.out.println(convertToDate.getTime());
-		System.out.println(date.getTime());
+		String string = "2016-9-4 21:59:06";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(sdf.parse(string));
 		
+    	long s = DateUtils.getDistanceDays(sdf.parse(string),new Date());
+    	
+		System.out.println("ssss....."+s);
 	}
 
 	/**
@@ -663,4 +665,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return LocalDateTime.parse(date, formatter);
 	}
 	
+	/** 
+     * 两个时间之间相差距离多少天 
+     * @param one 时间参数 1： 
+     * @param two 时间参数 2： 
+     * @return 相差天数 
+     */  
+    public static long getDistanceDays(Date str1, Date str2) throws Exception{  
+        long days=0;  
+        try {  
+            long time1 = str1.getTime();  
+            long time2 = str2.getTime();  
+            long diff ;  
+            if(time1<time2) {  
+                diff = time2 - time1;  
+            } else {  
+                diff = time1 - time2;  
+            }  
+            days = diff / (1000 * 60 * 60 * 24);  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        return days;  
+    }  
+    
 }

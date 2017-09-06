@@ -29,6 +29,8 @@ public class Jobtitle extends BaseModel implements Predicate<Jobtitle>,
     /** 职称名称 */
 	@Length(max = 128, message = "{jobtitle.name.illegal.length}")
 	private String name;
+	
+	private String jtName;
 
     /** 职称类型id */
 	@Length(max = 50, message = "{jobtitle.jobtitleTypeId.illegal.length}")
@@ -42,6 +44,13 @@ public class Jobtitle extends BaseModel implements Predicate<Jobtitle>,
 	
 	/** 等级 */
 	private Integer grade;
+	
+	public String getJtName() {
+    	return jtName;
+    }
+	public void setJtName(String jtName) {
+    	this.jtName = jtName;
+    }
 	
 	/**
 	 * 获取等级

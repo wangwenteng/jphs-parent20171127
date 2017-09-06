@@ -2,9 +2,7 @@ package com.jinpaihushi.jphs.commodity.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -52,6 +50,9 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 
     /** 销售价 */
 	private Double price;
+	
+	@Length(max = 65535, message = "{commodityOrderInfo.remark.illegal.length}")
+	private String code;
 
     /** 商品sku */
 	@Length(max = 255, message = "{commodityOrderInfo.commodityPriceName.illegal.length}")
@@ -67,11 +68,27 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
     /** 备注 */
 	@Length(max = 65535, message = "{commodityOrderInfo.remark.illegal.length}")
 	private String remark;
+	
+	private String url;
+	
+	private String name;
 
 	public CommodityOrderInfo(){}
 
 	public CommodityOrderInfo(String id){
 		this.id = id;
+	}
+	
+	private String cpId;
+	
+	
+
+	public String getCpId() {
+		return cpId;
+	}
+
+	public void setCpId(String cpId) {
+		this.cpId = cpId;
 	}
 
 	/**
@@ -227,8 +244,37 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 	public void setRemark(String remark) {
     	this.remark = remark;
     }
+	
+	
 
-    public String toString() {
+    public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("CommodityOrderInfo{").
 			append("id=").append(id).
 			append(",commodityOrderId=").append(commodityOrderId).

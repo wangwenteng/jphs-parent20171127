@@ -25,7 +25,7 @@ public interface WorktimeService extends BaseService<Worktime> {
      * @param isNextWeek 是否是下周
      * @return
      */
-    List<Worktime> findWorkTime(String userId, Boolean isNextWeek);
+    List<Worktime> findWorkTime(String userId);
 
     /**
      * 更新护士的日程时间
@@ -41,11 +41,11 @@ public interface WorktimeService extends BaseService<Worktime> {
      */
     List<Worktime> findUserWorkTime(String productId);
 
-	/**
-	 * 护士主页的可约时间
-	 * @param userId
-	 * @return
-	 */
-	List<Worktime> getNurseWorktime(String userId);
+    /**
+     * 护士主页的可约时间
+     * @param userId
+     * @return
+     */
+    List<Worktime> getNurseWorktime(String userId);
 
 }

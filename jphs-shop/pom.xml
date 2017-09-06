@@ -20,5 +20,10 @@
 			<artifactId>jphs-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-user</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>

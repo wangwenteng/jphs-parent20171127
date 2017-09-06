@@ -210,58 +210,58 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>alipay-sdk-java</groupId>
-		  <artifactId>alipay-sdk-java</artifactId>
-		  <version>1.0</version>
+			<groupId>alipay-sdk-java</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>1.0</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>org.jvnet.hudson.dom4j</groupId>
-		  <artifactId>dom4j</artifactId>
-		  <version>1.6.1-hudson-3</version>
+			<groupId>org.jvnet.hudson.dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1-hudson-3</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>org.apache.geronimo.bundles</groupId>
-		  <artifactId>commons-httpclient</artifactId>
-		  <version>3.1_2</version>
+			<groupId>org.apache.geronimo.bundles</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1_2</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi-ooxml</artifactId>
-		    <version>3.14</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.14</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>ueditor-mini</groupId>
-		  <artifactId>ueditor-mini</artifactId>
-		  <version>1.0</version>
+			<groupId>ueditor-mini</groupId>
+			<artifactId>ueditor-mini</artifactId>
+			<version>1.0</version>
 		</dependency>
-		<!-- 微信支付所需jar	OUT -->
-			<dependency>
-			  <groupId>jaxen-1.1.6</groupId>
-			  <artifactId>jaxen-1.1.6</artifactId>
-			  <version>1.0</version>
-			</dependency>
-			
-			<dependency>
-			  <groupId>jdom</groupId>
-			  <artifactId>jdom</artifactId>
-			  <version>1.0</version>
-			</dependency>
-		<!-- 微信支付所需jar	ENT -->
-		
-		<!-- 银联支付  -->
+		<!-- 微信支付所需jar OUT -->
 		<dependency>
-		  <groupId>bcprov-jdk16</groupId>
-		  <artifactId>bcprov-jdk16</artifactId>
-		  <version>1.6</version>
+			<groupId>jaxen-1.1.6</groupId>
+			<artifactId>jaxen-1.1.6</artifactId>
+			<version>1.0</version>
 		</dependency>
-		
-		<!-- 银联支付 			END-->
+
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- 微信支付所需jar ENT -->
+
+		<!-- 银联支付 -->
+		<dependency>
+			<groupId>bcprov-jdk16</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.6</version>
+		</dependency>
+
+		<!-- 银联支付 END -->
 		<!-- 时间操作组件 -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -272,12 +272,50 @@
 			<artifactId>taobao-sdk</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<!--定时器 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.3</version>
 		</dependency>
+		<!-- 极光推送配置开始 -->
+		<!-- 极光客户端 -->
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jpush-client</artifactId>
+    		<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jiguang-common</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.6.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- For log4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- 极光推送配置开始 -->
 	</dependencies>
 </project>

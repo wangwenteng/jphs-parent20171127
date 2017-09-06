@@ -18,4 +18,13 @@
 		interface="com.jinpaihushi.jphs.voucher.service.VoucherService" />
 	<dubbo:service ref="voucherRepertoryService"
 		interface="com.jinpaihushi.jphs.voucher.service.VoucherRepertoryService" />
+
+	<!-- 工作时间 -->
+	<dubbo:service ref="worktimeService"
+		interface="com.jinpaihushi.jphs.worktime.service.WorktimeService" />
+	<!-- 短信 -->
+	<dubbo:service ref="verificationService"
+		interface="com.jinpaihushi.jphs.verification.service.VerificationService" />
+	<dubbo:service ref="transactionService"
+		interface="com.jinpaihushi.jphs.transaction.service.TransactionService" />
 </beans>

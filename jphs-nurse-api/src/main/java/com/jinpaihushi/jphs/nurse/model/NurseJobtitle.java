@@ -27,7 +27,6 @@ import com.jinpaihushi.model.BaseModel;
 public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>,
 		Updator<NurseJobtitle> {
 
-
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.name.illegal.length}")
 	private String name;
@@ -42,6 +41,13 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.hospital.illegal.length}")
 	private String hospital;
+	
+	private String studyInstitution;
+
+    /** 机构ID */
+	@Length(max = 50, message = "{nurseJobtitle.nurseInstitutionsId.illegal.length}")
+	private String nurseInstitutionsId;
+	//			   nurseInstitutionsId
 
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.departmentId.illegal.length}")
@@ -64,6 +70,7 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	
 	private List<NurseImages> nurseImages;
 	
+	private String sculpture;
 	/**	身份证-正面	*/
 	private String sfzz;
 	/**	身份证-反面	*/
@@ -94,6 +101,20 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	}
 	public void setNurseImages(List<NurseImages> nurseImages) {
 		this.nurseImages = nurseImages;
+	}
+	
+	public String getSculpture() {
+		return sculpture;
+	}
+	public void setSculpture(String sculpture) {
+		this.sculpture = sculpture;
+	}
+	
+	public String getStudyInstitution() {
+		return studyInstitution;
+	}
+	public void setStudyInstitution(String studyInstitution) {
+		this.studyInstitution = studyInstitution;
 	}
 	
 	public String getSfzz() {
@@ -207,6 +228,20 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
     	this.hospital = hospital;
     }
 
+	/**
+	 * 获取机构ID
+	 */
+	public String getNurseInstitutionsId() {
+    	return nurseInstitutionsId;
+    }
+  	
+	/**
+	 * 设置机构ID
+	 */
+	public void setNurseInstitutionsId(String nurseInstitutionsId) {
+    	this.nurseInstitutionsId = nurseInstitutionsId;
+    }
+	
 	/**
 	 * 获取
 	 */

@@ -10,27 +10,30 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.order.dao.OrderGoodsDao">
 	
 	<sql id="field">
-		OG.id, OG.order_id, OG.goods_id, OG.title, 
-		OG.price, OG.pay_price, OG.profit, OG.expector_id, 
-		OG.executor_id, OG.status, OG.create_time, OG.remark
+		OG.id, OG.order_id, OG.goods_id, OG.price_part_id, 
+		OG.title, OG.price, OG.pay_price, OG.profit, 
+		OG.expector_id, OG.executor_id, OG.status, OG.create_time, 
+		OG.remark
 	</sql>
 
 	<sql id="fieldGlobal">
 		OG.id OG_id, OG.order_id OG_order_id, 
-		OG.goods_id OG_goods_id, OG.title OG_title, 
-		OG.price OG_price, OG.pay_price OG_pay_price, 
-		OG.profit OG_profit, OG.expector_id OG_expector_id, 
-		OG.executor_id OG_executor_id, OG.status OG_status, 
-		OG.create_time OG_create_time, OG.remark OG_remark
+		OG.goods_id OG_goods_id, OG.price_part_id OG_price_part_id, 
+		OG.title OG_title, OG.price OG_price, 
+		OG.pay_price OG_pay_price, OG.profit OG_profit, 
+		OG.expector_id OG_expector_id, OG.executor_id OG_executor_id, 
+		OG.status OG_status, OG.create_time OG_create_time, 
+		OG.remark OG_remark
 	</sql>
 	
 	<sql id="fieldWithAlias">
 		OG.id id, OG.order_id orderId, 
-		OG.goods_id goodsId, OG.title title, 
-		OG.price price, OG.pay_price payPrice, 
-		OG.profit profit, OG.expector_id expectorId, 
-		OG.executor_id executorId, OG.status status, 
-		OG.create_time createTime, OG.remark remark
+		OG.goods_id goodsId, OG.price_part_id pricePartId, 
+		OG.title title, OG.price price, 
+		OG.pay_price payPrice, OG.profit profit, 
+		OG.expector_id expectorId, OG.executor_id executorId, 
+		OG.status status, OG.create_time createTime, 
+		OG.remark remark
 	</sql>
 	
 	<sql id="condition">
@@ -42,6 +45,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="goodsId!=null and goodsId!=''">
 			AND OG.goods_id=#{goodsId}
+		</if>
+		<if test="pricePartId!=null and pricePartId!=''">
+			AND OG.price_part_id=#{pricePartId}
 		</if>
 		<if test="title!=null and title!=''">
 			AND OG.title=#{title}
@@ -89,6 +95,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="goodsId!=null and goodsId!=''">
 				AND OG.goods_id LIKE CONCAT('%', #{goodsId}, '%')
 			</if>
+			<if test="pricePartId!=null and pricePartId!=''">
+				AND OG.price_part_id LIKE CONCAT('%', #{pricePartId}, '%')
+			</if>
 			<if test="title!=null and title!=''">
 				AND OG.title LIKE CONCAT('%', #{title}, '%')
 			</if>
@@ -130,6 +139,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="goodsId!=null">
 				OG.goods_id=#{goodsId}, 
 		   </if>
+           <if test="pricePartId!=null">
+				OG.price_part_id=#{pricePartId}, 
+		   </if>
            <if test="title!=null">
 				OG.title=#{title}, 
 		   </if>
@@ -170,6 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="goodsId" column="goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="pricePartId" column="price_part_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="payPrice" column="pay_price" javaType="Double" jdbcType="DECIMAL"></result>
@@ -185,6 +198,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="id" column="OG_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="orderId" column="OG_order_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="goodsId" column="OG_goods_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="pricePartId" column="OG_price_part_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="title" column="OG_title" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="price" column="OG_price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="payPrice" column="OG_pay_price" javaType="Double" jdbcType="DECIMAL"></result>
@@ -199,18 +213,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.order.model.OrderGoods">
 		INSERT INTO `ORDER_GOODS`(
 			id, order_id, 
-			goods_id, title, 
-			price, pay_price, 
-			profit, expector_id, 
-			executor_id, status, 
-			create_time, remark
+			goods_id, price_part_id, 
+			title, price, 
+			pay_price, profit, 
+			expector_id, executor_id, 
+			status, create_time, 
+			remark
 		)VALUES(
 			#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
-			#{goodsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-			#{price,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, 
-			#{profit,jdbcType=DECIMAL}, #{expectorId,jdbcType=VARCHAR}, 
-			#{executorId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-			#{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+			#{goodsId,jdbcType=VARCHAR}, #{pricePartId,jdbcType=VARCHAR}, 
+			#{title,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+			#{payPrice,jdbcType=DECIMAL}, #{profit,jdbcType=DECIMAL}, 
+			#{expectorId,jdbcType=VARCHAR}, #{executorId,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{remark,jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -219,22 +235,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <![CDATA[
         INSERT INTO `ORDER_GOODS`(
 			id, order_id, 
-			goods_id, title, 
-			price, pay_price, 
-			profit, expector_id, 
-			executor_id, status, 
-			create_time, remark
+			goods_id, price_part_id, 
+			title, price, 
+			pay_price, profit, 
+			expector_id, executor_id, 
+			status, create_time, 
+			remark
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, 
-			#{item.goodsId,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, 
-			#{item.price,jdbcType=DECIMAL}, #{item.payPrice,jdbcType=DECIMAL}, 
-			#{item.profit,jdbcType=DECIMAL}, #{item.expectorId,jdbcType=VARCHAR}, 
-			#{item.executorId,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
-			#{item.createTime,jdbcType=TIMESTAMP}, #{item.remark,jdbcType=VARCHAR}
+			#{item.goodsId,jdbcType=VARCHAR}, #{item.pricePartId,jdbcType=VARCHAR}, 
+			#{item.title,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, 
+			#{item.payPrice,jdbcType=DECIMAL}, #{item.profit,jdbcType=DECIMAL}, 
+			#{item.expectorId,jdbcType=VARCHAR}, #{item.executorId,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.remark,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>

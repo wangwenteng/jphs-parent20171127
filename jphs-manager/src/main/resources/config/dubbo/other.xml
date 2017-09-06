@@ -8,16 +8,38 @@
         ">
 	<dubbo:reference id="accessLogService" interface="com.jinpaihushi.jphs.access.service.AccessLogService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="advertisingService" interface="com.jinpaihushi.jphs.activity.service.AdvertisingService"
-		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="voucherUseService" interface="com.jinpaihushi.jphs.activity.service.VoucherUseService"
-		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="healthLogService" interface="com.jinpaihushi.jphs.health.service.HealthLogService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="transactionService" interface="com.jinpaihushi.jphs.transaction.service.TransactionService"
+ 	<dubbo:reference id="tijianHealthLogService" interface="com.jinpaihushi.jphs.tijian.service.TijianHealthLogService"
 		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="insuranceService" interface="com.jinpaihushi.jphs.insurance.service.InsuranceService"
 		timeout="${dubbo.timeout}" check="false" />
- 	<dubbo:reference id="feedbackService" interface="com.jinpaihushi.jphs.user.service.FeedbackService"
+	<dubbo:reference id="informationService" interface="com.jinpaihushi.jphs.information.service.InformationService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="informationCollectionService" interface="com.jinpaihushi.jphs.information.service.InformationCollectionService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="informationEvaluateService" interface="com.jinpaihushi.jphs.information.service.InformationEvaluateService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<!--轮播图  -->
+	<dubbo:reference id="advertisingService" interface="com.jinpaihushi.jphs.activity.service.AdvertisingService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 广告位  -->
+	<dubbo:reference id="adpositionService" interface="com.jinpaihushi.jphs.adposition.service.AdpositionService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 经纬度 -->
+	<dubbo:reference id="positionService" interface="com.jinpaihushi.jphs.position.service.PositionService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="tijianHospitalService" interface="com.jinpaihushi.jphs.tijian.service.TijianHospitalService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="recoveredRecordService" interface="com.jinpaihushi.jphs.recovered.service.RecoveredRecordService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="peizhenRecordService" interface="com.jinpaihushi.jphs.peizhen.service.PeizhenRecordService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="peizhenPharmacyRemindService" interface="com.jinpaihushi.jphs.peizhen.service.PeizhenPharmacyRemindService"
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="columnServiceService" interface="com.jinpaihushi.jphs.column.service.ColumnServiceService"
+		timeout="${dubbo.timeout}" check="false" />
+	<!-- 意见反馈 -->
+	<dubbo:reference id="feedbackService" interface="com.jinpaihushi.jphs.user.service.FeedbackService"
 		timeout="${dubbo.timeout}" check="false" />
 </beans>

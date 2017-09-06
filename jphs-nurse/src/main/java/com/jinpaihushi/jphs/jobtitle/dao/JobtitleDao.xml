@@ -6,18 +6,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.jobtitle.dao.JobtitleDao">
 
 	<sql id="field">
-		J.id, J.name, J.jobtitle_type_id, J.creator_id,
+		J.id, J.name, J.jobtitle_type_id, J.grade, J.creator_id,
 		J.creator_name, J.create_time, J.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		J.id J_id, J.name J_name, J.jobtitle_type_id
-		J_jobtitle_type_id, J.creator_id J_creator_id, J.creator_name
-		J_creator_name, J.create_time J_create_time, J.status J_status
+		J.id J_id, J.name J_name, J.jobtitle_type_id J_jobtitle_type_id, 
+		J.grade J_grade,J.creator_id J_creator_id, J.creator_name J_creator_name, 
+		J.create_time J_create_time, J.status J_status
 	</sql>
 
 	<sql id="fieldWithAlias">
-		J.id id, J.name name, J.jobtitle_type_id jobtitleTypeId,
+		J.id id, J.name name, J.jobtitle_type_id jobtitleTypeId,J.grade grade,
 		J.creator_id creatorId, J.creator_name creatorName, J.create_time
 		createTime, J.status status
 	</sql>
@@ -31,6 +31,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="jobtitleTypeId!=null and jobtitleTypeId!=''">
 			AND J.jobtitle_type_id=#{jobtitleTypeId}
+		</if>
+		<if test="grade!=null and grade!=''">
+			AND J.grade=#{grade}
 		</if>
 		<if test="creatorId!=null and creatorId!=''">
 			AND J.creator_id=#{creatorId}
@@ -61,8 +64,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND J.name LIKE CONCAT('%', #{name}, '%')
 			</if>
 			<if test="jobtitleTypeId!=null and jobtitleTypeId!=''">
-				AND J.jobtitle_type_id LIKE CONCAT('%',
-				#{jobtitleTypeId}, '%')
+				AND J.jobtitle_type_id LIKE CONCAT('%',#{jobtitleTypeId}, '%')
+			</if>
+			<if test="grade!=null">
+				AND J.grade=#{grade}
 			</if>
 			<if test="creatorId!=null and creatorId!=''">
 				AND J.creator_id LIKE CONCAT('%', #{creatorId}, '%')
@@ -89,6 +94,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="jobtitleTypeId!=null">
 				J.jobtitle_type_id=#{jobtitleTypeId},
+			</if>
+			<if test="grade!=null">
+				J.grade=#{grade},
 			</if>
 			<if test="creatorId!=null">
 				J.creator_id=#{creatorId},
@@ -117,6 +125,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="jobtitleTypeId" column="jobtitle_type_id"
 			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String"
@@ -133,6 +143,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="jobtitleTypeId" column="J_jobtitle_type_id"
 			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="J_grade" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="creatorId" column="J_creator_id" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="J_creator_name"
@@ -146,10 +158,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
 		INSERT INTO `JOBTITLE`(
-		id, name, jobtitle_type_id,
+		id, name, jobtitle_type_id, grade,
 		creator_id, creator_name, create_time, status
 		)VALUES(
-		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+		#{grade,jdbcType=INTEGER},
 		#{jobtitleTypeId,jdbcType=VARCHAR},
 		#{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR},
@@ -161,7 +174,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <![CDATA[
         INSERT INTO `JOBTITLE`(
 			id, name, 
-			jobtitle_type_id, creator_id, 
+			jobtitle_type_id,grade, creator_id, 
 			creator_name, create_time, 
 			status
         )]]>
@@ -172,6 +185,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.id,jdbcType=VARCHAR},
 			#{item.name,jdbcType=VARCHAR},
 			#{item.jobtitleTypeId,jdbcType=VARCHAR},
+			#{item.grade,jdbcType=INTEGER},
 			#{item.creatorId,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR},
 			#{item.createTime,jdbcType=TIMESTAMP},
@@ -230,6 +244,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `JOBTITLE` J
 		WHERE J.ID = #{id}
 	</select>
+	
+	<select id="jobtitleSelectList" resultMap="jobtitleSelectLists">
+		SELECT 
+		J.id,
+		JT.name jtname,
+		J.name,
+		J.jobtitle_type_id,
+		J.grade,
+		J.creator_id,
+		J.creator_name,
+		J.create_time,
+		J.status
+		FROM `JOBTITLE` J 
+		LEFT JOIN JOBTITLE_TYPE JT ON J.jobtitle_type_id=JT.id 
+		WHERE J.status=1 AND JT.status=1 ORDER BY J.jobtitle_type_id,J.grade
+	</select>	
+	
+	<resultMap id="jobtitleSelectLists" type="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jtName" column="jtname" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleTypeId" column="jobtitle_type_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="grade" column="grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	
 	<select id="checkName" resultType="java.lang.Integer">
 		SELECT
 		count(J.name)

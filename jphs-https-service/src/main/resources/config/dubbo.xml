@@ -29,4 +29,6 @@
 	<import resource="dubbo/system.xml"/>
 	<!-- 其它接口 -->
 	<import resource="dubbo/other.xml"/>
+	<!-- 商品 -->
+	<import resource="dubbo/commodity.xml"/>
 </beans>

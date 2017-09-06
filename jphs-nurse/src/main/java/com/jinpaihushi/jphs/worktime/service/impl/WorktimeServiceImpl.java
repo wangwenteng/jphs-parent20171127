@@ -8,13 +8,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.PageHelper;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.worktime.dao.WorktimeDao;
 import com.jinpaihushi.jphs.worktime.model.Worktime;
@@ -31,6 +33,9 @@ import com.jinpaihushi.utils.UUIDUtils;
  * @version 1.0
  */
 @Service("worktimeService")
+@Component
+@Configurable
+@EnableScheduling
 public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements WorktimeService {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -57,6 +62,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     @Override
     public void updateUserWorkTime() {
         try {
+            System.out.println("开始更新用户日程信息-------");
             // 将当前日期的数据删除（如果是每天凌晨执行）
             String yesterday = CycleTimeUtils.getPastDate(1);
             worktimeDao.deleteByCalendar(yesterday);
@@ -69,6 +75,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             insert.setUserid("0");
             insert.setWeek(week);
             insert.setH9(0);
+            insert.setH10(0);
             insert.setH11(0);
             insert.setH12(0);
             insert.setH13(0);
@@ -89,7 +96,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     }
 
     @Override
-    public List<Worktime> findWorkTime(String userId, Boolean isNextWeek) {
+    public List<Worktime> findWorkTime(String userId) {
         List<Worktime> result = new ArrayList<Worktime>();
         Worktime query = new Worktime();
         query.setUserid(userId);
@@ -102,7 +109,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateAllNurseWorkTime() {
-
+        System.out.println("开始更新护士日程信息-------");
         List<String> list = worktimeDao.getAllNurse();
         String startDay = CycleTimeUtils.getFetureDate(7);
         String endDays = CycleTimeUtils.getFetureDate(13);
@@ -121,6 +128,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
                 worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(time)));
                 worktime.setUserid(string);
                 worktime.setH9(1);
+                worktime.setH10(1);
                 worktime.setH11(1);
                 worktime.setH12(1);
                 worktime.setH13(1);
@@ -161,6 +169,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(string)));
             worktime.setUserid(userId);
             worktime.setH9(1);
+            worktime.setH10(1);
             worktime.setH11(1);
             worktime.setH12(1);
             worktime.setH13(1);
@@ -193,6 +202,9 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         if (productId.equals("137")) {
             hour = Integer.valueOf(WorkTimeBy2);
         }
+        else {
+            hour = 4;
+        }
         // 当前时间
         Date date = new Date();
         try {
@@ -207,6 +219,9 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             userWorktime = worktimeDao.load(userWorktime);
             int hour24 = ca.get(Calendar.HOUR_OF_DAY);
             switch (hour24) {
+            case 24:
+            case 23:
+            case 22:
             case 21:
                 userWorktime.setH21(1);
             case 20:
@@ -240,6 +255,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             if (i > 0) {
                 userWorktime = new Worktime();
                 userWorktime.setUserid("0");
+                userWorktime.setOrderby("W.calendar ASC");
                 result = worktimeDao.list(userWorktime);
             }
         }
@@ -267,44 +283,46 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             userWorktime.setCalendar(sdf.format(date));
             userWorktime.setUserid(userId);
             userWorktime = worktimeDao.load(userWorktime);
-            int hour24 = ca.get(Calendar.HOUR_OF_DAY);
-            switch (hour24) {
-            case 21:
-                userWorktime.setH21(1);
-            case 20:
-                userWorktime.setH20(1);
-            case 19:
-                userWorktime.setH19(1);
-            case 18:
-                userWorktime.setH18(1);
-            case 17:
-                userWorktime.setH17(1);
-            case 16:
-                userWorktime.setH16(1);
-            case 15:
-                userWorktime.setH15(1);
-            case 14:
-                userWorktime.setH14(1);
-            case 13:
-                userWorktime.setH13(1);
-            case 12:
-                userWorktime.setH12(1);
-            case 11:
-                userWorktime.setH11(1);
-            case 10:
-                userWorktime.setH10(1);
-            case 9:
-                userWorktime.setH9(1);
-            default:
-                break;
-            }
-            int i = worktimeDao.update(userWorktime);
-            if (i > 0) {
-                userWorktime = new Worktime();
-                userWorktime.setUserid(userId);
-                userWorktime.setCalendar(sdf.format(date));
-                userWorktime.setOrderby("W.calendar ASC");
-                result = worktimeDao.queryByTime(userWorktime);
+            if (userWorktime != null) {
+                int hour24 = ca.get(Calendar.HOUR_OF_DAY);
+                switch (hour24) {
+                case 21:
+                    userWorktime.setH21(1);
+                case 20:
+                    userWorktime.setH20(1);
+                case 19:
+                    userWorktime.setH19(1);
+                case 18:
+                    userWorktime.setH18(1);
+                case 17:
+                    userWorktime.setH17(1);
+                case 16:
+                    userWorktime.setH16(1);
+                case 15:
+                    userWorktime.setH15(1);
+                case 14:
+                    userWorktime.setH14(1);
+                case 13:
+                    userWorktime.setH13(1);
+                case 12:
+                    userWorktime.setH12(1);
+                case 11:
+                    userWorktime.setH11(1);
+                case 10:
+                    userWorktime.setH10(1);
+                case 9:
+                    userWorktime.setH9(1);
+                default:
+                    break;
+                }
+                int i = worktimeDao.update(userWorktime);
+                if (i > 0) {
+                    userWorktime = new Worktime();
+                    userWorktime.setUserid(userId);
+                    userWorktime.setCalendar(sdf.format(date));
+                    userWorktime.setOrderby("W.calendar ASC");
+                    result = worktimeDao.queryByTime(userWorktime);
+                }
             }
         }
         catch (Exception e) {

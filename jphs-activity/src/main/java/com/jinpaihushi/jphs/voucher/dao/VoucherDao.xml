@@ -559,7 +559,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</if>
 		<if test="status!=null">
-			<if test="status==3">
+			<if test="status==1">
 				AND vu.use_time IS NOT NULL
 			</if>
 			<if test="status==2">
@@ -567,7 +567,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND vu.end_time < NOW()
 				]]>
 			</if>
-			<if test="status==1">
+			<if test="status==3">
 				<![CDATA[
 				AND vu.end_time > NOW() AND vu.use_time IS  NULL
 				]]>

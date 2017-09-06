@@ -54,14 +54,14 @@
 		<div class="public-cell public-cell-about login_input">
 			<img src="/static/img/login/zhanghao.png" />
 			<div class="public_primary">
-				<input type="text" id="userName" name="userName" placeholder="管理员名称" />
+				<input type="text" id="userName" name="userName" placeholder="邮箱前缀或手机号码" />
 			</div>
 		</div>
 		<div class="public-cell public-cell-about login_input">
 			<img src="/static/img/login/mima.png" />
 			<div class="public_primary">
 				<input type="password" id="password" name="password"
-					placeholder="管理员密码" />
+					placeholder="" />
 			</div>
 		</div>
 		<div class="login_foot">

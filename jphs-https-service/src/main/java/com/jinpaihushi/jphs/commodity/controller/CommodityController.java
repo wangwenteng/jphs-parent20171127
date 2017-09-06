@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.utils.PageInfos;
 import com.github.pagehelper.Page;
@@ -40,6 +41,7 @@ public class CommodityController extends BaseController<Commodity> {
 
 	@Autowired
 	private CommodityService commodityService;
+	
 
 	@Override
 	protected BaseService<Commodity> getService() {
@@ -48,26 +50,31 @@ public class CommodityController extends BaseController<Commodity> {
 
 	@RequestMapping(name = "获取商品列表", path = "/getShopList.json")
 	@ResponseBody
-	public byte[] getShopList(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			String columnId, Integer p) {
+	public byte[] getShopList(
+			String columnId,String nurseId, Integer p,String sort) {
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println(p);
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("commodity.getShopList.json,columnId =" + columnId);
+				Util.debugLog.debug("commodity.getShopList.json,columnId =" + columnId +", nurseId = " +nurseId);
 			}
 			if (StringUtils.isEmpty(columnId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			PageHelper.startPage(p, 2);
-			List<Commodity> list = commodityService.getCommodityList(columnId);
+			if (p == null) {
+				p = 1;
+			}
+			PageHelper.startPage(p, 10);
+			List<CommodityMap> list = commodityService.getCommodityList(columnId,nurseId,sort);
 			
-			PageInfo<Commodity> page = new PageInfo<>(list);
+
+			PageInfo<CommodityMap> page = new PageInfo<CommodityMap>(list);
 			if (list == null) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}
 			return JSONUtil.toJSONResult(1, "操作成功！", page);
 		} catch (Exception e) {
-			Util.failLog.error("commodity.getShopList.json,columnId =" + columnId, e);
+			Util.failLog.error("commodity.getShopList.json,columnId =" + columnId +", nurseId = " +nurseId, e);
 		}
 		return null;
 	}
@@ -119,5 +126,89 @@ public class CommodityController extends BaseController<Commodity> {
 		}
 		return null;
 	}
+
+
+	
+	@RequestMapping(name = "护士销售信息列表", path = "/getNurseSale.json")
+	@ResponseBody
+	public byte[] getNurseSale(HttpSession hs, HttpServletRequest req,
+			HttpServletResponse resp, ModelMap modelMap,
+			String nurseId, String commodityId,String schedule, Integer p) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.getNurseSale.json,nurseId =" + nurseId +",commodityId="+commodityId +",schedule =" +schedule);
+			}
+			if (StringUtils.isEmpty(nurseId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if (StringUtils.isEmpty(commodityId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			List<Commodity> list = commodityService.getNurseSale(nurseId,commodityId,schedule);
+			if (list == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", list);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.getNurseSale.json,nurseId =" + nurseId +",commodityId="+commodityId +",schedule="+schedule, e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "获取商品列表", path = "/getListByCar.json")
+	@ResponseBody
+	public byte[] getListByCar(
+			String ids) {
+			 
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.getListByCar.json,ids =" + ids );
+			}
+			if (StringUtils.isEmpty(ids)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			 
+		 
+			List<Commodity> list = commodityService.getListByCar(ids);
+			
+			
+			if (list == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", list);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.getListByCar.json,ids =" + ids , e);
+		}
+		return null;
+	}
+
+
+	@RequestMapping(name = "获取商品列表", path = "/getOneDetail.json")
+	@ResponseBody
+	public byte[] getOneDetail(HttpSession hs, HttpServletRequest req,
+			HttpServletResponse resp, ModelMap modelMap,
+			String commodityId,String cpId, Integer p) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.getOneDetail.json,commodityId =" + commodityId +",cpId =" + cpId);
+			}
+			if (StringUtils.isEmpty(commodityId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			if (StringUtils.isEmpty(cpId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+			Commodity commodity = commodityService.getOneDetail(commodityId,cpId);
+			if (commodity == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", commodity);
+		} catch (Exception e) {
+			Util.failLog.error("commodity.getOneDetail.json,commodityId =" + commodityId +",cpId = "+cpId, e);
+		}
+		return null;
+	}
+
 
 }

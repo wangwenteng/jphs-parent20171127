@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.commodity.service;
 import java.util.List;
 
 import com.jinpaihushi.jphs.commodity.model.Commodity;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.service.BaseService;
 
 /**
@@ -13,10 +14,15 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityService extends BaseService<Commodity> {
 
-	List<Commodity> getCommodityList(String columnId);
+	List<CommodityMap> getCommodityList(String columnId,String nurseId,String sort);
 	
 	Commodity getCommodityDetail(String columnId,String commodityId);
 	
 	List<Commodity> getSaleByNurse(String nurseId);
 
+	List<Commodity> getNurseSale(String nurseId,String commodityId,String schedule);
+	
+	List<Commodity> getListByCar(String ids);
+
+	Commodity getOneDetail(String commodityId,String cpId);
 }

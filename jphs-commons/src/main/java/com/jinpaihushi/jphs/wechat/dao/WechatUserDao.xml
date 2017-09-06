@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-04 16:26:15
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.wechat.dao.WechatUserDao">
+	
+	<sql id="field">
+		WU.id, WU.appid, WU.openid, WU.nickname, 
+		WU.sex, WU.province, WU.city, WU.country, 
+		WU.headimgurl, WU.privilege, WU.unionid, WU.errcode, 
+		WU.errmsg, WU.create_time, WU.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		WU.id WU_id, WU.appid WU_appid, 
+		WU.openid WU_openid, WU.nickname WU_nickname, 
+		WU.sex WU_sex, WU.province WU_province, 
+		WU.city WU_city, WU.country WU_country, 
+		WU.headimgurl WU_headimgurl, WU.privilege WU_privilege, 
+		WU.unionid WU_unionid, WU.errcode WU_errcode, 
+		WU.errmsg WU_errmsg, WU.create_time WU_create_time, 
+		WU.status WU_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		WU.id id, WU.appid appid, 
+		WU.openid openid, WU.nickname nickname, 
+		WU.sex sex, WU.province province, 
+		WU.city city, WU.country country, 
+		WU.headimgurl headimgurl, WU.privilege privilege, 
+		WU.unionid unionid, WU.errcode errcode, 
+		WU.errmsg errmsg, WU.create_time createTime, 
+		WU.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND WU.id=#{id}
+		</if>
+		<if test="appid!=null and appid!=''">
+			AND WU.appid=#{appid}
+		</if>
+		<if test="openid!=null and openid!=''">
+			AND WU.openid=#{openid}
+		</if>
+		<if test="nickname!=null and nickname!=''">
+			AND WU.nickname=#{nickname}
+		</if>
+		<if test="sex!=null and sex!=''">
+			AND WU.sex=#{sex}
+		</if>
+		<if test="province!=null and province!=''">
+			AND WU.province=#{province}
+		</if>
+		<if test="city!=null and city!=''">
+			AND WU.city=#{city}
+		</if>
+		<if test="country!=null and country!=''">
+			AND WU.country=#{country}
+		</if>
+		<if test="headimgurl!=null and headimgurl!=''">
+			AND WU.headimgurl=#{headimgurl}
+		</if>
+		<if test="privilege!=null and privilege!=''">
+			AND WU.privilege=#{privilege}
+		</if>
+		<if test="unionid!=null and unionid!=''">
+			AND WU.unionid=#{unionid}
+		</if>
+		<if test="errcode!=null and errcode!=''">
+			AND WU.errcode=#{errcode}
+		</if>
+		<if test="errmsg!=null and errmsg!=''">
+			AND WU.errmsg=#{errmsg}
+		</if>
+		<if test="createTime!=null">
+			AND WU.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND WU.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND WU.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="appid!=null and appid!=''">
+				AND WU.appid LIKE CONCAT('%', #{appid}, '%')
+			</if>
+			<if test="openid!=null and openid!=''">
+				AND WU.openid LIKE CONCAT('%', #{openid}, '%')
+			</if>
+			<if test="nickname!=null and nickname!=''">
+				AND WU.nickname LIKE CONCAT('%', #{nickname}, '%')
+			</if>
+			<if test="sex!=null and sex!=''">
+				AND WU.sex LIKE CONCAT('%', #{sex}, '%')
+			</if>
+			<if test="province!=null and province!=''">
+				AND WU.province LIKE CONCAT('%', #{province}, '%')
+			</if>
+			<if test="city!=null and city!=''">
+				AND WU.city LIKE CONCAT('%', #{city}, '%')
+			</if>
+			<if test="country!=null and country!=''">
+				AND WU.country LIKE CONCAT('%', #{country}, '%')
+			</if>
+			<if test="headimgurl!=null and headimgurl!=''">
+				AND WU.headimgurl LIKE CONCAT('%', #{headimgurl}, '%')
+			</if>
+			<if test="privilege!=null and privilege!=''">
+				AND WU.privilege LIKE CONCAT('%', #{privilege}, '%')
+			</if>
+			<if test="unionid!=null and unionid!=''">
+				AND WU.unionid LIKE CONCAT('%', #{unionid}, '%')
+			</if>
+			<if test="errcode!=null and errcode!=''">
+				AND WU.errcode LIKE CONCAT('%', #{errcode}, '%')
+			</if>
+			<if test="errmsg!=null and errmsg!=''">
+				AND WU.errmsg LIKE CONCAT('%', #{errmsg}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND WU.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND WU.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				WU.id=#{id}, 
+		   </if>
+           <if test="appid!=null">
+				WU.appid=#{appid}, 
+		   </if>
+           <if test="openid!=null">
+				WU.openid=#{openid}, 
+		   </if>
+           <if test="nickname!=null">
+				WU.nickname=#{nickname}, 
+		   </if>
+           <if test="sex!=null">
+				WU.sex=#{sex}, 
+		   </if>
+           <if test="province!=null">
+				WU.province=#{province}, 
+		   </if>
+           <if test="city!=null">
+				WU.city=#{city}, 
+		   </if>
+           <if test="country!=null">
+				WU.country=#{country}, 
+		   </if>
+           <if test="headimgurl!=null">
+				WU.headimgurl=#{headimgurl}, 
+		   </if>
+           <if test="privilege!=null">
+				WU.privilege=#{privilege}, 
+		   </if>
+           <if test="unionid!=null">
+				WU.unionid=#{unionid}, 
+		   </if>
+           <if test="errcode!=null">
+				WU.errcode=#{errcode}, 
+		   </if>
+           <if test="errmsg!=null">
+				WU.errmsg=#{errmsg}, 
+		   </if>
+           <if test="createTime!=null">
+				WU.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				WU.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="wechatUser" type="com.jinpaihushi.jphs.wechat.model.WechatUser">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appid" column="appid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openid" column="openid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nickname" column="nickname" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sex" column="sex" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="province" column="province" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="city" column="city" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="country" column="country" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="headimgurl" column="headimgurl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="privilege" column="privilege" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unionid" column="unionid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errcode" column="errcode" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errmsg" column="errmsg" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="wechatUserGlobal" type="com.jinpaihushi.jphs.wechat.model.WechatUser">
+		<result property="id" column="WU_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appid" column="WU_appid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openid" column="WU_openid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nickname" column="WU_nickname" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sex" column="WU_sex" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="province" column="WU_province" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="city" column="WU_city" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="country" column="WU_country" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="headimgurl" column="WU_headimgurl" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="privilege" column="WU_privilege" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unionid" column="WU_unionid" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errcode" column="WU_errcode" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="errmsg" column="WU_errmsg" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="WU_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="WU_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.wechat.model.WechatUser">
+		INSERT INTO `WECHAT_USER`(
+			id, appid, 
+			openid, nickname, 
+			sex, province, 
+			city, country, 
+			headimgurl, privilege, 
+			unionid, errcode, 
+			errmsg, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{appid,jdbcType=VARCHAR}, 
+			#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+			#{sex,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+			#{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+			#{headimgurl,jdbcType=VARCHAR}, #{privilege,jdbcType=VARCHAR}, 
+			#{unionid,jdbcType=VARCHAR}, #{errcode,jdbcType=VARCHAR}, 
+			#{errmsg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `WECHAT_USER`(
+			id, appid, 
+			openid, nickname, 
+			sex, province, 
+			city, country, 
+			headimgurl, privilege, 
+			unionid, errcode, 
+			errmsg, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.appid,jdbcType=VARCHAR}, 
+			#{item.openid,jdbcType=VARCHAR}, #{item.nickname,jdbcType=VARCHAR}, 
+			#{item.sex,jdbcType=VARCHAR}, #{item.province,jdbcType=VARCHAR}, 
+			#{item.city,jdbcType=VARCHAR}, #{item.country,jdbcType=VARCHAR}, 
+			#{item.headimgurl,jdbcType=VARCHAR}, #{item.privilege,jdbcType=VARCHAR}, 
+			#{item.unionid,jdbcType=VARCHAR}, #{item.errcode,jdbcType=VARCHAR}, 
+			#{item.errmsg,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE WU FROM `WECHAT_USER` WU WHERE WU.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `WECHAT_USER` WU
+		SET 
+		WU.STATUS = -1
+		WHERE WU.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `WECHAT_USER` WU
+		<include refid="dynamicSet" /> 
+	    WHERE WU.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="wechatUser">
+		SELECT <include refid="field"/>
+		FROM `WECHAT_USER` WU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `WECHAT_USER` WU
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="wechatUser">
+		SELECT <include refid="field"/>
+		FROM `WECHAT_USER` WU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="wechatUser">
+		SELECT <include refid="field"/>
+		FROM `WECHAT_USER` WU
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="wechatUser">
+		SELECT <include refid="field"/>
+		FROM `WECHAT_USER` WU
+		WHERE WU.ID = #{id}
+	</select>
+	
+</mapper>

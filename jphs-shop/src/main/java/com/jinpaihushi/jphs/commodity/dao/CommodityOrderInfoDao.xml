@@ -2,42 +2,38 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	yangsong
-	date	:	2017-08-09 09:07:25
-	version	:	1.0
--->
+<!-- author : yangsong date : 2017-08-09 09:07:25 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao">
-	
+
 	<sql id="field">
-		COI.id, COI.commodity_order_id, COI.commodity_id, COI.user_id, 
-		COI.profit, COI.title, COI.old_price, COI.price, 
-		COI.commodity_price_name, COI.commodity_model, COI.number, COI.remark, 
-		COI.status, COI.create_time, COI.creator_id, COI.creator_name
+		COI.id, COI.commodity_order_id, COI.commodity_id,
+		COI.user_id, COI.profit, COI.title, COI.old_price, COI.price,
+		COI.commodity_price_name, COI.commodity_model, COI.number, COI.remark,
+		COI.status, COI.create_time, COI.creator_id, COI.creator_name, COI.code,
 	</sql>
 
 	<sql id="fieldGlobal">
-		COI.id COI_id, COI.commodity_order_id COI_commodity_order_id, 
-		COI.commodity_id COI_commodity_id, COI.user_id COI_user_id, 
-		COI.profit COI_profit, COI.title COI_title, 
-		COI.old_price COI_old_price, COI.price COI_price, 
-		COI.commodity_price_name COI_commodity_price_name, COI.commodity_model COI_commodity_model, 
-		COI.number COI_number, COI.remark COI_remark, 
-		COI.status COI_status, COI.create_time COI_create_time, 
-		COI.creator_id COI_creator_id, COI.creator_name COI_creator_name
+		COI.id COI_id, COI.commodity_order_id
+		COI_commodity_order_id, COI.commodity_id COI_commodity_id, COI.user_id
+		COI_user_id, COI.profit COI_profit, COI.title COI_title, COI.old_price
+		COI_old_price, COI.price COI_price, COI.commodity_price_name
+		COI_commodity_price_name, COI.commodity_model COI_commodity_model,
+		COI.number COI_number, COI.remark COI_remark, COI.status COI_status,
+		COI.create_time COI_create_time, COI.creator_id COI_creator_id,
+		COI.creator_name COI_creator_name,
+		COI.code COI_code
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		COI.id id, COI.commodity_order_id commodityOrderId, 
-		COI.commodity_id commodityId, COI.user_id userId, 
-		COI.profit profit, COI.title title, 
-		COI.old_price oldPrice, COI.price price, 
-		COI.commodity_price_name commodityPriceName, COI.commodity_model commodityModel, 
-		COI.number number, COI.remark remark, 
-		COI.status status, COI.create_time createTime, 
-		COI.creator_id creatorId, COI.creator_name creatorName
+		COI.id id, COI.commodity_order_id commodityOrderId,
+		COI.commodity_id commodityId, COI.user_id userId, COI.profit profit,
+		COI.title title, COI.old_price oldPrice, COI.price price,
+		COI.commodity_price_name commodityPriceName, COI.commodity_model
+		commodityModel, COI.number number, COI.remark remark, COI.status
+		status, COI.create_time createTime, COI.creator_id creatorId,
+		COI.creator_name creatorName,COI.code code
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND COI.id=#{id}
@@ -87,24 +83,29 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND COI.creator_name=#{creatorName}
 		</if>
+		<if test="code!=null and code!=''">
+			AND COI.code=#{code}
+		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
 				AND COI.id LIKE CONCAT('%', #{id}, '%')
 			</if>
 			<if test="commodityOrderId!=null and commodityOrderId!=''">
-				AND COI.commodity_order_id LIKE CONCAT('%', #{commodityOrderId}, '%')
+				AND COI.commodity_order_id LIKE CONCAT('%',
+				#{commodityOrderId}, '%')
 			</if>
 			<if test="commodityId!=null and commodityId!=''">
-				AND COI.commodity_id LIKE CONCAT('%', #{commodityId}, '%')
+				AND COI.commodity_id LIKE CONCAT('%', #{commodityId},
+				'%')
 			</if>
 			<if test="userId!=null and userId!=''">
 				AND COI.user_id LIKE CONCAT('%', #{userId}, '%')
@@ -122,10 +123,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND COI.price=#{price}
 			</if>
 			<if test="commodityPriceName!=null and commodityPriceName!=''">
-				AND COI.commodity_price_name LIKE CONCAT('%', #{commodityPriceName}, '%')
+				AND COI.commodity_price_name LIKE CONCAT('%',
+				#{commodityPriceName}, '%')
 			</if>
 			<if test="commodityModel!=null and commodityModel!=''">
-				AND COI.commodity_model LIKE CONCAT('%', #{commodityModel}, '%')
+				AND COI.commodity_model LIKE CONCAT('%',
+				#{commodityModel}, '%')
 			</if>
 			<if test="number!=null">
 				AND COI.number=#{number}
@@ -143,132 +146,172 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND COI.creator_id LIKE CONCAT('%', #{creatorId}, '%')
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
-				AND COI.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+				AND COI.creator_name LIKE CONCAT('%', #{creatorName},
+				'%')
+			</if>
+			<if test="code!=null and code!=''">
+				AND COI.code LIKE CONCAT('%', #{code}, '%')
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				COI.id=#{id}, 
-		   </if>
-           <if test="commodityOrderId!=null">
-				COI.commodity_order_id=#{commodityOrderId}, 
-		   </if>
-           <if test="commodityId!=null">
-				COI.commodity_id=#{commodityId}, 
-		   </if>
-           <if test="userId!=null">
-				COI.user_id=#{userId}, 
-		   </if>
-           <if test="profit!=null">
-				COI.profit=#{profit}, 
-		   </if>
-           <if test="title!=null">
-				COI.title=#{title}, 
-		   </if>
-           <if test="oldPrice!=null">
-				COI.old_price=#{oldPrice}, 
-		   </if>
-           <if test="price!=null">
-				COI.price=#{price}, 
-		   </if>
-           <if test="commodityPriceName!=null">
-				COI.commodity_price_name=#{commodityPriceName}, 
-		   </if>
-           <if test="commodityModel!=null">
-				COI.commodity_model=#{commodityModel}, 
-		   </if>
-           <if test="number!=null">
-				COI.number=#{number}, 
-		   </if>
-           <if test="remark!=null">
-				COI.remark=#{remark}, 
-		   </if>
-           <if test="status!=null">
-				COI.status=#{status}, 
-		   </if>
-           <if test="createTime!=null">
-				COI.create_time=#{createTime}, 
-		   </if>
-           <if test="creatorId!=null">
-				COI.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				COI.creator_name=#{creatorName}, 
-		   </if>
+			<if test="id!=null">
+				COI.id=#{id},
+			</if>
+			<if test="commodityOrderId!=null">
+				COI.commodity_order_id=#{commodityOrderId},
+			</if>
+			<if test="commodityId!=null">
+				COI.commodity_id=#{commodityId},
+			</if>
+			<if test="userId!=null">
+				COI.user_id=#{userId},
+			</if>
+			<if test="profit!=null">
+				COI.profit=#{profit},
+			</if>
+			<if test="title!=null">
+				COI.title=#{title},
+			</if>
+			<if test="oldPrice!=null">
+				COI.old_price=#{oldPrice},
+			</if>
+			<if test="price!=null">
+				COI.price=#{price},
+			</if>
+			<if test="commodityPriceName!=null">
+				COI.commodity_price_name=#{commodityPriceName},
+			</if>
+			<if test="commodityModel!=null">
+				COI.commodity_model=#{commodityModel},
+			</if>
+			<if test="number!=null">
+				COI.number=#{number},
+			</if>
+			<if test="remark!=null">
+				COI.remark=#{remark},
+			</if>
+			<if test="status!=null">
+				COI.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				COI.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				COI.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				COI.creator_name=#{creatorName},
+			</if>
+			<if test="code!=null">
+				COI.code=#{code},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="commodityOrderInfo" type="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
+	<resultMap id="commodityOrderInfo"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityId" column="commodity_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="oldPrice" column="old_price" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="commodityPriceName" column="commodity_price_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityModel" column="commodity_model" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="number" column="number" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="commodity_order_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="commodity_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="profit" column="profit" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="oldPrice" column="old_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="price" column="price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="commodityPriceName" column="commodity_price_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityModel" column="commodity_model"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="number" column="number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<resultMap id="commodityOrderInfoGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
-		<result property="id" column="COI_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderId" column="COI_commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityId" column="COI_commodity_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="userId" column="COI_user_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="profit" column="COI_profit" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="title" column="COI_title" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="oldPrice" column="COI_old_price" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="price" column="COI_price" javaType="Double" jdbcType="DECIMAL"></result>
-		<result property="commodityPriceName" column="COI_commodity_price_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityModel" column="COI_commodity_model" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="number" column="COI_number" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="remark" column="COI_remark" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="COI_status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="COI_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="COI_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="COI_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+
+	<resultMap id="commodityOrderInfoGlobal"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
+		<result property="id" column="COI_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="COI_commodity_order_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="COI_commodity_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="COI_user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="profit" column="COI_profit" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="title" column="COI_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="oldPrice" column="COI_old_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="price" column="COI_price" javaType="Double"
+			jdbcType="DECIMAL"></result>
+		<result property="commodityPriceName" column="COI_commodity_price_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityModel" column="COI_commodity_model"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="number" column="COI_number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="COI_remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="COI_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="COI_create_time"
+			javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="COI_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="COI_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="COI_code" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
 		INSERT INTO `COMMODITY_ORDER_INFO`(
-			id, commodity_order_id, 
-			commodity_id, user_id, 
-			profit, title, 
-			old_price, price, 
-			commodity_price_name, commodity_model, 
-			number, remark, 
-			status, create_time, 
-			creator_id, creator_name
-		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR}, 
-			#{commodityId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-			#{profit,jdbcType=DECIMAL}, #{title,jdbcType=VARCHAR}, 
-			#{oldPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, 
-			#{commodityPriceName,jdbcType=VARCHAR}, #{commodityModel,jdbcType=VARCHAR}, 
-			#{number,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
-		)
+		id, commodity_order_id, commodity_id, user_id, profit, title, old_price,
+		price, commodity_price_name, commodity_model, number, remark, status,
+		create_time, creator_id, creator_name ,code)VALUES(
+		#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR},
+		#{commodityId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+		#{profit,jdbcType=DECIMAL}, #{title,jdbcType=VARCHAR},
+		#{oldPrice,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL},
+		#{commodityPriceName,jdbcType=VARCHAR},
+		#{commodityModel,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER},
+		#{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR} )
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `COMMODITY_ORDER_INFO`(
 			id, commodity_order_id, 
@@ -278,43 +321,50 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			commodity_price_name, commodity_model, 
 			number, remark, 
 			status, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name,code
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderId,jdbcType=VARCHAR}, 
-			#{item.commodityId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, 
-			#{item.profit,jdbcType=DECIMAL}, #{item.title,jdbcType=VARCHAR}, 
-			#{item.oldPrice,jdbcType=DECIMAL}, #{item.price,jdbcType=DECIMAL}, 
-			#{item.commodityPriceName,jdbcType=VARCHAR}, #{item.commodityModel,jdbcType=VARCHAR}, 
-			#{item.number,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR}, 
-			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
-			)
+			#{item.id,jdbcType=VARCHAR},
+			#{item.commodityOrderId,jdbcType=VARCHAR},
+			#{item.commodityId,jdbcType=VARCHAR},
+			#{item.userId,jdbcType=VARCHAR}, #{item.profit,jdbcType=DECIMAL},
+			#{item.title,jdbcType=VARCHAR}, #{item.oldPrice,jdbcType=DECIMAL},
+			#{item.price,jdbcType=DECIMAL},
+			#{item.commodityPriceName,jdbcType=VARCHAR},
+			#{item.commodityModel,jdbcType=VARCHAR},
+			#{item.number,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.code,jdbcType=VARCHAR} )
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE COI FROM `COMMODITY_ORDER_INFO` COI WHERE COI.ID = #{id} 
+		DELETE COI FROM `COMMODITY_ORDER_INFO` COI WHERE
+		COI.ID = #{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `COMMODITY_ORDER_INFO` COI
-		SET 
+		UPDATE `COMMODITY_ORDER_INFO` COI
+		SET
 		COI.STATUS = -1
 		WHERE COI.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `COMMODITY_ORDER_INFO` COI
-		<include refid="dynamicSet" /> 
-	    WHERE COI.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE COI.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="commodityOrderInfo">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_ORDER_INFO` COI
 		<include refid="dynamicWhere" />
 	</select>
@@ -325,23 +375,129 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="commodityOrderInfo">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_ORDER_INFO` COI
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="commodityOrderInfo">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_ORDER_INFO` COI
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-	
+
 	<select id="loadById" resultMap="commodityOrderInfo">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_ORDER_INFO` COI
 		WHERE COI.ID = #{id}
 	</select>
+
+	<update id="updateByOrderNo">
+		UPDATE
+		commodity_order_info coi
+		SET
+		coi.status = #{status}
+		WHERE coi.commodity_order_id = #{commodityOrderId}
+	</update>
+
+	<select id="getAllNumber" resultType="java.lang.Integer">
+		SELECT
+		SUM(coi.number)
+		FROM commodity_order_info coi
+		WHERE coi.commodity_order_id = #{id}
+	</select>
+
+	<select id="getAllNumberByCommoditById" resultType="java.lang.Integer">
+		SELECT
+		SUM(coi.number)
+		FROM commodity_order_info coi
+		WHERE coi.commodity_id = #{commodityId}
+	</select>
+
+	<select id="getMoneyByNurse" resultType="java.lang.Double">
+		SELECT
+		SUM(coi.profit)
+		FROM commodity_order_info coi
+		WHERE coi.commodity_id = #{commodityId}
+		AND coi.user_id = #{userId}
+	</select>
+
+	<select id="getListByCoId" resultMap="commodityOrderInfo">
+		SELECT
+		coi.title,
+		coi.price,
+		coi.number
+		FROM
+		commodity_order_info coi
+		WHERE coi.commodity_order_id = #{coId};
+	</select>
+
+
+
+	<select id="judgeProfit" resultType="java.util.HashMap">
+		SELECT
+		coi.id,
+		coi.commodity_id comId,
+		coi.`status`,
+		coi.profit,
+		coi.price,
+		coi.title,
+		ci.url
+		FROM
+		commodity_order_info coi
+		LEFT JOIN commodity_images ci ON (
+		coi.commodity_id = ci.source_id
+		)
+		WHERE
+		coi.user_id = ${userId}
+		AND ci.type = 1
+		<if test="status==-1">
+			AND coi.`status` = -1
+		</if>
+		<if test="status==0">
+			AND coi.`status` in (0 ,1)
+		</if>
+		<if test="status==2">
+			AND coi.`status` = 2
+		</if>
+	</select>
 	
+	<update id="confimOrder">
+		UPDATE 
+		commodity_order_info coi
+		SET coi.`status` = 1
+		WHERE coi.commodity_order_id =  #{comId}
+	</update>
+	
+	
+	<select id="getList" resultMap="commodityOrderInfo">
+	SELECT
+		ci.url,
+		coi.commodity_id,
+		coi.title,
+		coi.commodity_price_name,
+		coi.number
+	 FROM 
+		commodity_order_info coi
+	LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
+	WHERE coi.commodity_order_id = #{coId}
+	AND ci.type = 1
+	</select>
+	
+	<select id="getOrderInfo" resultMap="commodityOrderInfo">
+		SELECT
+			coi.*,
+			url
+		FROM
+			commodity_order_info coi
+		LEFT JOIN commodity_images ci ON (coi.commodity_id = ci.source_id)
+		WHERE 
+			coi.commodity_order_id = #{coId}
+		AND ci.type=1
+	</select>
 </mapper>

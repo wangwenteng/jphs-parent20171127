@@ -1,7 +1,6 @@
 package com.jinpaihushi.jphs.commodity.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,17 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.car.dao.CarDao;
+import com.jinpaihushi.jphs.car.model.Car;
 import com.jinpaihushi.jphs.commodity.dao.CommodityDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao;
+import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityImages;
+import com.jinpaihushi.jphs.commodity.model.CommodityMap;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
+import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 
 /**
@@ -30,18 +35,62 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 	@Autowired
 	private CommodityDao commodityDao;
 	@Autowired
+	private CommodityOrderInfoDao commodityOrderInfoDao;
+	@Autowired
 	private CommodityImagesDao commodityImagesDao;
+	@Autowired
+	private CarDao carDao;
+	
 	@Override
 	protected BaseDao<Commodity> getDao(){
 		return commodityDao;
 	}
 
 	@Override
-	public List<Commodity> getCommodityList(String columnId) {
+	public List<CommodityMap> getCommodityList(String columnId,String nurseId,String sort
+		 ) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("columnId", columnId);
-		List<Commodity> commodityList = commodityDao.getShopList(map);
-		return commodityList;
+		map.put("nurseId", nurseId);
+		
+		if(sort == ""){
+			sort = "";
+		}else if("1".equals(sort)){
+			sort = " com.create_time";
+		}else if("2".equals(sort)){
+			sort = " counts";
+		}else if("3".equals(sort)){
+			sort = " price";
+		}else if("4".equals(sort)){
+			sort = " price desc";
+		}else if("5".equals(sort)){
+			sort = " shareNumber";
+		} 
+		
+		if( sort != ""){
+			map.put("sort"," order by " + sort);
+		}
+		
+		 
+
+		List<CommodityMap> list = commodityDao.getList(map);
+		
+		 if(nurseId != null){
+			NurseCommodity nurseCommodity = new NurseCommodity();
+			CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
+			nurseCommodity.setCreatorId(nurseId);
+			for(int i = 0;i < list.size();i++ ){
+				//System.out.println(list.get(i).getCommodityId());
+				commodityOrderInfo.setCommodityId(list.get(i).getCommodityId());
+				nurseCommodity.setCommodityId(list.get(i).getId());
+				Integer count = 0;
+				count = commodityOrderInfoDao.getAllNumberByCommoditById(commodityOrderInfo);
+				 
+				list.get(i).setCount(count);
+			}
+		} 
+		
+		return list;
 	}
 
 	@Override
@@ -55,6 +104,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		CommodityImages commodityImages = new CommodityImages();
 		commodityImages.setType(2);
 		commodityImages.setSourceId(commodityId);
+		commodityImages.setStatus(0);
 		Page<CommodityImages> query = commodityImagesDao.query(commodityImages);
 		if(query.size() >0){
 			commodity.setDetailUrl(query.get(0).getUrl());
@@ -69,15 +119,70 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("nurseId", nurseId);
 		List<Commodity> commodityList = commodityDao.getSaleByNurse(map);
-		SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM");
-		Date date=new Date();
-		map.put("currentMonth", dateFormater.format(date));
+
 		for (int i = 0; i < commodityList.size(); i++) {
 			map.put("commodityId", commodityList.get(i).getId());
 			Integer count = commodityDao.getSaleCount(map);
+			Double money = commodityOrderInfoDao.getMoneyByNurse(map);
+			
 			commodityList.get(i).setCount(count);
+			commodityList.get(i).setMoney(money);
 		}
 		return commodityList;
+	}
+
+	@Override
+	public List<Commodity> getNurseSale(String nurseId, String commodityId,String schedule) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("nurseId", nurseId);
+		map.put("commodityId", commodityId);
+		map.put("schedule", schedule);
+		List<Commodity> list = commodityDao.getNurseSale(map);
+		
+		return list;
+	}
+
+	@Override
+	public List<Commodity> getListByCar(String ids) {
+		
+		String[] idArr = ids.split(",");
+		List<Commodity> list = new ArrayList<Commodity>();
+		for (int i = 0; i < idArr.length; i++) {
+			Car car = carDao.loadById(idArr[i]);
+			String commodityId = car.getCommodityId();
+			String commodityPriceId = car.getCommodityPriceId();
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("commodityId", commodityId);
+			map.put("commodityPriceId", commodityPriceId);
+			Commodity com = commodityDao.getInfo(map);
+			com.setCount(car.getNumber());
+			com.setOldPrice(car.getNumber()*com.getOldPrice());
+			list.add(com);
+		}
+		
+		 
+		return list;
+	}
+
+	@Override
+	public Commodity getOneDetail(String commodityId, String cpId) {
+		 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("commodityId", commodityId);
+		map.put("cpId", cpId);
+		Commodity commodity = commodityDao.getOneDetail(map);
+		
+		CommodityImages commodityImages = new CommodityImages();
+		commodityImages.setType(2);
+		commodityImages.setSourceId(commodityId);
+		commodityImages.setStatus(0);
+		Page<CommodityImages> query = commodityImagesDao.query(commodityImages);
+		if(query.size() >0){
+			commodity.setDetailUrl(query.get(0).getUrl());
+		}
+		return commodity;
+		
 	}
 
 }

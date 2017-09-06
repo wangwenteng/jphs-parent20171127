@@ -1,6 +1,5 @@
 package com.jinpaihushi.jphs.access.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.Length;
@@ -17,9 +16,6 @@ import com.jinpaihushi.model.BaseModel;
  */
 @SuppressWarnings("serial")
 public class AccessLogSpread extends BaseModel {
-    private static SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     /** 商品请求地址 */
     @Length(max = 50, message = "{accessLog.goodsUrlId.illegal.length}")

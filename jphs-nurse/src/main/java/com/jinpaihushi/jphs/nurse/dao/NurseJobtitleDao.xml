@@ -6,8 +6,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseJobtitleDao">
 
 	<sql id="field">
-		NJ.id, NJ.name, NJ.sfz, NJ.sex,
-		NJ.hospital,
+		NJ.id, NJ.name, NJ.sfz, NJ.sex, NJ.type,
+		NJ.hospital,NJ.study_institution, NJ.nurse_institutions_id,
 		NJ.department_id, NJ.jobtitle_id, NJ.work_years,
 		NJ.education,
 		NJ.address, NJ.creator_id, NJ.creator_name,
@@ -15,9 +15,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<sql id="fieldGlobal">
-		NJ.id NJ_id, NJ.name NJ_name,
+		NJ.id NJ_id, NJ.name NJ_name, NJ.type NJ_type,
 		NJ.sfz NJ_sfz, NJ.sex NJ_sex,
-		NJ.hospital NJ_hospital, NJ.department_id NJ_department_id,
+		NJ.hospital NJ_hospital,NJ.study_institution NJ_study_institution,
+		 NJ.nurse_institutions_id NJ_nurse_institutions_id, 
+		NJ.department_id NJ_department_id,
 		NJ.jobtitle_id NJ_jobtitle_id, NJ.work_years NJ_work_years,
 		NJ.education NJ_education, NJ.address NJ_address,
 		NJ.creator_id
@@ -27,10 +29,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</sql>
 
 	<sql id="fieldWithAlias">
-		NJ.id id, NJ.name name,
+		NJ.id id, NJ.name name,NJ.type type,
 		NJ.sfz sfz, NJ.sex sex,
-		NJ.hospital
-		hospital, NJ.department_id departmentId,
+		NJ.hospital hospital,NJ.study_institution studyInstitution,
+		NJ.nurse_institutions_id nurseInstitutionsId, 
+		NJ.department_id departmentId,
 		NJ.jobtitle_id jobtitleId,
 		NJ.work_years workYears,
 		NJ.education education, NJ.address address,
@@ -52,8 +55,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="sex!=null">
 			AND NJ.sex=#{sex}
 		</if>
+		<if test="type!=null">
+			AND NJ.type=#{type}
+		</if>
 		<if test="hospital!=null and hospital!=''">
 			AND NJ.hospital=#{hospital}
+		</if>
+		<if test="studyInstitution!=null and studyInstitution=''">
+			AND NJ.study_institution=#{studyInstitution}
+		</if>
+		<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+			AND NJ.nurse_institutions_id=#{nurseInstitutionsId}
 		</if>
 		<if test="departmentId!=null and departmentId!=''">
 			AND NJ.department_id=#{departmentId}
@@ -104,8 +116,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="sex!=null">
 				AND NJ.sex=#{sex}
 			</if>
+			<if test="type!=null">
+				AND NJ.type=#{type}
+			</if>
 			<if test="hospital!=null and hospital!=''">
 				AND NJ.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="studyInstitution!=null and studyInstitution!=''">
+				AND NJ.study_institution=#{studyInstitution}
+			</if>
+			<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+				AND NJ.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
 			</if>
 			<if test="departmentId!=null and departmentId!=''">
 				AND NJ.department_id LIKE CONCAT('%', #{departmentId},
@@ -146,6 +167,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="name!=null">
 				NJ.name=#{name},
 			</if>
+			<if test="type!=null">
+				NJ.type=#{type},
+			</if>
+			<if test="studyInstitution!=null">
+				NJ.study_institution=#{studyInstitution},
+			</if>
 			<if test="sfz!=null">
 				NJ.sfz=#{sfz},
 			</if>
@@ -155,6 +182,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="hospital!=null">
 				NJ.hospital=#{hospital},
 			</if>
+			<if test="nurseInstitutionsId!=null">
+				NJ.nurse_institutions_id=#{nurseInstitutionsId}, 
+		    </if>
 			<if test="departmentId!=null">
 				NJ.department_id=#{departmentId},
 			</if>
@@ -199,8 +229,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="sex" column="sex" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="hospital" column="hospital" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="studyInstitution" column="study_institution" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="departmentId" column="department_id"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="jobtitleId" column="jobtitle_id" javaType="String"
@@ -231,8 +266,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="sex" column="NJ_sex" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="type" column="NJ_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="NJ_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="hospital" column="NJ_hospital" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="studyInstitution" column="NJ_study_institution" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="NJ_nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="departmentId" column="NJ_department_id"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="jobtitleId" column="NJ_jobtitle_id" javaType="String"
@@ -256,17 +298,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
 		INSERT INTO `NURSE_JOBTITLE`(
-		id, name,
+		id, name,type,
 		sfz, sex,
-		hospital, department_id,
+		hospital,study_institution, nurse_institutions_id, department_id,
 		jobtitle_id, work_years,
 		education, address,
 		creator_id, creator_name,
 		create_time, status
 		)VALUES(
-		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
 		#{sfz,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
-		#{hospital,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
+		#{hospital,jdbcType=VARCHAR}, #{studyInstitution,jdbcType=VARCHAR},
+		#{nurseInstitutionsId,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
 		#{jobtitleId,jdbcType=VARCHAR}, #{workYears,jdbcType=TIMESTAMP},
 		#{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
 		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
@@ -279,7 +322,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         INSERT INTO `NURSE_JOBTITLE`(
 			id, name, 
 			sfz, sex, 
-			hospital, department_id, 
+			hospital,study_institution ,nurse_institutions_id, department_id, 
 			jobtitle_id, work_years, 
 			education, address, 
 			creator_id, creator_name, 
@@ -294,6 +337,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.sfz,jdbcType=VARCHAR},
 			#{item.sex,jdbcType=INTEGER},
 			#{item.hospital,jdbcType=VARCHAR},
+			#{item.studyInstitution,jdbcType=VARCHAR},
+			#{item.nurseInstitutionsId,jdbcType=VARCHAR}, 
 			#{item.departmentId,jdbcType=VARCHAR},
 			#{item.jobtitleId,jdbcType=VARCHAR},
 			#{item.workYears,jdbcType=TIMESTAMP},
@@ -367,7 +412,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		NJ.name nj_name,
 		NJ.sfz nj_sfz,
 		NJ.sex nj_sex,
+		NJ.type nj_type,
 		NJ.hospital nj_hospital,
+		NJ.study_institution nj_study_institution,
+		NJ.nurse_institutions_id nj_nurse_institutions_id,
 		NJ.department_id nj_department_id,
 		NJ.jobtitle_id nj_jobtitle_id,
 		NJ.work_years nj_work_years,
@@ -388,8 +436,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		NI.create_time ni_create_time,
 		NI.status ni_status
 		FROM nurse_jobtitle NJ
-		LEFT JOIN nurse_images NI ON
-		NJ.`id`=NI.`source_id`
+		LEFT JOIN nurse_images NI ON NJ.`id`=NI.`source_id` AND NI.status=1
 		WHERE NJ.`creator_id`=#{id}
 		<if test="njType !=null and njType !=''">
 			AND NJ.`type`=#{njType}
@@ -406,8 +453,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="sex" column="nj_sex" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="type" column="nj_type" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="hospital" column="nj_hospital" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="studyInstitution" column="nj_study_institution" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="nj_nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="departmentId" column="nj_department_id"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="jobtitleId" column="nj_jobtitle_id" javaType="String"
@@ -507,13 +559,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		n.creator_id
 		LEFT JOIN position p ON u.id = p.creator_id
 		<where>
-			AND n.status =1
+			AND n.status =1 
 			<if test="goodsId!=null and goodsId!=''">
 				AND nj.jobtitle_id in (SELECT DISTINCT jg.jobtitle_id
 				FROM `jobtitle_goods` jg WHERE jg.goods_id =#{goodsId} )
 			</if>
 			<if test="nurseName!=null and nurseName!=''">
-				AND u.`name` LIKE CONCAT(#{nurseName}, '%')
+				AND u.`name` LIKE CONCAT(#{nurseName}, '%') 
 			</if>
 		</where>
 		<if test="type==1">

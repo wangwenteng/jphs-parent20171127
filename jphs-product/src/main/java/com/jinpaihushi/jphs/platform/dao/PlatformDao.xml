@@ -387,10 +387,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		t.service_time,
 		t.unit,
 		t.grade_name,
-		t.old_price,
-		(SELECT COUNT(id) numberLen FROM
+		t.old_price
+		<!-- ,(SELECT COUNT(id) numberLen FROM
 		order_goods og WHERE og.goods_id=g.id
-		) numberLen
+		) numberLen -->
 		FROM
 		platform_goods pg
 		LEFT JOIN goods g ON
@@ -419,15 +419,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pp.price
 		) t ON t.id = g.id
 		WHERE
-		pg.platform_id =
-		#{platformId}
-		AND
 		si.device_type =
 		#{deviceType}
+		AND p.status = 1
+		<if test="goodsId==null">
+		AND		pg.platform_id =
+			#{platformId}
+		</if>
 		<if test="productId!=null">
 			AND g.product_id =#{productId}
 		</if>
-		AND p.status = 1
+		<if test="goodsId!=null">
+			AND g.id = #{goodsId}
+		</if>
 		GROUP BY g.id
 		ORDER BY p.sort
 		;

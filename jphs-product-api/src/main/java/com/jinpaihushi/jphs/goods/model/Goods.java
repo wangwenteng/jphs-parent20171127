@@ -25,535 +25,560 @@ import com.jinpaihushi.model.BaseModel;
 @SuppressWarnings("serial")
 public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods> {
 
-	/** 平台id */
-	@Length(max = 50, message = "{goods.productId.illegal.length}")
-	private String productId;
+    /** 平台id */
+    @Length(max = 50, message = "{goods.productId.illegal.length}")
+    private String productId;
 
-	/** 标题 */
-	@Length(max = 100, message = "{goods.title.illegal.length}")
-	private String title;
+    /** 标题 */
+    @Length(max = 100, message = "{goods.title.illegal.length}")
+    private String title;
 
-	/** 标题 */
-	private Integer must;
+    /** 标题 */
+    private Integer must;
 
-	/** 副标题 */
-	@Length(max = 100, message = "{goods.subTitle.illegal.length}")
-	private String subTitle;
+    /** 副标题 */
+    @Length(max = 100, message = "{goods.subTitle.illegal.length}")
+    private String subTitle;
 
-	/** 文字内容 */
-	@Length(max = 65535, message = "{goods.content.illegal.length}")
-	private String content;
+    /** 文字内容 */
+    @Length(max = 65535, message = "{goods.content.illegal.length}")
+    private String content;
 
-	/** 体检类型id */
-	@Length(max = 50, message = "{goods.tijianTypeId.illegal.length}")
-	private String tijianTypeId;
+    /** 体检类型id */
+    @Length(max = 50, message = "{goods.tijianTypeId.illegal.length}")
+    private String tijianTypeId;
 
-	/** 体检医院id */
-	@Length(max = 50, message = "{goods.tijianHospitalId.illegal.length}")
-	private String tijianHospitalId;
+    /** 体检医院id */
+    @Length(max = 50, message = "{goods.tijianHospitalId.illegal.length}")
+    private String tijianHospitalId;
 
-	/** 是否需要服务工具 */
-	private Integer tool;
+    /** 是否需要服务工具 */
+    private Integer dzTool;
 
-	/** 服务类型，1-标准服务，2-等级服务 */
-	private Integer gradeType;
+    /** 是否需要服务工具 */
+    private Integer hlTool;
 
-	/** 是否需要上保险 */
-	private Integer insurance;
+    /** 订单模板id */
+    @Length(max = 50, message = "{goods.orderTemplateId.illegal.length}")
+    private String orderTemplateId;
 
-	/** 排序 */
-	private Integer sort;
+    /** 服务类型，1-标准服务，2-等级服务 */
+    private Integer gradeType;
 
-	/** 是否有背景图 */
-	private Integer isBg;
-	/** 是否需要上传证明 1三张就医证明 2一张 3不需要 */
-	private Integer isProve;
+    /** 是否需要上保险 */
+    private Integer insurance;
 
-	/** 备注 */
-	@Length(max = 255, message = "{goods.remark.illegal.length}")
-	private String remark;
-	
-	private Double maxPrice;
-	
-	private Double minPrice;
-	/**
-	 * 获取品类图片信息
-	 */
-	List<ServiceImages> serviceImagesList;
-	/**
-	 * 获取价格信息
-	 */
-	List<Price> priceList;
+    /** 排序 */
+    private Integer sort;
 
-	/**
-	 * 获取等级价格信息
-	 */
-	List<PriceGrade> priceGrade;
-	
-	List<Grade> grade;
-	/**
-	 * 用来存储平台但客户端的图片信息 eg：官网PC端的图片
-	 */
-	private ServiceImages images;
+    /** 是否有背景图 */
+    private Integer isBg;
 
-	private String url;
-	
-	private PricePart pricePart ;
-	
-	private boolean flag;
+    /** 是否需要上传证明 1三张就医证明 2一张 3不需要 */
+    private Integer isProve;
 
-	/**
-	 * 获取职称列表
-	 *//*
-		 * List<Jobtitle> jobtitleList;
-		 * 
-		 * public List<Jobtitle> getJobtitle() { return jobtitleList; }
-		 * 
-		 * public void setJobtitle(List<Jobtitle> jobtitleList) {
-		 * this.jobtitleList = jobtitleList; }
-		 */
+    /** 备注 */
+    @Length(max = 255, message = "{goods.remark.illegal.length}")
+    private String remark;
 
-	public List<PriceGrade> getPriceGrade() {
-		return priceGrade;
-	}
+    private Double maxPrice;
 
-	public void setPriceGrade(List<PriceGrade> priceGrade) {
-		this.priceGrade = priceGrade;
-	}
+    private Double minPrice;
 
-	/** 服务类型，1-标准服务，2-等级服务 */
-	public Integer getGradeType() {
-		return gradeType;
-	}
+    /**
+     * 获取品类图片信息
+     */
+    List<ServiceImages> serviceImagesList;
 
-	/** 服务类型，1-标准服务，2-等级服务 */
-	public void setGradeType(Integer gradeType) {
-		this.gradeType = gradeType;
-	}
+    /**
+     * 获取价格信息
+     */
+    List<Price> priceList;
 
-	public List<ServiceImages> getServiceImagesList() {
-		return serviceImagesList;
-	}
+    /**
+     * 获取等级价格信息
+     */
+    List<PriceGrade> priceGrade;
 
-	public void setServiceImagesList(List<ServiceImages> serviceImages) {
-		this.serviceImagesList = serviceImages;
-	}
+    List<Grade> grade;
 
-	public List<Price> getPriceList() {
-		return priceList;
-	}
+    /**
+     * 用来存储平台但客户端的图片信息 eg：官网PC端的图片
+     */
+    private ServiceImages images;
 
-	public void setPriceList(List<Price> priceList) {
-		this.priceList = priceList;
-	}
+    private String url;
 
-	public void setMust(Integer must) {
-		this.must = must;
-	}
+    private PricePart pricePart;
 
-	public Integer getMust() {
-		return must;
-	}
+    private boolean flag;
 
-	/**
-	 * 品类
-	 */
-	private Product Product;
+    /**
+     * 获取职称列表
+     *//*
+        * List<Jobtitle> jobtitleList;
+        * 
+        * public List<Jobtitle> getJobtitle() { return jobtitleList; }
+        * 
+        * public void setJobtitle(List<Jobtitle> jobtitleList) {
+        * this.jobtitleList = jobtitleList; }
+        */
 
-	public ServiceImages getImages() {
-		return images;
-	}
-
-	public void setImages(ServiceImages images) {
-		this.images = images;
-	}
-
-	public Goods() {
-	}
-
-	public Goods(String id) {
-		this.id = id;
-	}
-
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
-	public Product getProduct() {
-		return Product;
-	}
-
-	public void setProduct(Product product) {
-		Product = product;
-	}
-
-	/**
-	 * 获取标题
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * 设置标题
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * 获取副标题
-	 */
-	public String getSubTitle() {
-		return subTitle;
-	}
-
-	/**
-	 * 设置副标题
-	 */
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
-	}
-
-	/**
-	 * 获取文字内容
-	 */
-	public String getContent() {
-		return content;
-	}
-
-	/**
-	 * 设置文字内容
-	 */
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	/**
-	 * 获取体检类型id
-	 */
-	public String getTijianTypeId() {
-		return tijianTypeId;
-	}
-
-	/**
-	 * 设置体检类型id
-	 */
-	public void setTijianTypeId(String tijianTypeId) {
-		this.tijianTypeId = tijianTypeId;
-	}
-
-	/**
-	 * 获取体检医院id
-	 */
-	public String getTijianHospitalId() {
-		return tijianHospitalId;
-	}
-
-	/**
-	 * 设置体检医院id
-	 */
-	public void setTijianHospitalId(String tijianHospitalId) {
-		this.tijianHospitalId = tijianHospitalId;
-	}
-
-	/**
-	 * 获取是否需要服务工具
-	 */
-	public Integer getTool() {
-		return tool;
-	}
-
-	/**
-	 * 设置是否需要服务工具
-	 */
-	public void setTool(Integer tool) {
-		this.tool = tool;
-	}
-
-	/**
-	 * 获取是否需要上保险
-	 */
-	public Integer getInsurance() {
-		return insurance;
-	}
-
-	/**
-	 * 设置是否需要上保险
-	 */
-	public void setInsurance(Integer insurance) {
-		this.insurance = insurance;
-	}
-
-	/**
-	 * 获取排序
-	 */
-	public Integer getSort() {
-		return sort;
-	}
-
-	/**
-	 * 设置排序
-	 */
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
-
-	/**
-	 * 获取是否有背景图标识
-	 */
-	public Integer getIsBg() {
-		return isBg;
-	}
-
-	/**
-	 * 设置是否有背景图标识
-	 */
-	public void setIsBg(Integer isBg) {
-		this.isBg = isBg;
-	}
-	/**
-	 * 获取是否需要上传证明 1三张就医证明 2一张 3不需要
-	 */
-	public Integer getIsProve() {
-    	return isProve;
+    public List<PriceGrade> getPriceGrade() {
+        return priceGrade;
     }
-  	
-	/**
-	 * 设置是否需要上传证明 1三张就医证明 2一张 3不需要
-	 */
-	public void setIsProve(Integer isProve) {
-    	this.isProve = isProve;
+
+    public void setPriceGrade(List<PriceGrade> priceGrade) {
+        this.priceGrade = priceGrade;
     }
-	/**
-	 * 获取备注
-	 */
-	public String getRemark() {
-		return remark;
-	}
 
-	/**
-	 * 设置备注
-	 */
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    /** 服务类型，1-标准服务，2-等级服务 */
+    public Integer getGradeType() {
+        return gradeType;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    /** 服务类型，1-标准服务，2-等级服务 */
+    public void setGradeType(Integer gradeType) {
+        this.gradeType = gradeType;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	
+    public List<ServiceImages> getServiceImagesList() {
+        return serviceImagesList;
+    }
 
-	 public PricePart getPricePart() {
-		return pricePart;
-	}
+    public void setServiceImagesList(List<ServiceImages> serviceImages) {
+        this.serviceImagesList = serviceImages;
+    }
 
-	public void setPricePart(PricePart pricePart) {
-		this.pricePart = pricePart;
-	}
-	
-	
+    public List<Price> getPriceList() {
+        return priceList;
+    }
 
-	public List<Grade> getGrade() {
-		return grade;
-	}
+    public void setPriceList(List<Price> priceList) {
+        this.priceList = priceList;
+    }
 
-	public void setGrade(List<Grade> grade) {
-		this.grade = grade;
-	}
-	
-	
+    public void setMust(Integer must) {
+        this.must = must;
+    }
 
-	public Double getMaxPrice() {
-		return maxPrice;
-	}
+    public Integer getMust() {
+        return must;
+    }
 
-	public void setMaxPrice(Double maxPrice) {
-		this.maxPrice = maxPrice;
-	}
+    /**
+     * 品类
+     */
+    private Product Product;
 
-	public Double getMinPrice() {
-		return minPrice;
-	}
+    public ServiceImages getImages() {
+        return images;
+    }
 
-	public void setMinPrice(Double minPrice) {
-		this.minPrice = minPrice;
-	}
-	
-	
+    public void setImages(ServiceImages images) {
+        this.images = images;
+    }
 
-	public boolean isFlag() {
-		return flag;
-	}
+    public Goods() {
+    }
 
-	public void setFlag(boolean flag) {
-		this.flag = flag;
-	}
+    public Goods(String id) {
+        this.id = id;
+    }
 
-	public String toString() {
-			return new StringBuilder().append("Goods{").
-				append("id=").append(id).
-				append(",productId=").append(productId).
-				append(",title=").append(title).
-				append(",subTitle=").append(subTitle).
-				append(",content=").append(content).
-				append(",tijianTypeId=").append(tijianTypeId).
-				append(",tijianHospitalId=").append(tijianHospitalId).
-				append(",tool=").append(tool).
-				append(",insurance=").append(insurance).
-				append(",must=").append(must).
-				append(",type=").append(type).
-				append(",gradeType=").append(gradeType).
-				append(",sort=").append(sort).
-				append(",isBg=").append(isBg).
-				append(",isProve=").append(isProve).
-				append(",remark=").append(remark).
-				append(",status=").append(status).
-				append(",createTime=").append(createTime).
-				append(",creatorId=").append(creatorId).
-				append(",creatorName=").append(creatorName).
-				append('}').toString();
-	    }
-		
-	    /**
-		 * 复制字段：
-		 * id, productId, title, subTitle, 
-		 * content, tijianTypeId, tijianHospitalId, tool, 
-		 * insurance, must, type, gradeType, 
-		 * sort, isBg, isProve, remark, 
-		 * status, createTime, creatorId, creatorName
-		 */
-		public Goods copy(){
-			Goods goods = new Goods();
-	     	goods.id = this.id;
-	     	goods.productId = this.productId;
-	     	goods.title = this.title;
-	     	goods.subTitle = this.subTitle;
-	     	goods.content = this.content;
-	     	goods.tijianTypeId = this.tijianTypeId;
-	     	goods.tijianHospitalId = this.tijianHospitalId;
-	     	goods.tool = this.tool;
-	     	goods.insurance = this.insurance;
-	     	goods.must = this.must;
-	     	goods.type = this.type;
-	     	goods.gradeType = this.gradeType;
-	     	goods.sort = this.sort;
-	     	goods.isBg = this.isBg;
-	     	goods.isProve = this.isProve;
-	     	goods.remark = this.remark;
-	     	goods.status = this.status;
-	     	goods.createTime = this.createTime;
-	     	goods.creatorId = this.creatorId;
-	     	goods.creatorName = this.creatorName;
-			return goods;
-		}
-		
-		/**
-		 * 比较字段：
-		 * id, productId, title, subTitle, 
-		 * content, tijianTypeId, tijianHospitalId, tool, 
-		 * insurance, must, type, gradeType, 
-		 * sort, isBg, isProve, remark, 
-		 * status, createTime, creatorId, creatorName
-		 */
-		@Override
-		public boolean test(Goods t) {
-			if(t == null) return false;
-			return (this.id == null || this.id.equals(t.id))
-					&& (this.productId == null || this.productId.equals(t.productId))
-					&& (this.title == null || this.title.equals(t.title))
-					&& (this.subTitle == null || this.subTitle.equals(t.subTitle))
-					&& (this.content == null || this.content.equals(t.content))
-					&& (this.tijianTypeId == null || this.tijianTypeId.equals(t.tijianTypeId))
-					&& (this.tijianHospitalId == null || this.tijianHospitalId.equals(t.tijianHospitalId))
-					&& (this.tool == null || this.tool.equals(t.tool))
-					&& (this.insurance == null || this.insurance.equals(t.insurance))
-					&& (this.must == null || this.must.equals(t.must))
-					&& (this.type == null || this.type.equals(t.type))
-					&& (this.gradeType == null || this.gradeType.equals(t.gradeType))
-					&& (this.sort == null || this.sort.equals(t.sort))
-					&& (this.isBg == null || this.isBg.equals(t.isBg))
-					&& (this.isProve == null || this.isProve.equals(t.isProve))
-					&& (this.remark == null || this.remark.equals(t.remark))
-					&& (this.status == null || this.status.equals(t.status))
-					&& (this.createTime == null || this.createTime.equals(t.createTime))
-					&& (this.creatorId == null || this.creatorId.equals(t.creatorId))
-					&& (this.creatorName == null || this.creatorName.equals(t.creatorName))
-			;
-		}
-		
-		@Override
-		public void update(Goods element) {
-			if (element == null)
-				return;
-			if (this.id != null && !this.id.isEmpty()) {
-				element.id = this.id;
-			}
-			if (this.productId != null && !this.productId.isEmpty()) {
-				element.productId = this.productId;
-			}
-			if (this.title != null && !this.title.isEmpty()) {
-				element.title = this.title;
-			}
-			if (this.subTitle != null && !this.subTitle.isEmpty()) {
-				element.subTitle = this.subTitle;
-			}
-			if (this.content != null && !this.content.isEmpty()) {
-				element.content = this.content;
-			}
-			if (this.tijianTypeId != null && !this.tijianTypeId.isEmpty()) {
-				element.tijianTypeId = this.tijianTypeId;
-			}
-			if (this.tijianHospitalId != null && !this.tijianHospitalId.isEmpty()) {
-				element.tijianHospitalId = this.tijianHospitalId;
-			}
-			if (this.tool != null) {
-				element.tool = this.tool;
-			}
-			if (this.insurance != null) {
-				element.insurance = this.insurance;
-			}
-			if (this.must != null) {
-				element.must = this.must;
-			}
-			if (this.type != null) {
-				element.type = this.type;
-			}
-			if (this.gradeType != null) {
-				element.gradeType = this.gradeType;
-			}
-			if (this.sort != null) {
-				element.sort = this.sort;
-			}
-			if (this.isBg != null) {
-				element.isBg = this.isBg;
-			}
-			if (this.isProve != null) {
-				element.isProve = this.isProve;
-			}
-			if (this.remark != null && !this.remark.isEmpty()) {
-				element.remark = this.remark;
-			}
-			if (this.status != null) {
-				element.status = this.status;
-			}
-			if (this.createTime != null) {
-				element.createTime = this.createTime;
-			}
-			if (this.creatorId != null && !this.creatorId.isEmpty()) {
-				element.creatorId = this.creatorId;
-			}
-			if (this.creatorName != null && !this.creatorName.isEmpty()) {
-				element.creatorName = this.creatorName;
-			}
-		}
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public Product getProduct() {
+        return Product;
+    }
+
+    public void setProduct(Product product) {
+        Product = product;
+    }
+
+    /**
+     * 获取标题
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * 设置标题
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * 获取副标题
+     */
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    /**
+     * 设置副标题
+     */
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    /**
+     * 获取文字内容
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置文字内容
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * 获取体检类型id
+     */
+    public String getTijianTypeId() {
+        return tijianTypeId;
+    }
+
+    /**
+     * 设置体检类型id
+     */
+    public void setTijianTypeId(String tijianTypeId) {
+        this.tijianTypeId = tijianTypeId;
+    }
+
+    /**
+     * 获取体检医院id
+     */
+    public String getTijianHospitalId() {
+        return tijianHospitalId;
+    }
+
+    public String getOrderTemplateId() {
+        return orderTemplateId;
+    }
+
+    public void setOrderTemplateId(String orderTemplateId) {
+        this.orderTemplateId = orderTemplateId;
+    }
+
+    /**
+     * 设置体检医院id
+     */
+    public void setTijianHospitalId(String tijianHospitalId) {
+        this.tijianHospitalId = tijianHospitalId;
+    }
+
+    /**
+     * 获取是否需要服务工具
+     */
+    public Integer getDzTool() {
+        return dzTool;
+    }
+
+    /**
+     * 设置是否需要服务工具
+     */
+    public void setDzTool(Integer dzTool) {
+        this.dzTool = dzTool;
+    }
+
+    /**
+     * 获取是否需要服务工具
+     */
+    public Integer getHlTool() {
+        return hlTool;
+    }
+
+    /**
+     * 设置是否需要服务工具
+     */
+    public void setHlTool(Integer hlTool) {
+        this.hlTool = hlTool;
+    }
+
+    /**
+     * 获取是否需要上保险
+     */
+    public Integer getInsurance() {
+        return insurance;
+    }
+
+    /**
+     * 设置是否需要上保险
+     */
+    public void setInsurance(Integer insurance) {
+        this.insurance = insurance;
+    }
+
+    /**
+     * 获取排序
+     */
+    public Integer getSort() {
+        return sort;
+    }
+
+    /**
+     * 设置排序
+     */
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    /**
+     * 获取是否有背景图标识
+     */
+    public Integer getIsBg() {
+        return isBg;
+    }
+
+    /**
+     * 设置是否有背景图标识
+     */
+    public void setIsBg(Integer isBg) {
+        this.isBg = isBg;
+    }
+
+    /**
+     * 获取是否需要上传证明 1三张就医证明 2一张 3不需要
+     */
+    public Integer getIsProve() {
+        return isProve;
+    }
+
+    /**
+     * 设置是否需要上传证明 1三张就医证明 2一张 3不需要
+     */
+    public void setIsProve(Integer isProve) {
+        this.isProve = isProve;
+    }
+
+    /**
+     * 获取备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public PricePart getPricePart() {
+        return pricePart;
+    }
+
+    public void setPricePart(PricePart pricePart) {
+        this.pricePart = pricePart;
+    }
+
+    public List<Grade> getGrade() {
+        return grade;
+    }
+
+    public void setGrade(List<Grade> grade) {
+        this.grade = grade;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    public Double getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public String toString() {
+        return new StringBuilder().append("Goods{").append("id=").append(id).append(",productId=").append(productId)
+                .append(",title=").append(title).append(",subTitle=").append(subTitle).append(",content=")
+                .append(content).append(",tijianTypeId=").append(tijianTypeId).append(",tijianHospitalId=")
+                .append(tijianHospitalId).append(",dzTool=").append(dzTool).append(",orderTemplateId=")
+                .append(orderTemplateId).append(",hlTool=").append(hlTool).append(",insurance=").append(insurance)
+                .append(",must=").append(must).append(",type=").append(type).append(",gradeType=").append(gradeType)
+                .append(",sort=").append(sort).append(",isBg=").append(isBg).append(",isProve=").append(isProve)
+                .append(",remark=").append(remark).append(",status=").append(status).append(",createTime=")
+                .append(createTime).append(",creatorId=").append(creatorId).append(",creatorName=").append(creatorName)
+                .append('}').toString();
+    }
+
+    /**
+     * 复制字段：
+     * id, productId, title, subTitle, 
+     * content, tijianTypeId, tijianHospitalId, dzTool, 
+     * orderTemplateId, hlTool, insurance, must, 
+     * type, gradeType, sort, isBg, 
+     * isProve, remark, status, createTime, 
+     * creatorId, creatorName
+     */
+    public Goods copy() {
+        Goods goods = new Goods();
+        goods.id = this.id;
+        goods.productId = this.productId;
+        goods.title = this.title;
+        goods.subTitle = this.subTitle;
+        goods.content = this.content;
+        goods.tijianTypeId = this.tijianTypeId;
+        goods.tijianHospitalId = this.tijianHospitalId;
+        goods.dzTool = this.dzTool;
+        goods.orderTemplateId = this.orderTemplateId;
+        goods.hlTool = this.hlTool;
+        goods.insurance = this.insurance;
+        goods.must = this.must;
+        goods.type = this.type;
+        goods.gradeType = this.gradeType;
+        goods.sort = this.sort;
+        goods.isBg = this.isBg;
+        goods.isProve = this.isProve;
+        goods.remark = this.remark;
+        goods.status = this.status;
+        goods.createTime = this.createTime;
+        goods.creatorId = this.creatorId;
+        goods.creatorName = this.creatorName;
+        return goods;
+    }
+
+    /**
+     * 比较字段：
+     * id, productId, title, subTitle, 
+     * content, tijianTypeId, tijianHospitalId, dzTool, 
+     * orderTemplateId, hlTool, insurance, must, 
+     * type, gradeType, sort, isBg, 
+     * isProve, remark, status, createTime, 
+     * creatorId, creatorName
+     */
+    @Override
+    public boolean test(Goods t) {
+        if (t == null)
+            return false;
+        return (this.id == null || this.id.equals(t.id))
+                && (this.productId == null || this.productId.equals(t.productId))
+                && (this.title == null || this.title.equals(t.title))
+                && (this.subTitle == null || this.subTitle.equals(t.subTitle))
+                && (this.content == null || this.content.equals(t.content))
+                && (this.tijianTypeId == null || this.tijianTypeId.equals(t.tijianTypeId))
+                && (this.tijianHospitalId == null || this.tijianHospitalId.equals(t.tijianHospitalId))
+                && (this.dzTool == null || this.dzTool.equals(t.dzTool))
+                && (this.orderTemplateId == null || this.orderTemplateId.equals(t.orderTemplateId))
+                && (this.hlTool == null || this.hlTool.equals(t.hlTool))
+                && (this.insurance == null || this.insurance.equals(t.insurance))
+                && (this.must == null || this.must.equals(t.must)) && (this.type == null || this.type.equals(t.type))
+                && (this.gradeType == null || this.gradeType.equals(t.gradeType))
+                && (this.sort == null || this.sort.equals(t.sort)) && (this.isBg == null || this.isBg.equals(t.isBg))
+                && (this.isProve == null || this.isProve.equals(t.isProve))
+                && (this.remark == null || this.remark.equals(t.remark))
+                && (this.status == null || this.status.equals(t.status))
+                && (this.createTime == null || this.createTime.equals(t.createTime))
+                && (this.creatorId == null || this.creatorId.equals(t.creatorId))
+                && (this.creatorName == null || this.creatorName.equals(t.creatorName));
+    }
+
+    @Override
+    public void update(Goods element) {
+        if (element == null)
+            return;
+        if (this.id != null && !this.id.isEmpty()) {
+            element.id = this.id;
+        }
+        if (this.productId != null && !this.productId.isEmpty()) {
+            element.productId = this.productId;
+        }
+        if (this.title != null && !this.title.isEmpty()) {
+            element.title = this.title;
+        }
+        if (this.subTitle != null && !this.subTitle.isEmpty()) {
+            element.subTitle = this.subTitle;
+        }
+        if (this.content != null && !this.content.isEmpty()) {
+            element.content = this.content;
+        }
+        if (this.tijianTypeId != null && !this.tijianTypeId.isEmpty()) {
+            element.tijianTypeId = this.tijianTypeId;
+        }
+        if (this.tijianHospitalId != null && !this.tijianHospitalId.isEmpty()) {
+            element.tijianHospitalId = this.tijianHospitalId;
+        }
+        if (this.dzTool != null) {
+            element.dzTool = this.dzTool;
+        }
+        if (this.orderTemplateId != null && !this.orderTemplateId.isEmpty()) {
+            element.orderTemplateId = this.orderTemplateId;
+        }
+        if (this.hlTool != null) {
+            element.hlTool = this.hlTool;
+        }
+        if (this.insurance != null) {
+            element.insurance = this.insurance;
+        }
+        if (this.must != null) {
+            element.must = this.must;
+        }
+        if (this.type != null) {
+            element.type = this.type;
+        }
+        if (this.gradeType != null) {
+            element.gradeType = this.gradeType;
+        }
+        if (this.sort != null) {
+            element.sort = this.sort;
+        }
+        if (this.isBg != null) {
+            element.isBg = this.isBg;
+        }
+        if (this.isProve != null) {
+            element.isProve = this.isProve;
+        }
+        if (this.remark != null && !this.remark.isEmpty()) {
+            element.remark = this.remark;
+        }
+        if (this.status != null) {
+            element.status = this.status;
+        }
+        if (this.createTime != null) {
+            element.createTime = this.createTime;
+        }
+        if (this.creatorId != null && !this.creatorId.isEmpty()) {
+            element.creatorId = this.creatorId;
+        }
+        if (this.creatorName != null && !this.creatorName.isEmpty()) {
+            element.creatorName = this.creatorName;
+        }
+    }
 }

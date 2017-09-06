@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.jobtitle.service;
 
+import java.util.List;
+
 import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 import com.jinpaihushi.service.BaseService;
 
@@ -14,5 +16,5 @@ public interface JobtitleService extends BaseService<Jobtitle> {
 	int checkName(Jobtitle jobtitle);
 
 	
-
+	List<Jobtitle> jobtitleSelectList();
 }
