@@ -581,7 +581,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE W.ID = #{id}
 	</select>
 	<delete id="deleteByCalendar">
-		DELETE W FROM `WORKTIME` W WHERE W.calendar = #{calendar}
+		DELETE W FROM `WORKTIME` W WHERE W.calendar = #{calendar} AND userId=0
 	</delete>
 	<select id="getAllNurse" resultType="java.lang.String">
 		SELECT DISTINCT userId FROM `worktime` WHERE userId !=0 ;

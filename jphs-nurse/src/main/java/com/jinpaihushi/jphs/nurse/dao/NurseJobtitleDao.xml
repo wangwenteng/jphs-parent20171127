@@ -2,40 +2,43 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	scj
-	date	:	2017-08-16 14:56:07
-	version	:	1.0
--->
+<!-- author : scj date : 2017-08-16 14:56:07 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseJobtitleDao">
-	
+
 	<sql id="field">
-		NJ.id, NJ.name, NJ.sfz, NJ.sex, 
-		NJ.hospital, NJ.department_id, NJ.jobtitle_id, NJ.work_years, 
-		NJ.education, NJ.address, NJ.creator_id, NJ.creator_name, 
+		NJ.id, NJ.name, NJ.sfz, NJ.sex,
+		NJ.hospital,
+		NJ.department_id, NJ.jobtitle_id, NJ.work_years,
+		NJ.education,
+		NJ.address, NJ.creator_id, NJ.creator_name,
 		NJ.create_time, NJ.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		NJ.id NJ_id, NJ.name NJ_name, 
-		NJ.sfz NJ_sfz, NJ.sex NJ_sex, 
-		NJ.hospital NJ_hospital, NJ.department_id NJ_department_id, 
-		NJ.jobtitle_id NJ_jobtitle_id, NJ.work_years NJ_work_years, 
-		NJ.education NJ_education, NJ.address NJ_address, 
-		NJ.creator_id NJ_creator_id, NJ.creator_name NJ_creator_name, 
-		NJ.create_time NJ_create_time, NJ.status NJ_status
+		NJ.id NJ_id, NJ.name NJ_name,
+		NJ.sfz NJ_sfz, NJ.sex NJ_sex,
+		NJ.hospital NJ_hospital, NJ.department_id NJ_department_id,
+		NJ.jobtitle_id NJ_jobtitle_id, NJ.work_years NJ_work_years,
+		NJ.education NJ_education, NJ.address NJ_address,
+		NJ.creator_id
+		NJ_creator_id, NJ.creator_name NJ_creator_name,
+		NJ.create_time
+		NJ_create_time, NJ.status NJ_status
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		NJ.id id, NJ.name name, 
-		NJ.sfz sfz, NJ.sex sex, 
-		NJ.hospital hospital, NJ.department_id departmentId, 
-		NJ.jobtitle_id jobtitleId, NJ.work_years workYears, 
-		NJ.education education, NJ.address address, 
-		NJ.creator_id creatorId, NJ.creator_name creatorName, 
-		NJ.create_time createTime, NJ.status status
+		NJ.id id, NJ.name name,
+		NJ.sfz sfz, NJ.sex sex,
+		NJ.hospital
+		hospital, NJ.department_id departmentId,
+		NJ.jobtitle_id jobtitleId,
+		NJ.work_years workYears,
+		NJ.education education, NJ.address address,
+		NJ.creator_id creatorId, NJ.creator_name creatorName,
+		NJ.create_time
+		createTime, NJ.status status
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND NJ.id=#{id}
@@ -80,13 +83,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND NJ.status=#{status}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
@@ -105,7 +108,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND NJ.hospital LIKE CONCAT('%', #{hospital}, '%')
 			</if>
 			<if test="departmentId!=null and departmentId!=''">
-				AND NJ.department_id LIKE CONCAT('%', #{departmentId}, '%')
+				AND NJ.department_id LIKE CONCAT('%', #{departmentId},
+				'%')
 			</if>
 			<if test="jobtitleId!=null and jobtitleId!=''">
 				AND NJ.jobtitle_id LIKE CONCAT('%', #{jobtitleId}, '%')
@@ -133,116 +137,144 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				NJ.id=#{id}, 
-		   </if>
-           <if test="name!=null">
-				NJ.name=#{name}, 
-		   </if>
-           <if test="sfz!=null">
-				NJ.sfz=#{sfz}, 
-		   </if>
-           <if test="sex!=null">
-				NJ.sex=#{sex}, 
-		   </if>
-           <if test="hospital!=null">
-				NJ.hospital=#{hospital}, 
-		   </if>
-           <if test="departmentId!=null">
-				NJ.department_id=#{departmentId}, 
-		   </if>
-           <if test="jobtitleId!=null">
-				NJ.jobtitle_id=#{jobtitleId}, 
-		   </if>
-           <if test="workYears!=null">
-				NJ.work_years=#{workYears}, 
-		   </if>
-           <if test="education!=null">
-				NJ.education=#{education}, 
-		   </if>
-           <if test="address!=null">
-				NJ.address=#{address}, 
-		   </if>
-           <if test="creatorId!=null">
-				NJ.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				NJ.creator_name=#{creatorName}, 
-		   </if>
-           <if test="createTime!=null">
-				NJ.create_time=#{createTime}, 
-		   </if>
-           <if test="status!=null">
-				NJ.status=#{status}, 
-		   </if>
+			<if test="id!=null">
+				NJ.id=#{id},
+			</if>
+			<if test="name!=null">
+				NJ.name=#{name},
+			</if>
+			<if test="sfz!=null">
+				NJ.sfz=#{sfz},
+			</if>
+			<if test="sex!=null">
+				NJ.sex=#{sex},
+			</if>
+			<if test="hospital!=null">
+				NJ.hospital=#{hospital},
+			</if>
+			<if test="departmentId!=null">
+				NJ.department_id=#{departmentId},
+			</if>
+			<if test="jobtitleId!=null">
+				NJ.jobtitle_id=#{jobtitleId},
+			</if>
+			<if test="workYears!=null">
+				NJ.work_years=#{workYears},
+			</if>
+			<if test="education!=null">
+				NJ.education=#{education},
+			</if>
+			<if test="address!=null">
+				NJ.address=#{address},
+			</if>
+			<if test="creatorId!=null">
+				NJ.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				NJ.creator_name=#{creatorName},
+			</if>
+			<if test="createTime!=null">
+				NJ.create_time=#{createTime},
+			</if>
+			<if test="status!=null">
+				NJ.status=#{status},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="nurseJobtitle" type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
+	<resultMap id="nurseJobtitle"
+		type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="sex" column="sex" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="hospital" column="hospital" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="departmentId" column="department_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="jobtitleId" column="jobtitle_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="workYears" column="work_years" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="education" column="education" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="sex" column="sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hospital" column="hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="jobtitle_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="workYears" column="work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="education" column="education" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<resultMap id="nurseJobtitleGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
-		<result property="id" column="NJ_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="name" column="NJ_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="sfz" column="NJ_sfz" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="sex" column="NJ_sex" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="hospital" column="NJ_hospital" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="departmentId" column="NJ_department_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="jobtitleId" column="NJ_jobtitle_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="workYears" column="NJ_work_years" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="education" column="NJ_education" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="address" column="NJ_address" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="NJ_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="NJ_creator_name" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="createTime" column="NJ_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="status" column="NJ_status" javaType="Integer" jdbcType="INTEGER"></result>
+
+	<resultMap id="nurseJobtitleGlobal"
+		type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
+		<result property="id" column="NJ_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="NJ_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sfz" column="NJ_sfz" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="NJ_sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hospital" column="NJ_hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="NJ_department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="NJ_jobtitle_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="workYears" column="NJ_work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="education" column="NJ_education" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="NJ_address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="NJ_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="NJ_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="NJ_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="NJ_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
 		INSERT INTO `NURSE_JOBTITLE`(
-			id, name, 
-			sfz, sex, 
-			hospital, department_id, 
-			jobtitle_id, work_years, 
-			education, address, 
-			creator_id, creator_name, 
-			create_time, status
+		id, name,
+		sfz, sex,
+		hospital, department_id,
+		jobtitle_id, work_years,
+		education, address,
+		creator_id, creator_name,
+		create_time, status
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-			#{sfz,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
-			#{hospital,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, 
-			#{jobtitleId,jdbcType=VARCHAR}, #{workYears,jdbcType=TIMESTAMP}, 
-			#{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
-			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{sfz,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+		#{hospital,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR},
+		#{jobtitleId,jdbcType=VARCHAR}, #{workYears,jdbcType=TIMESTAMP},
+		#{education,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
 		)
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `NURSE_JOBTITLE`(
 			id, name, 
@@ -253,40 +285,49 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			creator_id, creator_name, 
 			create_time, status
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-			#{item.sfz,jdbcType=VARCHAR}, #{item.sex,jdbcType=INTEGER}, 
-			#{item.hospital,jdbcType=VARCHAR}, #{item.departmentId,jdbcType=VARCHAR}, 
-			#{item.jobtitleId,jdbcType=VARCHAR}, #{item.workYears,jdbcType=TIMESTAMP}, 
-			#{item.education,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
-			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR},
+			#{item.sfz,jdbcType=VARCHAR},
+			#{item.sex,jdbcType=INTEGER},
+			#{item.hospital,jdbcType=VARCHAR},
+			#{item.departmentId,jdbcType=VARCHAR},
+			#{item.jobtitleId,jdbcType=VARCHAR},
+			#{item.workYears,jdbcType=TIMESTAMP},
+			#{item.education,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.status,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE NJ FROM `NURSE_JOBTITLE` NJ WHERE NJ.ID = #{id} 
+		DELETE NJ FROM `NURSE_JOBTITLE` NJ WHERE NJ.ID =
+		#{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `NURSE_JOBTITLE` NJ
-		SET 
+		UPDATE `NURSE_JOBTITLE` NJ
+		SET
 		NJ.STATUS = -1
-		WHERE NJ.ID = #{id}
+		WHERE
+		NJ.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `NURSE_JOBTITLE` NJ
-		<include refid="dynamicSet" /> 
-	    WHERE NJ.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE NJ.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="nurseJobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `NURSE_JOBTITLE` NJ
 		<include refid="dynamicWhere" />
 	</select>
@@ -297,100 +338,192 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="nurseJobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `NURSE_JOBTITLE` NJ
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="nurseJobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `NURSE_JOBTITLE` NJ
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-	
+
 	<select id="loadById" resultMap="nurseJobtitle">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `NURSE_JOBTITLE` NJ
 		WHERE NJ.ID = #{id}
 	</select>
+
+
+	<select id="getNurseAuditing" resultMap="nurseAuditing">
+		SELECT
+		NJ.id nj_id,
+		NJ.name nj_name,
+		NJ.sfz nj_sfz,
+		NJ.sex nj_sex,
+		NJ.hospital nj_hospital,
+		NJ.department_id nj_department_id,
+		NJ.jobtitle_id nj_jobtitle_id,
+		NJ.work_years nj_work_years,
+		NJ.education nj_education,
+		NJ.address nj_address,
+		NJ.creator_id
+		nj_creator_id,
+		NJ.creator_name nj_creator_name,
+		NJ.create_time
+		nj_create_time,
+		NJ.status nj_status,
+		NI.id ni_id,
+		NI.url ni_url,
+		NI.source_id ni_source_id,
+		NI.type ni_type,
+		NI.creator_id ni_creator_id,
+		NI.creator_name ni_creator_name,
+		NI.create_time ni_create_time,
+		NI.status ni_status
+		FROM nurse_jobtitle NJ
+		LEFT JOIN nurse_images NI ON
+		NJ.`id`=NI.`source_id`
+		WHERE NJ.`creator_id`=#{id}
+		<if test="njType !=null and njType !=''">
+			AND NJ.`type`=#{njType}
+		</if>
+	</select>
+
+	<resultMap id="nurseAuditing"
+		type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
+		<result property="id" column="nj_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="nj_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sfz" column="nj_sfz" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="nj_sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hospital" column="nj_hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="nj_department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="nj_jobtitle_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="workYears" column="nj_work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="education" column="nj_education" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="nj_address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="nj_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="nj_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="nj_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="nj_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<collection property="nurseImages"
+			ofType="com.jinpaihushi.jphs.nurse.model.NurseImages">
+			<result property="id" column="ni_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="url" column="ni_url" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="sourceId" column="ni_source_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="type" column="ni_type" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="creatorId" column="ni_creator_id" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="creatorName" column="ni_creator_name"
+				javaType="String" jdbcType="VARCHAR"></result>
+			<result property="createTime" column="ni_create_time"
+				javaType="Date" jdbcType="TIMESTAMP"></result>
+			<result property="status" column="ni_status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</collection>
+	</resultMap>
+
 	<select id="getNurseList" resultType="java.util.HashMap">
 		SELECT DISTINCT
-			nj.creator_id nurseId,
-			u.`name` nurseName,
-			u.sex nurseSex,
-			n.hospital nurseHospital,
-			CASE
-		WHEN n.work_years IS NOT NULL THEN
-			(
-				(
-					YEAR (now()) - YEAR (n.work_years) - 1
-				) + (
-					DATE_FORMAT(n.work_years, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
-				)
-			)
+		nj.creator_id nurseId,
+		u.`name` nurseName,
+		u.sex
+		nurseSex,
+		IFNULL(n.hospital,'') nurseHospital,
+		(SELECT url FROM
+		nurse_images ni WHERE ni.creator_id =u.id AND ni.type =1)
+		url,
+		CASE
+		WHEN
+		n.work_years IS NOT NULL THEN
+		(
+		(
+		YEAR (now()) - YEAR (n.work_years) - 1
+		) + (
+		DATE_FORMAT(n.work_years, '%m%d') &lt;= DATE_FORMAT(NOW(),
+		'%m%d')
+		)
+		)
 		ELSE
-			''
+		''
 		END AS workYear,
-		 (
-			SELECT
-				COUNT(id)
-			FROM
-				`order` o
-			WHERE
-				o.accept_user_id = nj.creator_id
-			AND o.`schedule` = 5
+		(
+		SELECT
+		COUNT(id)
+		FROM
+		`order` o
+		WHERE
+		o.accept_user_id = nj.creator_id
+		AND o.`schedule` = 5
 		) serviceNumber,
-		 ROUND(
-			6378.138 * 2 * ASIN(
-				SQRT(
-					POW(
-						SIN(
-							(
-								#{lat} * PI() / 180 - p.lat * PI() / 180
-							) / 2
-						),
-						2
-					) + COS(#{lat} * PI() / 180) * COS(p.lat * PI() / 180) * POW(
-						SIN(
-							(
-								#{lon} * PI() / 180 - p.lon * PI() / 180
-							) / 2
-						),
-						2
-					)
-				)
-			),
-			2
+		p.lon,
+		p.lat,
+		ROUND(
+		6378.138 * 2 * ASIN(
+		SQRT(
+		POW(
+		SIN(
+		(
+		#{lat} * PI() /
+		180 - p.lat * PI() / 180 ) / 2 ), 2 ) + COS(#{lat} * PI() / 180) *
+		COS(p.lat * PI() / 180) * POW(
+		SIN( ( #{lon} * PI() / 180 - p.lon *
+		PI() / 180 ) / 2 ), 2
+		)
+		)
+		),
+		2
 		) AS distance
 		FROM
-			nurse_jobtitle nj
-		LEFT JOIN jobtitle j ON nj.jobtitle_id = j.id
-		LEFT JOIN `user` u ON nj.creator_id = u.id
-		LEFT JOIN nurse n ON u.id = n.creator_id
+		nurse_jobtitle nj
+		LEFT JOIN
+		`user` u ON nj.creator_id = u.id
+		LEFT JOIN nurse n ON u.id
+		=
+		n.creator_id
 		LEFT JOIN position p ON u.id = p.creator_id
-		LEFT JOIN jobtitle_goods jg ON nj.jobtitle_id = jg.jobtitle_id
 		<where>
 			AND n.status =1
 			<if test="goodsId!=null and goodsId!=''">
-				AND jg.goods_id =#{goodsId}
+				AND nj.jobtitle_id in (SELECT DISTINCT jg.jobtitle_id
+				FROM `jobtitle_goods` jg WHERE jg.goods_id =#{goodsId} )
 			</if>
 			<if test="nurseName!=null and nurseName!=''">
 				AND u.`name` LIKE CONCAT(#{nurseName}, '%')
 			</if>
 		</where>
-		<if test="type!=null">
-			ORDER BY
-			<if test="type==1">
-				distance ASC
-			</if>
-			<if test="type==2">
-				serviceNumber DESC
-			</if>
-			<if test="type==3">
-				workYear DESC
-			</if>			
+		<if test="type==1">
+			ORDER BY distance ASC
+		</if>
+		<if test="type==2">
+			ORDER BY serviceNumber DESC
+		</if>
+		<if test="type==3">
+			ORDER BY workYear DESC
 		</if>
 	</select>
 </mapper>

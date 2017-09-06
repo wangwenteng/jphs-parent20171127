@@ -121,7 +121,7 @@ public class RegistController {
             if (StringUtils.isEmpty(user.getName())) {
                 user.setName(user.getPhone());
             }
-            user.setStatus(0);
+            user.setStatus(1);
 
             //写入数据
             String userId = userService.insertUser(user);
@@ -151,7 +151,7 @@ public class RegistController {
             account.setStatus(0);
             accountService.insert(account);
 
-            if (type_id == 0) {
+            
                 // 1.根据 name，password,type查询完整信息
                 User user_login = userService.findUser(user);
                 if (user_login == null) {
@@ -162,20 +162,17 @@ public class RegistController {
                 String token = "";
                 token = Common.getToken(user_login.getPhone(), user_login.getPassword());// 生成token
                 user_login.setToken(token);
+                if (type_id == 0) {
+	                Nurse nurse_s = new Nurse();
+	                nurse_s.setCreatorId(user_login.getId());
+	                nurse_s = nurseService.load(nurse_s);
+	                if (nurse_s == null) {
+	                    return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
+	                }
+	                user_login.setNurse(new JSONObject().fromObject(nurse_s));
 
-                Nurse nurse_s = new Nurse();
-                nurse_s.setCreatorId(user_login.getId());
-                nurse_s = nurseService.load(nurse_s);
-                if (nurse_s == null) {
-                    return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
-                }
-                user_login.setNurse(new JSONObject().fromObject(nurse_s));
-
+	            } 
                 return JSONUtil.toJSONResult(1, "注册成功！", user_login);
-            }
-            else {
-                return JSONUtil.toJSONResult(1, "注册成功！", null);
-            }
 
         }
         catch (Exception e) {

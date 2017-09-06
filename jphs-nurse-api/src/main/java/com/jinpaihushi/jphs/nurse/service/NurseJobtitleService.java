@@ -25,6 +25,11 @@ public interface NurseJobtitleService extends BaseService<NurseJobtitle> {
 	 */
 	List<Map<String, Object>> getNurseList(Map<String, Object> query);
 
-	
+	/**
+	 * 查询护士审核职称
+	 * @param map
+	 * @return
+	 */
+	List<NurseJobtitle> getNurseAuditing(Map<String,Object> map);
 
 }

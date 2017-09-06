@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- author : scj date : 2017-08-18 14:06:14 version : 1.0 -->
+<mapper namespace="com.jinpaihushi.jphs.recovered.dao.RecoveredRecordDao">
+
+	<sql id="field">
+		RR.id, RR.name, RR.sex, RR.age, RR.estimate, RR.propose,
+		RR.order_id, RR.user_id, RR.create_time, RR.creator_id,
+		RR.creator_name, RR.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		RR.id RR_id, RR.name RR_name, RR.sex RR_sex, RR.age RR_age,
+		RR.estimate RR_estimate, RR.propose RR_propose, RR.order_id
+		RR_order_id, RR.user_id RR_user_id, RR.create_time RR_create_time,
+		RR.creator_id RR_creator_id, RR.creator_name RR_creator_name,
+		RR.status RR_status
+	</sql>
+
+	<sql id="fieldWithAlias">
+		RR.id id, RR.name name, RR.sex sex, RR.age age, RR.estimate
+		estimate, RR.propose propose, RR.order_id orderId, RR.user_id userId,
+		RR.create_time createTime, RR.creator_id creatorId, RR.creator_name
+		creatorName, RR.status status
+	</sql>
+
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND RR.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND RR.name=#{name}
+		</if>
+		<if test="sex!=null">
+			AND RR.sex=#{sex}
+		</if>
+		<if test="age!=null">
+			AND RR.age=#{age}
+		</if>
+		<if test="estimate!=null and estimate!=''">
+			AND RR.estimate=#{estimate}
+		</if>
+		<if test="propose!=null and propose!=''">
+			AND RR.propose=#{propose}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND RR.order_id=#{orderId}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND RR.user_id=#{userId}
+		</if>
+		<if test="createTime!=null">
+			AND RR.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND RR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND RR.creator_name=#{creatorName}
+		</if>
+		<if test="status!=null">
+			AND RR.status=#{status}
+		</if>
+	</sql>
+
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition" />
+		</where>
+	</sql>
+
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND RR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND RR.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sex!=null">
+				AND RR.sex=#{sex}
+			</if>
+			<if test="age!=null">
+				AND RR.age=#{age}
+			</if>
+			<if test="estimate!=null and estimate!=''">
+				AND RR.estimate LIKE CONCAT('%', #{estimate}, '%')
+			</if>
+			<if test="propose!=null and propose!=''">
+				AND RR.propose LIKE CONCAT('%', #{propose}, '%')
+			</if>
+			<if test="orderId!=null and orderId!=''">
+				AND RR.order_id LIKE CONCAT('%', #{orderId}, '%')
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND RR.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND RR.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND RR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND RR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="status!=null">
+				AND RR.status=#{status}
+			</if>
+		</where>
+	</sql>
+
+	<sql id="dynamicSet">
+		<set>
+			<if test="id!=null">
+				RR.id=#{id},
+			</if>
+			<if test="name!=null">
+				RR.name=#{name},
+			</if>
+			<if test="sex!=null">
+				RR.sex=#{sex},
+			</if>
+			<if test="age!=null">
+				RR.age=#{age},
+			</if>
+			<if test="estimate!=null">
+				RR.estimate=#{estimate},
+			</if>
+			<if test="propose!=null">
+				RR.propose=#{propose},
+			</if>
+			<if test="orderId!=null">
+				RR.order_id=#{orderId},
+			</if>
+			<if test="userId!=null">
+				RR.user_id=#{userId},
+			</if>
+			<if test="createTime!=null">
+				RR.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				RR.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				RR.creator_name=#{creatorName},
+			</if>
+			<if test="status!=null">
+				RR.status=#{status},
+			</if>
+		</set>
+	</sql>
+
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="recoveredRecord"
+		type="com.jinpaihushi.jphs.recovered.model.RecoveredRecord">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="age" column="age" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="estimate" column="estimate" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="propose" column="propose" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<resultMap id="recoveredRecordGlobal"
+		type="com.jinpaihushi.jphs.recovered.model.RecoveredRecord">
+		<result property="id" column="RR_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="name" column="RR_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sex" column="RR_sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="age" column="RR_age" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="estimate" column="RR_estimate" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="propose" column="RR_propose" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="orderId" column="RR_order_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="userId" column="RR_user_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="RR_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="RR_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="RR_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="RR_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.recovered.model.RecoveredRecord">
+		INSERT INTO `RECOVERED_RECORD`(
+		id, name, sex, age, estimate, propose, order_id, user_id, create_time,
+		creator_id, creator_name, status )VALUES(
+		#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+		#{age,jdbcType=INTEGER}, #{estimate,jdbcType=VARCHAR},
+		#{propose,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER} )
+	</insert>
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+        <![CDATA[
+        INSERT INTO `RECOVERED_RECORD`(
+			id, name, 
+			sex, age, 
+			estimate, propose, 
+			order_id, user_id, 
+			create_time, creator_id, 
+			creator_name, status
+        )]]>
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR},
+			#{item.name,jdbcType=VARCHAR}, #{item.sex,jdbcType=INTEGER},
+			#{item.age,jdbcType=INTEGER}, #{item.estimate,jdbcType=VARCHAR},
+			#{item.propose,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
+			#{item.userId,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE RR FROM `RECOVERED_RECORD` RR WHERE RR.ID =
+		#{id}
+	</delete>
+
+	<update id="disableById">
+		UPDATE `RECOVERED_RECORD` RR
+		SET
+		RR.STATUS = -1
+		WHERE RR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `RECOVERED_RECORD` RR
+		<include refid="dynamicSet" />
+		WHERE RR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="recoveredRecord">
+		SELECT
+		<include refid="field" />
+		FROM `RECOVERED_RECORD` RR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `RECOVERED_RECORD` RR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="recoveredRecord">
+		SELECT
+		<include refid="field" />
+		FROM `RECOVERED_RECORD` RR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="recoveredRecord">
+		SELECT
+		<include refid="field" />
+		FROM `RECOVERED_RECORD` RR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="loadById" resultMap="recoveredRecord">
+		SELECT
+		<include refid="field" />
+		FROM `RECOVERED_RECORD` RR
+		WHERE RR.ID = #{id}
+	</select>
+	<select id="getHealthLog" resultType="java.util.HashMap">
+		SELECT
+		hl.user_id,
+		u.`name` userName,
+		u.sex sex,
+		ni.url headPicture,
+		IFNULL(o.accept_time, '') accept_time,
+		<if test="id!=null and id!=''">
+			IFNULL(o.accept_user_id, '') nurseId,
+			IFNULL(ua.`name`, '') nurseName,
+			IFNULL(ua.phone,'') nursePhone,
+			IFNULL(hl.estimate,'') estimate ,
+			IFNULL(hl.propose,'') propose,
+		</if>
+		CASE
+		WHEN u.birthday IS NOT NULL THEN
+		(
+		(
+		YEAR (now()) - YEAR (u.birthday) - 1
+		) + (
+		DATE_FORMAT(u.birthday, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
+		)
+		)
+		ELSE
+		''
+		END AS age
+		FROM
+		recovered_record hl
+		LEFT JOIN `user` u ON hl.user_id = u.id
+		LEFT JOIN nurse_images ni ON u.id = ni.source_id
+		LEFT JOIN `order` o ON hl.order_id = o.id
+		LEFT JOIN `user` ua ON o.accept_user_id = ua.id
+		<where>
+			AND hl.user_id = #{userId}
+			<if test="id!=null and id!=''">
+				AND hl.id =#{id}
+			</if>
+		</where>
+		ORDER BY
+		hl.create_time DESC
+	</select>
+</mapper>

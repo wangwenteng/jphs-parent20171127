@@ -60,4 +60,6 @@ public interface GoodsService extends BaseService<Goods> {
 	List<Goods> getAllGoods(Goods goods);
 	
 	List<Goods> getMyService(String creatorId);
+
+	List<Map<String, Object>> getGoodsByProduct(String productId);
 }

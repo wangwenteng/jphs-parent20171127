@@ -1198,7 +1198,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				WHERE o.status=1
 				 AND o.accept_user_id=#{userId}
 				 AND si.`device_type`=2 
-				 AND o.`schedule`=#{schedule}
+				 <if test="schedule!=null and schedule!=''">
+					 AND o.`schedule`=#{schedule}
+				 </if>
 				 ORDER BY o.appointment_time DESC 
 	</select>
 	

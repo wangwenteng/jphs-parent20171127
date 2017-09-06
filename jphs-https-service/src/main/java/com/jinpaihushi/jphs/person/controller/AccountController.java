@@ -101,6 +101,40 @@ public class AccountController {
 		}
 		return null;
 	}
+	@RequestMapping(path = "/getUserBalance.json", name = "用户余额")
+	@ResponseBody
+	public byte[] getUserBalance(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,Integer operate,String month) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("account.getTranByMonth.json userId=" + userId+" operate="+operate+" month="+month);
+			}
+			if (StringUtils.isEmpty(userId)||operate==null||StringUtils.isEmpty(month)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+//			String token = req.getHeader("token");
+//			if (StringUtils.isEmpty(token)) {
+//				return JSONUtil.toJSONResult(3, "非法请求", null);
+//			}
+//			User user = (User) req.getSession().getAttribute("user");
+//			if (user == null)
+//				user = userService.loadById(userId);
+//			boolean flag = Common.CheckPerson(user.getPhone(), user.getPassword(), token);
+//			if (!flag) {
+//				// 身份认证失败,返回错误信息
+//				return JSONUtil.toJSONResult(2, "身份认证失败", null);
+//			}
+			Map<String, Object> query = new HashMap<>();
+			query.put("userId", userId);
+			query.put("operate", operate);
+			query.put("month", month);
+			List<Map<String, Object>> result = accountService.getMonthList(query);
+			return JSONUtil.toJSONResult(1, "操作成功！", result);
+		} catch (Exception e) {
+			Util.failLog.error("account.getTranByMonth.json userId=" + userId+" operate="+operate+" month="+month, e);
+		}
+		return null;
+	}
+	//获取账户余额
 	@RequestMapping(path = "/getTranByMonth.json", name = "得到指定月的交易记录")
 	@ResponseBody
 	public byte[] getTranByMonth(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,Integer operate,String month) {

@@ -27,6 +27,6 @@ public interface NurseJobtitleDao extends BaseDao<NurseJobtitle> {
 	 */
 	List<Map<String, Object>> getNurseList(Map<String, Object> query);
 	
-	
+	List<NurseJobtitle> getNurseAuditing(Map<String,Object> map);
 	
 }

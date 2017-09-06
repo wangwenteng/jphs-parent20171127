@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwt
+	date	:	2017-08-17 18:15:15
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.position.dao.PositionDao">
+	
+	<sql id="field">
+		P.id, P.lon, P.lat, P.creator_id, 
+		P.creator_name, P.create_time, P.status
+	</sql>
+
+	<sql id="fieldGlobal">
+		P.id P_id, P.lon P_lon, 
+		P.lat P_lat, P.creator_id P_creator_id, 
+		P.creator_name P_creator_name, P.create_time P_create_time, 
+		P.status P_status
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		P.id id, P.lon lon, 
+		P.lat lat, P.creator_id creatorId, 
+		P.creator_name creatorName, P.create_time createTime, 
+		P.status status
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND P.id=#{id}
+		</if>
+		<if test="lon!=null">
+			AND P.lon=#{lon}
+		</if>
+		<if test="lat!=null">
+			AND P.lat=#{lat}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND P.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND P.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND P.create_time=#{createTime}
+		</if>
+		<if test="status!=null">
+			AND P.status=#{status}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND P.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="lon!=null">
+				AND P.lon=#{lon}
+			</if>
+			<if test="lat!=null">
+				AND P.lat=#{lat}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND P.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND P.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND P.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND P.status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				P.id=#{id}, 
+		   </if>
+           <if test="lon!=null">
+				P.lon=#{lon}, 
+		   </if>
+           <if test="lat!=null">
+				P.lat=#{lat}, 
+		   </if>
+           <if test="creatorId!=null">
+				P.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				P.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				P.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				P.status=#{status}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="position" type="com.jinpaihushi.jphs.position.model.Position">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="lon" column="lon" javaType="Double" jdbcType="DOUBLE"></result>
+		<result property="lat" column="lat" javaType="Double" jdbcType="DOUBLE"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<resultMap id="positionGlobal" type="com.jinpaihushi.jphs.position.model.Position">
+		<result property="id" column="P_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="lon" column="P_lon" javaType="Double" jdbcType="DOUBLE"></result>
+		<result property="lat" column="P_lat" javaType="Double" jdbcType="DOUBLE"></result>
+		<result property="creatorId" column="P_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="P_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="P_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="P_status" javaType="Integer" jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.position.model.Position">
+		INSERT INTO `POSITION`(
+			id, lon, 
+			lat, creator_id, 
+			creator_name, create_time, 
+			status
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{lon,jdbcType=DOUBLE}, 
+			#{lat,jdbcType=DOUBLE}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{status,jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `POSITION`(
+			id, lon, 
+			lat, creator_id, 
+			creator_name, create_time, 
+			status
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.lon,jdbcType=DOUBLE}, 
+			#{item.lat,jdbcType=DOUBLE}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.status,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE P FROM `POSITION` P WHERE P.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `POSITION` P
+		SET 
+		P.STATUS = -1
+		WHERE P.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `POSITION` P
+		<include refid="dynamicSet" /> 
+	    WHERE P.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="position">
+		SELECT <include refid="field"/>
+		FROM `POSITION` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `POSITION` P
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="position">
+		SELECT <include refid="field"/>
+		FROM `POSITION` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="position">
+		SELECT <include refid="field"/>
+		FROM `POSITION` P
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="position">
+		SELECT <include refid="field"/>
+		FROM `POSITION` P
+		WHERE P.ID = #{id}
+	</select>
+	
+</mapper>

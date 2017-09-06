@@ -14,6 +14,9 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface PriceNurseService extends BaseService<PriceNurse> {
 
+ 
+	boolean deleteByUserAndGoods(PriceNurse pn);
+ 
 	/**
 	 * 
 	 * @param userId 用户id
@@ -21,6 +24,7 @@ public interface PriceNurseService extends BaseService<PriceNurse> {
 	 */
 	List<Map<String, Object>> getServiceItems(String userId);
 
+	boolean updatePriceNurse(PriceNurse pn);
 	
 
 }

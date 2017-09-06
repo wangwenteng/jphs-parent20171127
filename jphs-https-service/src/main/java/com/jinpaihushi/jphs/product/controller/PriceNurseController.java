@@ -71,6 +71,17 @@ public class PriceNurseController extends BaseController<PriceNurse> {
 			if(pricePartIdArr.length != priceArr.length){
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}
+				
+			PriceNurse pn = new PriceNurse();
+			pn.setCreatorId(creatorId);
+			pn.setGoodsId(goodsId);
+
+			boolean flag = priceNurseService.deleteByUserAndGoods(pn);
+
+			if (!flag){
+				 
+			}
+
 			 PriceNurse priceNurse = new PriceNurse();
 			 String result = null;
 			 priceNurse.setGoodsId(goodsId);
@@ -79,6 +90,7 @@ public class PriceNurseController extends BaseController<PriceNurse> {
 				priceNurse.setPricePartId(pricePartIdArr[i]);
 				priceNurse.setPrice( Double.parseDouble(priceArr[i]));
 				priceNurse.setStatus(0);
+				priceNurse.setCreatorId(creatorId);
 				result = priceNurseService.insert(priceNurse);
 				if (result.length() <= 0) {
 					return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
@@ -94,63 +106,30 @@ public class PriceNurseController extends BaseController<PriceNurse> {
 	 
 	
 	@ResponseBody
-	@RequestMapping(name = "修改发布服务", path = "/updatePriceNurse.json")
-	public byte[] updatePriceNurse(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,String ids,String pricePartIds,String prices,String creatorId,String goodsId) {
+	@RequestMapping(name = "删除发布服务", path = "/deletePriceNurse.json")
+	public byte[] deletePriceNurse(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,PriceNurse priceNurse ) {
 		try {
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("price.nurse.updatePriceNurse.json");
+				Util.debugLog.debug("price.nurse.deletePriceNurse.json");
 			}
-			if (StringUtils.isEmpty(creatorId)) {
+			if (StringUtils.isEmpty(priceNurse.getCreatorId())) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			if (StringUtils.isEmpty(ids)) {
+			if (StringUtils.isEmpty(priceNurse.getGoodsId())) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			
-			String[] idArr = ids.split(",");
-			String[] pricePartIdArr = pricePartIds.split(",");
-			String[] priceArr = prices.split(",");
- 
-			if(pricePartIdArr.length != priceArr.length && pricePartIdArr.length != idArr.length){
-				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
-			}
+			boolean flag = priceNurseService.updatePriceNurse(priceNurse);
 			 
-			 PriceNurse priceNurse = new PriceNurse();
-			 String result = null;
-			 priceNurse.setGoodsId(goodsId);
-			for (int i = 0; i<pricePartIdArr.length;i++ ){
-				
-				if(idArr[i]==null){
-					priceNurse.setId(UUID.randomUUID().toString());
-					priceNurse.setPricePartId(pricePartIdArr[i]);
-					priceNurse.setPrice( Double.parseDouble(priceArr[i]));
-					priceNurse.setStatus(0);
-					result = priceNurseService.insert(priceNurse);
-
-					if (result.length() <= 0) {
-						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
-					}
-				}else{
-					priceNurse.setId(idArr[i]);
-					priceNurse.setPricePartId(pricePartIdArr[i]);
-					priceNurse.setPrice( Double.parseDouble(priceArr[i]));
-					priceNurse.setStatus(0);
-					boolean b = priceNurseService.update(priceNurse);
-
-					if (b == false) {
-						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
-					}
-				}
-			}
 			return JSONUtil.toJSONResult(1, "操作成功！", "1");
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("price.nurse.updatePriceNurse.json " , e);
+			Util.failLog.error("price.nurse.deletePriceNurse.json " , e);
 		}
 		return null;
 	}
 	 
 	
-
+	
 }

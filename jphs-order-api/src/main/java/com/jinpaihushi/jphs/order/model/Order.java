@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.jphs.goods.model.Goods;
+import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.model.BaseModel;
@@ -113,6 +114,8 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     private List<OrderService> orderServiceList;
 
     private OrderOther orderOther;
+    
+    private List<ServiceImages> serviceOrderImages;
 
     public Integer getOrderServiceNumber() {
         return orderServiceNumber;
@@ -122,6 +125,14 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
         this.orderServiceNumber = orderServiceNumber;
     }
 
+    public  List<ServiceImages>  getServiceOrderImages() {
+        return serviceOrderImages;
+    }
+
+    public void setServiceOrderImages( List<ServiceImages>  serviceOrderImages) {
+        this.serviceOrderImages = serviceOrderImages;
+    }
+    
     public OrderOther getOrderOther() {
         return orderOther;
     }

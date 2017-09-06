@@ -31,5 +31,7 @@ public interface GoodsDao extends BaseDao<Goods> {
 	List<Goods> getAllGoods(Goods goods);
 
 	List<Goods> getMyService(String creatorId);
+
+	List<Map<String, Object>> getGoodsByProduct(String productId);
 	
 }

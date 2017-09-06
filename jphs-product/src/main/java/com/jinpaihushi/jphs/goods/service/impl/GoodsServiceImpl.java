@@ -82,7 +82,10 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods>implements GoodsServ
 		Page<Product> products = productDao.getProductGoodsListDetail(goods);
 		return products;
 	}
-
+	@Override
+	public List<Map<String, Object>> getGoodsByProduct(String productId) {
+		return goodsDao.getGoodsByProduct(productId);
+	}
 	public List<com.jinpaihushi.jphs.price.model.Jobtitle> getJobtitle() {
 		List<com.jinpaihushi.jphs.price.model.Jobtitle> jobList = new ArrayList<com.jinpaihushi.jphs.price.model.Jobtitle>();
 
@@ -425,7 +428,26 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods>implements GoodsServ
 	@Override
 	public List<Goods> getAllGoods(Goods goods) {
 
-		return goodsDao.getAllGoods(goods);
+		List<Goods> allGoods = goodsDao.getAllGoods(goods);
+		PriceNurse priceNurse = new PriceNurse();
+		List<Goods> allGoodsList = new ArrayList<Goods>();
+		
+		for (int i = 0; i < allGoods.size(); i++) {
+			priceNurse.setCreatorId(goods.getCreatorId());
+			priceNurse.setGoodsId(allGoods.get(i).getId());
+			priceNurse.setStatus(0);
+			Page<PriceNurse> query = priceNurseDao.query(priceNurse);
+			 
+				for (int j = 0; j < query.size(); j++) {
+				 
+					if(!query.get(j).getGoodsId().equals(allGoods.get(i).getId())){
+						allGoodsList.add(allGoods.get(i));
+					} 
+				}
+			 
+		}
+		
+		return allGoods;
 	}
 
 	@Override
@@ -437,15 +459,21 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods>implements GoodsServ
 			PriceNurse pn = new PriceNurse();
 			pn.setGoodsId(list.get(i).getId());
 			pn.setCreatorId(creatorId);
-			Page<PriceNurse> query = priceNurseDao.query(pn);
+			List<PriceNurse> query = priceNurseDao.getList(pn);
 			if (query.size() > 0) {
 				for (int j = 0; j < query.size(); j++) {
 					pricelist.add(query.get(j).getPrice());
 				}
-			     double max = Collections.max(pricelist);
-			     double min = Collections.min(pricelist);
-			     list.get(i).setMaxPrice(max);
-			     list.get(i).setMinPrice(min);
+				if(pricelist.size()>1){
+					 double max = Collections.max(pricelist);
+				     double min = Collections.min(pricelist);
+				     System.out.println(min);
+				     list.get(i).setMaxPrice(max);
+				     list.get(i).setMinPrice(min);
+				}else if(pricelist.size() ==1){
+					list.get(i).setMaxPrice(pricelist.get(0));
+				}
+			    
 			}
 		}
 

@@ -14,8 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
 import com.jinpaihushi.jphs.information.service.InformationService;
@@ -28,13 +32,14 @@ import com.jinpaihushi.jphs.user.service.UserAddressService;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.jphs.worktime.model.Worktime;
 import com.jinpaihushi.jphs.worktime.service.WorktimeService;
+import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController<User> {
     @Autowired
     private UserService userService;
 
@@ -52,8 +57,16 @@ public class UserController {
 
     @Autowired
     private UserAddressService userAddressService;
+
     @Autowired
     private NurseJobtitleService nurseJobtitleService;
+
+    @Override
+    protected BaseService<User> getService() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @RequestMapping(path = "/getSessionUser.json", name = "获取session中用户的信息")
     @ResponseBody
     public byte[] getSessionUser(HttpSession hs, HttpServletRequest req, HttpServletResponse resp) {
@@ -283,53 +296,59 @@ public class UserController {
         }
         return null;
     }
+
     /**
-	 * goodsId 服务id 默认不传
-	 * type 排序规则 1、离我最近 2、服务次数最多 3、护龄最长 默认不传
-	 * lon 经度
-	 * lat 纬度
-	 * nurseName 护士姓名
-	 * @param query
-	 * @return
-	 */
+     * goodsId 服务id 默认不传
+     * type 排序规则 1、离我最近 2、服务次数最多 3、护龄最长 默认不传
+     * lon 经度
+     * lat 纬度
+     * nurseName 护士姓名
+     * @param query
+     * @return
+     */
     @RequestMapping(path = "/getNurseList.json", name = "护士列表")
     @ResponseBody
-    public byte[] getNurseList(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
-    		String lon,String lat,String goodsId,Integer type ,String nurseName) {
-    	try {
-    		if (Util.debugLog.isDebugEnabled()) {
-    			Util.debugLog
-    			.debug("user.getNurseList.json lon=" + lon + " lat=" + lat+ " goodsId=" + goodsId+ " type=" + type+ " nurseName=" + nurseName);
-    		}
-    		if (StringUtils.isEmpty(lon)||StringUtils.isEmpty(lat)) {
-    			return JSONUtil.toJSONResult(0, "参数不能为空", null);
-    		}
-    		
-    		// String token = req.getHeader("token");
-    		// if (StringUtils.isEmpty(token)) {
-    		// return JSONUtil.toJSONResult(3, "非法请求", null);
-    		// }
-    		// User user = (User) req.getSession().getAttribute("user");
-    		// if (user == null)
-    		// user = userService.loadById(userId);
-    		// boolean flag = Common.CheckPerson(user.getPhone(),
-    		// user.getPassword(), token);
-    		// if (!flag) { // 身份认证失败,返回错误信息
-    		// return JSONUtil.toJSONResult(2, "身份认证失败", null);
-    		// }
-    		Map<String, Object> query = new HashMap<>();
-    		query.put("lat", lat);
-    		query.put("lon", lon);
-    		query.put("goodsId", goodsId);
-    		query.put("type", type);
-    		query.put("nurseName", nurseName);
-    		List<Map<String, Object>>  result = nurseJobtitleService.getNurseList(query);
-    		return JSONUtil.toJSONResult(1, "操作成功！", result);
-    	}
-    	catch (Exception e) {
-    		Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat+ " goodsId=" + goodsId+ " type=" + type+ " nurseName=" + nurseName, e);
-    	}
-    	return null;
+    public byte[] getNurseList(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String lon, String lat,
+            String goodsId, @RequestParam(value = "type", defaultValue = "0", required = true) Integer type,
+            String nurseName, @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
+            @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
+        try {
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId
+                        + " type=" + type + " nurseName=" + nurseName);
+            }
+            if (StringUtils.isEmpty(lon) || StringUtils.isEmpty(lat)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+
+            // String token = req.getHeader("token");
+            // if (StringUtils.isEmpty(token)) {
+            // return JSONUtil.toJSONResult(3, "非法请求", null);
+            // }
+            // User user = (User) req.getSession().getAttribute("user");
+            // if (user == null)
+            // user = userService.loadById(userId);
+            // boolean flag = Common.CheckPerson(user.getPhone(),
+            // user.getPassword(), token);
+            // if (!flag) { // 身份认证失败,返回错误信息
+            // return JSONUtil.toJSONResult(2, "身份认证失败", null);
+            // }
+            Map<String, Object> query = new HashMap<>();
+            query.put("lat", lat);
+            query.put("lon", lon);
+            query.put("goodsId", goodsId);
+            query.put("type", type);
+            query.put("nurseName", nurseName);
+            PageHelper.startPage(p, n);
+            List<Map<String, Object>> list = nurseJobtitleService.getNurseList(query);
+            PageInfo<Map<String, Object>> result = new PageInfo<Map<String, Object>>(list);
+            return JSONUtil.toJSONResult(1, "操作成功！", result);
+        }
+        catch (Exception e) {
+            Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId + " type="
+                    + type + " nurseName=" + nurseName, e);
+        }
+        return null;
     }
 
     @RequestMapping(path = "/getReceiveAddress.json", name = "查询收货地址")
@@ -508,5 +527,5 @@ public class UserController {
         }
         return null;
     }
-    
+
 }

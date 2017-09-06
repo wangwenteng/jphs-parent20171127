@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.jinpaihushi.dao.BaseDao;
@@ -92,18 +94,13 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         Worktime query = new Worktime();
         query.setUserid(userId);
         query.setOrderby("calendar ASC");
-        if (isNextWeek) {
-            PageHelper.startPage(2, 7);
-        }
-        else {
-            PageHelper.startPage(1, 7);
-        }
         result = worktimeDao.list(query);
         return result;
     }
 
     @Scheduled(cron = "${NURSE_PERIOD_DAY}")
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateAllNurseWorkTime() {
 
         List<String> list = worktimeDao.getAllNurse();
@@ -123,6 +120,18 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
                 worktime.setCalendar(time);
                 worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(time)));
                 worktime.setUserid(string);
+                worktime.setH9(1);
+                worktime.setH11(1);
+                worktime.setH12(1);
+                worktime.setH13(1);
+                worktime.setH14(1);
+                worktime.setH15(1);
+                worktime.setH16(1);
+                worktime.setH17(1);
+                worktime.setH18(1);
+                worktime.setH19(1);
+                worktime.setH20(1);
+                worktime.setH21(1);
                 worktime.setCreatetime(new Date());
                 insert.add(worktime);
             }
@@ -151,18 +160,18 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             worktime.setCalendar(string);
             worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(string)));
             worktime.setUserid(userId);
-            worktime.setH9(0);
-            worktime.setH11(0);
-            worktime.setH12(0);
-            worktime.setH13(0);
-            worktime.setH14(0);
-            worktime.setH15(0);
-            worktime.setH16(0);
-            worktime.setH17(0);
-            worktime.setH18(0);
-            worktime.setH19(0);
-            worktime.setH20(0);
-            worktime.setH21(0);
+            worktime.setH9(1);
+            worktime.setH11(1);
+            worktime.setH12(1);
+            worktime.setH13(1);
+            worktime.setH14(1);
+            worktime.setH15(1);
+            worktime.setH16(1);
+            worktime.setH17(1);
+            worktime.setH18(1);
+            worktime.setH19(1);
+            worktime.setH20(1);
+            worktime.setH21(1);
             worktime.setCreatetime(new Date());
             i = worktimeDao.insert(worktime);
         }

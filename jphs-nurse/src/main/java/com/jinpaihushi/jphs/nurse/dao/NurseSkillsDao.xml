@@ -4,28 +4,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <!--
 	author	:	scj
-	date	:	2017-08-16 14:48:18
+	date	:	2017-08-18 17:00:11
 	version	:	1.0
 -->
 <mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseSkillsDao">
 	
 	<sql id="field">
-		NS.id, NS.skills_id, NS.type, NS.creator_name, 
-		NS.creator_id, NS.create_time, NS.status
+		NS.id, NS.skills_id, NS.type, 
+		NS.creator_name, NS.creator_id, NS.create_time, NS.status
 	</sql>
 
 	<sql id="fieldGlobal">
-		NS.id NS_id, NS.skills_id NS_skills_id, 
-		NS.type NS_type, NS.creator_name NS_creator_name, 
-		NS.creator_id NS_creator_id, NS.create_time NS_create_time, 
-		NS.status NS_status
+		NS.id NS_id,
+		NS.skills_id NS_skills_id, NS.type NS_type, 
+		NS.creator_name NS_creator_name, NS.creator_id NS_creator_id, 
+		NS.create_time NS_create_time, NS.status NS_status
 	</sql>
 	
 	<sql id="fieldWithAlias">
-		NS.id id, NS.skills_id skillsId, 
-		NS.type type, NS.creator_name creatorName, 
-		NS.creator_id creatorId, NS.create_time createTime, 
-		NS.status status
+		NS.id id, 
+		NS.skills_id skillsId, NS.type type, 
+		NS.creator_name creatorName, NS.creator_id creatorId, 
+		NS.create_time createTime, NS.status status
 	</sql>
 	
 	<sql id="condition">
@@ -138,15 +138,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseSkills">
 		INSERT INTO `NURSE_SKILLS`(
-			id, skills_id, 
-			type, creator_name, 
-			creator_id, create_time, 
-			status
+			id, 
+			skills_id, type, 
+			creator_name, creator_id, 
+			create_time, status
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{skillsId,jdbcType=VARCHAR}, 
-			#{type,jdbcType=INTEGER}, #{creatorName,jdbcType=VARCHAR}, 
-			#{creatorId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{status,jdbcType=INTEGER}
+			#{id,jdbcType=VARCHAR},
+			#{skillsId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
 		)
 	</insert>
 	
@@ -154,19 +154,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		parameterType="list">
         <![CDATA[
         INSERT INTO `NURSE_SKILLS`(
-			id, skills_id, 
-			type, creator_name, 
-			creator_id, create_time, 
-			status
+			id,
+			skills_id, type, 
+			creator_name, creator_id, 
+			create_time, status
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.skillsId,jdbcType=VARCHAR}, 
-			#{item.type,jdbcType=INTEGER}, #{item.creatorName,jdbcType=VARCHAR}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.status,jdbcType=INTEGER}
+			#{item.id,jdbcType=VARCHAR},
+			#{item.skillsId,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>

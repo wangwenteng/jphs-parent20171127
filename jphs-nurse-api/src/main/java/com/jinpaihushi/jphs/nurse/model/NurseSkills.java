@@ -25,7 +25,6 @@ import com.jinpaihushi.model.BaseModel;
 public class NurseSkills extends BaseModel implements Predicate<NurseSkills>,
 		Updator<NurseSkills> {
 
-
     /**  */
 	@Length(max = 50, message = "{nurseSkills.skillsId.illegal.length}")
 	private String skillsId;

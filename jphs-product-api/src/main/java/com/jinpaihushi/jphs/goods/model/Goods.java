@@ -99,6 +99,8 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 	private String url;
 	
 	private PricePart pricePart ;
+	
+	private boolean flag;
 
 	/**
 	 * 获取职称列表
@@ -385,6 +387,16 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 
 	public void setMinPrice(Double minPrice) {
 		this.minPrice = minPrice;
+	}
+	
+	
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 
 	public String toString() {

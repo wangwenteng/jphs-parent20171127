@@ -34,4 +34,8 @@ public class NurseJobtitleServiceImpl extends BaseServiceImpl<NurseJobtitle> imp
 		return nurseJobtitleDao.getNurseList(query);
 	}
 	
+	public List<NurseJobtitle> getNurseAuditing(Map<String,Object> map){
+		return nurseJobtitleDao.getNurseAuditing(map);
+	}
+	
 }

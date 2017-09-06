@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.price.dao;
 
+ 
+import java.util.List;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,13 @@ import com.jinpaihushi.jphs.price.model.PriceNurse;
  */
 @Repository("priceNurseDao")
 public interface PriceNurseDao extends BaseDao<PriceNurse> {
+ 
 
+	boolean deleteByUserAndGoods(PriceNurse pn);
+
+	List<PriceNurse> getList(PriceNurse pn);
+	
+	
     /**
      * 护士的服务项目
      * @param userId 护士id
@@ -25,4 +33,6 @@ public interface PriceNurseDao extends BaseDao<PriceNurse> {
      */
     List<Map<String, Object>> getServiceItems(@Param("userId") String userId);
 
+	boolean updatePriceNurse(PriceNurse pn);
+ 
 }

@@ -1,6 +1,7 @@
 package com.jinpaihushi.jphs.nurse.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.hibernate.validator.constraints.Length;
@@ -61,6 +62,8 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 	@Length(max = 50, message = "{nurseJobtitle.address.illegal.length}")
 	private String address;
 	
+	private List<NurseImages> nurseImages;
+	
 	/**	身份证-正面	*/
 	private String sfzz;
 	/**	身份证-反面	*/
@@ -84,6 +87,13 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
 
 	public NurseJobtitle(String id){
 		this.id = id;
+	}
+	
+	public List<NurseImages> getNurseImages() {
+		return nurseImages;
+	}
+	public void setNurseImages(List<NurseImages> nurseImages) {
+		this.nurseImages = nurseImages;
 	}
 	
 	public String getSfzz() {

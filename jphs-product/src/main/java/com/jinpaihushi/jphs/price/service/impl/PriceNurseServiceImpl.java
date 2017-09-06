@@ -29,9 +29,23 @@ public class PriceNurseServiceImpl extends BaseServiceImpl<PriceNurse> implement
 		return priceNurseDao;
 	}
 
+	
 	@Override
 	public List<Map<String, Object>> getServiceItems(String userId) {
 		return priceNurseDao.getServiceItems(userId);
 	}
-	
+	@Override
+	public boolean deleteByUserAndGoods(PriceNurse pn) {
+	 
+		return priceNurseDao.deleteByUserAndGoods(pn);
+	}
+
+
+	@Override
+	public boolean updatePriceNurse(PriceNurse pn) {
+		 
+		return priceNurseDao.updatePriceNurse(pn);
+	}
+
+ 
 }
