@@ -1,10 +1,8 @@
 package com.jinpaihushi.jphs.order.controller;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alipay.api.domain.Voucher;
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.evaluation.model.Evaluation;
