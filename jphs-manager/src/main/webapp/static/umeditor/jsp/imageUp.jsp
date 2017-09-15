@@ -8,9 +8,9 @@
 	response.setCharacterEncoding("utf-8");
     Uploader up = new Uploader(request);
     up.setSavePath("../../../static/upload");
-   /*  String[] fileType = {".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp"}; */
+    String[] fileType = {".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp"}; 
     
-    String[] fileType = {".png" };
+    //String[] fileType = {".png" };
     up.setAllowFiles(fileType);
     up.setMaxSize(1024); //单位KB
     up.upload();

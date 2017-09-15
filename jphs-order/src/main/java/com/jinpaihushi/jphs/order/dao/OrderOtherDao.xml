@@ -271,6 +271,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<delete id="deleteById">
 		DELETE OO FROM `ORDER_OTHER` OO WHERE OO.ID = #{id} 
 	</delete>
+	<delete id="deleteByOrderId">
+		DELETE OO FROM `ORDER_OTHER` OO WHERE OO.order_id = #{orderId} 
+	</delete>
 	
 	<update id="disableById">
 	    UPDATE `ORDER_OTHER` OO

@@ -48,4 +48,6 @@
 		interface="com.jinpaihushi.jphs.person.service.PersonGroupService" />
 	<dubbo:service ref="cancelOrderService"
 		interface="com.jinpaihushi.jphs.cancel.service.CancelOrderService" />
+	<dubbo:service ref="nurseInstitutionsService"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseInstitutionsService" />
 </beans>

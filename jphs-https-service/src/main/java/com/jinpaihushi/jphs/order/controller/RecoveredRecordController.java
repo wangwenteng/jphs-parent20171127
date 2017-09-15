@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.recovered.model.RecoveredRecord;
@@ -45,7 +46,7 @@ public class RecoveredRecordController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(name = "添加康复记录", path = "/setRecovered.json")
+	@RequestMapping(name = "添加康复记录", path = "/setRecovered.json",method = RequestMethod.POST)
 	public byte[] setRecovered(HttpServletRequest req, HttpServletResponse resp, String authCode,User user,
 			String patientName,Integer patientSex,Integer patientAge,String estimate,String propose,String orderId,String userId){
 		
@@ -65,11 +66,6 @@ public class RecoveredRecordController {
 							||StringUtils.isEmpty(user.getPassword())
 								||StringUtils.isEmpty(user.getType().toString())
 									|| StringUtils.isEmpty(authCode)
-									|| StringUtils.isEmpty(patientName)
-									|| StringUtils.isEmpty(String.valueOf(patientSex))
-									|| StringUtils.isEmpty(String.valueOf(patientAge))
-									|| StringUtils.isEmpty(estimate)
-									|| StringUtils.isEmpty(propose)
 									|| StringUtils.isEmpty(orderId)
 									|| StringUtils.isEmpty(userId)/*
 											|| StringUtils.isEmpty(token)*/) {

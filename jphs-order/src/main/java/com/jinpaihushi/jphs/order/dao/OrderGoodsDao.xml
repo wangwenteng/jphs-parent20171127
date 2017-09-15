@@ -260,6 +260,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<delete id="deleteById">
 		DELETE OG FROM `ORDER_GOODS` OG WHERE OG.ID = #{id} 
 	</delete>
+	<delete id="deleteByOrderId">
+		DELETE OG FROM `ORDER_GOODS` OG WHERE OG.order_id = #{orderId} 
+	</delete>
 	
 	<update id="disableById">
 	    UPDATE `ORDER_GOODS` OG

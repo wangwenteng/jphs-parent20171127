@@ -60,13 +60,13 @@
 						<td>
 						<jphs:hasPermission url="/platform/delete.jhtml">	
 									<c:if test="${e.status == 0}">
-										<a onclick="deleteById('${e.id}','1')"> 
+										<a onclick="deleteById('${e.id}','1')"  title="开启"> 
 											<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
 										</a>
 									</c:if>
 									<c:if test="${e.status == 1}">
-										<a onclick="deleteById('${e.id}','0')">
-											<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
+										<a onclick="deleteById('${e.id}','0')" title="关闭">
+											<img style="width: 20px;height: 20px;" src="/static/images/startup.png" >
 										</a>
 									</c:if>
 								</jphs:hasPermission>

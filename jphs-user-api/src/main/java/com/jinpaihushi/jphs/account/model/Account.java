@@ -22,112 +22,141 @@ import com.jinpaihushi.model.BaseModel;
 @SuppressWarnings("serial")
 public class Account extends BaseModel implements Predicate<Account>, Updator<Account> {
 
+
     /** 余额 */
-    private Double balance;
+	private Double balance;
 
-    /** 积分 */
-    private Integer score;
+    /** 积累积分 */
+	private Integer score;
 
-    public Account() {
+    /** 剩余积分 */
+	private Integer availableScore;
+
+	public Account(){}
+
+	public Account(String id){
+		this.id = id;
+	}
+
+	/**
+	 * 获取余额
+	 */
+	public Double getBalance() {
+    	return balance;
+    }
+  	
+	/**
+	 * 设置余额
+	 */
+	public void setBalance(Double balance) {
+    	this.balance = balance;
     }
 
-    public Account(String id) {
-        this.id = id;
+	/**
+	 * 获取积累积分
+	 */
+	public Integer getScore() {
+    	return score;
+    }
+  	
+	/**
+	 * 设置积累积分
+	 */
+	public void setScore(Integer score) {
+    	this.score = score;
     }
 
-    /**
-     * 获取余额
-     */
-    public Double getBalance() {
-        return balance;
+	/**
+	 * 获取剩余积分
+	 */
+	public Integer getAvailableScore() {
+    	return availableScore;
     }
-
-    /**
-     * 设置余额
-     */
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
-
-    /**
-     * 获取积分
-     */
-    public Integer getScore() {
-        return score;
-    }
-
-    /**
-     * 设置积分
-     */
-    public void setScore(Integer score) {
-        this.score = score;
+  	
+	/**
+	 * 设置剩余积分
+	 */
+	public void setAvailableScore(Integer availableScore) {
+    	this.availableScore = availableScore;
     }
 
     public String toString() {
-        return new StringBuilder().append("Account{").append("id=").append(id).append(",balance=").append(balance)
-                .append(",score=").append(score).append(",creatorName=").append(creatorName).append(",creatorId=")
-                .append(creatorId).append(",createTime=").append(createTime).append(",status=").append(status)
-                .append('}').toString();
+		return new StringBuilder().append("Account{").
+			append("id=").append(id).
+			append(",balance=").append(balance).
+			append(",score=").append(score).
+			append(",availableScore=").append(availableScore).
+			append(",creatorName=").append(creatorName).
+			append(",creatorId=").append(creatorId).
+			append(",createTime=").append(createTime).
+			append(",status=").append(status).
+			append('}').toString();
     }
-
+	
     /**
-     * 复制字段：
-     * id, balance, score, creatorName, 
-     * creatorId, createTime, status
-     */
-    public Account copy() {
-        Account account = new Account();
-        account.id = this.id;
-        account.balance = this.balance;
-        account.score = this.score;
-        account.creatorName = this.creatorName;
-        account.creatorId = this.creatorId;
-        account.createTime = this.createTime;
-        account.status = this.status;
-        return account;
-    }
-
-    /**
-     * 比较字段：
-     * id, balance, score, creatorName, 
-     * creatorId, createTime, status
-     */
-    @Override
-    public boolean test(Account t) {
-        if (t == null)
-            return false;
-        return (this.id == null || this.id.equals(t.id)) && (this.balance == null || this.balance.equals(t.balance))
-                && (this.score == null || this.score.equals(t.score))
-                && (this.creatorName == null || this.creatorName.equals(t.creatorName))
-                && (this.creatorId == null || this.creatorId.equals(t.creatorId))
-                && (this.createTime == null || this.createTime.equals(t.createTime))
-                && (this.status == null || this.status.equals(t.status));
-    }
-
-    @Override
-    public void update(Account element) {
-        if (element == null)
-            return;
-        if (this.id != null && !this.id.isEmpty()) {
-            element.id = this.id;
-        }
-        if (this.balance != null) {
-            element.balance = this.balance;
-        }
-        if (this.score != null) {
-            element.score = this.score;
-        }
-        if (this.creatorName != null && !this.creatorName.isEmpty()) {
-            element.creatorName = this.creatorName;
-        }
-        if (this.creatorId != null && !this.creatorId.isEmpty()) {
-            element.creatorId = this.creatorId;
-        }
-        if (this.createTime != null) {
-            element.createTime = this.createTime;
-        }
-        if (this.status != null) {
-            element.status = this.status;
-        }
-    }
+	 * 复制字段：
+	 * id, balance, score, availableScore, 
+	 * creatorName, creatorId, createTime, status
+	 */
+	public Account copy(){
+		Account account = new Account();
+     	account.id = this.id;
+     	account.balance = this.balance;
+     	account.score = this.score;
+     	account.availableScore = this.availableScore;
+     	account.creatorName = this.creatorName;
+     	account.creatorId = this.creatorId;
+     	account.createTime = this.createTime;
+     	account.status = this.status;
+		return account;
+	}
+	
+	/**
+	 * 比较字段：
+	 * id, balance, score, availableScore, 
+	 * creatorName, creatorId, createTime, status
+	 */
+	@Override
+	public boolean test(Account t) {
+		if(t == null) return false;
+		return (this.id == null || this.id.equals(t.id))
+				&& (this.balance == null || this.balance.equals(t.balance))
+				&& (this.score == null || this.score.equals(t.score))
+				&& (this.availableScore == null || this.availableScore.equals(t.availableScore))
+				&& (this.creatorName == null || this.creatorName.equals(t.creatorName))
+				&& (this.creatorId == null || this.creatorId.equals(t.creatorId))
+				&& (this.createTime == null || this.createTime.equals(t.createTime))
+				&& (this.status == null || this.status.equals(t.status))
+		;
+	}
+	
+	@Override
+	public void update(Account element) {
+		if (element == null)
+			return;
+		if (this.id != null && !this.id.isEmpty()) {
+			element.id = this.id;
+		}
+		if (this.balance != null) {
+			element.balance = this.balance;
+		}
+		if (this.score != null) {
+			element.score = this.score;
+		}
+		if (this.availableScore != null) {
+			element.availableScore = this.availableScore;
+		}
+		if (this.creatorName != null && !this.creatorName.isEmpty()) {
+			element.creatorName = this.creatorName;
+		}
+		if (this.creatorId != null && !this.creatorId.isEmpty()) {
+			element.creatorId = this.creatorId;
+		}
+		if (this.createTime != null) {
+			element.createTime = this.createTime;
+		}
+		if (this.status != null) {
+			element.status = this.status;
+		}
+	}
 }

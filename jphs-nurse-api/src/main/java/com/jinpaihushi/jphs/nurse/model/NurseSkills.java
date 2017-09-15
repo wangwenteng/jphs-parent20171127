@@ -28,6 +28,8 @@ public class NurseSkills extends BaseModel implements Predicate<NurseSkills>,
     /**  */
 	@Length(max = 50, message = "{nurseSkills.skillsId.illegal.length}")
 	private String skillsId;
+	
+	private Integer nurseType;
 
 	public NurseSkills(){}
 
@@ -48,6 +50,14 @@ public class NurseSkills extends BaseModel implements Predicate<NurseSkills>,
 	public void setSkillsId(String skillsId) {
     	this.skillsId = skillsId;
     }
+	
+	public Integer getNurseType(){
+		return nurseType;
+	}
+	
+	public void setNurseType(Integer nurseType){
+		this.nurseType = nurseType;
+	}
 
     public String toString() {
 		return new StringBuilder().append("NurseSkills{").

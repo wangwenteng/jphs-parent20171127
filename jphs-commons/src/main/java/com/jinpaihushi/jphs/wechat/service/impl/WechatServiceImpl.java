@@ -73,6 +73,7 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 			boolean falg_ticket = true;
 			int tt = 1;
 			while (falg_ticket) {
+				
 				boolean ti_token = getTicket();
 				if (Util.debugLog.isDebugEnabled()) {
 					Util.debugLog.debug("获取ticket第-" + tt + "-次(" + ti_token + ")");
@@ -252,7 +253,11 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 				wechat.setTicket("0");
 				wechat.setErrcode("0");
 				wechat.setErrmsg("正常");
-				wechat.setStatus(1);
+				if("wxc1662397992295bf".equals(APPID)){
+					wechat.setStatus(1);
+				}else{
+					wechat.setStatus(0);
+				}
 			} else if (json_token.containsKey("errcode")) {
 				// {"errcode":40013,"errmsg":"invalid appid"}
 				if (Util.debugLog.isDebugEnabled()) {
@@ -306,7 +311,11 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 			wechat.setId(UUIDUtils.getId());
 			wechat.setType(2);
 			if (json_ticket.containsKey("ticket")) {
-				wechat.setStatus(1);
+				if("wxc1662397992295bf".equals(w.getAppid())){
+					wechat.setStatus(1);
+				}else{
+					wechat.setStatus(0);
+				}
 				wechat.setExpiresIn(json_ticket.getString("expires_in"));
 				wechat.setTicket(json_ticket.getString("ticket"));
 				wechat.setErrcode("0");

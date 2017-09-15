@@ -35,6 +35,12 @@ public interface WorktimeService extends BaseService<Worktime> {
     int insertNurseWorkTime(String userId);
 
     /**
+     * 插入用户的日程安排
+     * @return
+     */
+    int insertUserWorkTime();
+
+    /**
      * 获取用户的工作时间
      * @param productId
      * @return
@@ -46,6 +52,8 @@ public interface WorktimeService extends BaseService<Worktime> {
      * @param userId
      * @return
      */
-    List<Worktime> getNurseWorktime(String userId);
+    List<Worktime> getNurseWorktime(String userId, String productId);
+
+    int insertAllWorkTime();
 
 }

@@ -35,45 +35,45 @@ import com.jinpaihushi.jphs.wechat.service.WechatService;
  */
 @Component("startupListener")
 public class StartupListener extends AbstractApplicationListener<ContextRefreshedEvent> {
-	/*@Autowired
-	private SystemUserService systemUserService;
-	@Autowired
-	private SystemRoleService systemRoleService;
-	@Autowired
-	private SystemModuleService systemModuleService;
-	@Autowired
-	private SystemRoleModuleService systemRoleModuleService;*/
-	@Autowired
-	private WechatService wechatService;
-	
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		logger.info("===========context-refresh===============");
-		SpringHelper.setContext(event.getApplicationContext());
-		SpringContext.setContext(event.getApplicationContext());
-		logger.info("=========================================");
-		// 获取微信公众号token
-		wechatService.getTokens();
-		logger.info("初始化结束");
-		// 初始化之后创建超级管理员
-			/*String userId = systemUserService.initSystemUser();
-			if (userId.length() > 0) {
-				String roleId = systemRoleService.initSystemRole(userId);
-				if (roleId.length() > 0) {
-					// 查询到所有角色
-					List<SystemModule> list = systemModuleService.list(null);
-					// 给默认角色分配所有模块
-					List<SystemRoleModule> insert = new ArrayList<>();
-					SystemRoleModule systemRoleModle = null;
-					for (SystemModule systemModule : list) {
-						systemRoleModle = new SystemRoleModule();
-						systemRoleModle.setSystemRoleId(roleId);
-						systemRoleModle.setSystemModuleId(systemModule.getId());
-						insert.add(systemRoleModle);
-					}
-					systemRoleModuleService.inserts(insert);
-				}
-			}*/
-	}
+    /*@Autowired
+    private SystemUserService systemUserService;
+    @Autowired
+    private SystemRoleService systemRoleService;
+    @Autowired
+    private SystemModuleService systemModuleService;
+    @Autowired
+    private SystemRoleModuleService systemRoleModuleService;*/
+    @Autowired
+    private WechatService wechatService;
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        logger.info("===========context-refresh===============");
+        SpringHelper.setContext(event.getApplicationContext());
+        SpringContext.setContext(event.getApplicationContext());
+        logger.info("=========================================");
+        // 获取微信公众号token
+        //		wechatService.getTokens();
+        logger.info("初始化结束");
+        // 初始化之后创建超级管理员
+        /*String userId = systemUserService.initSystemUser();
+        if (userId.length() > 0) {
+        	String roleId = systemRoleService.initSystemRole(userId);
+        	if (roleId.length() > 0) {
+        		// 查询到所有角色
+        		List<SystemModule> list = systemModuleService.list(null);
+        		// 给默认角色分配所有模块
+        		List<SystemRoleModule> insert = new ArrayList<>();
+        		SystemRoleModule systemRoleModle = null;
+        		for (SystemModule systemModule : list) {
+        			systemRoleModle = new SystemRoleModule();
+        			systemRoleModle.setSystemRoleId(roleId);
+        			systemRoleModle.setSystemModuleId(systemModule.getId());
+        			insert.add(systemRoleModle);
+        		}
+        		systemRoleModuleService.inserts(insert);
+        	}
+        }*/
+    }
 
 }

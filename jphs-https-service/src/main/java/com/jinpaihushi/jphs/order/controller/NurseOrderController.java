@@ -16,17 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.jinpaihushi.jphs.jobtitle.service.JobtitleGoodsService;
-import com.jinpaihushi.jphs.nurse.model.Nurse;
-import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.order.service.OrderServiceService;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.service.service.ServiceImagesService;
 import com.jinpaihushi.jphs.user.model.User;
-import com.jinpaihushi.jphs.user.service.UserService;
-import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -35,12 +30,6 @@ import com.jinpaihushi.utils.Util;
 public class NurseOrderController {
 
 	@Autowired
-	private UserService userService;
-	@Autowired
-	private NurseService nurseService;
-	@Autowired
-	private JobtitleGoodsService jobtitleGoodsService;
-	@Autowired
 	private OrderService orderService;
 	@Autowired
 	private OrderServiceService orderServiceService;
@@ -48,7 +37,7 @@ public class NurseOrderController {
 	private ServiceImagesService serviceImagesService;
 	
 	@ResponseBody
-	@RequestMapping(name="完成服务",path="/fulfilService")
+	@RequestMapping(name="完成服务",path="/fulfilService.json")
 	public byte[] fulfilService(HttpServletRequest req, HttpServletResponse resp,String osId, String authCode,String orderId,String orderGoodsId,User user){
 		try{
 			String token = "";
@@ -58,21 +47,20 @@ public class NurseOrderController {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseOrder.startService.json,authCode=" + authCode + " orderId=" + orderId + " orderGoodsId=" + orderGoodsId+" token="+token);
+				Util.debugLog.debug("nurseOrder.fulfilService.json,authCode=" + authCode + " orderId=" + orderId + " orderGoodsId=" + orderGoodsId+" token="+token);
 			}
 			// 查空
 			if (StringUtils.isEmpty(orderId) 
-					|| StringUtils.isEmpty(orderGoodsId) 
 						|| StringUtils.isEmpty(user.getId())
 							|| StringUtils.isEmpty(osId)
 								|| StringUtils.isEmpty(user.getPassword())
 									|| StringUtils.isEmpty(user.getPhone())
-										|| StringUtils.isEmpty(token)) {
+										/*|| StringUtils.isEmpty(token)*/) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
+			}/*
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}
+			}*/
 
 			Order order = new Order();
 			order.setAcceptUserId(user.getId());
@@ -83,39 +71,36 @@ public class NurseOrderController {
 			if(order == null ){
 				return JSONUtil.toJSONResult(0, "订单完成失败，请刷新重试", null);
 			}
-			//	完成本次服务
-			com.jinpaihushi.jphs.order.model.OrderService os_one = new com.jinpaihushi.jphs.order.model.OrderService();
-			os_one.setStatus(1);
-			os_one.setOrderId(orderId);
-			os_one.setNurseId(user.getId());
-			os_one.setSchedule(1);
-			os_one.setId(osId);
-			com.jinpaihushi.jphs.order.model.OrderService one_os = orderServiceService.load(os_one);
-				if(one_os == null){
-					return JSONUtil.toJSONResult(0, "订单完成失败，请刷新重试", null);
-				}
-			com.jinpaihushi.jphs.order.model.OrderService one_os_up = new com.jinpaihushi.jphs.order.model.OrderService();
-			one_os_up.setSchedule(2);
-			one_os_up.setId(osId);
-			one_os_up.setStartServiceTime(new Date());
-			boolean one_os_up_s = orderServiceService.update(one_os_up);
-			if(one_os_up_s){
-				return JSONUtil.toJSONResult(1, "订单完成", null);
-			}else{
-				return JSONUtil.toJSONResult(0, "订单完成失败，请刷新重试", null);
-			}
-			/*com.jinpaihushi.jphs.order.model.OrderService os_total = new com.jinpaihushi.jphs.order.model.OrderService();
-			os_total.setOrderId(order.getId());
-			os_total.setSchedule(0);
-			os_total.setNurseId(user.getId());
-			os_total.setStatus(1);
-			List<com.jinpaihushi.jphs.order.model.OrderService> order_os_list = orderServiceService.list(os_total);
-			*/
 			
+			String rs = orderService.fulfilService(osId,orderId,orderGoodsId,user);
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("nurseOrder.fulfilService.json,rs=" + rs );
+			}
+//			查询订单详情-
+			Order re_order = new Order();
+			re_order.setId(orderId);
+			re_order.setAcceptUserId(user.getId());
+			re_order = orderService.nurseOrderDetails(re_order);
+			
+			ServiceImages serviceImages = new ServiceImages();
+			serviceImages.setSourceId(re_order.getId());
+			List<ServiceImages> serviceImagesLists = serviceImagesService.list(serviceImages);
+			if(serviceImagesLists != null){
+				re_order.setServiceOrderImages(serviceImagesLists);
+			}
+			
+			int a=1;
+			String msg = "操作成功！记得提醒客户帮您确认订单完成哦";
+			if(!rs.equals("1")){
+				a = 0;
+				msg = "完成失败，请刷新重试!";
+			}
+			return JSONUtil.toJSONResult(a, msg, re_order);
 			
 			} catch (Exception e) {
 				// 记录日志-fail
-				Util.failLog.error("nurseOrder.startService.json,authCode=" + authCode + " orderId=" + orderId + " orderGoodsId=" + orderGoodsId, e);
+				Util.failLog.error("nurseOrder.fulfilService.json,authCode=" + authCode + " orderId=" + orderId + " orderGoodsId=" + orderGoodsId, e);
 			}
 			
 		
@@ -123,7 +108,7 @@ public class NurseOrderController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(name="护士开始服务",path="/startService")
+	@RequestMapping(name="护士开始服务",path="/startService.json")
 	public byte[] startService( HttpServletRequest req, HttpServletResponse resp,String osId, String authCode,String orderId,String orderGoodsId,User user){
 		
 		try{
@@ -138,58 +123,52 @@ public class NurseOrderController {
 			}
 			// 查空
 			if (StringUtils.isEmpty(orderId) 
-					|| StringUtils.isEmpty(orderGoodsId) 
 						|| StringUtils.isEmpty(user.getId())
 							|| StringUtils.isEmpty(osId)
 								|| StringUtils.isEmpty(user.getPassword())
 									|| StringUtils.isEmpty(user.getPhone())
-										|| StringUtils.isEmpty(token)) {
+										/*|| StringUtils.isEmpty(token)*/) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}
+			}/*
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}
+			}*/
 			
 			Order order = new Order();
 			order.setAcceptUserId(user.getId());
 			order.setId(orderId);
-			order.setSchedule(2);
 			order.setStatus(1);
 			order = orderService.load(order);
 			if(order == null ){
 				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
 			}
-			Order order_start = new Order();
-			order_start.setAcceptUserId(user.getId());
-			order_start.setId(orderId);
-			order_start.setSchedule(3);
-			boolean or_start = orderService.update(order_start);
-			if(!or_start){
-				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
-			}
-			//	该订单一共几次服务
-			com.jinpaihushi.jphs.order.model.OrderService os_total = new com.jinpaihushi.jphs.order.model.OrderService();
-			os_total.setStatus(1);
-			os_total.setOrderId(orderId);
-			os_total.setNurseId(user.getId());
-			os_total.setSchedule(0);
-			os_total.setId(osId);
-			// 查询该次订单
-			com.jinpaihushi.jphs.order.model.OrderService one_os = orderServiceService.load(os_total);
-			if(one_os == null){
-				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
-			}
-			com.jinpaihushi.jphs.order.model.OrderService one_os_up = new com.jinpaihushi.jphs.order.model.OrderService();
-			one_os_up.setSchedule(1);
-			one_os_up.setId(osId);
-			one_os_up.setStartServiceTime(new Date());
-			boolean one_os_up_s = orderServiceService.update(one_os_up);
-			if(!one_os_up_s){
-				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
-			}else{
-				return JSONUtil.toJSONResult(1, "开始成功", null);
-			}
 			
+			String rs = orderService.startService(orderId, osId, user);
+			
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("nurseOrder.startService.json,rs=" + rs);
+			}
+//			查询订单详情-
+			Order re_order = new Order();
+			re_order.setId(orderId);
+			re_order.setAcceptUserId(user.getId());
+			re_order = orderService.nurseOrderDetails(re_order);
+			
+			ServiceImages serviceImages = new ServiceImages();
+			serviceImages.setSourceId(re_order.getId());
+			serviceImages.setType(2);
+			List<ServiceImages> serviceImagesLists = serviceImagesService.list(serviceImages);
+			if(serviceImagesLists != null){
+				re_order.setServiceOrderImages(serviceImagesLists);
+			}
+			int a=1;
+			String msg = "服务状态更新成功！";
+			if(!rs.equals("1")){
+				a = 0;
+				msg = "订单执行失败，请刷新重试!";
+			}
+			return JSONUtil.toJSONResult(a, msg, re_order);
 		} catch (Exception e) {
 			// 记录日志-fail
 			Util.failLog.error("nurseOrder.startService.json,authCode=" + authCode + " orderId=" + orderId + " orderGoodsId=" + orderGoodsId, e);
@@ -208,6 +187,8 @@ public class NurseOrderController {
 	 * @param orderId
 	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping(name="护士马上出门",path="/atOnceService.json")
 	public byte[] atOnceService(HttpServletRequest req, HttpServletResponse resp,String authCode,User user,String orderId,String osId){
 		
 		try{
@@ -218,7 +199,7 @@ public class NurseOrderController {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseOrder.list.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone()+" token="+token);
+				Util.debugLog.debug("nurseOrder.atOnceService.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone()+" token="+token);
 			}
 			
 			// 查空
@@ -231,8 +212,8 @@ public class NurseOrderController {
 										|| StringUtils.isEmpty(token)*/) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
-			
-			/*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+			/*
+			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
 			}*/
 			
@@ -249,24 +230,39 @@ public class NurseOrderController {
 			com.jinpaihushi.jphs.order.model.OrderService os = new com.jinpaihushi.jphs.order.model.OrderService();
 			os.setId(osId);
 			os.setOrderId(orderId);
-			os.setNurseId(user.getId());
 			os.setSchedule(0);
 			os.setStatus(1);
 			os = orderServiceService.load(os);
-			if(os == null || os.getSetoutTime() == null || os.getSetoutTime().toString().equals("")){
+			if(os == null){
 				return JSONUtil.toJSONResult(0, "查询详情失败", null);
 			}
 			com.jinpaihushi.jphs.order.model.OrderService os_up = new com.jinpaihushi.jphs.order.model.OrderService();
 			os_up.setId(os.getId());
 			os_up.setSetoutTime(new Date());
 			boolean b = orderServiceService.update(os_up);
+			
+			
+//			查询订单详情-
+			Order re_order = new Order();
+			re_order.setId(orderId);
+			re_order.setAcceptUserId(user.getId());
+			re_order = orderService.nurseOrderDetails(re_order);
+			
+			ServiceImages serviceImages = new ServiceImages();
+			serviceImages.setSourceId(re_order.getId());
+			serviceImages.setType(2);
+			List<ServiceImages> serviceImagesLists = serviceImagesService.list(serviceImages);
+			if(serviceImagesLists != null){
+				re_order.setServiceOrderImages(serviceImagesLists);
+			}
+			
 			if(b)
-				return JSONUtil.toJSONResult(1, "更新成功", "");
+				return JSONUtil.toJSONResult(1, "操作成功！请准时到达服务地点，服务开始前请点击“开始服务”更新服务状态哦~", re_order);
 			else
-				return JSONUtil.toJSONResult(0, "更新状态失败，请刷新重试", "");
+				return JSONUtil.toJSONResult(0, "更新状态失败，请刷新重试", re_order);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("nurseOrder.startService.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone(),e);
+			Util.failLog.error("nurseOrder.atOnceService.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone(),e);
 		}
 		
 		return null;
@@ -294,7 +290,7 @@ public class NurseOrderController {
 			}
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("nurseOrder.list.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone()+" token="+token);
+				Util.debugLog.debug("nurseOrder.orderDetails.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone()+" token="+token);
 			}
 			
 			// 查空
@@ -325,6 +321,7 @@ public class NurseOrderController {
 			}
 			ServiceImages serviceImages = new ServiceImages();
 			serviceImages.setSourceId(order.getId());
+			serviceImages.setType(2);
 			List<ServiceImages> serviceImagesLists = serviceImagesService.list(serviceImages);
 			if(serviceImagesLists != null){
 				order.setServiceOrderImages(serviceImagesLists);
@@ -333,7 +330,7 @@ public class NurseOrderController {
 			return JSONUtil.toJSONResult(1, "查询成功", order);
 		} catch (Exception e) {
 			// 记录日志-fail
-			Util.failLog.error("nurseOrder.startService.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone(),e);
+			Util.failLog.error("nurseOrder.orderDetails.json,authCode=" + authCode + " user=" + user.getId() + " user=" + user.getPhone(),e);
 		}
 		
 		return null;
@@ -399,7 +396,7 @@ public class NurseOrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(name="护士抢单",path="/grab.json")
-	public byte[] getOrder( HttpServletRequest req, HttpServletResponse resp, String authCode,String orderId,String orderGoodsId,User user){
+	public byte[] orderGrab( HttpServletRequest req, HttpServletResponse resp, String authCode,String orderId,String orderGoodsId,User user){
 		
 		try{
 			String token = "";
@@ -426,75 +423,64 @@ public class NurseOrderController {
 			/*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
 			}*/
-			
-			User user_p = new User();
-			user_p.setId(user.getId());
-			user_p.setPhone(user.getPhone());
-			user_p.setPassword(user.getPassword());
-			user_p.setType(user.getType());
-			// 1.根据 name，password,type查询完整信息
-			user = userService.findUser(user_p);
-			
-			// 2.错误		查询用户信息为空弄
-			if (user == null) {
-				return JSONUtil.toJSONResult(0, "用户名或密码不正确，请重新登录！", null);
+			String rs = orderService.orderGrab(orderId,orderGoodsId,user);
+			// 记录日志-debug
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("nurseOrder.grab.json,rs=" + rs);
 			}
-			
-			int tid = 0; // type
-			try {
-				tid = Integer.valueOf(user.getType());
-			} catch (NumberFormatException e) {
-				return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
-			}
-			
-			// 3.错误		判断用户是否是护士
-			if (tid != 0) {
-				return JSONUtil.toJSONResult(0, "用户不是护士！", null);
-			}
-			
-			Nurse nurse = new Nurse();
-			nurse.setCreatorId(user.getId());
-			nurse = nurseService.load(nurse);
-			// 4.错误		用户未申请审核护士资格
-			if (nurse == null) {
-				return JSONUtil.toJSONResult(0, "未申请护士资格！", null);
-			}
-			// 5.错误		已封号
-			if (nurse.getActive() !=1 ) {
-				return JSONUtil.toJSONResult(0, "护士已被封号，请联系客服确认！", null);
-			}
-			// 6.错误		未通过审核
-			if (nurse.getStatus() !=1 ) {
-				return JSONUtil.toJSONResult(0, "护士未通过审核！", null);
-			}
-			Map<String ,Object> jobtitleGoods = new HashMap<String ,Object>();
-			jobtitleGoods.put("goodsId", orderGoodsId);
-			jobtitleGoods.put("nurseId", user.getId());
-			Integer i = jobtitleGoodsService.getJobtitleCount(jobtitleGoods);
-			// 7.错误		护士权限不能接此类型订单
-			if (i == 0) {
-				return JSONUtil.toJSONResult(0, "护士权限未达到！", null);
-			}
-			Order order = new Order();
-			order.setId(orderId);
-			order.setSchedule(1);
-			order.setStatus(1);
-			order = orderService.load(order);
-			// 8.错误		该订单已被抢走
-			if (order == null) {
-				return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
-			}
-			Order order_up = new Order();
-			order_up.setId(orderId);
-			order_up.setSchedule(2);
-			order_up.setAcceptTime(new Date());
-			order_up.setAcceptUserId(user.getId());
-			boolean order_up_falg = orderService.update(order_up);
-			// 9.错误		接单失败
-			if (!order_up_falg) {
-				return JSONUtil.toJSONResult(0, "接单失败！", null);
-			}
-			return JSONUtil.toJSONResult(1, "枪单成功！", null);
+			 int a = 1;
+	          String msg = "抢单成功";
+	          if (rs.equals("0")){
+	        	  a=0;
+	        	  msg = "查询用户信息为空！";
+	          }else if(rs.equals("2")){
+	        	  a=0;
+	        	  msg = "字符串转整形失败";
+	          }else if (rs.equals("3")){
+	        	  a=0;
+	        	  msg = "用户不是护士！";
+	          }else if (rs.equals("4")){
+	        	  a=0;
+	        	  msg = "未申请护士资格！";
+	          }else if (rs.equals("5")){
+	        	  a=0;
+	        	  msg = "护士已被封号，请联系客服确认！";
+	          }else if (rs.equals("6")){
+	        	  a=0;
+	        	  msg = "护士未通过审核！";
+	          }else if (rs.equals("7")){
+	        	  a=0;
+	        	  msg = "您的认证服务资质接取不了专业技能范围外的订单~如有任何疑问可拨打客服电话进行反馈咨询！";
+	          }else if (rs.equals("8")){
+	        	  a=0;
+	        	  msg = "该订单已被抢走！";
+	          }else if (rs.equals("9")){
+	        	  a=0;
+	        	  msg = "接单失败！";
+	          }else if (rs.equals("10")){
+	        	  a=0;
+	        	  msg = "订单异常(订单地址不完整)！";
+	          }else if (rs.equals("11")){
+	        	  a=0;
+	        	  msg = "订单异常(订单地址不完整)！";
+	          }else if (rs.equals("12")){
+	        	  a=0;
+	        	  msg = "您还未设置出门地址，请完善出门地址！";
+	          }else if (rs.equals("13")){
+	        	  a=0;
+	        	  msg = "订单异常(地址不完整-省)！";
+	          }else if (rs.equals("14")){
+	        	  a=0;
+	        	  msg = "订单异常(地址不完整-市)！";
+	          }else if (rs.equals("15")){
+	        	  a=0;
+	        	  msg = "订单异常(地址不完整-省,市)！";
+	          }else if (rs.equals("16")){
+	        	  a=0;
+	        	  msg = "和您的出门地址不匹配，请选择就近订单！";
+	          }
+	          
+			return JSONUtil.toJSONResult(a,msg, null);
 		} catch (Exception e){
 			// 记录日志-debug
 			if (Util.debugLog.isDebugEnabled()) {

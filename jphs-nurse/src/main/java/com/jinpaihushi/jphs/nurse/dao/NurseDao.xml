@@ -501,8 +501,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				<if test="nurse.id!=null and nurse.id!=''">
 					AND N.id = #{nurse.id}
 				</if>
-				<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
-					AND N.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
+				<if test="nurse.nurseInstitutionsId!=null and nurse.nurseInstitutionsId!=''">
+					AND N.nurse_institutions_id = #{nurse.nurseInstitutionsId} 
 				</if>
 				<if test="nurse.type!=null">
 					AND N.type=#{nurse.type}
@@ -524,13 +524,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 					AND N.hospital LIKE CONCAT('%', #{nurse.hospital}, '%')
 				</if>
 				<if test="nurse.departmentId!=null and nurse.departmentId!=''">
-					AND N.department_id LIKE CONCAT('%',
-					#{nurse.departmentId},
-					'%')
+					AND N.department_id  = #{nurse.departmentId} 
 				</if>
 				<if test="nurse.creatorId!=null and nurse.creatorId!=''">
-					AND N.creator_id LIKE CONCAT('%', #{nurse.creatorId},
-					'%')
+					AND N.creator_id  = #{nurse.creatorId} 
 				</if>
 				<if test="nurse.creatorName!=null and nurse.creatorName!=''">
 					AND N.creator_name LIKE CONCAT('%',
@@ -587,11 +584,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND N.hospital LIKE CONCAT('%', #{hospital}, '%')
 			</if>
 			<if test="departmentId!=null and departmentId!=''">
-				AND N.department_id LIKE CONCAT('%', #{departmentId},
-				'%')
+				AND N.department_id  = #{departmentId} 
 			</if>
 			<if test="creatorId!=null and creatorId!=''">
-				AND N.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+				AND N.creator_id = #{creatorId}
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND N.creator_name LIKE CONCAT('%', #{creatorName}, '%')
@@ -686,7 +682,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		n.department_id departmentId,
 		d.name departmentName,
 		(SELECT url FROM
-		nurse_images ni WHERE ni.creator_id =u.id AND ni.type =1) url,
+		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1) url,
 		(
 		SELECT
 		COUNT(id)
@@ -722,7 +718,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ELSE
 		''
 		END AS age,
-		ROUND(
+		COALESCE(ROUND(
 		6378.138 * 2 * ASIN(
 		SQRT(
 		POW(
@@ -743,7 +739,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		)
 		),
 		2
-		) AS distance
+		),'') AS distance
 		FROM
 		nurse n
 		LEFT JOIN `user` u ON n.creator_id = u.id
@@ -758,6 +754,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="goodsName" column="goodsName" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="productId" column="productId" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="grade" column="grade" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="dzTool" column="dz_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="hlTool" column="hl_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="insurance" column="insurance" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isProve" column="is_prove" javaType="Integer" jdbcType="INTEGER"></result>
 		<collection property="goodsPrice" ofType="com.jinpaihushi.jphs.goods.model.GoodsPrice">
 			<result property="id" column="pp_id" javaType="String" jdbcType="VARCHAR"></result>
 			<result property="serviceNumber" column="service_number" javaType="Integer" jdbcType="INTEGER"></result>
@@ -778,11 +778,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pp.id pp_id,
 		g.title goodsName,
 		g.product_id productId,
+		g.dz_tool,
+		g.hl_tool,
+		g.insurance,
+		g.is_prove,
 		p.title pp_title,
 		p.service_number,
 		p.service_time,
 		p.unit,
-		pp.price,
+		pn.price,
 		IFNULL(pp.old_price,'') old_price,
 		pp.cost_price
 		FROM
@@ -798,4 +802,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		p.grade,
 		p.sort
 	</select>
+	<update id="auditNurse">
+		UPDATE `NURSE` N
+		<include refid="dynamicSet" />
+		WHERE N.creator_id = #{creatorId}
+	</update>
 </mapper>

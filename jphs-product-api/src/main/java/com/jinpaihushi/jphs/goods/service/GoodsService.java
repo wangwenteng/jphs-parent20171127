@@ -22,44 +22,45 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface GoodsService extends BaseService<Goods> {
 
-	Goods getGoodsDetail(String id);
-	
-	Goods getGoodsImgDetail(String id);
-	
-	int insertGoodsAndImg(Goods goods,ImageType imageType,ListPrice listPrice);
-	
-	boolean updateGoods(Goods goods,ListPrice listPrice,ImageType imageType);
-	
-	Page<Product> getProductGoodsListDetail(Goods goods);
-	Price getJobtitlePrice(String id);
+    Goods getGoodsDetail(String id);
 
-	/**
-	 * {获取服务的详情}
-	 * 
-	 * @param id 服务id
-	 * @param siteId 站点id
-	 * @return
-	 * @author: wangwt
-	 */
-	GoodsDetail getOneGoodsDetail(String id,String siteId,Integer deviceType);
-	
-	public List<Jobtitle> getJobtitle();
-	
-	public List<Map<String,Object>> getColumnGoods(Map<String,Object> map);
+    Goods getGoodsImgDetail(String id);
 
-	/**
-	 * app端使用商品的所有价格
-	 * @param goodsId
-	 * @param siteId
-	 * @return
-	 */
-	List<Grade> getGoodsAllPrice(String goodsId, String siteId);
-	
-	public List<Map<String,Object>> getHospitalGoods(Map<String,Object> map);
-	
-	List<Goods> getAllGoods(Goods goods);
-	
-	List<Goods> getMyService(String creatorId);
+    int insertGoodsAndImg(Goods goods, ImageType imageType, ListPrice listPrice);
 
-	List<Map<String, Object>> getGoodsByProduct(String productId);
+    boolean updateGoods(Goods goods, ListPrice listPrice, ImageType imageType);
+
+    Page<Product> getProductGoodsListDetail(Goods goods);
+
+    Price getJobtitlePrice(String id);
+
+    /**
+     * {获取服务的详情}
+     * 
+     * @param id 服务id
+     * @param siteId 站点id
+     * @return
+     * @author: wangwt
+     */
+    GoodsDetail getOneGoodsDetail(String id, String siteId, Integer deviceType);
+
+    public List<Jobtitle> getJobtitle();
+
+    public List<Map<String, Object>> getColumnGoods(Map<String, Object> map);
+
+    /**
+     * app端使用商品的所有价格
+     * @param goodsId
+     * @param siteId
+     * @return
+     */
+    List<Grade> getGoodsAllPrice(String goodsId, String siteId);
+
+    public List<Map<String, Object>> getHospitalGoods(Map<String, Object> map);
+
+    List<Goods> getAllGoods(Goods goods);
+
+    List<Goods> getMyService(String creatorId);
+
+    List<Map<String, Object>> getGoodsByProduct(String productId, String platformId);
 }

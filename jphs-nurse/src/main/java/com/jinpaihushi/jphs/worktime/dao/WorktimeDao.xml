@@ -604,4 +604,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<include refid="orderby" />
 		LIMIT 7
 	</select>
+	<delete id="deleteAll">
+		DELETE w FROM worktime  w
+	</delete>
 </mapper>

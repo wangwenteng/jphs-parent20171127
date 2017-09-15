@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.nurse.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -21,5 +24,7 @@ public interface NurseCommodityDao extends BaseDao<NurseCommodity> {
 	boolean updateBrowser(NurseCommodity nurseCommodity);
 
 	boolean updateShareNumber(NurseCommodity nurseCommodity);
+
+	boolean updateCount(Map<String, Object> hashMap);
 	
 }

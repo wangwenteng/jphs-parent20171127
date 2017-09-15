@@ -13,6 +13,8 @@ public class OrderPojo extends BaseModel {
      */
     private static final long serialVersionUID = 1L;
 
+    private String orderId;
+
     /** 优惠券id */
     @Length(max = 50, message = "{order.voucherUseId.illegal.length}")
     private String voucherUseId = "";
@@ -27,6 +29,10 @@ public class OrderPojo extends BaseModel {
 
     /** 下单设备/来源 */
     private Integer device;
+
+    /** 推广码 */
+    @Length(max = 50, message = "{order.code.illegal.length}")
+    private String code;
 
     /** 科室id */
     @Length(max = 500, message = "{orderOther.departmentId.illegal.length}")
@@ -84,6 +90,22 @@ public class OrderPojo extends BaseModel {
 
     /** 图片地址 */
     private String images = "";
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getProvince() {
         return province;

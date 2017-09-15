@@ -127,7 +127,7 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
     public List<Site> getSelectSite(Platform platform) {
         // 获取所有的站点
         Site site = new Site();
-        site.setStatus(0);
+        site.setStatus(1);
         List<Site> siteList = siteDao.list(site);
         // 获取改平台已关联的站点
         if (platform != null) {

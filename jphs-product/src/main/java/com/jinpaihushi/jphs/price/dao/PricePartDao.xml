@@ -11,14 +11,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<sql id="field">
 		PP.id, PP.price_id, PP.site_id, PP.price, 
-		PP.old_price, PP.cost_price, PP.profit, PP.status, 
-		PP.creator_id, PP.creator_name, PP.create_time
+		PP.old_price, PP.cost_price, PP.max_price, PP.out_ratio, 
+		PP.profit, PP.status, PP.creator_id, PP.creator_name, 
+		PP.create_time
 	</sql>
 
 	<sql id="fieldGlobal">
 		PP.id PP_id, PP.price_id PP_price_id, 
 		PP.site_id PP_site_id, PP.price PP_price, 
 		PP.old_price PP_old_price, PP.cost_price PP_cost_price, 
+		PP.max_price PP_max_price, PP.out_ratio PP_out_ratio, 
 		PP.profit PP_profit, PP.status PP_status, 
 		PP.creator_id PP_creator_id, PP.creator_name PP_creator_name, 
 		PP.create_time PP_create_time
@@ -28,6 +30,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		PP.id id, PP.price_id priceId, 
 		PP.site_id siteId, PP.price price, 
 		PP.old_price oldPrice, PP.cost_price costPrice, 
+		PP.max_price maxPrice, PP.out_ratio outRatio, 
 		PP.profit profit, PP.status status, 
 		PP.creator_id creatorId, PP.creator_name creatorName, 
 		PP.create_time createTime
@@ -51,6 +54,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="costPrice!=null">
 			AND PP.cost_price=#{costPrice}
+		</if>
+		<if test="maxPrice!=null">
+			AND PP.max_price=#{maxPrice}
+		</if>
+		<if test="outRatio!=null">
+			AND PP.out_ratio=#{outRatio}
 		</if>
 		<if test="profit!=null">
 			AND PP.profit=#{profit}
@@ -95,6 +104,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="costPrice!=null">
 				AND PP.cost_price=#{costPrice}
 			</if>
+			<if test="maxPrice!=null">
+				AND PP.max_price=#{maxPrice}
+			</if>
+			<if test="outRatio!=null">
+				AND PP.out_ratio=#{outRatio}
+			</if>
 			<if test="profit!=null">
 				AND PP.profit=#{profit}
 			</if>
@@ -133,6 +148,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="costPrice!=null">
 				PP.cost_price=#{costPrice}, 
 		   </if>
+           <if test="maxPrice!=null">
+				PP.max_price=#{maxPrice}, 
+		   </if>
+           <if test="outRatio!=null">
+				PP.out_ratio=#{outRatio}, 
+		   </if>
            <if test="profit!=null">
 				PP.profit=#{profit}, 
 		   </if>
@@ -164,6 +185,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="oldPrice" column="old_price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="costPrice" column="cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="maxPrice" column="max_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="outRatio" column="out_ratio" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="profit" column="profit" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
@@ -178,6 +201,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="price" column="PP_price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="oldPrice" column="PP_old_price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="costPrice" column="PP_cost_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="maxPrice" column="PP_max_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="outRatio" column="PP_out_ratio" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="profit" column="PP_profit" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="status" column="PP_status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="creatorId" column="PP_creator_id" javaType="String" jdbcType="VARCHAR"></result>
@@ -190,6 +215,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, price_id, 
 			site_id, price, 
 			old_price, cost_price, 
+			max_price, out_ratio, 
 			profit, status, 
 			creator_id, creator_name, 
 			create_time
@@ -197,9 +223,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{id,jdbcType=VARCHAR}, #{priceId,jdbcType=VARCHAR}, 
 			#{siteId,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
 			#{oldPrice,jdbcType=DECIMAL}, #{costPrice,jdbcType=DECIMAL}, 
+			#{maxPrice,jdbcType=DECIMAL}, #{outRatio,jdbcType=DECIMAL}, 
 			#{profit,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
 			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
-			now()
+			#{createTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
 	
@@ -210,6 +237,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, price_id, 
 			site_id, price, 
 			old_price, cost_price, 
+			max_price, out_ratio, 
 			profit, status, 
 			creator_id, creator_name, 
 			create_time
@@ -221,6 +249,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.id,jdbcType=VARCHAR}, #{item.priceId,jdbcType=VARCHAR}, 
 			#{item.siteId,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, 
 			#{item.oldPrice,jdbcType=DECIMAL}, #{item.costPrice,jdbcType=DECIMAL}, 
+			#{item.maxPrice,jdbcType=DECIMAL}, #{item.outRatio,jdbcType=DECIMAL}, 
 			#{item.profit,jdbcType=DECIMAL}, #{item.status,jdbcType=INTEGER}, 
 			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
 			#{item.createTime,jdbcType=TIMESTAMP}

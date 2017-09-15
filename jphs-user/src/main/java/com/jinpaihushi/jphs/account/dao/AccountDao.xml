@@ -5,23 +5,26 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <!-- author : yangsong date : 2017-06-29 15:40:16 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.account.dao.AccountDao">
 
+	
 	<sql id="field">
-		A.id, A.balance, A.score, A.creator_name, A.creator_id,
-		A.create_time, A.status
+		A.id, A.balance, A.score, A.available_score, 
+		A.creator_name, A.creator_id, A.create_time, A.status
 	</sql>
- 
+
 	<sql id="fieldGlobal">
-		A.id A_id, A.balance A_balance, A.score A_score,
-		A.creator_name A_creator_name, A.creator_id A_creator_id,
+		A.id A_id, A.balance A_balance, 
+		A.score A_score, A.available_score A_available_score, 
+		A.creator_name A_creator_name, A.creator_id A_creator_id, 
 		A.create_time A_create_time, A.status A_status
 	</sql>
-
+	
 	<sql id="fieldWithAlias">
-		A.id id, A.balance balance, A.score score, A.creator_name
-		creatorName, A.creator_id creatorId, A.create_time createTime,
-		A.status status
+		A.id id, A.balance balance, 
+		A.score score, A.available_score availableScore, 
+		A.creator_name creatorName, A.creator_id creatorId, 
+		A.create_time createTime, A.status status
 	</sql>
-
+	
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND A.id=#{id}
@@ -31,6 +34,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="score!=null">
 			AND A.score=#{score}
+		</if>
+		<if test="availableScore!=null">
+			AND A.available_score=#{availableScore}
 		</if>
 		<if test="creatorName!=null and creatorName!=''">
 			AND A.creator_name=#{creatorName}
@@ -45,13 +51,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND A.status=#{status}
 		</if>
 	</sql>
-
+	
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition" />
+			<include refid="condition"/>
 		</where>
 	</sql>
-
+	
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
@@ -62,6 +68,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 			<if test="score!=null">
 				AND A.score=#{score}
+			</if>
+			<if test="availableScore!=null">
+				AND A.available_score=#{availableScore}
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND A.creator_name LIKE CONCAT('%', #{creatorName}, '%')
@@ -77,33 +86,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-
+	
 	<sql id="dynamicSet">
 		<set>
-			<if test="id!=null">
-				A.id=#{id},
-			</if>
-			<if test="balance!=null">
-				A.balance=#{balance},
-			</if>
-			<if test="score!=null">
-				A.score=#{score},
-			</if>
-			<if test="creatorName!=null">
-				A.creator_name=#{creatorName},
-			</if>
-			<if test="creatorId!=null">
-				A.creator_id=#{creatorId},
-			</if>
-			<if test="createTime!=null">
-				A.create_time=#{createTime},
-			</if>
-			<if test="status!=null">
-				A.status=#{status},
-			</if>
+           <if test="id!=null">
+				A.id=#{id}, 
+		   </if>
+           <if test="balance!=null">
+				A.balance=#{balance}, 
+		   </if>
+           <if test="score!=null">
+				A.score=#{score}, 
+		   </if>
+           <if test="availableScore!=null">
+				A.available_score=#{availableScore}, 
+		   </if>
+           <if test="creatorName!=null">
+				A.creator_name=#{creatorName}, 
+		   </if>
+           <if test="creatorId!=null">
+				A.creator_id=#{creatorId}, 
+		   </if>
+           <if test="createTime!=null">
+				A.create_time=#{createTime}, 
+		   </if>
+           <if test="status!=null">
+				A.status=#{status}, 
+		   </if>
 		</set>
 	</sql>
-
+	
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
@@ -112,89 +124,80 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="account" type="com.jinpaihushi.jphs.account.model.Account">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="balance" column="balance" javaType="Double"
-			jdbcType="DECIMAL"></result>
-		<result property="score" column="score" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="creatorName" column="creator_name" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="createTime" column="create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="status" column="status" javaType="Integer"
-			jdbcType="INTEGER"></result>
+		<result property="balance" column="balance" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="score" column="score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="availableScore" column="available_score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 	</resultMap>
-
+	
 	<resultMap id="accountGlobal" type="com.jinpaihushi.jphs.account.model.Account">
 		<result property="id" column="A_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="balance" column="A_balance" javaType="Double"
-			jdbcType="DECIMAL"></result>
-		<result property="score" column="A_score" javaType="Integer"
-			jdbcType="INTEGER"></result>
-		<result property="creatorName" column="A_creator_name"
-			javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorId" column="A_creator_id" javaType="String"
-			jdbcType="VARCHAR"></result>
-		<result property="createTime" column="A_create_time" javaType="Date"
-			jdbcType="TIMESTAMP"></result>
-		<result property="status" column="A_status" javaType="Integer"
-			jdbcType="INTEGER"></result>
+		<result property="balance" column="A_balance" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="score" column="A_score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="availableScore" column="A_available_score" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorName" column="A_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="A_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="A_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="A_status" javaType="Integer" jdbcType="INTEGER"></result>
 	</resultMap>
-
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
-		parameterType="com.jinpaihushi.jphs.account.model.Account">
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.account.model.Account">
 		INSERT INTO `ACCOUNT`(
-		id, balance, score, creator_name,
-		creator_id, create_time, status
+			id, balance, 
+			score, available_score, 
+			creator_name, creator_id, 
+			create_time, status
 		)VALUES(
-		#{id,jdbcType=VARCHAR},
-		#{balance,jdbcType=DECIMAL}, #{score,jdbcType=INTEGER},
-		#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER} )
+			#{id,jdbcType=VARCHAR}, #{balance,jdbcType=DECIMAL}, 
+			#{score,jdbcType=INTEGER}, #{availableScore,jdbcType=INTEGER}, 
+			#{creatorName,jdbcType=VARCHAR}, #{creatorId,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+		)
 	</insert>
-
-	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
         <![CDATA[
         INSERT INTO `ACCOUNT`(
 			id, balance, 
-			score, creator_name, 
-			creator_id, create_time, 
-			status
+			score, available_score, 
+			creator_name, creator_id, 
+			create_time, status
         )]]>
-		VALUES
+       	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR},
-			#{item.balance,jdbcType=DECIMAL}, #{item.score,jdbcType=INTEGER},
-			#{item.creatorName,jdbcType=VARCHAR},
-			#{item.creatorId,jdbcType=VARCHAR},
-			#{item.createTime,jdbcType=TIMESTAMP},
-			#{item.status,jdbcType=INTEGER} )
+			#{item.id,jdbcType=VARCHAR}, #{item.balance,jdbcType=DECIMAL}, 
+			#{item.score,jdbcType=INTEGER}, #{item.availableScore,jdbcType=INTEGER}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}
+			)
 		</foreach>
 	</insert>
-
+	
 	<delete id="deleteById">
-		DELETE A FROM `ACCOUNT` A WHERE A.ID = #{id}
+		DELETE A FROM `ACCOUNT` A WHERE A.ID = #{id} 
 	</delete>
-
+	
 	<update id="disableById">
-		UPDATE `ACCOUNT` A
-		SET
+	    UPDATE `ACCOUNT` A
+		SET 
 		A.STATUS = -1
 		WHERE A.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `ACCOUNT` A
-		<include refid="dynamicSet" />
-		WHERE A.ID = #{id}
+		<include refid="dynamicSet" /> 
+	    WHERE A.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="account">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ACCOUNT` A
 		<include refid="dynamicWhere" />
 	</select>
@@ -205,24 +208,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="account">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ACCOUNT` A
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="account">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ACCOUNT` A
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-
+	
 	<select id="loadById" resultMap="account">
-		SELECT
-		<include refid="field" />
+		SELECT <include refid="field"/>
 		FROM `ACCOUNT` A
 		WHERE A.ID = #{id}
 	</select>

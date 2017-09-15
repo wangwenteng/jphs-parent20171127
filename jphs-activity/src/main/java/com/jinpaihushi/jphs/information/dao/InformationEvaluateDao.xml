@@ -408,7 +408,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		information_evaluate IE
 		LEFT JOIN
 		nurse_images ni ON
-		IE.creator_id = ni.source_id
+		IE.creator_id = ni.source_id AND ni.type=1
 		<where>
 			<if test="informationEvaluate!=null">
 				<if

@@ -1,6 +1,8 @@
 package com.jinpaihushi.jphs.commodity.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
@@ -25,4 +27,10 @@ public interface CommodityService extends BaseService<Commodity> {
 	List<Commodity> getListByCar(String ids);
 
 	Commodity getOneDetail(String commodityId,String cpId);
+	
+	boolean updateBrowser(String commodityId);
+	
+	boolean updateShareNumber(String commodityId);
+	
+	boolean updateCount(Map<String, Object> map);
 }

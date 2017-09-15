@@ -157,20 +157,21 @@ public class GoodsController extends BaseController<Goods> {
 
     @ResponseBody
     @RequestMapping(name = "服务列表", path = "/getGoodsByProduct.json")
-    public byte[] getGoodsByProduct(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
-            String productId) {
+    public byte[] getGoodsByProduct(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String productId,
+            String platformId) {
 
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("goods.getGoodsByProduct.json,productId=" + productId);
+                Util.debugLog
+                        .debug("goods.getGoodsByProduct.json,productId=" + productId + " platformId=" + platformId);
             }
             // 查空
             if (StringUtils.isEmpty(productId)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // 商品的详情
-            List<Map<String, Object>> list = goodsService.getGoodsByProduct(productId);
+            List<Map<String, Object>> list = goodsService.getGoodsByProduct(productId, platformId);
             // 1.根据 name，password,type查询完整信息
             // 2.错误N种情况判断及返回前端
             // 3.信息无误，封装信息以及生成token，返回前端
@@ -179,7 +180,7 @@ public class GoodsController extends BaseController<Goods> {
         }
         catch (Exception e) {
             // 记录日志-fail
-            Util.failLog.error("goods.getGoodsByProduct.json,productId=" + productId, e);
+            Util.failLog.error("goods.getGoodsByProduct.json,productId=" + productId + " platformId=" + platformId, e);
             try {
                 return JSONUtil.toJSONResult(0, "非法请求", null);
             }

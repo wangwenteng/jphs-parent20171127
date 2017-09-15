@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.person.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
@@ -20,6 +23,9 @@ import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
+import com.jinpaihushi.jphs.transaction.service.TransactionService;
+import com.jinpaihushi.jphs.withdraw.model.WithdrawCash;
+import com.jinpaihushi.jphs.withdraw.service.WithdrawCashService;
 import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
@@ -29,6 +35,9 @@ import com.jinpaihushi.utils.Util;
 public class AccountController {
 
     @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
     private AccountService accountService;
 
     @Autowired
@@ -36,6 +45,9 @@ public class AccountController {
 
     @Autowired
     private OrderGoodsService orderGoodsService;
+
+    @Autowired
+    private WithdrawCashService withdrawCashService;
 
     @RequestMapping(path = "/getUserAccount.json", name = "个人账户")
     @ResponseBody
@@ -243,6 +255,66 @@ public class AccountController {
         catch (Exception e) {
             Util.failLog.error("account.balancePayment.json orderId=" + orderId + " payParice=" + payParice + "userId="
                     + userId + " orderNo=" + orderNo, e);
+        }
+        return null;
+    }
+
+    @RequestMapping(path = "/withdrawals.json", name = "提现", method = RequestMethod.POST)
+    @ResponseBody
+    public byte[] withdrawals(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
+            WithdrawCash withdrawCash) {
+        try {
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("account.withdrawals.json Amount=" + withdrawCash.getAmount() + " CreatorId="
+                        + withdrawCash.getCreatorId() + "AccountName=" + withdrawCash.getAccountName()
+                        + " AlipayAccount=" + withdrawCash.getAlipayAccount());
+            }
+            if (StringUtils.isEmpty(withdrawCash.getCreatorId()) || StringUtils.isEmpty(withdrawCash.getCreatorName())
+                    || StringUtils.isEmpty(withdrawCash.getAccountName())
+                    || StringUtils.isEmpty(withdrawCash.getAlipayAccount()) || withdrawCash.getAmount() == null) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            //限制周二，周四提现
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date(System.currentTimeMillis()));
+            int dayOfWeek = (c.get(Calendar.DAY_OF_WEEK) - 1);
+            if (dayOfWeek != 2 && dayOfWeek != 4) {
+                return JSONUtil.toJSONResult(0, "客官莫急，提现仅限周二、周四两日", null);
+            }
+            //获取用户的账户
+            Account account = new Account();
+            account.setCreatorId(withdrawCash.getCreatorId());
+            account = accountService.load(account);
+            if (DoubleUtils.sub(account.getBalance(), withdrawCash.getAmount()) < 0) {
+                return JSONUtil.toJSONResult(0, "您的账户余额不足！", null);
+            }
+            //判斷提現金額跟可提現金額是否一致
+            Map<String, Object> query = new HashMap<String, Object>();
+            query.put("userId", withdrawCash.getCreatorId());
+            query = transactionService.incomeSummary(query);
+            if (null != query && null != query.get("cash_withdrawal")) {
+                Object object = query.get("cash_withdrawal");
+                Double cash_withdrawal = Double.parseDouble(object.toString());
+                if (cash_withdrawal == 0.00) {
+                    return JSONUtil.toJSONResult(0, "您的账户没有可提现的金额！", null);
+                }
+                if (cash_withdrawal < 50) {
+                    return JSONUtil.toJSONResult(0, "您的账户金额没有满足最低提现金额！", null);
+                }
+                if (DoubleUtils.sub(cash_withdrawal, withdrawCash.getAmount()) < 0) {
+                    return JSONUtil.toJSONResult(0, "非法操作！", null);
+                }
+            }
+            int i = withdrawCashService.withdrawals(withdrawCash);
+            if (i <= 0) {
+                return JSONUtil.toJSONResult(0, "系统繁忙！请稍后重试！", null);
+            }
+            return JSONUtil.toJSONResult(1, "您的申请已经提交！请耐心等待！", null);
+        }
+        catch (Exception e) {
+            Util.failLog.error("account.withdrawals.json Amount=" + withdrawCash.getAmount() + " CreatorId="
+                    + withdrawCash.getCreatorId() + "AccountName=" + withdrawCash.getAccountName() + " AlipayAccount="
+                    + withdrawCash.getAlipayAccount(), e);
         }
         return null;
     }

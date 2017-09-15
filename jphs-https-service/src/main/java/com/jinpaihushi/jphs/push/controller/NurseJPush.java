@@ -18,19 +18,20 @@ public class NurseJPush {
 
     //    #护士端的appkey
     @Value("${nurse_appKey}")
-    private String nurse_appKey;
+    private String nurse_appKey = "3eb07096643b1c1a677e0c2f";
 
     @Value("${nurse_masterSecret}")
-    private String nurse_masterSecret;
+    private String nurse_masterSecret = "17362c55297f8ffb24925f3c";
 
     //极光推送技术难题解决：http://blog.163.com/lujun19888@126/blog/static/30821972201531011362680/
     @Value("${Jpush}")
-    private String Jpush;
+    private String Jpush = "true";
 
     public static void main(String[] args) {
         //发送通知
         try {
-            //jpushTag("您有新的消息123","18315915926");
+            new NurseJPush().jpushAlias("您有新的消息123123===", "42884", "00");
+            new NurseJPush().jpushTag("您有新的消息123123---", "18513683374", "00");
             //jpushTag("您有新的消息123","15210452542");
             //jpushTag("您有新的消息123","18605442910");
         }

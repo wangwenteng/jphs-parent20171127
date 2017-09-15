@@ -11,7 +11,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<sql id="field">
 		C.id, C.commodity_id, C.commodity_price_id,C.user_id, C.number, 
-		C.status, C.create_time, C.creator_id, C.creator_name
+		C.status, C.create_time, C.creator_id, C.creator_name,C.code
 	</sql>
 
 	<sql id="fieldGlobal">
@@ -19,7 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		C.commodity_price_id C_commodity_price_id,C.user_id C_user_id,,
 		C.number C_number, 
 		C.status C_status, C.create_time C_create_time, 
-		C.creator_id C_creator_id, C.creator_name C_creator_name
+		C.creator_id C_creator_id, C.creator_name C_creator_name,C.code C_code
 	</sql>
 	
 	<sql id="fieldWithAlias">
@@ -27,7 +27,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		C.commodity_price_id commodityPriceId, C.user_id userId,
 		C.number number, 
 		C.status status, C.create_time createTime, 
-		C.creator_id creatorId, C.creator_name creatorName
+		C.creator_id creatorId, C.creator_name creatorName,C.code code 
 	</sql>
 	
 	<sql id="condition">
@@ -57,6 +57,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="creatorName!=null and creatorName!=''">
 			AND C.creator_name=#{creatorName}
+		</if>
+		<if test="code!=null and code!=''">
+			AND C.code=#{code}
 		</if>
 	</sql>
 	
@@ -95,6 +98,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="creatorName!=null and creatorName!=''">
 				AND C.creator_name LIKE CONCAT('%', #{creatorName}, '%')
 			</if>
+			<if test="code!=null and code!=''">
+				AND C.code=#{code}
+			</if>
 		</where>
 	</sql>
 	
@@ -127,6 +133,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="creatorName!=null">
 				C.creator_name=#{creatorName}, 
 		   </if>
+		   <if test="code!=null">
+				C.code=#{code}, 
+		   </if>
 		</set>
 	</sql>
 	
@@ -146,6 +155,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<resultMap id="carGlobal" type="com.jinpaihushi.jphs.car.model.Car">
@@ -158,6 +168,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="C_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="C_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="C_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="C_code" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.car.model.Car">
@@ -165,13 +176,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, commodity_id, 
 			commodity_price_id,user_id, number, 
 			status, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name,code
 		)VALUES(
 			#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, 
 			#{commodityPriceId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
 			#{number,jdbcType=INTEGER}, 
 			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -183,7 +194,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			commodity_price_id,user_id, 
 			number, 
 			status, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name,code
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
@@ -193,7 +204,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.commodityPriceId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR},
 			#{item.number,jdbcType=INTEGER}, 
 			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.code,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>

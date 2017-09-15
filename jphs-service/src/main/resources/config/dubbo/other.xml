@@ -29,6 +29,14 @@
 		interface="com.jinpaihushi.jphs.information.service.InformationCollectionService" />
 	<dubbo:service ref="informationEvaluateService"
 		interface="com.jinpaihushi.jphs.information.service.InformationEvaluateService" />
+	<dubbo:service ref="informationChannelService"
+		interface="com.jinpaihushi.jphs.information.service.InformationChannelService" />
+	<dubbo:service ref="informationLikesService"
+		interface="com.jinpaihushi.jphs.information.service.InformationLikesService" />
+	<dubbo:service ref="logisticsService"
+		interface="com.jinpaihushi.jphs.logistics.service.LogisticsService" />
+	<dubbo:service ref="withdrawCashService"
+		interface="com.jinpaihushi.jphs.withdraw.service.WithdrawCashService" />
 	<!-- 广告位 -->
 	<dubbo:service ref="adpositionService"
 		interface="com.jinpaihushi.jphs.adposition.service.AdpositionService" />

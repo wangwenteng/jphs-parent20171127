@@ -295,4 +295,24 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE pn.creator_id = #{creatorId}
 		AND pn.goods_id = #{goodsId}
 	</update>
+	
+	<select id="getModel" resultMap="priceNurse">
+		SELECT
+			pn.id
+		FROM
+			price_nurse pn
+		WHERE
+			pn.price_part_id = #{pricePartId}
+		AND pn.creator_id = #{creatorId}
+		AND pn.STATUS = 0
+		 
+	</select>
+	
+	<update id="updateModel">
+		UPDATE `PRICE_NURSE` PN
+		SET
+		PN.PRICE = #{price}
+		WHERE pn.creator_id = #{creatorId}
+		AND pn.price_part_id = #{pricePartId}
+	</update>
 </mapper>

@@ -60,10 +60,20 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     /** 交易id */
     @Length(max = 50, message = "{order.transactionId.illegal.length}")
     private String transactionId;
+    
+    /** 推广码 */
+    @Length(max = 50, message = "{order.code.illegal.length}")
+    private String code;
 
     /** 进度(0:待支付,1:待接单,2:已接单,3:执行中,4:待确定,5:已完成,6:已取消,7:申诉中) */
     private Integer schedule;
 
+    /** 是否需要用药记录 */
+   	private Integer isPz;
+
+    /** 是否需要康复记录 */
+   	private Integer isRr;
+    
     /** 下单设备/来源 pc=5 */
     private Integer device;
 
@@ -117,6 +127,14 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     
     private List<ServiceImages> serviceOrderImages;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
     public Integer getOrderServiceNumber() {
         return orderServiceNumber;
     }
@@ -157,6 +175,35 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 
     public Double getPrice() {
         return price;
+    }
+    
+
+    /**
+	 * 获取是否需要用药记录
+	 */
+	public Integer getIsPz() {
+    	return isPz;
+    }
+  	
+	/**
+	 * 设置是否需要用药记录
+	 */
+	public void setIsPz(Integer isPz) {
+    	this.isPz = isPz;
+    }
+
+	/**
+	 * 获取是否需要康复记录
+	 */
+	public Integer getIsRr() {
+    	return isRr;
+    }
+  	
+	/**
+	 * 设置是否需要康复记录
+	 */
+	public void setIsRr(Integer isRr) {
+    	this.isRr = isRr;
     }
 
     public void setPrice(Double price) {

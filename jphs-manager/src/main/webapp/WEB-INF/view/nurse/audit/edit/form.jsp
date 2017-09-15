@@ -10,56 +10,56 @@
 
 		<p>
 			<img alt="" height="200" width="200" id="head_portraits"
-				src="${nurse.head_portrait}">
+				src="${nurseJobtitle.sculpture }">
 		</p>
 		<p>
-			<img alt="" width="120" id="id_positives" src="${nurse.id_positive}">
-			<img alt="" width="120" id="id_negatives" src="${nurse.id_negative}">
+			<img alt="" width="120" id="id_positives" src="${nurseJobtitle.sfzz }">
+			<img alt="" width="120" id="id_negatives" src="${nurseJobtitle.sfzf }">
 		</p>
 	</div>
 	<div class="col-md-6" style="border-left: 1px solid #e0e0e0;">
 		<p>
-			<span>姓名：</span>${nurse.user.name}</p>
+			<span>姓名：</span>${nurseJobtitle.name}</p>
 		<p>
 			<span>性别：</span>
-			<c:if test="${nurse.user.sex==0}">男</c:if>
-			<c:if test="${nurse.user.sex==1}">女</c:if>
+			<c:if test="${nurseJobtitle.sex==0}">男</c:if>
+			<c:if test="${nurseJobtitle.sex==1}">女</c:if>
 		</p>
 		<p>
-			<span>年龄：</span><c:if test="${fn:length(nurse.sfz)>0 }">
-								<c:set var="idcard" value="${fn:substring(nurse.sfz,6,10) }" />
+			<span>年龄：</span><c:if test="${fn:length(nurseJobtitle.sfz)>0 }">
+								<c:set var="idcard" value="${fn:substring(nurseJobtitle.sfz,6,10) }" />
 								<jsp:useBean id="nowDate" class="java.util.Date" />
 								<fmt:formatDate var="nowStr" value="${nowDate}" pattern="yyyy" />
-								<c:if test="${nowStr-idcard==0 }">1</c:if>
-								<c:if test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if>
+								<c:if test="${nowStr-idcard<=0 }">1</c:if>
+								<c:if test="${nowStr-idcard>0 }">${nowStr-idcard}</c:if>
 							</c:if>
 		</p>
+		<%-- <p>
+			<span>手机号：</span>${nurse.user.phone}</p> --%>
 		<p>
-			<span>手机号：</span>${nurse.user.phone}</p>
+			<span>身份证号：</span>${nurseJobtitle.sfz}</p>
 		<p>
-			<span>身份证号：</span>${nurse.sfz}</p>
-		<p title="${nurse.address}">
+			<span>学历：</span>${nurseJobtitle.education}</p>
+		 <p>
 			<span>联系地址：</span>
 			<c:choose>
-				<c:when test="${fn:length(nurse.address) > 19}">
-					<c:out value="${fn:substring(nurse.address, 0, 19)}......" />
+				<c:when test="${fn:length(nurseJobtitle.address) > 19}">
+					<c:out value="${fn:substring(nurseJobtitle.address, 0, 19)}......" />
 				</c:when>
-				<c:otherwise>
-					<c:out value="${e.companyAddress}" />
-				</c:otherwise>
+				<c:otherwise>${nurseJobtitle.address }</c:otherwise>
 			</c:choose>
-		</p>
-		<p>
+		</p> 
+		<%-- <p>
 			<span>推荐人：</span>${nurse.recommendName}
-		</p>
+		</p> --%>
 		<p>
-			<span>注册时间：</span>
-			<fmt:formatDate value="${nurse.createTime}" pattern="yyyy-MM-dd" />
+			<span>认证时间：</span>
+			<fmt:formatDate value="${nurseJobtitle.createTime}" pattern="yyyy-MM-dd" />
 		</p>
-		<p>
+		<%-- <p>
 			<span>个人简介：</span>${fn:escapeXml(nurse.brief)}</p>
 		<p>
-			<span>备注：</span>${fn:escapeXml(nurse.details)}</p>
+			<span>备注：</span>${fn:escapeXml(nurse.details)}</p> --%>
 
 	</div>
 </div>
@@ -68,32 +68,59 @@
 	<div class="col-md-6">
 		<p>
 			<span>工作时间：</span>
-			<fmt:formatDate value="${nurse.workYears}" type="both"
+			<fmt:formatDate value="${nurseJobtitle.workYears}" type="both"
 				pattern="yyyy-MM-dd" />
 		</p>
+		<c:if test="${nurseJobtitle.type==1 }">
 		<p>
-			<span>在职医院：</span>${nurse.hospital}</p>
+			<span>
+			在职医院：
+			
+			</span>${nurseJobtitle.hospital}</p>
 		<p>
 			<span>科室：</span>
 			<c:forEach items="${department}" var="e" varStatus="s">
-				<c:if test="${nurse.departmentId==e.id}">${e.name }</c:if>
+				<c:if test="${nurseJobtitle.departmentId==e.id}">${e.name }</c:if>
 			</c:forEach>
 		</p>
+		</c:if>
+		<c:if test="${nurseJobtitle.type>1 }">
 		<p>
-			<img alt="" width="120" id="aptitude_positives"
-				src="${nurse.aptitude_positive}"> <img alt="" width="120"
-				id="aptitude_negatives" src="${nurse.aptitude_negative}">
-
+			<span>
+			执业机构：
+			</span>${nurseJobtitle.hospital}</p>
+		<p>
+			<span>毕业院校：</span>
+			${nurseJobtitle.studyInstitution}
 		</p>
+		</c:if>
+		<p>
+			<span>护士分类：</span>
+			${nurseJobtitle.jobtitleTypeName }
+		</p>
+		<p>
+			<span>职称：</span>${nurseJobtitle.jobtitleName }</p>
+		
 	</div>
 	<div class="col-md-6" style="border-left: 1px solid #e0e0e0;">
 		<p>
-			<span>护士分类：</span>
-			护士
+			<c:if test="${nurseJobtitle.type==1 }">
+				<img alt="" width="120" id="aptitude_positives"
+				src="${nurseJobtitle.seniorityProve }"> 
+				<img alt="" width="120" id="aptitude_negatives" src="${nurseJobtitle.charteredProve }">
+				<img alt="" width="120" id="aptitude_negatives" src="${nurseJobtitle.hospitalContract }">
+			</c:if>
+			<c:if test="${nurseJobtitle.type==2 }">
+				<img alt="" width="120" id="aptitude_positives"
+				src="${nurseJobtitle.therapistZ }"> 
+			</c:if>
+			<c:if test="${nurseJobtitle.type==3 }">
+				<img alt="" width="120" id="aptitude_positives"
+				src="${nurseJobtitle.fransnanaCard }"> 
+			</c:if>
+
 		</p>
-		<p>
-			<span>职称：</span>副主任护师
-		<p>
+		<%-- <p>
 			<span>服务区域：</span>
 		<table style="width: 300px;">
 			<c:forEach items="${nurse.location}" var="e" varStatus="s">
@@ -105,7 +132,7 @@
 
 				</tr>
 			</c:forEach>
-		</table>
+		</table> --%>
 	</div>
 </div>
 <div class="from-group">
@@ -156,16 +183,17 @@
 			</div>
 			<div class="modal-body">
 				<form id="auditForm" method="post" class="form-horizontal" action="/audit/insert.jhtml">
-					<input type="hidden" id="creatorId" name="creatorId" value="${nurse.user.id}" /> 
-					<input type="hidden" id="creatorName" name="creatorName" value="${nurse.user.name}" />
+					<input type="hidden" id="creatorId" name="creatorId" value="${nurseJobtitle.creatorId}" /> 
+					<input type="hidden" id="creatorName" name="creatorName" value="${nurseJobtitle.creatorName}" />
+					<input type="hidden" id="nurseJobtitleId" name="nurseJobtitleId" value="${nurseJobtitle.id}" />
 					<div class="form-group">
 						<label class="control-label col-md-3">审核结果</label>
 						<div class="controls  col-md-6">
 							<!-- 单行单选项目 -->
 							<label class="radio radio-inline"> <input type="radio"
-								value="1" name="audit" checked="checked"> 通过
+								value="1" id="audit" name="audit" checked="checked"> 通过
 							</label> <label class="radio radio-inline"> <input type="radio"
-								value="0" name="audit"> 不通过
+								value="0" id="audit" name="audit"> 不通过
 							</label>
 						</div>
 					</div>

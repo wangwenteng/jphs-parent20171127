@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.nurse.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +52,14 @@ public class NurseCommodityServiceImpl extends BaseServiceImpl<NurseCommodity> i
 		// TODO Auto-generated method stub
 		return nurseCommodityDao.updateShareNumber(nurseCommodity);
 	}
+
+	@Override
+	public boolean updateCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return nurseCommodityDao.updateCount(map);
+	}
+
+	 
 
 	 
 

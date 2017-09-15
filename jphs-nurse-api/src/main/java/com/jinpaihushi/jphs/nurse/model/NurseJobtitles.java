@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * NURSE_JOBTITLE 
@@ -52,9 +53,6 @@ public class NurseJobtitles implements Serializable {
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.jobtitleId.illegal.length}")
 	private String jobtitleId;
-
-    /**  */
-	private Date workYears;
 
     /**  */
 	@Length(max = 50, message = "{nurseJobtitle.education.illegal.length}")
@@ -258,20 +256,6 @@ public class NurseJobtitles implements Serializable {
 	 */
 	public void setJobtitleId(String jobtitleId) {
     	this.jobtitleId = jobtitleId;
-    }
-
-	/**
-	 * 获取
-	 */
-	public Date getWorkYears() {
-    	return workYears;
-    }
-  	
-	/**
-	 * 设置
-	 */
-	public void setWorkYears(Date workYears) {
-    	this.workYears = workYears;
     }
 
 	/**

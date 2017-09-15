@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
-import com.jinpaihushi.jphs.commons.controller.DoPostSmsController;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
+import com.jinpaihushi.jphs.nurse.model.NurseImages;
+import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
+import com.jinpaihushi.jphs.system.service.DoPostSmsService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.jphs.verification.model.Verification;
@@ -50,7 +53,13 @@ public class RegistController {
     private NurseService nurseService;
 
     @Autowired
-    private DoPostSmsController doPostSmsController;
+    private NurseImagesService nurseImagesService;
+
+    @Autowired
+    private DoPostSmsService doPostSmsService;
+
+    @Value("${SMS_Verification_Code}")
+    private String SMS_Verification_Code;
 
     @SuppressWarnings("static-access")
     @ResponseBody
@@ -114,7 +123,7 @@ public class RegistController {
             user.setType(type_id);
             user.setCreateTime(new Date());
             if (type_id == 0)
-                user.setSex(0);
+                user.setSex(1);
             else
                 user.setSex(1);
             // 后期会用-默认用户名是手机号
@@ -123,7 +132,7 @@ public class RegistController {
             }
             user.setStatus(1);
 
-            //写入数据
+            // 写入数据
             String userId = userService.insertUser(user);
             if (userId.length() < 0) {
                 return JSONUtil.toJSONResult(0, "注册失败", null);
@@ -134,18 +143,37 @@ public class RegistController {
                 nurse.setCreateTime(new Date());
                 nurse.setCreatorId(userId);
                 nurse.setCreatorName(user.getName());
+                nurse.setActive(1);
                 nurse.setStatus(0);
                 String nurseId = nurseService.insert(nurse);
                 if (nurseId.length() < 0) {
                     return JSONUtil.toJSONResult(0, "注册失败", null);
                 }
             }
+            // 设置默认头像
+            // 设置默认头像
+            NurseImages img = new NurseImages();
+            img.setId(UUID.randomUUID().toString());
+            img.setSourceId(user.getId());
+            if (type_id == 0) {
+                img.setUrl("https://resource.jinpaihushi.com/images/default_head/yonghu_nv.jpg");
+            }
+            else {
+                img.setUrl("https://resource.jinpaihushi.com/images/default_head/yonghu_nan.jpg");
+            }
+            img.setCreateTime(new Date());
+            img.setType(1);
+            img.setStatus(1);
+            img.setCreatorId(user.getId());
+            img.setCreatorName(user.getName());
+            nurseImagesService.insert(img);
 
-            //给用户创建相应的account账户
+            // 给用户创建相应的account账户
             Account account = new Account();
             account.setId(UUIDUtils.getId());
             account.setBalance(0.0);
             account.setScore(0);
+            account.setAvailableScore(0);
             account.setCreateTime(new Date());
             account.setCreatorId(userId);
             account.setStatus(0);
@@ -182,7 +210,7 @@ public class RegistController {
         return null;
     }
 
-    //	http://192.168.7.66:8059/regist/updatePwd.json?phone=手机号&verificattionCode=验证码&password=密码&type=2
+    // http://192.168.7.66:8059/regist/updatePwd.json?phone=手机号&verificattionCode=验证码&password=密码&type=2
     @RequestMapping(name = "更新密码", path = "/updatePwd.json")
     @ResponseBody
     public byte[] updatePwd(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone,
@@ -229,6 +257,7 @@ public class RegistController {
 
     /**
      * 判断验证码是否正确
+     * 
      * @param hs
      * @param req
      * @param resp
@@ -302,13 +331,12 @@ public class RegistController {
             }
 
             // 发送验证码
-            doPostSmsController.sendSms(phone, "【金牌护士】您的短信验证码是：" + s + "，10分钟有效！如非本人操作，请及时登录并修改密码。", "SMS_69155344",
-                    "{\"s\":\"" + s + "\"}");
+            doPostSmsService.sendSms(phone, SMS_Verification_Code, "{\"s\":\"" + s + "\"}");
             Verification vc = new Verification();
             vc.setId(UUIDUtils.getId());
             vc.setPhone(phone);
             Date now = new Date();
-            Date now_10 = new Date(now.getTime() + 600000);//加10分钟前的时间
+            Date now_10 = new Date(now.getTime() + 600000);// 加10分钟前的时间
             vc.setValidTime(now_10);
             vc.setCode(s + "");
             vc.setStatus(0);

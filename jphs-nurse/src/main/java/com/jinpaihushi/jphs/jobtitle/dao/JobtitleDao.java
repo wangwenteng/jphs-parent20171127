@@ -19,5 +19,5 @@ public interface JobtitleDao extends BaseDao<Jobtitle> {
 	int checkName(Jobtitle jobtitle);
 	
 	
-	List<Jobtitle> jobtitleSelectList();
+	List<Jobtitle> jobtitleSelectList(String type);
 }

@@ -219,4 +219,18 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE NS.ID = #{id}
 	</select>
 	
+	<select id="getNurseSkillsAc" resultMap="nurseSkills">
+		SELECT <include refid="field"/> 
+		FROM `NURSE_SKILLS` ns 
+		LEFT JOIN skills s ON ns.skills_id = s.id 
+		WHERE s.status=1 AND ns.status=1 
+		AND ns.creator_id=#{creatorId} 
+		<if test="type !=null and type !=''"> 
+			AND ns.type=#{type} 
+		</if> 
+		<if test="nurseType !=null and nurseType !=''"> 
+			AND s.type=#{nurseType} 
+		</if>
+	</select>
+	
 </mapper>

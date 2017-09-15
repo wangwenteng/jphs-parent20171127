@@ -269,6 +269,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="DECIMAL"></result>
 			<result property="costPrice" column="cost_price" javaType="Double"
 				jdbcType="DECIMAL"></result>
+			<result property="maxPrice" column="max_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
 			<result property="oldPrice" column="old_price" javaType="Double"
 				jdbcType="DECIMAL"></result>
 			<result property="profit" column="profit" javaType="Double"
@@ -437,6 +439,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pr.site_id,
 		pr.price,
 		pr.cost_price,
+		pr.max_price,
 		pr.old_price,
 		pr.profit,
 		pr.status pr_status
@@ -468,6 +471,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		pr.site_id,
 		pr.price,
 		pr.cost_price,
+		pr.max_price,
 		pr.old_price,
 		pr.profit,
 		pr.status pr_status

@@ -10,30 +10,32 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityReturnDao">
 	
 	<sql id="field">
-		CR.id, CR.commodity_order_id, CR.reason, CR.remark, 
-		CR.status, CR.create_time, CR.creator_id, CR.creator_name
+		CR.id, CR.commodity_order_info_id, CR.reason, CR.remark, 
+		CR.status, CR.create_time, CR.creator_id, CR.creator_name,CR.price,CR.sign
 	</sql>
 
 	<sql id="fieldGlobal">
-		CR.id CR_id, CR.commodity_order_id CR_commodity_order_id, 
+		CR.id CR_id, CR.commodity_order_info_id CR_commodity_order_info_id, 
 		CR.reason CR_reason, CR.remark CR_remark, 
 		CR.status CR_status, CR.create_time CR_create_time, 
-		CR.creator_id CR_creator_id, CR.creator_name CR_creator_name
+		CR.creator_id CR_creator_id, CR.creator_name CR_creator_name,CR.price CR_price,
+		CR.sign CR_sign
 	</sql>
 	
 	<sql id="fieldWithAlias">
-		CR.id id, CR.commodity_order_id commodityOrderId, 
+		CR.id id, CR.commodity_order_info_id commodityOrderInfoId, 
 		CR.reason reason, CR.remark remark, 
 		CR.status status, CR.create_time createTime, 
-		CR.creator_id creatorId, CR.creator_name creatorName
+		CR.creator_id creatorId, CR.creator_name creatorName,CR.price price,
+		CR.sign sign
 	</sql>
 	
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND CR.id=#{id}
 		</if>
-		<if test="commodityOrderId!=null and commodityOrderId!=''">
-			AND CR.commodity_order_id=#{commodityOrderId}
+		<if test="commodityOrderInfoId!=null and commodityOrderInfoId!=''">
+			AND CR.commodity_order_info_id=#{commodityOrderInfoId}
 		</if>
 		<if test="reason!=null and reason!=''">
 			AND CR.reason=#{reason}
@@ -53,6 +55,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND CR.creator_name=#{creatorName}
 		</if>
+			<if test="price!=null and price!=''">
+			AND CR.price=#{price}
+		</if>
+		<if test="sign!=null">
+			AND CR.sign=#{sign}
+		</if>
 	</sql>
 	
 	<sql id="dynamicWhere">
@@ -66,8 +74,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="id!=null and id!=''">
 				AND CR.id LIKE CONCAT('%', #{id}, '%')
 			</if>
-			<if test="commodityOrderId!=null and commodityOrderId!=''">
-				AND CR.commodity_order_id LIKE CONCAT('%', #{commodityOrderId}, '%')
+			<if test="commodityOrderInfoId!=null and commodityOrderInfoId!=''">
+				AND CR.commodity_order_info_id LIKE CONCAT('%', #{commodityOrderInfoId}, '%')
 			</if>
 			<if test="reason!=null and reason!=''">
 				AND CR.reason LIKE CONCAT('%', #{reason}, '%')
@@ -81,11 +89,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="createTime!=null">
 				AND CR.create_time=#{createTime}
 			</if>
+			<if test="price!=null">
+				AND CR.price=#{price}
+			</if>
 			<if test="creatorId!=null and creatorId!=''">
 				AND CR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND CR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="sign!=null">
+				AND CR.sign=#{sign}
 			</if>
 		</where>
 	</sql>
@@ -95,8 +109,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="id!=null">
 				CR.id=#{id}, 
 		   </if>
-           <if test="commodityOrderId!=null">
-				CR.commodity_order_id=#{commodityOrderId}, 
+           <if test="commodityOrderInfoId!=null">
+				CR.commodity_order_info_id=#{commodityOrderInfoId}, 
 		   </if>
            <if test="reason!=null">
 				CR.reason=#{reason}, 
@@ -116,6 +130,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="creatorName!=null">
 				CR.creator_name=#{creatorName}, 
 		   </if>
+		   <if test="price!=null">
+				CR.price=#{price}, 
+		   </if>
+		   <if test="sign!=null">
+				CR.sign=#{sign}, 
+		   </if>
 		</set>
 	</sql>
 	
@@ -127,37 +147,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<resultMap id="commodityReturn" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderInfoId" column="commodity_order_info_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="reason" column="reason" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+		<result property="sign" column="sign" javaType="Integer" jdbcType="INTEGER"></result>
 	</resultMap>
 	
 	<resultMap id="commodityReturnGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
 		<result property="id" column="CR_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderId" column="CR_commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderInfoId" column="CR_commodity_order_info_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="reason" column="CR_reason" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="remark" column="CR_remark" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="CR_status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="createTime" column="CR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="CR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="CR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="CR_price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+		<result property="sign" column="CR_sign" javaType="Integer" jdbcType="INTEGER"></result>
 	</resultMap>
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
 		INSERT INTO `COMMODITY_RETURN`(
-			id, commodity_order_id, 
+			id, commodity_order_info_id, 
 			reason, remark, 
 			status, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name,price,sign
 		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR}, 
+			#{id,jdbcType=VARCHAR}, #{commodityOrderInfoId,jdbcType=VARCHAR}, 
 			#{reason,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
 			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
+			#{price,jdbcType=DECIMAL},#{sign,jdbcType=INTEGER}
 		)
 	</insert>
 	
@@ -165,19 +192,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		parameterType="list">
         <![CDATA[
         INSERT INTO `COMMODITY_RETURN`(
-			id, commodity_order_id, 
+			id, commodity_order_info_id, 
 			reason, remark, 
 			status, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name,price,sign
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderId,jdbcType=VARCHAR}, 
+			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderInfoId,jdbcType=VARCHAR}, 
 			#{item.reason,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, 
 			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.price,jdbcType=DECIMAL},#{item.sign,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>

@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.person.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.DateUtils;
 import com.jinpaihushi.utils.JSONUtil;
+import com.jinpaihushi.utils.UUIDUtils;
 import com.jinpaihushi.utils.Util;
 
 import net.sf.json.JSONObject;
@@ -70,6 +72,8 @@ public class UserController extends BaseController<User> {
 
     @Autowired
     private NurseService nurseService;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     protected BaseService<User> getService() {
@@ -113,47 +117,58 @@ public class UserController extends BaseController<User> {
             //                return JSONUtil.toJSONResult(3, "非法请求", null);
             //            }
             User user = userService.loadById(userId);
-
+            if (null != user && StringUtils.isEmpty(user.getName()))
+                user.setName(user.getPhone());
             if (user.getType() == 0) {
                 Nurse nurse_s = new Nurse();
                 nurse_s.setCreatorId(user.getId());
 
                 Nurse n = nurseService.load(nurse_s);
                 if (n != null) {
-                    long wk = DateUtils.getDistanceDays(new Date(), n.getWorkYears());
-                    n.setWorkYear(new String().valueOf(wk / 365));
-                }
-                user.setNurse(new JSONObject().fromObject(n));
-                NurseJobtitle jobtitle = new NurseJobtitle();
-                jobtitle.setCreatorId(userId);
-                jobtitle.setStatus(0);
-                String roleName = "";
-                List<NurseJobtitle> list = nurseJobtitleService.list(jobtitle);
-                for (NurseJobtitle nurseJobtitle : list) {
-                    //                    .护士，2.康复师，3.母婴师
-                    switch (nurseJobtitle.getType()) {
-                    case 1:
-                        roleName += "护士/";
-                        break;
-                    case 2:
-                        roleName += "康复师/";
-                        break;
-                    case 3:
-                        roleName += "母婴师/";
-                        break;
-                    default:
-                        break;
+                    if (n.getWorkYears() != null) {
+                        long wk = DateUtils.getDistanceDays(new Date(), n.getWorkYears());
+                        n.setWorkYear(new String().valueOf(wk / 365));
                     }
+                    if (StringUtils.isNotEmpty(n.getSfz()) && n.getSfz().length() > 14) {
+                        long wk = DateUtils.getDistanceDays(new Date(), sdf.parse(n.getSfz().substring(6, 14)));
+                        n.setAge(Integer.parseInt(new String().valueOf(wk / 365)));
+                    }
+                    else {
+                        n.setAge(1);
+                    }
+                    user.setNurse(new JSONObject().fromObject(n));
+                    NurseJobtitle jobtitle = new NurseJobtitle();
+                    jobtitle.setCreatorId(userId);
+                    jobtitle.setStatus(1);
+                    String roleName = "";
+                    List<NurseJobtitle> list = nurseJobtitleService.list(jobtitle);
+                    for (NurseJobtitle nurseJobtitle : list) {
+                        //                    .护士，2.康复师，3.母婴师
+                        switch (nurseJobtitle.getType()) {
+                        case 1:
+                            roleName += "护士/";
+                            break;
+                        case 2:
+                            roleName += "康复师/";
+                            break;
+                        case 3:
+                            roleName += "母婴师/";
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    if (roleName.length() > 0)
+                        roleName = roleName.substring(0, roleName.length() - 1);
+                    user.getNurse().put("roleName", roleName);
                 }
-                if (roleName.length() > 0)
-                    roleName = roleName.substring(0, roleName.length() - 1);
-                user.getNurse().put("roleName", roleName);
             }
-
+            token = Common.getToken(user.getPhone(), user.getPassword());// 生成token
+            user.setToken(token);
             NurseImages img = new NurseImages();
             img.setSourceId(user.getId());
             img.setType(1);
-            img.setStatus(0);
+            img.setStatus(1);
             img = nurseImagesService.load(img);
             if (img != null)
                 user.setHeadPicture(img.getUrl());
@@ -201,10 +216,31 @@ public class UserController extends BaseController<User> {
                 NurseImages nurseImages = new NurseImages();
                 nurseImages.setSourceId(user.getId());
                 nurseImages.setType(1);
-                nurseImages.setStatus(0);
+                nurseImages.setStatus(1);
                 nurseImages = nurseImagesService.load(nurseImages);
-                nurseImages.setUrl(user.getHeadPicture());
-                flag = nurseImagesService.update(nurseImages);
+                if (nurseImages == null) {
+                    nurseImages = new NurseImages();
+                    nurseImages.setId(UUIDUtils.getId());
+                    nurseImages.setUrl(user.getHeadPicture());
+                    nurseImages.setSourceId(user.getId());
+                    nurseImages.setType(1);
+                    nurseImages.setStatus(1);
+                    nurseImages.setCreatorId(user.getId());
+                    nurseImages.setCreatorName(seesion.getName());
+                    nurseImages.setCreateTime(new Date());
+                    String s = nurseImagesService.insert(nurseImages);
+                    if (s.length() > 0) {
+                        flag = true;
+                    }
+                }
+                else {
+                    nurseImages.setUrl(user.getHeadPicture());
+                    nurseImages.setCreatorId(user.getId());
+                    nurseImages.setCreatorName(seesion.getName());
+                    nurseImages.setCreateTime(new Date());
+                    flag = nurseImagesService.update(nurseImages);
+                }
+                return JSONUtil.toJSONResult(1, "上传成功！", user);
             }
             if (!flag) {
 
@@ -373,13 +409,13 @@ public class UserController extends BaseController<User> {
     public byte[] getNurseList(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
             @RequestParam(value = "lon", defaultValue = "116.403119", required = true) String lon,
             @RequestParam(value = "lat", defaultValue = "39.914492", required = true) String lat, String goodsId,
-            @RequestParam(value = "type", defaultValue = "0", required = true) Integer type, String nurseName,
+            /*@RequestParam(value = "type", defaultValue = "0", required = true) Integer type,*/ String nurseName,
             @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
             @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId
-                        + " type=" + type + " nurseName=" + nurseName);
+                /* + " type=" + type*/ + " nurseName=" + nurseName);
             }
             if (StringUtils.isEmpty(lon) || StringUtils.isEmpty(lat)) {
                 lon = "116.403119";
@@ -401,7 +437,7 @@ public class UserController extends BaseController<User> {
             query.put("lat", lat);
             query.put("lon", lon);
             query.put("goodsId", goodsId);
-            query.put("type", type);
+            /*query.put("type", type);*/
             query.put("nurseName", nurseName);
             if (StringUtils.isNotEmpty(nurseName)) {
                 query.put("type", 1);
@@ -412,8 +448,9 @@ public class UserController extends BaseController<User> {
             return JSONUtil.toJSONResult(1, "操作成功！", result);
         }
         catch (Exception e) {
-            Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId + " type="
-                    + type + " nurseName=" + nurseName, e);
+            Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId /*+ " type="
+                                                                                                           + type*/
+                    + " nurseName=" + nurseName, e);
         }
         return null;
     }

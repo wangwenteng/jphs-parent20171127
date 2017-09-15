@@ -14,8 +14,8 @@ import com.jinpaihushi.jphs.order.model.OrderGoods;
 @Repository("orderGoodsDao")
 public interface OrderGoodsDao extends BaseDao<OrderGoods> {
 
-	Integer getOrderCount(OrderGoods orderGoods);
-	
-	
-	
+    Integer getOrderCount(OrderGoods orderGoods);
+
+    int deleteByOrderId(String orderId);
+
 }

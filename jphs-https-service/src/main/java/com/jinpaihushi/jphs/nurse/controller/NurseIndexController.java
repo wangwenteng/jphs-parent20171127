@@ -25,6 +25,7 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
+import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -77,10 +78,10 @@ public class NurseIndexController extends BaseController<Nurse> {
 							||StringUtils.isEmpty(user.getPhone())/*
 								||StringUtils.isEmpty(token)*/){
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}/*
+			}
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}*/
+			}
 
 			//	抢单列表
 			Map<String , Object> q_o_map = new HashMap<String , Object>();
@@ -126,10 +127,10 @@ public class NurseIndexController extends BaseController<Nurse> {
 							||StringUtils.isEmpty(user.getPhone())/*
 								||StringUtils.isEmpty(token)*/){
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}/*
+			}
 			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
-			}*/
+			}
 			//	最新待服务订单
 			Map<String , Object> o_map = new HashMap<String , Object>();
 			o_map.put("acceptUserId", user.getId());
@@ -171,8 +172,8 @@ public class NurseIndexController extends BaseController<Nurse> {
 			// 查空
 			if(StringUtils.isEmpty(columnId)){
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
-			}/*
-			if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+			}
+			/*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
 				return JSONUtil.toJSONResult(0, "token验证失败", null);
 			}*/
 
@@ -205,11 +206,11 @@ public class NurseIndexController extends BaseController<Nurse> {
 
         try {
             String token = "";
-            try {
+           /* try {
                 token = req.getHeader("token");
             }
             catch (Exception e) {
-            }
+            }*/
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("nurseindex.index.json,columnId" + columnId + " user=" + user.getPhone()
@@ -221,8 +222,8 @@ public class NurseIndexController extends BaseController<Nurse> {
                     || StringUtils.isEmpty(user.getPhone())/*
                                                            ||StringUtils.isEmpty(token)*/) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
-            }
-            /*if(!Common.CheckPerson(user.getPhone(), MD5.md5crypt(MD5.md5crypt(user.getPassword())), token)){
+            }/*
+            if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
             }*/
 
@@ -250,6 +251,7 @@ public class NurseIndexController extends BaseController<Nurse> {
             Map<String, Object> q_o_map = new HashMap<String, Object>();
             q_o_map.put("schedule", 1);
             q_o_map.put("status", 1);
+            q_o_map.put("type", 1);
             List<Map<String, Object>> q_order_list = orderService.getOrderGoodsList(q_o_map);
             //   资讯集合
             Map<String, Object> query = new HashMap<>();

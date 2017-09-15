@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
+import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.nurse.service.NurseCommodityService;
+import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
@@ -28,6 +30,8 @@ public class NurseCommodityController extends BaseController<NurseCommodity> {
 
 	@Autowired
 	private NurseCommodityService nurseCommodityService;
+	@Autowired
+	private CommodityService commodityService;
 
 	@Override
 	protected BaseService<NurseCommodity> getService() {
@@ -51,10 +55,13 @@ public class NurseCommodityController extends BaseController<NurseCommodity> {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 
+
+			commodityService.updateShareNumber(nurseCommodity.getCommodityId());
+
 			//判断是否之前分享过
 			NurseCommodity nc = nurseCommodityService.load(nurseCommodity);
 			if(nc != null){
-				boolean result =  nurseCommodityService.updateBrowser(nurseCommodity);
+				boolean result =  nurseCommodityService.updateShareNumber(nurseCommodity);
 			
 				if (!result) {
 					return JSONUtil.toJSONResult(0, "请核对参数后访问", null);

@@ -20,10 +20,49 @@
 		<p>
 			<span>是否需要服务工具：</span>
 			<!-- 单行单选项目 -->
-			<c:if test="${goods.tool == 1}">
+			<c:if test="${goods.dzTool == 1}">
 				需要
 				</c:if>
-			<c:if test="${goods.tool == 0}">
+			<c:if test="${goods.dzTool == 0}">
+				 不需要
+				</c:if>
+		</p>
+		<p>
+			<span>是否需要护理工具：</span>
+			<!-- 单行单选项目 -->
+			<c:if test="${goods.hlTool == 1}">
+				需要
+				</c:if>
+			<c:if test="${goods.hlTool == 0}">
+				 不需要
+				</c:if>
+		</p>
+		<p>
+			<span>是否需要用药记录：</span>
+			<!-- 单行单选项目 -->
+			<c:if test="${goods.isPz == 1}">
+				需要
+				</c:if>
+			<c:if test="${goods.isPz == 0}">
+				 不需要
+				</c:if>
+		</p>
+		<p>
+			<span>是否需要康复记录：</span>
+			<!-- 单行单选项目 -->
+			<c:if test="${goods.isRr == 1}">
+				需要
+				</c:if>
+			<c:if test="${goods.isRr == 0}">
+				 不需要
+				</c:if>
+		</p>
+		<p>
+			<span>是否需要上传就医证明：</span>
+			<c:if test="${goods.isProve == 1}">
+					需要
+				</c:if>
+			<c:if test="${goods.isProve == 0}">
 				 不需要
 				</c:if>
 		</p>

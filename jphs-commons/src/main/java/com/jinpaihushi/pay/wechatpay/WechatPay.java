@@ -39,11 +39,13 @@ public class WechatPay {
 		 */
 		try {
 			JSONObject json = new JSONObject();
-			json.put("out_trade_no", "JP20193699556");
+			json.put("out_trade_no", "JP20193234556");
 			json.put("body", "居家康复");
 			json.put("price", "1");
-
-			byte[] s = weixin_webpay(json.toString());
+			json.put("CREATE_IP", "192.168.7.66");
+			json.put("serviceType", "1");
+			json.put("OPENID", "onraQv5DmimtWqu4xGYr9Pi9y2_k");
+			byte[] s = weixin_wechatpay(json.toString());
 			String t = new String(s);
 			System.out.println(JSONObject.fromObject(t).toString());
 		} catch (Exception e) {
@@ -51,7 +53,7 @@ public class WechatPay {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * 微信web支付
 	 * 
@@ -60,7 +62,7 @@ public class WechatPay {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public static byte[] weixin_webpay(String content) throws Exception {
+	public static byte[] weixin_wechatpay(String content) throws Exception {
 
 		if (Util.debugLog.isDebugEnabled()) {
 			Util.debugLog.debug("微信支付参数：content=" + content);
@@ -74,6 +76,8 @@ public class WechatPay {
 		String body = ""; // 商品名称
 		String out_trade_no = ""; // 订单号
 		String CREATE_IP = "";
+		String serviceType = "";//	1：服务，2:商品
+		String OPENID = "";
 		try {
 			JSONObject contentjson = JSONObject.fromObject(content);
 			if (!contentjson.containsKey("price") || StringUtils.isEmpty(contentjson.getString("price"))) {
@@ -104,6 +108,226 @@ public class WechatPay {
 			CREATE_IP = contentjson.getString("CREATE_IP");
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付参数：CREATE_IP=" + CREATE_IP);
+			}
+			if (!contentjson.containsKey("serviceType") || StringUtils.isEmpty(contentjson.getString("serviceType"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			serviceType = contentjson.getString("serviceType");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：serviceType=" + serviceType);
+			}
+			
+			if (!contentjson.containsKey("OPENID") || StringUtils.isEmpty(contentjson.getString("OPENID"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			OPENID = contentjson.getString("OPENID");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：OPENID=" + OPENID);
+			}
+		} catch (Exception e1) {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付异常：e1=" + e1);
+			}
+			return ReturnUtils.jsonReturnToString("0", "content不合法", "");
+		}
+
+		String APP_ID = "";
+		String MCH_ID = "";
+		String API_KEY = "";
+		String NOTIFY_URL = "";
+		String UFDODER_URL = "";
+		String nonce_str = "";
+		String trade_type = "JSAPI";// 公众号支付支付
+		try {
+			// 读取配置文件类
+			Properties pps = new Properties();
+			InputStream in = PropertiesUtil.class.getResourceAsStream("/config/wechatConfig.properties");
+			pps.load(in);
+			// 商户平台APPID
+			APP_ID = pps.getProperty("APP_ID");// appid
+			// 公众号key秘钥
+			// String appsecret = PayConfigUtil.APP_SECRET; // appsecret
+			// 商户号
+			MCH_ID = pps.getProperty("MCH_ID"); //
+			// 商户key秘钥
+			API_KEY = pps.getProperty("API_KEY"); // key
+			// 生成地址 ip
+			// CREATE_IP = pps.getProperty("CREATE_IP");
+			// 异步回调地址
+			NOTIFY_URL = pps.getProperty("NOTIFY_URL");
+			// 微信生成二维码地址
+			UFDODER_URL = pps.getProperty("UFDODER_URL");
+
+			String currTime = PayCommonUtil.getCurrTime();
+			String strTime = currTime.substring(8, currTime.length());
+			String strRandom = PayCommonUtil.buildRandom(4) + "";
+			nonce_str = strTime + strRandom;
+
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，获取账户配置信息：APP_ID=" + APP_ID + ",MCH_ID=" + MCH_ID + ",API_KEY=" + API_KEY
+						+ ",CREATE_IP=" + CREATE_IP + ",CREATE_IP=" + CREATE_IP + ",NOTIFY_URL=" + NOTIFY_URL
+						+ ",UFDODER_URL=" + UFDODER_URL + ",nonce_str=" + nonce_str);
+			}
+
+			if (APP_ID == null || "".equals(APP_ID) || MCH_ID == null || "".equals(MCH_ID) || API_KEY == null
+					|| "".equals(API_KEY) || CREATE_IP == null || NOTIFY_URL == null || "".equals(NOTIFY_URL)
+					|| UFDODER_URL == null || "".equals(UFDODER_URL)) {
+				return ReturnUtils.jsonReturnToString("0", "获取配置文件信息失败！", "");
+			}
+		} catch (Exception e) {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，获取账户配置信息：e=" + e);
+			}
+			return ReturnUtils.jsonReturnToString("0", "获取账户配置信息失败！", "");
+		}
+
+		// String return_code = (String) map.get("return_code");
+		// String prepay_id = (String) map.get("prepay_id");
+		String signRe = "";
+		try {
+			JSONObject attach_obj = new JSONObject();
+			attach_obj.put("payType", serviceType);//	支付类型1：服务；2：商品
+			
+			SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
+			packageParams.put("appid", APP_ID);
+			packageParams.put("mch_id", MCH_ID);
+			packageParams.put("attach", attach_obj.toString());
+			packageParams.put("nonce_str", nonce_str);
+			packageParams.put("body", body);
+			packageParams.put("out_trade_no", out_trade_no);
+			packageParams.put("total_fee", order_price);
+			packageParams.put("spbill_create_ip", CREATE_IP);
+			packageParams.put("notify_url", NOTIFY_URL);
+			packageParams.put("openid", OPENID);
+			packageParams.put("trade_type", trade_type);
+			String sign = PayCommonUtil.createSign("UTF-8", packageParams, API_KEY);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，-sign=" + sign);
+			}
+			packageParams.put("sign", sign);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，-packageParams=" + JSONObject.fromObject(packageParams));
+			}
+			String requestXML = PayCommonUtil.getRequestXml(packageParams);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，-requestXML=" + requestXML);
+			}
+			String resXml = HttpUtil.postData(UFDODER_URL, requestXML);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，-resXml=" + resXml);
+			}
+			Map map = XMLUtil.doXMLParse(resXml);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，-map=" + JSONObject.fromObject(map));
+			}
+			if(map.containsKey("return_code") && map.get("return_code").toString().equals("FAIL")){
+				return ReturnUtils.jsonReturnToString("0", "支付失败！", map.get("return_msg").toString());
+			}
+			String return_code = (String) map.get("return_code");
+			String result_code = (String) map.get("result_code");
+			JSONObject jsonSign = new JSONObject();
+			if (return_code != null && return_code != "" && !"".equals(return_code) && result_code != null
+					&& result_code != "" && !"".equals(result_code) && result_code.equals("SUCCESS")
+					&& return_code.equals("SUCCESS")) {
+				
+				String timeStamp = PayCommonUtil.getCurrTime();
+				SortedMap<Object, Object> finalpackage = new TreeMap<Object, Object>();
+				finalpackage.put("appId", (String) map.get("appid"));
+				finalpackage.put("timeStamp", timeStamp);
+				finalpackage.put("nonceStr", nonce_str);
+				finalpackage.put("package", "prepay_id=" +  (String) map.get("prepay_id"));
+				finalpackage.put("signType", "MD5");
+				String re_sign = PayCommonUtil.createSign("UTF-8", finalpackage, API_KEY);
+				jsonSign.put("appid", (String) map.get("appid"));
+				jsonSign.put("timeStamp", timeStamp);
+				jsonSign.put("nonce_str", nonce_str);
+				jsonSign.put("package", "prepay_id=" +  (String) map.get("prepay_id"));
+				jsonSign.put("signType", "MD5");
+				jsonSign.put("paySign", re_sign);
+				
+				if (Util.debugLog.isDebugEnabled()) {
+					Util.debugLog.debug("微信支付，生成结果"+jsonSign.toString());
+				}
+				
+				signRe = jsonSign.toString();
+			} else {
+				if (Util.debugLog.isDebugEnabled()) {
+					Util.debugLog.debug("微信支付，生成url失败");
+				}
+				return ReturnUtils.jsonReturnToString("0", "生成url失败！", "");
+			}
+		} catch (Exception e) {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付，生成url失败-异常：e=" + e);
+			}
+			return ReturnUtils.jsonReturnToString("0", "生成url失败！", "");
+		}
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("微信支付，获取支付url：signRe=" + signRe);
+		}
+		return ReturnUtils.jsonReturnToString("1", "成功", signRe);
+	}
+
+	/**
+	 * 微信web支付
+	 * 
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public static byte[] weixin_webpay(String content) throws Exception {
+
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("微信支付参数：content=" + content);
+		}
+
+		if (content == null || "".equals(content)) {
+			return ReturnUtils.jsonReturnToString("0", "content不合法", "");
+		}
+
+		String order_price = ""; // 支付金额
+		String body = ""; // 商品名称
+		String out_trade_no = ""; // 订单号
+		String CREATE_IP = "";
+		String serviceType = "";//	1：服务，2:商品
+		try {
+			JSONObject contentjson = JSONObject.fromObject(content);
+			if (!contentjson.containsKey("price") || StringUtils.isEmpty(contentjson.getString("price"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			order_price = contentjson.getString("price");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：price=" + order_price);
+			}
+			if (!contentjson.containsKey("body") || StringUtils.isEmpty(contentjson.getString("body"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			body = contentjson.getString("body");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：body=" + body);
+			}
+			if (!contentjson.containsKey("out_trade_no")
+					|| StringUtils.isEmpty(contentjson.getString("out_trade_no"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			out_trade_no = contentjson.getString("out_trade_no");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：out_trade_no=" + out_trade_no);
+			}
+			if (!contentjson.containsKey("CREATE_IP") || StringUtils.isEmpty(contentjson.getString("CREATE_IP"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			CREATE_IP = contentjson.getString("CREATE_IP");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：CREATE_IP=" + CREATE_IP);
+			}
+			if (!contentjson.containsKey("serviceType") || StringUtils.isEmpty(contentjson.getString("serviceType"))) {
+				return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+			}
+			serviceType = contentjson.getString("serviceType");
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("微信支付参数：serviceType=" + serviceType);
 			}
 		} catch (Exception e1) {
 			if (Util.debugLog.isDebugEnabled()) {
@@ -167,7 +391,7 @@ public class WechatPay {
 		String signRe = "";
 		try {
 			JSONObject attach_obj = new JSONObject();
-			attach_obj.put("payType", 1);//	支付类型1：服务
+			attach_obj.put("payType", serviceType);//	支付类型1：服务；2：商品
 			
 			SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
 			packageParams.put("appid", APP_ID);
@@ -199,6 +423,9 @@ public class WechatPay {
 			Map map = XMLUtil.doXMLParse(resXml);
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付，-map=" + JSONObject.fromObject(map));
+			}
+			if(map.containsKey("return_code") && map.get("return_code").toString().equals("FAIL")){
+				return ReturnUtils.jsonReturnToString("0", "支付失败！", map.get("return_msg").toString());
 			}
 			String return_code = (String) map.get("return_code");
 			String result_code = (String) map.get("result_code");
@@ -553,6 +780,9 @@ public class WechatPay {
 			Map map = XMLUtil.doXMLParse(resXml);
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付，-map=" + JSONObject.fromObject(map));
+			}
+			if(map.containsKey("return_code") && map.get("return_code").toString().equals("FAIL")){
+				return ReturnUtils.jsonReturnToString("0", "支付失败！", map.get("return_msg").toString());
 			}
 			String urlCode = (String) map.get("code_url");
 			JSONObject jsonSign = new JSONObject();

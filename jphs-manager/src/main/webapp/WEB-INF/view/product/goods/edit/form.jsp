@@ -50,18 +50,102 @@
 			<div class="controls col-md-6">
 				<!-- 单行单选项目 -->
 				<label class="radio radio-inline">
-					<c:if test="${goods.tool == 1}">
-						<input type="radio" value="1" name="tool" checked="checked">
+					<c:if test="${goods.dzTool == 1}">
+						<input type="radio" value="1" name="dzTool" checked="checked">
 					</c:if>
-					<c:if test="${goods.tool != 1}">
-						<input type="radio" value="1" name="tool" checked="checked">
+					<c:if test="${goods.dzTool != 1}">
+						<input type="radio" value="1" name="dzTool" checked="checked">
 					</c:if> 需要
 				</label> <label class="radio radio-inline">
-					<c:if test="${goods.tool == 0}">
-						<input type="radio" value="0" name="tool" checked="checked">
+					<c:if test="${goods.dzTool == 0}">
+						<input type="radio" value="0" name="dzTool" checked="checked">
 					</c:if>
-					<c:if test="${goods.tool != 0}">
-						<input type="radio" value="0" name="tool">
+					<c:if test="${goods.dzTool != 0}">
+						<input type="radio" value="0" name="dzTool">
+					</c:if> 不需要
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3">是否需要护理工具：</label>
+			<div class="controls col-md-6">
+				<!-- 单行单选项目 -->
+				<label class="radio radio-inline">
+					<c:if test="${goods.hlTool == 1}">
+						<input type="radio" value="1" name="hlTool" checked="checked">
+					</c:if>
+					<c:if test="${goods.hlTool != 1}">
+						<input type="radio" value="1" name="hlTool" checked="checked">
+					</c:if> 需要
+				</label> <label class="radio radio-inline">
+					<c:if test="${goods.hlTool == 0}">
+						<input type="radio" value="0" name="hlTool" checked="checked">
+					</c:if>
+					<c:if test="${goods.hlTool != 0}">
+						<input type="radio" value="0" name="hlTool">
+					</c:if> 不需要
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3">是否需要用药记录：</label>
+			<div class="controls col-md-6">
+				<!-- 单行单选项目 -->
+				<label class="radio radio-inline">
+					<c:if test="${goods.isPz == 1}">
+						<input type="radio" value="1" name="isPz" checked="checked">
+					</c:if>
+					<c:if test="${goods.isPz != 1}">
+						<input type="radio" value="1" name="isPz" checked="checked">
+					</c:if> 需要
+				</label> <label class="radio radio-inline">
+					<c:if test="${goods.isPz == 0}">
+						<input type="radio" value="0" name="isPz" checked="checked">
+					</c:if>
+					<c:if test="${goods.isPz != 0}">
+						<input type="radio" value="0" name="isPz">
+					</c:if> 不需要
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3">是否需要康复记录：</label>
+			<div class="controls col-md-6">
+				<!-- 单行单选项目 -->
+				<label class="radio radio-inline">
+					<c:if test="${goods.isRr == 1}">
+						<input type="radio" value="1" name="isRr" checked="checked">
+					</c:if>
+					<c:if test="${goods.isRr != 1}">
+						<input type="radio" value="1" name="isRr" checked="checked">
+					</c:if> 需要
+				</label> <label class="radio radio-inline">
+					<c:if test="${goods.isRr == 0}">
+						<input type="radio" value="0" name="isRr" checked="checked">
+					</c:if>
+					<c:if test="${goods.isRr != 0}">
+						<input type="radio" value="0" name="isRr">
+					</c:if> 不需要
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-md-3">是否需要上传就医证明：</label>
+			<div class="controls col-md-6">
+				<!-- 单行单选项目 -->
+				<label class="radio radio-inline">
+					<c:if test="${goods.isProve == 1}">
+						<input type="radio" value="1" name="isProve" checked="checked">
+					</c:if>
+					<c:if test="${goods.isProve != 1}">
+						<input type="radio" value="1" name="isProve">
+					</c:if> 需要
+				</label> <label class="radio radio-inline">
+					<c:if test="${goods.isProve == 3}">
+						<input type="radio" value="3" name="isProve" checked="checked">
+					</c:if>
+					<c:if test="${goods.isProve != 3}">
+						<input type="radio" value="3" name="isProve">
 					</c:if> 不需要
 				</label>
 			</div>
@@ -232,6 +316,7 @@
 										<td width="60px">服务次数</td>
 										<!-- <td width="60px" >销售价格</td> -->
 										<td width="60px" >成本价</td>
+										<td width="60px" >最高价</td>
 										<td width="60px" >利润</td>
 										<td width="60px" >时长</td>
 										<td width="60px" >单位</td>
@@ -250,6 +335,7 @@
 												</td>
 												<td><input style="width:100%" class="form-control" id="service_number${status_g.index }${status.index }" name="priceGrade[${status_g.index }].price[${status.index }].serviceNumber"  value="${priceOne.serviceNumber }" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
 												<td><input style="width:100%" class="form-control" id="price${status_g.index }${status.index }" name="priceGrade[${status_g.index }].price[${status.index }].costPrice"  value="${priceOne.pricePart.costPrice }" onkeyup="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.costPrice }';}"  /></td>
+												<td><input style="width:100%" class="form-control" id="price${status_g.index }${status.index }" name="priceGrade[${status_g.index }].price[${status.index }].maxPrice"  value="${priceOne.pricePart.maxPrice }" onkeyup="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.costPrice }';}"  /></td>
 												<td><input style="width:100%" class="form-control" id="old_price${status_g.index }${status.index }" name="priceGrade[${status_g.index }].price[${status.index }].profit"  value="${priceOne.pricePart.profit }" onkeyup="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.profit }';}"  /></td>
 												<%-- <td><input style="width:100%" class="form-control" id="profit${status.index }" name="price[${status.index }].profit"  ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.profit }';}"  /></td>
 												 --%><td>

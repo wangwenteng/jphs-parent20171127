@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.nurse.service;
 
+import java.util.List;
+
 import com.jinpaihushi.jphs.nurse.model.NurseSkills;
 import com.jinpaihushi.service.BaseService;
 
@@ -11,6 +13,6 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface NurseSkillsService extends BaseService<NurseSkills> {
 
-	
+	List<NurseSkills> getNurseSkillsAc(NurseSkills nurseSkills);
 
 }

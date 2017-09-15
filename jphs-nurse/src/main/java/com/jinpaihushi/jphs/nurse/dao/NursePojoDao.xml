@@ -42,7 +42,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 	<select id="getRecommendNurse" resultType="java.util.HashMap">
-		SELECT DISTINCT
+		 SELECT DISTINCT
 			nj.creator_id nurseId,
 			u.`name` nurseName,
 			u.sex nurseSex,
@@ -155,7 +155,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND t.price_id = #{priceId}
 		AND d.distance &lt;30
 		ORDER BY
-			serviceNumber DESC
+			serviceNumber DESC 
 	
 	
 		<!-- SELECT * FROM (SELECT DISTINCT
@@ -170,7 +170,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM
 		nurse_images ni
 		WHERE
-		ni.creator_id = u.id
+		ni.source_id = u.id
 		AND ni.type = 1
 		) url,
 		CASE
@@ -267,6 +267,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		jg.goods_id = #{goodsId}
 		)AND w.calendar =#{calendar} AND 
 		w.${h}=0  AND t.price_id =#{priceId}
-		ORDER BY serviceNumber DESC ) a WHERE a.distance &lt;30 -->
+		ORDER BY serviceNumber DESC ) a WHERE a.distance &lt;30-->
 	</select>
 </mapper>

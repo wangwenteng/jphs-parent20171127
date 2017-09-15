@@ -11,21 +11,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<sql id="field">
 		NC.id, NC.commodity_id, NC.status, NC.browser, 
-		NC.shareNumber, NC.creator_id, NC.creator_name, NC.create_time
+		NC.shareNumber, NC.creator_id, NC.creator_name, NC.create_time,NC.count
 	</sql>
 
 	<sql id="fieldGlobal">
 		NC.id NC_id, NC.commodity_id NC_commodity_id, 
 		NC.status NC_status, NC.browser NC_browser, 
 		NC.shareNumber NC_shareNumber, NC.creator_id NC_creator_id, 
-		NC.creator_name NC_creator_name, NC.create_time NC_create_time
+		NC.creator_name NC_creator_name, NC.create_time NC_create_time，
+		NC.count NC_count
 	</sql>
 	
 	<sql id="fieldWithAlias">
 		NC.id id, NC.commodity_id commodityId, 
 		NC.status status, NC.browser browser, 
 		NC.shareNumber sharenumber, NC.creator_id creatorId, 
-		NC.creator_name creatorName, NC.create_time createTime
+		NC.creator_name creatorName, NC.create_time createTime,
+		NC.count NC_count
 	</sql>
 	
 	<sql id="condition">
@@ -52,6 +54,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="createTime!=null">
 			AND NC.create_time=#{createTime}
+		</if>
+		<if test="count!=null">
+			AND NC.count=#{count}
 		</if>
 	</sql>
 	
@@ -87,6 +92,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="createTime!=null">
 				AND NC.create_time=#{createTime}
 			</if>
+			<if test="count!=null">
+				AND NC.count=#{count}
+			</if>
 		</where>
 	</sql>
 	
@@ -116,6 +124,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="createTime!=null">
 				NC.create_time=#{createTime}, 
 		   </if>
+		   <if test="count!=null">
+				NC.count=#{count}, 
+		   </if>
 		</set>
 	</sql>
 	
@@ -131,6 +142,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="browser" column="browser" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="sharenumber" column="shareNumber" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="count" column="count" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -142,6 +154,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="status" column="NC_status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="browser" column="NC_browser" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="sharenumber" column="NC_shareNumber" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="count" column="NC_count" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="creatorId" column="NC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="NC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="createTime" column="NC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
@@ -152,12 +165,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, commodity_id, 
 			status, browser, 
 			shareNumber, creator_id, 
-			creator_name, create_time
+			creator_name, create_time,count
 		)VALUES(
 			#{id,jdbcType=VARCHAR}, #{commodityId,jdbcType=VARCHAR}, 
 			#{status,jdbcType=INTEGER}, #{browser,jdbcType=INTEGER}, 
 			#{sharenumber,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
-			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+			#{count,jdbcType=INTEGER}
 		)
 	</insert>
 	
@@ -168,7 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			id, commodity_id, 
 			status, browser, 
 			shareNumber, creator_id, 
-			creator_name, create_time
+			creator_name, create_time,count
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
@@ -177,7 +191,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.id,jdbcType=VARCHAR}, #{item.commodityId,jdbcType=VARCHAR}, 
 			#{item.status,jdbcType=INTEGER}, #{item.browser,jdbcType=INTEGER}, 
 			#{item.sharenumber,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
-			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+			#{item.count,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>
@@ -265,5 +280,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND NC.COMMODITY_ID = #{commodityId}
 	</update>
 	
-	
+	<update id="updateCount">
+	    UPDATE `NURSE_COMMODITY` NC
+		SET 
+		NC.count = count + #{number}
+		WHERE  NC.CREATOR_ID = #{creatorId} 
+		AND NC.COMMODITY_ID = #{commodityId}
+	</update>
 </mapper>

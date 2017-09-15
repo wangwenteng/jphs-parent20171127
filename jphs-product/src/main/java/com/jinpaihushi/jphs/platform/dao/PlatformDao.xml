@@ -421,7 +421,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE
 		si.device_type =
 		#{deviceType}
-		AND p.status = 1
+		AND p.status = 1 AND pg.status=1
 		<if test="goodsId==null">
 		AND		pg.platform_id =
 			#{platformId}

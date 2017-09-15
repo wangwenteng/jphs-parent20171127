@@ -2,7 +2,7 @@ package com.jinpaihushi.jphs.commodity.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.SortedMap;
 
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
 import com.jinpaihushi.service.BaseService;
@@ -31,11 +31,13 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	
 	Integer deleteOrder(CommodityOrder commodityOrder);
 	
- 
 	List<CommodityOrder> getListByOrderNo(String OrderNo);
-	
  
 	List<HashMap<String,Object>> loadS(CommodityOrder commodityOrder);
 	
 	Integer toUpdatePayPrice(String id,double payPrice);
+	
+	List<CommodityOrder> getStatusByOrderNo(String orderNo);
+	
+	boolean updateWechatCommodityOrderStutas(SortedMap<Object, Object> packageParams);
 }

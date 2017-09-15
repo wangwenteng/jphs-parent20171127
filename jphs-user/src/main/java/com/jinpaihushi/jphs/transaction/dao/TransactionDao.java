@@ -40,4 +40,13 @@ public interface TransactionDao extends BaseDao<Transaction> {
      * @return
      */
     List<Map<String, Object>> incomeBreakdownMonth(Map<String, Object> query);
+
+    /**
+     * 可提现的列表
+     * @param creatorId
+     * @return
+     */
+    List<Map<String, Object>> listWithdraw(String userId);
+
+    int updateWithdrawals(Map<String, Object> params);
 }

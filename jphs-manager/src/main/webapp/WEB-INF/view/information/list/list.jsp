@@ -18,9 +18,9 @@
 			<th>作者</th>
 			
 			<th width="100px">创建人</th>
-			<th width="150px">创时间</th>
+			<th width="140px">创时间</th>
 			<th>状态</th>
-			<th width="145">操作</th>
+			<th width="150">操作</th>
 		</tr>
 	</thead>
 	<tbody>

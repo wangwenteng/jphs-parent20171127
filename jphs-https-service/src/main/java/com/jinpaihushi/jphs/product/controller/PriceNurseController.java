@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.price.model.PriceNurse;
+import com.jinpaihushi.jphs.price.service.PricePartService;
 import com.jinpaihushi.jphs.price.service.PriceNurseService;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
@@ -31,6 +32,8 @@ public class PriceNurseController extends BaseController<PriceNurse> {
 
     @Autowired
     private PriceNurseService priceNurseService;
+	@Autowired
+	private PricePartService pricePartService;
 
     @Override
     protected BaseService<PriceNurse> getService() {
@@ -67,11 +70,11 @@ public class PriceNurseController extends BaseController<PriceNurse> {
             pn.setCreatorId(creatorId);
             pn.setGoodsId(goodsId);
 
-            boolean flag = priceNurseService.deleteByUserAndGoods(pn);
+          //  boolean flag = priceNurseService.deleteByUserAndGoods(pn);
 
-            if (!flag) {
-
-            }
+         /*   if (!flag) {
+				  
+            }*/
 
             PriceNurse priceNurse = new PriceNurse();
             String result = null;
@@ -82,10 +85,24 @@ public class PriceNurseController extends BaseController<PriceNurse> {
                 priceNurse.setPrice(Double.parseDouble(priceArr[i]));
                 priceNurse.setStatus(0);
                 priceNurse.setCreatorId(creatorId);
-                result = priceNurseService.insert(priceNurse);
-                if (result.length() <= 0) {
-                    return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
-                }
+
+				PriceNurse priceNurseModel = priceNurseService.getModel(creatorId,pricePartIdArr[i]);
+				System.out.println(priceNurseModel != null);
+				//System.out.println(priceNurseModel != "");
+
+				if(priceNurseModel != null){
+					boolean b = priceNurseService.updateModel(priceNurse);
+					 
+				}else{
+					result = priceNurseService.insert(priceNurse);
+					if (result.length() <= 0) {
+						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+					}
+				}
+
+
+                 
+                
             }
             return JSONUtil.toJSONResult(1, "操作成功！", "1");
         }

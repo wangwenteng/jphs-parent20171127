@@ -16,5 +16,5 @@ public interface JobtitleService extends BaseService<Jobtitle> {
 	int checkName(Jobtitle jobtitle);
 
 	
-	List<Jobtitle> jobtitleSelectList();
+	List<Jobtitle> jobtitleSelectList(String type);
 }

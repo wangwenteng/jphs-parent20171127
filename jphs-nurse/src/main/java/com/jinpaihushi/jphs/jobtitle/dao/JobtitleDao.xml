@@ -258,7 +258,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		J.status
 		FROM `JOBTITLE` J 
 		LEFT JOIN JOBTITLE_TYPE JT ON J.jobtitle_type_id=JT.id 
-		WHERE J.status=1 AND JT.status=1 ORDER BY J.jobtitle_type_id,J.grade
+		WHERE J.status=1 AND JT.status=1 AND J.jobtitle_type_id=#{type} ORDER BY J.jobtitle_type_id,J.grade
 	</select>	
 	
 	<resultMap id="jobtitleSelectLists" type="com.jinpaihushi.jphs.jobtitle.model.Jobtitle">

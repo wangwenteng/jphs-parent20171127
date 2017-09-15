@@ -9,7 +9,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		COI.id, COI.commodity_order_id, COI.commodity_id,
 		COI.user_id, COI.profit, COI.title, COI.old_price, COI.price,
 		COI.commodity_price_name, COI.commodity_model, COI.number, COI.remark,
-		COI.status, COI.create_time, COI.creator_id, COI.creator_name, COI.code,
+		COI.status, COI.create_time, COI.creator_id, COI.creator_name,
+		COI.code,COI.commodity_price_id
 	</sql>
 
 	<sql id="fieldGlobal">
@@ -21,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		COI.number COI_number, COI.remark COI_remark, COI.status COI_status,
 		COI.create_time COI_create_time, COI.creator_id COI_creator_id,
 		COI.creator_name COI_creator_name,
-		COI.code COI_code
+		COI.code COI_code,COI.commodity_price_id COI_commodity_price_id
 	</sql>
 
 	<sql id="fieldWithAlias">
@@ -31,7 +32,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		COI.commodity_price_name commodityPriceName, COI.commodity_model
 		commodityModel, COI.number number, COI.remark remark, COI.status
 		status, COI.create_time createTime, COI.creator_id creatorId,
-		COI.creator_name creatorName,COI.code code
+		COI.creator_name creatorName,COI.code code,COI.commodity_price_id commodityPriceId
 	</sql>
 
 	<sql id="condition">
@@ -85,6 +86,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="code!=null and code!=''">
 			AND COI.code=#{code}
+		</if>
+		<if test="commodityPriceId!=null and commodityPriceId!=''">
+			AND COI.commodity_price_id=#{commodityPriceId}
 		</if>
 	</sql>
 
@@ -152,6 +156,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="code!=null and code!=''">
 				AND COI.code LIKE CONCAT('%', #{code}, '%')
 			</if>
+			<if test="commodityPriceId!=null and commodityPriceId!=''">
+				AND COI.commodity_price_id=#{commodityPriceId}
+			</if>
 		</where>
 	</sql>
 
@@ -208,6 +215,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="code!=null">
 				COI.code=#{code},
 			</if>
+			<if test="code!=null">
+				COI.commodity_price_id=#{commodityPriceId},
+			</if>
 		</set>
 	</sql>
 
@@ -252,8 +262,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="code" column="code" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property="url" column="url" javaType="String"
+		<result property="commodityPriceId" column="commodity_price_id" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<resultMap id="commodityOrderInfoGlobal"
@@ -292,14 +303,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="code" column="COI_code" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="commodityPriceId" column="COI_commodity_price_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
 		INSERT INTO `COMMODITY_ORDER_INFO`(
-		id, commodity_order_id, commodity_id, user_id, profit, title, old_price,
+		id,
+		commodity_order_id, commodity_id, user_id, profit, title, old_price,
 		price, commodity_price_name, commodity_model, number, remark, status,
-		create_time, creator_id, creator_name ,code)VALUES(
+		create_time, creator_id, creator_name ,code,commodity_price_id)VALUES(
 		#{id,jdbcType=VARCHAR}, #{commodityOrderId,jdbcType=VARCHAR},
 		#{commodityId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
 		#{profit,jdbcType=DECIMAL}, #{title,jdbcType=VARCHAR},
@@ -308,7 +322,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{commodityModel,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER},
 		#{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
 		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
-		#{creatorName,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR} )
+		#{creatorName,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR} ,
+		#{commodityPriceId,jdbcType=VARCHAR})
 	</insert>
 
 	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
@@ -321,7 +336,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			commodity_price_name, commodity_model, 
 			number, remark, 
 			status, create_time, 
-			creator_id, creator_name,code
+			creator_id, creator_name,code,commodity_price_id
         )]]>
 		VALUES
 		<foreach collection="list" item="item" index="index"
@@ -340,7 +355,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.createTime,jdbcType=TIMESTAMP},
 			#{item.creatorId,jdbcType=VARCHAR},
 			#{item.creatorName,jdbcType=VARCHAR},
-			#{item.code,jdbcType=VARCHAR} )
+			#{item.code,jdbcType=VARCHAR},#{item.commodityPriceId,jdbcType=VARCHAR} )
 		</foreach>
 	</insert>
 
@@ -401,14 +416,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		UPDATE
 		commodity_order_info coi
 		SET
-		coi.status = #{status}
+		coi.status =
+		#{status}
 		WHERE coi.commodity_order_id = #{commodityOrderId}
 	</update>
 
 	<select id="getAllNumber" resultType="java.lang.Integer">
 		SELECT
 		SUM(coi.number)
-		FROM commodity_order_info coi
+		FROM
+		commodity_order_info coi
 		WHERE coi.commodity_order_id = #{id}
 	</select>
 
@@ -416,7 +433,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT
 		SUM(coi.number)
 		FROM commodity_order_info coi
-		WHERE coi.commodity_id = #{commodityId}
+		WHERE coi.commodity_id =
+		#{commodityId}
 	</select>
 
 	<select id="getMoneyByNurse" resultType="java.lang.Double">
@@ -431,10 +449,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT
 		coi.title,
 		coi.price,
-		coi.number
+		coi.number,
+		coi.user_id
 		FROM
 		commodity_order_info coi
-		WHERE coi.commodity_order_id = #{coId};
+		WHERE coi.commodity_order_id =
+		#{coId};
 	</select>
 
 
@@ -450,7 +470,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ci.url
 		FROM
 		commodity_order_info coi
-		LEFT JOIN commodity_images ci ON (
+		LEFT JOIN
+		commodity_images ci ON (
 		coi.commodity_id = ci.source_id
 		)
 		WHERE
@@ -466,38 +487,51 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND coi.`status` = 2
 		</if>
 	</select>
-	
+
 	<update id="confimOrder">
-		UPDATE 
+		UPDATE
 		commodity_order_info coi
-		SET coi.`status` = 1
-		WHERE coi.commodity_order_id =  #{comId}
+		SET coi.`status` = 3
+		WHERE coi.id = #{id}
 	</update>
-	
-	
+
+
 	<select id="getList" resultMap="commodityOrderInfo">
-	SELECT
+		SELECT
 		ci.url,
 		coi.commodity_id,
 		coi.title,
 		coi.commodity_price_name,
-		coi.number
-	 FROM 
+		coi.number,
+		coi.user_id
+		FROM
 		commodity_order_info coi
-	LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
-	WHERE coi.commodity_order_id = #{coId}
-	AND ci.type = 1
+		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
+		WHERE coi.commodity_order_id = #{coId}
+		AND ci.type = 1
 	</select>
-	
+
 	<select id="getOrderInfo" resultMap="commodityOrderInfo">
 		SELECT
-			coi.*,
-			url
+		coi.*,
+		url
 		FROM
-			commodity_order_info coi
+		commodity_order_info coi
 		LEFT JOIN commodity_images ci ON (coi.commodity_id = ci.source_id)
-		WHERE 
-			coi.commodity_order_id = #{coId}
+		WHERE
+		coi.commodity_order_id = #{coId}
 		AND ci.type=1
+	</select>
+
+
+	<select id="getConfirmList" resultMap="commodityOrderInfo">
+		SELECT
+		coi.id,
+		coi.commodity_order_id,
+		coi.`status`
+		FROM
+		`commodity_order_info` coi
+		WHERE coi.commodity_order_id = #{comId}
+
 	</select>
 </mapper>

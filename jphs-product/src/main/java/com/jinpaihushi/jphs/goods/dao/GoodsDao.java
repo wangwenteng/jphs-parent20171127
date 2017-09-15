@@ -17,21 +17,22 @@ import com.jinpaihushi.jphs.goods.model.Goods;
  */
 @Repository("goodsDao")
 public interface GoodsDao extends BaseDao<Goods> {
-	
-	Goods getGoodsDetail(@Param("id")String id);
-	
-	Goods getGoodsImgDetail(@Param("id")String id);
-	
-	Goods getGoodsByPricePart(@Param("pricePartId")String pricePartId);
-	
-	List<Map<String,Object>> getColumnGoods(Map<String,Object> map);
-	
-	List<Map<String,Object>> getHospitalGoods(Map<String,Object> map);
 
-	List<Goods> getAllGoods(Goods goods);
+    Goods getGoodsDetail(@Param("id") String id);
 
-	List<Goods> getMyService(String creatorId);
+    Goods getGoodsImgDetail(@Param("id") String id);
 
-	List<Map<String, Object>> getGoodsByProduct(String productId);
-	
+    Goods getGoodsByPricePart(@Param("pricePartId") String pricePartId);
+
+    List<Map<String, Object>> getColumnGoods(Map<String, Object> map);
+
+    List<Map<String, Object>> getHospitalGoods(Map<String, Object> map);
+
+    List<Goods> getAllGoods(Goods goods);
+
+    List<Goods> getMyService(String creatorId);
+
+    List<Map<String, Object>> getGoodsByProduct(@Param("productId") String productId,
+            @Param("platformId") String platformId);
+
 }

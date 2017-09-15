@@ -37,4 +37,6 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	Integer toUpdatePayPrice(Map<String, Object> map);
 
 	List<CommodityOrder> getOrderList1(Map<String, Object> map);
+
+	List<CommodityOrder> getStatusByOrderNo(String orderNo);
 }

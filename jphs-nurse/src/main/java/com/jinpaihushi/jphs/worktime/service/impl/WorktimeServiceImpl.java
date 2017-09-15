@@ -14,16 +14,23 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.nurse.dao.NurseDao;
+import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.worktime.dao.WorktimeDao;
 import com.jinpaihushi.jphs.worktime.model.Worktime;
 import com.jinpaihushi.jphs.worktime.service.WorktimeService;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.utils.CycleTimeUtils;
 import com.jinpaihushi.utils.DateUtils;
+import com.jinpaihushi.utils.TransactionTemplateUtils;
 import com.jinpaihushi.utils.UUIDUtils;
 
 /**
@@ -42,7 +49,13 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Autowired
+    private PlatformTransactionManager txManager;//创建事务管理器
+
+    @Autowired
     private WorktimeDao worktimeDao;
+
+    @Autowired
+    private NurseDao nurseDao;
 
     @Override
     protected BaseDao<Worktime> getDao() {
@@ -145,6 +158,38 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             }
         }
         worktimeDao.inserts(insert);
+    }
+
+    @Override
+    public int insertUserWorkTime() {
+        String startDay = CycleTimeUtils.getFetureDate(0);
+        String endDays = CycleTimeUtils.getFetureDate(6);
+        List<String> timeList = CycleTimeUtils.getDatesBetweenTwoDate(startDay, endDays);
+        List<Worktime> insert = new ArrayList<>();
+        Worktime worktime = null;
+        for (String time : timeList) {
+            worktime = new Worktime();
+            worktime.setId(UUIDUtils.getId());
+            worktime.setCalendar(time);
+            worktime.setWeek(CycleTimeUtils.getWeekOfDate(DateUtils.parse(time)));
+            worktime.setUserid("0");
+            worktime.setH9(1);
+            worktime.setH10(1);
+            worktime.setH11(1);
+            worktime.setH12(1);
+            worktime.setH13(1);
+            worktime.setH14(1);
+            worktime.setH15(1);
+            worktime.setH16(1);
+            worktime.setH17(1);
+            worktime.setH18(1);
+            worktime.setH19(1);
+            worktime.setH20(1);
+            worktime.setH21(1);
+            worktime.setCreatetime(new Date());
+            insert.add(worktime);
+        }
+        return worktimeDao.inserts(insert);
     }
 
     @Override
@@ -266,11 +311,25 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     }
 
     @Override
-    public List<Worktime> getNurseWorktime(String userId) {
+    public List<Worktime> getNurseWorktime(String userId, String productId) {
         Worktime userWorktime = null;
         List<Worktime> result = new ArrayList<>();
         // 默认提前一个小时预约
-        int hour = 4;
+        if (null == productId)
+            productId = "";
+        int hour = 1;
+        if (productId.equals("135")) {
+            hour = Integer.valueOf(WorkTimeBy0);
+        }
+        if (productId.equals("133")) {
+            hour = Integer.valueOf(WorkTimeBy1);
+        }
+        if (productId.equals("137")) {
+            hour = Integer.valueOf(WorkTimeBy2);
+        }
+        else {
+            hour = 4;
+        }
         // 当前时间
         Date date = new Date();
         try {
@@ -329,6 +388,40 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public int insertAllWorkTime() {
+        //事务模板
+        TransactionTemplate transactionTemplate = TransactionTemplateUtils.getDefaultTransactionTemplate(txManager);
+        String rs = (String) transactionTemplate.execute(new TransactionCallback<Object>() {
+            public String doInTransaction(final TransactionStatus status) {
+                try {
+                    //获取所有审核通过的护士
+                    Nurse nurse = new Nurse();
+                    nurse.setStatus(1);
+                    List<Nurse> list = nurseDao.list(nurse);
+                    //清空工作时间表的数据
+                    worktimeDao.deleteAll();
+                    //插入护士的日程安排
+                    for (Nurse result : list) {
+                        insertNurseWorkTime(result.getCreatorId());
+                    }
+                    insertUserWorkTime();
+                    return "1";
+                }
+                catch (Exception e) {
+
+                    e.printStackTrace();
+                    //日志打印区
+                    status.setRollbackOnly();//回滚
+                    return "0";
+                }
+            }
+
+        });
+
+        return (int) Integer.parseInt(rs);
     }
 
 }

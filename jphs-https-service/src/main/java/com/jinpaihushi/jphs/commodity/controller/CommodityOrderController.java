@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.car.service.CarService;
+import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
+import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
+import com.jinpaihushi.jphs.nurse.service.NurseCommodityService;
 import com.jinpaihushi.logistics.KdniaoTrackQueryAPI;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
@@ -41,6 +44,10 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 	private CommodityOrderInfoService commodityOrderInfoService;
 	@Autowired
 	private CarService carService;
+	@Autowired
+	private NurseCommodityService nurseCommodityService;
+	@Autowired
+	private CommodityService commodityService;
 
 	@Override
 	protected BaseService<CommodityOrder> getService() {
@@ -277,10 +284,33 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			}
 		*/	 
 			Integer result = commodityOrderService.confimOrder(commodityOrder);
-					result = commodityOrderInfoService.confimOrder(commodityOrder.getId());
+				result = commodityOrderInfoService.confimOrder(commodityOrder.getId());
+				
 			if (result < 0) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
 			}
+				
+				CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
+				commodityOrderInfo.setCommodityId(commodityOrder.getId());
+				List<CommodityOrderInfo> list = commodityOrderInfoService.getList(commodityOrder.getId());
+
+				for (int i = 0; i<list.size();i++ ){
+					
+						Map<String,Object> map = new HashMap<String,Object>();
+						map.put("commodityId",list.get(i).getCommodityId());
+						map.put("number",list.get(i).getNumber());
+						
+						commodityService.updateCount(map);
+
+					/*if(list.get(i).getUserId()!=null){
+						map.put("creatorId",list.get(i).getUserId());
+						nurseCommodityService.updateCount(map);
+					}*/
+                    
+					
+					
+				}
+			
 			return JSONUtil.toJSONResult(1, "操作成功！", result);
 		} catch (Exception e) {
 			Util.failLog.error("commodityOrder.confimOrder.json,id =" + commodityOrder.getId() ,e);
@@ -375,6 +405,50 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			return JSONUtil.toJSONResult(1, "操作成功！", list );
 		} catch (Exception e) {
 			Util.failLog.error("commodityOrder.getLogistics.json,expCode =" + expCode + ",expNo="+expNo,e);
+		}
+		return null;
+	}
+
+	@RequestMapping(name = "根据订单号查询当前状态", path = "/getStatusByOrderNo.json")
+	@ResponseBody
+	public byte[] getStatusByOrderNo(String orderNo) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodityOrder.getStatusByOrderNo.json,orderNo =" + orderNo);
+			}
+
+			if (StringUtils.isEmpty(orderNo)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+		  	 
+			Integer result = 0 ;
+			List<CommodityOrder> list = commodityOrderService.getStatusByOrderNo(orderNo);
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodityOrder.getStatusByOrderNo.json,list =" + list);
+			}
+			if (list == null || list.size() ==0) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
+			}
+			boolean flag = true;
+			if(list.size() > 0){
+				for (int i = 0; i<list.size();i++ ){
+					if(list.get(i).getSchedule() != 1){
+						flag = false ;
+						break;
+					}
+				}
+			}
+			
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodityOrder.getStatusByOrderNo.json,flag =" + flag);
+			}
+			if (flag){
+				result = 1;
+			}
+			
+			return JSONUtil.toJSONResult(1, "操作成功！", result);
+		} catch (Exception e) {
+			Util.failLog.error("commodityOrder.getStatusByOrderNo.json,orderNo =" + orderNo ,e);
 		}
 		return null;
 	}

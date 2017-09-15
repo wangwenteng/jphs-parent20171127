@@ -25,11 +25,11 @@
 		<p><span>年龄：</span><c:set var="idcard" value="${fn:substring(nurse.sfz,6,10) }" />
 							<jsp:useBean id="nowDate" class="java.util.Date" /> <fmt:formatDate
 								var="nowStr" value="${nowDate}" pattern="yyyy" />
-							<c:if test="${nowStr-idcard==0 }">1</c:if> <c:if
-								test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if></p>
+							<c:if test="${nowStr-idcard<=0 }">1</c:if> <c:if
+								test="${nowStr-idcard>0 }">${nowStr-idcard}</c:if></p>
 			<p><span>手机号：</span>${nurse.user.phone}</p>
 		<p><span>身份证号：</span>${nurse.sfz}</p>
-		<p><span>联系地址：</span>${nurse.address}</p>
+		<p><span>联系地址：</span>${nurse.user.address}</p>
 		<p><span>推荐人：</span>${nurse.recommendName}</p>
 		<p><span>注册时间：</span><fmt:formatDate value="${nurse.createTime}" pattern="yyyy-MM-dd"/></p>
 		<p><span>个人简介：</span>${fn:escapeXml(nurse.user.brief)}</p>

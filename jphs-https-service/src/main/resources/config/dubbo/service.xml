@@ -18,5 +18,7 @@
 		timeout="${dubbo.timeout}" check="false" />
  	<dubbo:reference id="serviceImagesService" interface="com.jinpaihushi.jphs.service.service.ServiceImagesService"
 		timeout="${dubbo.timeout}" check="false" />
+ 	<dubbo:reference id="pricePartService" interface="com.jinpaihushi.jphs.price.service.PricePartService"
+		timeout="${dubbo.timeout}" check="false" />
  	
 </beans>

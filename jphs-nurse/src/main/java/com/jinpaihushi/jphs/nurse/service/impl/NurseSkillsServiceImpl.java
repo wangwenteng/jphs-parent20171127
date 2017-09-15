@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.nurse.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,10 @@ public class NurseSkillsServiceImpl extends BaseServiceImpl<NurseSkills> impleme
 	@Override
 	protected BaseDao<NurseSkills> getDao(){
 		return nurseSkillsDao;
+	}
+	
+	public List<NurseSkills> getNurseSkillsAc(NurseSkills nurseSkills){
+		return nurseSkillsDao.getNurseSkillsAc(nurseSkills);
 	}
 
 }

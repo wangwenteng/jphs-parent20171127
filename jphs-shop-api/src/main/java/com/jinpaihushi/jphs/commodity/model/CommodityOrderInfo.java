@@ -73,6 +73,12 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 	
 	private String name;
 
+	private String crId;
+	
+	private Integer crStatus;
+	
+	private String commodityPriceId;
+	
 	public CommodityOrderInfo(){}
 
 	public CommodityOrderInfo(String id){
@@ -82,6 +88,14 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 	private String cpId;
 	
 	
+
+	public String getCrId() {
+		return crId;
+	}
+
+	public void setCrId(String crId) {
+		this.crId = crId;
+	}
 
 	public String getCpId() {
 		return cpId;
@@ -272,6 +286,27 @@ public class CommodityOrderInfo extends BaseModel implements Predicate<Commodity
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	
+	
+	public Integer getCrStatus() {
+		return crStatus;
+	}
+
+	public void setCrStatus(Integer crStatus) {
+		this.crStatus = crStatus;
+	}
+	
+	
+	
+
+	public String getCommodityPriceId() {
+		return commodityPriceId;
+	}
+
+	public void setCommodityPriceId(String commodityPriceId) {
+		this.commodityPriceId = commodityPriceId;
 	}
 
 	public String toString() {

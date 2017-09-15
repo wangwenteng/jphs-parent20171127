@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +37,13 @@ public interface CommodityDao extends BaseDao<Commodity> {
 	Commodity getOneDetail(Map<String, Object> map);
 	
 	List<CommodityMap> getList(Map<String, Object> map);
+
+	List<CommodityMap> getNurseShareList(Map<String, Object> map);
+
+	boolean updateBrowser(String commodityId);
+
+	boolean updateShareNumber(String commodityId);
+
+	boolean updateCount(Map<String, Object> map);
+
 }

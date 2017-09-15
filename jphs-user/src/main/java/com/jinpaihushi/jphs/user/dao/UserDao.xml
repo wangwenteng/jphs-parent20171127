@@ -475,7 +475,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="queryUser" resultMap="userDetail">
 		select * from user where
-		status=1 and phone=#{phone} and type=#{type}
+		status=1 
+		<if test="phone != null and phone != ''">
+			and phone=#{phone} 
+		</if>
+		<if test="openId != null and openId != ''">
+			and open_id=#{openId} 
+		</if>
+		and type=#{type}
 	</select>
 
 </mapper>

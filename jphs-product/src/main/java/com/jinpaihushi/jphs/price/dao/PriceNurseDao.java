@@ -34,5 +34,9 @@ public interface PriceNurseDao extends BaseDao<PriceNurse> {
     List<Map<String, Object>> getServiceItems(@Param("userId") String userId);
 
 	boolean updatePriceNurse(PriceNurse pn);
+
+	PriceNurse getModel(PriceNurse priceNurse);
+
+	boolean updateModel(PriceNurse pn);
  
 }

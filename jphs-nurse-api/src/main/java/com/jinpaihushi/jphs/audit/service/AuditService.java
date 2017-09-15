@@ -13,8 +13,8 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface AuditService extends BaseService<Audit> {
 
-	List<Audit> getNurseAudit(Audit audit);
+    List<Audit> getNurseAudit(Audit audit);
 
-	
+    int insertAudit(Audit audit, String nurseJobtitleId);
 
 }

@@ -58,7 +58,7 @@ public class Transaction extends BaseModel implements Predicate<Transaction>,
 	
 	private String phone;
 	
-	private Integer operate_source;
+	private Integer operateSource;
 	
 	private Date beginTime;
 	
@@ -74,14 +74,14 @@ public class Transaction extends BaseModel implements Predicate<Transaction>,
 	 * 获取操作来源
 	 */
 	public Integer getOperateSource() {
-    	return operate_source;
+    	return operateSource;
     }
   	
 	/**
 	 * 设置操作来源
 	 */
-	public void setOperateSource(Integer operate_source) {
-    	this.operate_source = operate_source;
+	public void setOperateSource(Integer operateSource) {
+    	this.operateSource = operateSource;
     }
 	
 	/**

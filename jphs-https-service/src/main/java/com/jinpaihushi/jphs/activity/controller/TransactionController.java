@@ -114,7 +114,9 @@ public class TransactionController {
             Map<String, Object> query = new HashMap<String, Object>();
             query.put("userId", userId);
             query.put("month", month);
-            query.put("operate", operate);
+            if (StringUtils.isNotEmpty(month)) {
+                query.put("operate", operate);
+            }
             List<Map<String, Object>> list = transactionService.incomeBreakdownMonth(query);
             if (StringUtils.isEmpty(month)) {
                 PageInfo<Map<String, Object>> page = new PageInfo<>(list);

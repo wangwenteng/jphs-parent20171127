@@ -37,6 +37,8 @@ public class NurseCommodity extends BaseModel implements Predicate<NurseCommodit
 
     /** 分享量 */
 	private Integer sharenumber;
+	
+	private Integer count;
 
 	public NurseCommodity(){}
 
@@ -86,7 +88,17 @@ public class NurseCommodity extends BaseModel implements Predicate<NurseCommodit
     	this.sharenumber = sharenumber;
     }
 
-    public String toString() {
+	
+	
+    public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("NurseCommodity{").
 			append("id=").append(id).
 			append(",commodityId=").append(commodityId).
@@ -165,4 +177,5 @@ public class NurseCommodity extends BaseModel implements Predicate<NurseCommodit
 			element.createTime = this.createTime;
 		}
 	}
+
 }

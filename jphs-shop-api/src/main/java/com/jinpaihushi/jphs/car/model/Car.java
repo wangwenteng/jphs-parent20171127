@@ -38,6 +38,8 @@ public class Car extends BaseModel implements Predicate<Car>,
 	private Integer number;
 	
 	private String userId;
+	
+	private String code;
 
 	public Car(){}
 
@@ -95,6 +97,16 @@ public class Car extends BaseModel implements Predicate<Car>,
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String toString() {

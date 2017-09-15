@@ -128,7 +128,7 @@ public class FileUploadController {
                                 nurseImage.setCreatorId(userId);
                                 nurseImage.setId(UUIDUtils.getId());
                                 nurseImage.setCreateTime(new Date());
-                                nurseImage.setStatus(0);
+                                nurseImage.setStatus(1);
                                 nurseImage.setType(1);
                                 String insert = nurseImagesService.insert(nurseImage);
                                 if (insert.length() > 0) {

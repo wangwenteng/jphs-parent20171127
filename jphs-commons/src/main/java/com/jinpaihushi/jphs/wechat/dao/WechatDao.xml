@@ -261,7 +261,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<select id="getUnusedAccessToken" resultMap="wechat">
 		SELECT <include refid="field"/>
-		 FROM `WECHAT` W WHERE W.type=#{type} 
+		 FROM `WECHAT` W WHERE W.type=#{type} AND W.status=1 
 		 ORDER BY W.create_time DESC LIMIT 0,1
 	</select>
 	

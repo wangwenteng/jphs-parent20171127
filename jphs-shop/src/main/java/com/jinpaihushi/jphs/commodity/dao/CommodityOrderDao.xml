@@ -670,6 +670,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				jdbcType="VARCHAR"></result>
 			<result property="url" column="url" javaType="String"
 				jdbcType="VARCHAR"></result>
+			<result property="crId" column="crId" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="crStatus" column="crStatus" javaType="Integer"
+				jdbcType="INTEGER"></result>
 		</collection>
 
 	</resultMap>
@@ -693,12 +697,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		coi.commodity_id,
 		coi.number,
 		coi.`commodity_price_name` name,coi.id ,
+		cr.id crId,cr.`status` crStatus,
 	coi.`status` coistatus
 		FROM
 		commodity_order co
 		LEFT JOIN commodity_order_info coi ON (co.id = coi.commodity_order_id)
 		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
-	 
+	 	LEFT JOIN commodity_return cr ON(cr.commodity_order_info_id = coi.id  AND cr.status != -1)
 		WHERE co.id= #{orderId}
 		AND ci.type = 1
 	</select>
@@ -792,7 +797,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="schedule!=null">
 			AND co.`schedule` = #{schedule}
 		</if>
+		ORDER BY co.create_time desc
 	</select>
 	
-	
+	<select id="getStatusByOrderNo" resultMap="commodityOrder">
+		SELECT
+			co.`schedule`
+		FROM
+			commodity_order co
+		WHERE
+			co.order_no  LIKE CONCAT(CONCAT('%', #{orderNo}), '%')
+	</select>
 </mapper>

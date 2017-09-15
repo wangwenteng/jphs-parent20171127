@@ -14,6 +14,8 @@ import com.jinpaihushi.jphs.order.model.OrderOther;
 @Repository("orderOtherDao")
 public interface OrderOtherDao extends BaseDao<OrderOther> {
 
-	boolean updateDetailAddress(OrderOther orderOther);
-	
+    boolean updateDetailAddress(OrderOther orderOther);
+
+    int deleteByOrderId(String orderId);
+
 }

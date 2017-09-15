@@ -8,7 +8,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="field">
 		G.id, G.product_id, G.title, G.sub_title, 
 		G.content, G.tijian_type_id, G.tijian_hospital_id, G.dz_tool, 
-		G.order_template_id, G.hl_tool, G.insurance, G.must, 
+		G.order_template_id, G.hl_tool, G.is_pz, G.is_rr, G.insurance, G.must, 
 		G.type, G.grade_type, G.sort, G.is_bg, 
 		G.is_prove, G.remark, G.status, G.create_time, 
 		G.creator_id, G.creator_name
@@ -19,8 +19,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		G.title G_title, G.sub_title G_sub_title, 
 		G.content G_content, G.tijian_type_id G_tijian_type_id, 
 		G.tijian_hospital_id G_tijian_hospital_id, G.dz_tool G_dz_tool, 
-		G.order_template_id G_order_template_id, G.hl_tool G_hl_tool, 
-		G.insurance G_insurance, G.must G_must, 
+		G.order_template_id G_order_template_id, G.hl_tool G_hl_tool,  G.is_pz G_is_pz, 
+		G.is_rr G_is_rr, G.insurance G_insurance, G.must G_must, 
 		G.type G_type, G.grade_type G_grade_type, 
 		G.sort G_sort, G.is_bg G_is_bg, 
 		G.is_prove G_is_prove, G.remark G_remark, 
@@ -34,6 +34,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		G.content content, G.tijian_type_id tijianTypeId, 
 		G.tijian_hospital_id tijianHospitalId, G.dz_tool dzTool, 
 		G.order_template_id orderTemplateId, G.hl_tool hlTool, 
+		G.is_pz isPz, G.is_rr isRr, 
 		G.insurance insurance, G.must must, 
 		G.type type, G.grade_type gradeType, 
 		G.sort sort, G.is_bg isBg, 
@@ -66,6 +67,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="dzTool!=null">
 			AND G.dz_tool=#{dzTool}
+		</if>
+		<if test="isPz!=null">
+			AND G.is_pz=#{isPz}
+		</if>
+		<if test="isRr!=null">
+			AND G.is_rr=#{isRr}
 		</if>
 		<if test="orderTemplateId!=null and orderTemplateId!=''">
 			AND G.order_template_id=#{orderTemplateId}
@@ -149,6 +156,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="hlTool!=null">
 				AND G.hl_tool=#{hlTool}
 			</if>
+			<if test="isPz!=null">
+				AND G.is_pz=#{isPz}
+			</if>
+			<if test="isRr!=null">
+				AND G.is_rr=#{isRr}
+			</if>
 			<if test="insurance!=null">
 				AND G.insurance=#{insurance}
 			</if>
@@ -220,6 +233,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="hlTool!=null">
 				G.hl_tool=#{hlTool}, 
 		   </if>
+		    <if test="isPz!=null">
+				G.is_pz=#{isPz}, 
+		   </if>
+           <if test="isRr!=null">
+				G.is_rr=#{isRr}, 
+		   </if>
            <if test="insurance!=null">
 				G.insurance=#{insurance}, 
 		   </if>
@@ -276,6 +295,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="dzTool" column="dz_tool" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="orderTemplateId" column="order_template_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="hlTool" column="hl_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isPz" column="is_pz" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isRr" column="is_rr" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="must" column="must" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
@@ -301,6 +322,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="dzTool" column="G_dz_tool" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="orderTemplateId" column="G_order_template_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="hlTool" column="G_hl_tool" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isPz" column="G_is_pz" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isRr" column="G_is_rr" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="insurance" column="G_insurance" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="must" column="G_must" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="type" column="G_type" javaType="Integer" jdbcType="INTEGER"></result>
@@ -333,6 +356,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isPz" column="is_pz" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isRr" column="is_rr" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="must" column="must" javaType="Integer"
@@ -416,6 +441,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isPz" column="is_pz" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isRr" column="is_rr" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="must" column="must" javaType="Integer"
@@ -488,6 +515,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="hlTool" column="hl_tool" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="isPz" column="is_pz" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="isRr" column="is_rr" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="url" column="url" javaType="String"
 				jdbcType="VARCHAR"></result>
 		<result property="insurance" column="insurance" javaType="Integer"
@@ -554,7 +583,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			title, sub_title, 
 			content, tijian_type_id, 
 			tijian_hospital_id, dz_tool, 
-			order_template_id, hl_tool, 
+			order_template_id, hl_tool, is_pz, is_rr,
 			insurance, must, 
 			type, grade_type, 
 			sort, is_bg, 
@@ -566,7 +595,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
 			#{content,jdbcType=VARCHAR}, #{tijianTypeId,jdbcType=VARCHAR}, 
 			#{tijianHospitalId,jdbcType=VARCHAR}, #{dzTool,jdbcType=INTEGER}, 
-			#{orderTemplateId,jdbcType=VARCHAR}, #{hlTool,jdbcType=INTEGER}, 
+			#{orderTemplateId,jdbcType=VARCHAR}, #{hlTool,jdbcType=INTEGER},
+			#{isPz,jdbcType=INTEGER}, #{isRr,jdbcType=INTEGER},  
 			#{insurance,jdbcType=INTEGER}, #{must,jdbcType=INTEGER}, 
 			#{type,jdbcType=INTEGER}, #{gradeType,jdbcType=INTEGER}, 
 			#{sort,jdbcType=INTEGER}, #{isBg,jdbcType=INTEGER}, 
@@ -585,6 +615,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			content, tijian_type_id, 
 			tijian_hospital_id, dz_tool, 
 			order_template_id, hl_tool, 
+			is_pz, is_rr,
 			insurance, must, 
 			type, grade_type, 
 			sort, is_bg, 
@@ -601,6 +632,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			#{item.content,jdbcType=VARCHAR}, #{item.tijianTypeId,jdbcType=VARCHAR}, 
 			#{item.tijianHospitalId,jdbcType=VARCHAR}, #{item.dzTool,jdbcType=INTEGER}, 
 			#{item.orderTemplateId,jdbcType=VARCHAR}, #{item.hlTool,jdbcType=INTEGER}, 
+			#{item.isPz,jdbcType=INTEGER}, #{item.isRr,jdbcType=INTEGER}, 
 			#{item.insurance,jdbcType=INTEGER}, #{item.must,jdbcType=INTEGER}, 
 			#{item.type,jdbcType=INTEGER}, #{item.gradeType,jdbcType=INTEGER}, 
 			#{item.sort,jdbcType=INTEGER}, #{item.isBg,jdbcType=INTEGER}, 
@@ -677,6 +709,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.sort,
 		s.is_bg,
 		s.is_prove,
+		s.is_pz,
+		s.is_rr,
 		s.status,
 		s.remark,
 		s.create_time,
@@ -727,6 +761,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.content,
 		s.dz_tool,
 		s.hl_tool,
+		s.is_pz,
+		s.is_rr,
 		s.insurance,
 		IFNULL(s.tijian_type_id,'') tijian_type_id,
 		s.tijian_hospital_id,
@@ -805,6 +841,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.content,
 		s.dz_tool,
 		s.hl_tool,
+		s.is_pz,
+		s.is_rr,
 		s.insurance,
 		s.tijian_type_id,
 		s.tijian_hospital_id,
@@ -855,6 +893,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		s.content,
 		s.dz_tool,
 		s.hl_tool,
+		s.is_pz,
+		s.is_rr,
 		s.insurance,
 		s.tijian_type_id,
 		s.tijian_hospital_id,
@@ -876,7 +916,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		i.sort service_sort,
 		i.remarks
 		service_remark,
-		i. STATUS service_status,
+		i.STATUS service_status,
 		i.create_time
 		service_create_time,
 		i.creator_id service_creator_id,
@@ -955,14 +995,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND pp.`status` = 1
 		AND jg.`status` = 1
 		AND jg.jobtitle_id IN (
-			SELECT
-				nj.jobtitle_id
-			FROM
-				nurse_jobtitle nj
-			WHERE
-				nj.creator_id = #{creatorId}
-			AND nj.`status` = 1
+			SELECT  j.id from jobtitle j
+			 WHERE j.jobtitle_type_id in(
+					SELECT
+						
+						j.jobtitle_type_id
+					FROM
+						nurse_jobtitle nj
+					LEFT JOIN jobtitle j ON (nj.jobtitle_id = j.id)
+					WHERE
+						nj.creator_id =  #{creatorId}
+					AND nj.`status` = 1
+			)
 		)
+		AND pp.id NOT IN (
+	SELECT pn.price_part_id FROM price_nurse pn WHERE pn.creator_id =  #{creatorId} and pn.`status` = 0
+)
+		GROUP BY pp.id 
 		ORDER BY
 			jg.goods_id,
 			p.grade_name,
@@ -1005,12 +1054,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			WHERE
 				nj.creator_id = #{creatorId}
 		)
+		AND pn.creator_id = #{creatorId}
 		ORDER BY
 			jg.goods_id,
 			p.grade_name,
 			p.service_number
 	</select>
 	<select id="getGoodsByProduct" resultType="java.util.HashMap">
-	SELECT DISTINCT id,title FROM goods WHERE product_id =#{productId}
+		SELECT DISTINCT
+			g.id,
+			g.title
+		FROM
+			platform_goods pg
+		LEFT JOIN goods g ON pg.goods_id = g.id
+		WHERE
+			pg.`status` = 1
+		AND g.product_id = #{productId}
+		AND pg.platform_id = #{platformId}
 	</select>
 </mapper>

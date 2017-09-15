@@ -26,5 +26,7 @@ public interface PriceNurseService extends BaseService<PriceNurse> {
 
 	boolean updatePriceNurse(PriceNurse pn);
 	
-
+	PriceNurse getModel(String userId,String pricePartId);
+	
+	boolean updateModel(PriceNurse pn);
 }

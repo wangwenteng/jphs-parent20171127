@@ -57,7 +57,7 @@ public class CommodityReturnController extends BaseController<CommodityReturn> {
 	public byte[] returnGoods(CommodityReturn commodityReturn,Integer schedule) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
-				Util.debugLog.debug("commodity.return.returnGoods.json,orderNoId =" + commodityReturn.getCommodityOrderId()+",schedule = "+schedule);
+				Util.debugLog.debug("commodity.return.returnGoods.json,orderNoId =" + commodityReturn.getCommodityOrderInfoId()+",schedule = "+schedule);
 			}
 
 			if (StringUtils.isEmpty(commodityReturn.getId())) {
@@ -74,14 +74,14 @@ public class CommodityReturnController extends BaseController<CommodityReturn> {
 			
 			//修改订单表的状态
 			CommodityOrder commodityOrder = new CommodityOrder();
-			commodityOrder.setId(commodityReturn.getCommodityOrderId());
+			commodityOrder.setId(commodityReturn.getCommodityOrderInfoId());
 			commodityOrder.setSchedule(schedule);
 			commodityOrderService.update(commodityOrder);
 			
 				
 			//修改订单表中商品的状态
 			CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
-			commodityOrderInfo.setCommodityOrderId(commodityReturn.getCommodityOrderId());	
+			commodityOrderInfo.setCommodityOrderId(commodityReturn.getCommodityOrderInfoId());	
 			commodityOrderInfo.setStatus(-1);
 			Integer result = commodityOrderInfoService.updateByOrderNo(commodityOrderInfo);
 
@@ -91,10 +91,97 @@ public class CommodityReturnController extends BaseController<CommodityReturn> {
 			}
 			return JSONUtil.toJSONResult(1, "操作成功！", result);
 		} catch (Exception e) {
-				Util.failLog.error("commodity.return.returnGoods.json,orderNoId =" + commodityReturn.getCommodityOrderId()+",schedule = "+schedule,e);
+				Util.failLog.error("commodity.return.returnGoods.json,orderNoId =" + commodityReturn.getCommodityOrderInfoId()+",schedule = "+schedule,e);
 		}
 		return null;
 	}
 	
+	
+	@RequestMapping(name = "退货信息", path = "/getInfo.json")
+	@ResponseBody
+	public byte[] getInfo(String id) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.return.getInfo.json,id =" +id);
+			}
 
+			if (StringUtils.isEmpty(id)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+		 	 
+
+			 
+			CommodityReturn commodityReturn = commodityReturnService.loadById(id);
+
+			if (commodityReturn == null) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", "");
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", commodityReturn);
+		} catch (Exception e) {
+				Util.failLog.error("commodity.return.getInfo.json,id =" +id,e);
+		}
+		return null;
+	}
+
+	@RequestMapping(name = "退货信息", path = "/updateInfo.json")
+	@ResponseBody
+	public byte[] updateInfo(CommodityReturn cr) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.return.updateInfo.json,id =" +cr.getId());
+			}
+
+			if (StringUtils.isEmpty(cr.getId())) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+		 	 
+
+			 
+			boolean b = commodityReturnService.update(cr);
+
+			if (!b) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", "");
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", 1);
+		} catch (Exception e) {
+				Util.failLog.error("commodity.return.updateInfo.json,id =" +cr.getId(),e);
+		}
+		return null;
+	}
+
+	@RequestMapping(name = "撤销退货信息", path = "/cancelReturn.json")
+	@ResponseBody
+	public byte[] cancelReturn(String crId,String coiId,Integer status,Integer schedule) {
+		try {
+			if (Util.debugLog.isDebugEnabled()) {
+				Util.debugLog.debug("commodity.return.cancelReturn.json,id =" +crId);
+			}
+
+			if (StringUtils.isEmpty(crId)) {
+				return JSONUtil.toJSONResult(0, "参数不能为空", null);
+			}
+		 	 
+			CommodityReturn cr = new CommodityReturn();
+			cr.setId(crId);
+			cr.setStatus(-1);
+			
+			CommodityOrderInfo coi = new CommodityOrderInfo();
+			
+			coi.setId(coiId);
+			coi.setStatus(status);
+			if(schedule == 4){
+			coi.setStatus(3);
+			}
+			boolean b = commodityReturnService.update(cr);
+					b = commodityOrderInfoService.update(coi);
+			if (!b) {
+				return JSONUtil.toJSONResult(0, "请核对参数后访问", "");
+			}
+			return JSONUtil.toJSONResult(1, "操作成功！", 1);
+		} catch (Exception e) {
+				Util.failLog.error("commodity.return.cancelReturn.json,id =" +crId,e);
+		}
+		return null;
+	}
+	
 }

@@ -56,7 +56,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		if(sort == ""){
 			sort = "";
 		}else if("1".equals(sort)){
-			sort = " com.create_time";
+			sort = " cs.sort,com.create_time";
 		}else if("2".equals(sort)){
 			sort = " counts";
 		}else if("3".equals(sort)){
@@ -68,7 +68,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		} 
 		
 		if( sort != ""){
-			map.put("sort"," order by " + sort);
+			map.put("sort"," order by cs.sort," + sort);
 		}
 		
 		 
@@ -76,18 +76,8 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		List<CommodityMap> list = commodityDao.getList(map);
 		
 		 if(nurseId != null){
-			NurseCommodity nurseCommodity = new NurseCommodity();
-			CommodityOrderInfo commodityOrderInfo = new CommodityOrderInfo();
-			nurseCommodity.setCreatorId(nurseId);
-			for(int i = 0;i < list.size();i++ ){
-				//System.out.println(list.get(i).getCommodityId());
-				commodityOrderInfo.setCommodityId(list.get(i).getCommodityId());
-				nurseCommodity.setCommodityId(list.get(i).getId());
-				Integer count = 0;
-				count = commodityOrderInfoDao.getAllNumberByCommoditById(commodityOrderInfo);
-				 
-				list.get(i).setCount(count);
-			}
+			 
+			 list = commodityDao.getNurseShareList(map);
 		} 
 		
 		return list;
@@ -183,6 +173,24 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		}
 		return commodity;
 		
+	}
+
+	@Override
+	public boolean updateBrowser(String commodityId) {
+		// TODO Auto-generated method stub
+		return commodityDao.updateBrowser(commodityId);
+	}
+
+	@Override
+	public boolean updateShareNumber(String commodityId) {
+		// TODO Auto-generated method stub
+		return commodityDao.updateShareNumber(commodityId);
+	}
+
+	@Override
+	public boolean updateCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return commodityDao.updateCount(map);
 	}
 
 }

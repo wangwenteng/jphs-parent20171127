@@ -57,6 +57,12 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
 
     /** 是否需要服务工具 */
     private Integer hlTool;
+    
+    /** 是否需要用药记录 */
+   	private Integer isPz;
+
+    /** 是否需要康复记录 */
+   	private Integer isRr;
 
     /** 订单模板id */
     @Length(max = 50, message = "{goods.orderTemplateId.illegal.length}")
@@ -308,6 +314,34 @@ public class Goods extends BaseModel implements Predicate<Goods>, Updator<Goods>
         this.hlTool = hlTool;
     }
 
+    /**
+	 * 获取是否需要用药记录
+	 */
+	public Integer getIsPz() {
+    	return isPz;
+    }
+  	
+	/**
+	 * 设置是否需要用药记录
+	 */
+	public void setIsPz(Integer isPz) {
+    	this.isPz = isPz;
+    }
+
+	/**
+	 * 获取是否需要康复记录
+	 */
+	public Integer getIsRr() {
+    	return isRr;
+    }
+  	
+	/**
+	 * 设置是否需要康复记录
+	 */
+	public void setIsRr(Integer isRr) {
+    	this.isRr = isRr;
+    }
+    
     /**
      * 获取是否需要上保险
      */

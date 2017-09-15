@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.price.dao.PriceNurseDao;
+import com.jinpaihushi.jphs.price.dao.PricePartDao;
 import com.jinpaihushi.jphs.price.model.PriceNurse;
 import com.jinpaihushi.jphs.price.service.PriceNurseService;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
@@ -23,6 +24,8 @@ public class PriceNurseServiceImpl extends BaseServiceImpl<PriceNurse> implement
 
 	@Autowired
 	private PriceNurseDao priceNurseDao;
+	
+ 
 	
 	@Override
 	protected BaseDao<PriceNurse> getDao(){
@@ -45,6 +48,24 @@ public class PriceNurseServiceImpl extends BaseServiceImpl<PriceNurse> implement
 	public boolean updatePriceNurse(PriceNurse pn) {
 		 
 		return priceNurseDao.updatePriceNurse(pn);
+	}
+
+
+	@Override
+	public PriceNurse getModel(String userId, String pricePartId) {
+		// TODO Auto-generated method stub
+		
+		PriceNurse priceNurse = new PriceNurse();
+		priceNurse.setCreatorId(userId);
+		priceNurse.setPricePartId(pricePartId);
+		return priceNurseDao.getModel(priceNurse);
+	}
+
+
+	@Override
+	public boolean updateModel(PriceNurse pn) {
+		// TODO Auto-generated method stub
+		return priceNurseDao.updateModel(pn);
 	}
 
  

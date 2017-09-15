@@ -32,13 +32,13 @@
 								<c:set var="idcard" value="${fn:substring(e.sfz,6,10) }" />
 								<jsp:useBean id="nowDate" class="java.util.Date" />
 								<fmt:formatDate var="nowStr" value="${nowDate}" pattern="yyyy" />
-								<c:if test="${nowStr-idcard==0 }">1</c:if>
-								<c:if test="${nowStr-idcard!=0 }">${nowStr-idcard}</c:if>
+								<c:if test="${nowStr-idcard<=0 }">1</c:if>
+								<c:if test="${nowStr-idcard>0 }">${nowStr-idcard}</c:if>
 							</c:if></td>
 						<td><fmt:formatDate var="str" value="${e.workYears}"
 								pattern="yyyy" /> <fmt:formatDate var="nowStr"
 								value="${nowDate}" pattern="yyyy" /> <c:if
-								test="${nowStr-str==0 }">1</c:if> <c:if test="${nowStr-str!=0 }">${nowStr-str}</c:if>
+								test="${nowStr-str<=0 }">1</c:if> <c:if test="${nowStr-str>0 }">${nowStr-str}</c:if>
 						</td>
 						<td><c:out value="${e.hospital}" /></td>
 						<td><c:forEach items="${department}" var="d">

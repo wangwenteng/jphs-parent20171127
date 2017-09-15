@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.commodity.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
+import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
+import com.jinpaihushi.jphs.nurse.service.NurseCommodityService;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
 import com.jinpaihushi.utils.PageInfos;
 import com.github.pagehelper.Page;
@@ -41,6 +44,8 @@ public class CommodityController extends BaseController<Commodity> {
 
 	@Autowired
 	private CommodityService commodityService;
+	@Autowired
+	private NurseCommodityService nurseCommodityService;
 	
 
 	@Override
@@ -80,11 +85,11 @@ public class CommodityController extends BaseController<Commodity> {
 	}
 
 	
-	@RequestMapping(name = "获取商品列表", path = "/getShopDetail.json")
+	@RequestMapping(name = "获取商品详细", path = "/getShopDetail.json")
 	@ResponseBody
 	public byte[] getShopDetail(HttpSession hs, HttpServletRequest req,
 			HttpServletResponse resp, ModelMap modelMap,
-			String commodityId,String columnId, Integer p) {
+			String commodityId,String columnId, Integer p,String re) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("commodity.getShopDetail.json,commodityId =" + commodityId +",columnId =" + columnId);
@@ -93,6 +98,41 @@ public class CommodityController extends BaseController<Commodity> {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			Commodity commodity = commodityService.getCommodityDetail(columnId,commodityId);
+			
+			commodityService.updateBrowser(commodityId);
+			
+			if(!"0".equals(re)){
+
+				NurseCommodity nurseCommodity = new NurseCommodity();
+				nurseCommodity.setCommodityId(commodityId);
+				nurseCommodity.setCreatorId(re);
+										System.out.println(re);
+						 
+				NurseCommodity nc = nurseCommodityService.load(nurseCommodity);
+
+				if(nc != null){
+					boolean result =  nurseCommodityService.updateBrowser(nurseCommodity);
+				
+					if (!result) {
+						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+					}
+				}else{
+					nurseCommodity.setId(UUID.randomUUID().toString());
+					nurseCommodity.setStatus(0);
+					nurseCommodity.setCreateTime(new Date());
+					nurseCommodity.setSharenumber(0);
+					nurseCommodity.setBrowser(1);
+					nurseCommodity.setCount(0);
+					String result =  nurseCommodityService.insert(nurseCommodity);
+				
+					if (result.length()<0) {
+						return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
+					}
+				}
+
+			}
+
+
 			if (commodity == null) {
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", null);
 			}

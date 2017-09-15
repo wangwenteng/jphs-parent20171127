@@ -1,5 +1,8 @@
 package com.jinpaihushi.jphs.nurse.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
 import com.jinpaihushi.service.BaseService;
 
@@ -18,5 +21,7 @@ public interface NurseCommodityService extends BaseService<NurseCommodity> {
 	boolean updateBrowser(NurseCommodity nurseCommodity);
 	
 	boolean updateShareNumber(NurseCommodity nurseCommodity);
+
+	boolean updateCount(Map<String, Object> map);
 
 }

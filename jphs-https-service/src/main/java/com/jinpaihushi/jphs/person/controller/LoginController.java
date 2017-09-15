@@ -20,10 +20,14 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
+import com.jinpaihushi.jphs.person.model.PersonGroup;
+import com.jinpaihushi.jphs.person.service.PersonGroupService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
 import com.jinpaihushi.jphs.verification.model.Verification;
 import com.jinpaihushi.jphs.verification.service.VerificationService;
+import com.jinpaihushi.jphs.worktime.model.Worktime;
+import com.jinpaihushi.jphs.worktime.service.WorktimeService;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.MD5;
@@ -42,10 +46,16 @@ public class LoginController {
     private VerificationService verificationService;
 
     @Autowired
+    private WorktimeService worktimeService;
+
+    @Autowired
     private AccountService accountService;
 
     @Autowired
     private NurseImagesService nurseImagesService;
+
+    @Autowired
+    private PersonGroupService personGroupService;
 
     @Autowired
     private NurseService nurseService;
@@ -54,7 +64,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(name = "登录", path = "/login.json")
     public byte[] login(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String phone, String password,
-            String type) {
+            String type, String openid) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
@@ -79,6 +89,7 @@ public class LoginController {
             if (StringUtils.isEmpty(password)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
+
             user.setPhone(phone);
             user.setType(tid);
             // 2.错误N种情况判断及返回前端
@@ -89,11 +100,36 @@ public class LoginController {
             if (!user.getPassword().equals(MD5.md5crypt(MD5.md5crypt(password)))) {
                 return JSONUtil.toJSONResult(0, "账号密码不匹配。", null);
             }
+            if (StringUtils.isEmpty(user.getName()))
+                user.setName(user.getPhone());
             if (tid == 0) {
                 Nurse nurse_s = new Nurse();
                 nurse_s.setCreatorId(user.getId());
                 Nurse n = nurseService.load(nurse_s);
                 user.setNurse(new JSONObject().fromObject(n));
+                if (n.getStatus() == 1) {
+                    Worktime time = new Worktime();
+                    time.setUserid(user.getId());
+                    //判断有没有默认分组
+                    int i = worktimeService.count(time);
+                    if (i == 0) {
+                        worktimeService.insertNurseWorkTime(user.getId());
+                    }
+                    PersonGroup group = new PersonGroup();
+                    group.setIsDefault(1);
+                    group.setCreatorId(user.getId());
+                    i = personGroupService.count(group);
+                    if (i == 0) {
+                        personGroupService.createDefaultGroup(user.getId());
+                    }
+                }
+            }
+
+            if (!StringUtils.isEmpty(openid)) {
+                User user_up = new User();
+                user_up.setId(user.getId());
+                user_up.setOpenId(openid);
+                userService.update(user_up);
             }
             NurseImages img = new NurseImages();
             img.setSourceId(user.getId());
@@ -118,6 +154,77 @@ public class LoginController {
     }
 
     /**
+     * 微信快捷登录
+     * @param hs
+     * @param req
+     * @param resp
+     * @param validateCode
+     * @param type
+     * @param openid
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(name = "微信openid快捷登录", path = "/wechatLogin.json")
+    public byte[] wechatLogin(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String validateCode,
+            String type, String openid) {
+        try {
+            // 记录日志-debug
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug(
+                        "login.wechatLogin.json,type=" + type + " openid=" + openid + " verifyCode=" + validateCode);
+            }
+            if (StringUtils.isEmpty(openid) || StringUtils.isEmpty(type)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+            int tid = 0; // type
+            try {
+                tid = Integer.valueOf(type);
+            }
+            catch (NumberFormatException e) {
+                return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
+            }
+
+            User user = new User();
+            user.setOpenId(openid);
+            user.setType(tid);
+            // 1.根据 name，password,type查询完整信息
+            user = userService.queryUser(user);
+            if (user == null || user.equals("")) {
+                return JSONUtil.toJSONResult(0, "登录失败！", null);
+            }
+
+            NurseImages img = null;
+            if (img == null) {
+                img = new NurseImages();
+                img.setSourceId(user.getId());
+                img.setType(1);
+                img.setStatus(1);
+                img = nurseImagesService.load(img);
+            }
+            if (img != null)
+                user.setHeadPicture(img.getUrl());
+            // 设置token
+            String token = "";
+            token = Common.getToken(user.getPhone(), user.getPassword());// 生成token
+            user.setToken(token);
+            if (StringUtils.isEmpty(user.getName()))
+                user.setName(user.getPhone());
+            // 3.信息无误，封装信息以及生成token，返回前端
+            // 将用户信息放到session中
+            req.getSession().setAttribute("user", user);
+            req.getSession().setAttribute("token", token);
+            return JSONUtil.toJSONResult(1, "登录成功！", user);
+
+        }
+        catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("login.quickLogin.json, type=" + type + " verifyCode=" + validateCode, e);
+        }
+
+        return null;
+    }
+
+    /**
      * {登录注册合并}
      * 
      * @param hs
@@ -138,13 +245,14 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(name = "快捷登录", path = "/quickLogin.json")
     public byte[] quickLogin(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String validateCode,
-            String smsCode, String phone, String type) {
+            String smsCode, String phone, String type, String openid) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("login.quickLogin.json,phone=" + phone + " type=" + type + " smsCode=" + smsCode
                         + " verifyCode=" + validateCode);
             }
+
             // 如果session中没有图片验证码并且请求的验证码数据存在 ---非法请求
             if ((null == req.getSession().getAttribute("validateCode")
                     || StringUtils.isEmpty(req.getSession().getAttribute("validateCode").toString()))
@@ -201,14 +309,19 @@ public class LoginController {
                 user.setType(tid);
                 // 设置默认密码为手机号
                 user.setPassword(MD5.md5crypt(MD5.md5crypt(phone)));
+                if (!StringUtils.isEmpty(openid)) {
+                    user.setOpenId(openid);
+                }
                 // 设置用户的注册端
-                user.setDevice(5);
                 // 设置当前注册类型为用户
                 if (StringUtils.isEmpty(user.getName())) {
                     user.setName(user.getPhone());
                 }
                 user.setStatus(1);
-
+                user.setSex(0);
+                if (!StringUtils.isEmpty(openid)) {
+                    user.setOpenId(openid);
+                }
                 // 写入数据
                 String userId = userService.insertUser(user);
                 if (userId.length() < 0) {
@@ -231,6 +344,7 @@ public class LoginController {
                 account.setId(UUIDUtils.getId());
                 account.setBalance(0.0);
                 account.setScore(0);
+                account.setAvailableScore(0);
                 account.setCreateTime(new Date());
                 account.setCreatorId(userId);
                 account.setStatus(0);
@@ -251,10 +365,19 @@ public class LoginController {
             }
             if (img != null)
                 user.setHeadPicture(img.getUrl());
+
+            if (!StringUtils.isEmpty(openid)) {
+                User user_up = new User();
+                user_up.setId(user.getId());
+                user_up.setOpenId(openid);
+                userService.update(user_up);
+            }
             // 设置token
             String token = "";
             token = Common.getToken(phone, user.getPassword());// 生成token
             user.setToken(token);
+            if (StringUtils.isEmpty(user.getName()))
+                user.setName(user.getPhone());
             // 3.信息无误，封装信息以及生成token，返回前端
             // 将用户信息放到session中
             req.getSession().setAttribute("user", user);

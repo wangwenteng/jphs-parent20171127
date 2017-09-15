@@ -15,11 +15,10 @@ import com.jinpaihushi.jphs.order.model.OrderService;
 @Repository("orderServiceDao")
 public interface OrderServiceDao extends BaseDao<OrderService> {
 
-	Page<OrderService> getInfo(OrderService orderService);
+    Page<OrderService> getInfo(OrderService orderService);
 
-	boolean updatePatientPhone(OrderService orderServiceInfo);
+    boolean updatePatientPhone(OrderService orderServiceInfo);
 
+    int deleteByOrderId(String orderId);
 
-	
-	
 }

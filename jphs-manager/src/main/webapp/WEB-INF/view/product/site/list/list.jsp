@@ -43,28 +43,28 @@
 						<td>
 							<jphs:hasPermission url="/site/delete.jhtml">	
 								<c:if test="${e.status == 0}">
-									<a onclick="deleteById('${e.id}','1')"> 
+									<a onclick="deleteById('${e.id}','1')" title="开启"> 
 										<img style="width: 20px;height: 20px;" src="/static/images/blockup.png">
 									</a>
 								</c:if>
 								<c:if test="${e.status == 1}">
-									<a onclick="deleteById('${e.id}','0')">
+									<a onclick="deleteById('${e.id}','0')" title="停用">
 										<img style="width: 20px;height: 20px;" src="/static/images/startup.png">
 									</a>
 								</c:if>
 							</jphs:hasPermission>
 						<jphs:hasPermission url="/site/detail.jhtml">
-						<a onclick="redirectDetailPage('${e.id}')"> <img
+						<a onclick="redirectDetailPage('${e.id}')" title="详情"> <img
 								src="/static/images/chakan.png">
 						</a>
 						</jphs:hasPermission>
 						<jphs:hasPermission url="/site/redirectUpdate.jhtml">
-						 <a onclick="redirectUpdatePage('${e.id}')"> <img
+						 <a onclick="redirectUpdatePage('${e.id}')" title="修改"> <img
 								src="/static/images/xiugai.png">
 						</a> 
 						</jphs:hasPermission>
 						<jphs:hasPermission url="/site/delete.jhtml">	
-						<a onclick="deleteById('${e.id}','-1')"> <img
+						<a onclick="deleteById('${e.id}','-1')" title="删除"> <img
 								src="/static/images/shanchu.png">
 						</a>
 						</jphs:hasPermission>

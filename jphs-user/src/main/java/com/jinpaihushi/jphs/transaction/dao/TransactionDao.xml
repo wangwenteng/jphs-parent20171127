@@ -237,7 +237,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		parameterType="com.jinpaihushi.jphs.transaction.model.Transaction">
 		INSERT INTO `TRANSACTION`(
 		id, order_id, amount, score,
-		operate, remark, withdraw, pay_type,
+		operate, operate_source,remark, withdraw, pay_type,
 		out_trade_no, creator_id,
 		creator_name, create_time, status )VALUES(
 		#{id,jdbcType=VARCHAR},
@@ -245,6 +245,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{amount,jdbcType=DECIMAL},
 		#{score,jdbcType=INTEGER},
 		#{operate,jdbcType=INTEGER},
+		#{operateSource,jdbcType=INTEGER},
 		#{remark,jdbcType=VARCHAR},
 		#{withdraw,jdbcType=INTEGER},
 		#{payType,jdbcType=INTEGER},
@@ -393,7 +394,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</update>
 
 	<select id="incomeSummary" resultType="java.util.HashMap">
-		SELECT
+	SELECT
 		COALESCE (
 		ROUND(SUM(t.amount), 2),
 		'0.00'
@@ -431,7 +432,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND t3.operate =
 		t.operate
 		AND
-		o.`schedule` != 5
+		o.`schedule` != 3
 		)
 		settlement,
 		(
@@ -442,7 +443,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		)
 		FROM
 		`transaction` t3
-		LEFT JOIN `order`
+		LEFT JOIN `order_service`
 		o ON o.id = t3.order_id
 		WHERE
 		t3.withdraw = 0
@@ -451,7 +452,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND t3.operate =
 		t.operate
 		AND
-		o.`schedule` = 5
+		o.`schedule` =3
 		)
 		cash_withdrawal
 		FROM
@@ -520,7 +521,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="incomeBreakdownMonth" resultType="java.util.HashMap">
 		SELECT
 		o.order_no,
-		IFNULL(og.title, '') goodsName,
+		IFNULL(t.remark, '') goodsName,
 		t.operate,
 		t.amount,
 		t.create_time
@@ -539,4 +540,33 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</where>
 		ORDER BY t.create_time DESC
 	</select>
+	<select id="listWithdraw" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		t.order_id, 
+		t.amount
+		FROM
+			`transaction` t
+		WHERE
+			t.withdraw = 0
+		AND t.creator_id =#{userId}
+		AND t.operate =4
+	</select>
+	
+	<update id="updateWithdrawals" parameterType="java.util.Map">
+		UPDATE `transaction` tr
+		SET tr.withdraw = 1
+		<where>
+			<if test="orderId!=null and orderId!=''">
+			AND	tr.order_id
+				<foreach collection="orderId" item="id" open="in (" close=")"
+					separator=",">
+					#{id}
+				</foreach>
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND tr.creator_id =#{userId}
+			</if>
+			AND tr.operate =4
+		</where>
+	</update>
 </mapper>

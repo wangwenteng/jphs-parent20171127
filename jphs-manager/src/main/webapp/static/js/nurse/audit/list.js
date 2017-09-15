@@ -19,8 +19,8 @@ $(function() {
 	});
 });
 
-function redirectUpdatePage(id) {
-	window.location.href = "/audit/redirectUpdate.jhtml?id=" + id;
+function redirectUpdatePage(id,creatorId) {
+	window.location.href = "/audit/redirectUpdate.jhtml?id=" + id+"&creatorId="+creatorId;
 }
 function redirectDetailPage(id) {
 	window.location.href = "/audit/detail.jhtml?id=" + id;

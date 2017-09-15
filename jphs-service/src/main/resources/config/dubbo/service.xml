@@ -22,5 +22,7 @@
 		interface="com.jinpaihushi.jphs.site.service.SiteService" />
 	<dubbo:service ref="serviceImagesService"
 		interface="com.jinpaihushi.jphs.service.service.ServiceImagesService" />
+	<dubbo:service ref="pricePartService"
+		interface="com.jinpaihushi.jphs.price.service.PricePartService" />
 
 </beans>

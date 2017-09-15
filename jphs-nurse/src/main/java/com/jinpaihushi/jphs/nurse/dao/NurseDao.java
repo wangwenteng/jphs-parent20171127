@@ -32,4 +32,6 @@ public interface NurseDao extends BaseDao<Nurse> {
 
     List<Grade> getNurseServicePrice(Map<String, Object> query);
 
+    int auditNurse(Nurse nurse);
+
 }

@@ -32,4 +32,9 @@ public interface WorktimeDao extends BaseDao<Worktime> {
 
     List<Worktime> queryByTime(Worktime userWorktime);
 
+    /**
+     * 清空所有的日程
+     */
+    int deleteAll();
+
 }

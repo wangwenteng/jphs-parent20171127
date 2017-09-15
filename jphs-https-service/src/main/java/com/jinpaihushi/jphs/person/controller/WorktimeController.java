@@ -109,4 +109,40 @@ public class WorktimeController {
         }
         return null;
     }
+
+    @RequestMapping(path = "/insertAllWorkTime.json", name = "初始化所有护士的时间")
+    @ResponseBody
+    public byte[] insertAllWorkTime(HttpSession hs, HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("worktime.insertAllWorkTime.json");
+            }
+            int result1 = worktimeService.insertAllWorkTime();
+            return JSONUtil.toJSONResult(1, "操作成功！", result1);
+        }
+        catch (Exception e) {
+            Util.failLog.error("worktime.insertAllWorkTime.json", e);
+        }
+        return null;
+    }
+
+    @RequestMapping(path = "/getNurseWorktime.json", name = "初始化所有护士的时间")
+    @ResponseBody
+    public byte[] getNurseWorktime(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String userId,
+            String productId) {
+        try {
+            if (Util.debugLog.isDebugEnabled()) {
+                Util.debugLog.debug("worktime.getNurseWorktime.json userId=" + userId + " productId=" + productId);
+            }
+            if (StringUtils.isEmpty(userId)) {
+                userId = "0";
+            }
+            List<Worktime> result = worktimeService.getNurseWorktime(userId, productId);
+            return JSONUtil.toJSONResult(1, "操作成功！", result);
+        }
+        catch (Exception e) {
+            Util.failLog.error("worktime.getNurseWorktime.json userId=" + userId + " productId=" + productId, e);
+        }
+        return null;
+    }
 }

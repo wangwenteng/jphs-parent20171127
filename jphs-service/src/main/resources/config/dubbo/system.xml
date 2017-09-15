@@ -14,5 +14,7 @@
 		interface="com.jinpaihushi.jphs.system.service.SystemRoleService" />
 	<dubbo:service ref="sysversionService"
 		interface="com.jinpaihushi.jphs.sysversion.service.SysversionService" />
+	<dubbo:service ref="doPostSmsService"
+		interface="com.jinpaihushi.jphs.system.service.DoPostSmsService" />
 
 </beans>

@@ -47,4 +47,6 @@
 		interface="com.jinpaihushi.jphs.person.service.PersonManagerService" />
 	<dubbo:reference id="personGroupService" timeout="${dubbo.timeout}" check="false"
 		interface="com.jinpaihushi.jphs.person.service.PersonGroupService" />
+	<dubbo:reference id="nurseInstitutionsService" timeout="${dubbo.timeout}" check="false"
+		interface="com.jinpaihushi.jphs.nurse.service.NurseInstitutionsService" />
 </beans>

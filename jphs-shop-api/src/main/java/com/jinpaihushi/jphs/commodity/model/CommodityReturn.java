@@ -2,9 +2,7 @@ package com.jinpaihushi.jphs.commodity.model;
 
 import java.util.function.Predicate;
 
-import javax.validation.constraints.*;
-
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.model.BaseModel;
@@ -30,7 +28,7 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
 
     /**  */
 	@Length(max = 50, message = "{commodityReturn.commodityOrderId.illegal.length}")
-	private String commodityOrderId;
+	private String commodityOrderInfoId;
 
     /**  */
 	@Length(max = 255, message = "{commodityReturn.reason.illegal.length}")
@@ -40,25 +38,33 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
 	@Length(max = 65535, message = "{commodityReturn.remark.illegal.length}")
 	private String remark;
 
+	private Double price;
+	
+	private Integer sign;
+	
 	public CommodityReturn(){}
 
 	public CommodityReturn(String id){
 		this.id = id;
 	}
 
-	/**
-	 * 获取
-	 */
-	public String getCommodityOrderId() {
-    	return commodityOrderId;
-    }
-  	
-	/**
-	 * 设置
-	 */
-	public void setCommodityOrderId(String commodityOrderId) {
-    	this.commodityOrderId = commodityOrderId;
-    }
+	 
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getCommodityOrderInfoId() {
+		return commodityOrderInfoId;
+	}
+
+	public void setCommodityOrderInfoId(String commodityOrderInfoId) {
+		this.commodityOrderInfoId = commodityOrderInfoId;
+	}
 
 	/**
 	 * 获取
@@ -88,10 +94,20 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
     	this.remark = remark;
     }
 
-    public String toString() {
+	
+	
+    public Integer getSign() {
+		return sign;
+	}
+
+	public void setSign(Integer sign) {
+		this.sign = sign;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("CommodityReturn{").
 			append("id=").append(id).
-			append(",commodityOrderId=").append(commodityOrderId).
+			append(",commodityOrderId=").append(commodityOrderInfoId).
 			append(",reason=").append(reason).
 			append(",remark=").append(remark).
 			append(",status=").append(status).
@@ -109,7 +125,7 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
 	public CommodityReturn copy(){
 		CommodityReturn commodityReturn = new CommodityReturn();
      	commodityReturn.id = this.id;
-     	commodityReturn.commodityOrderId = this.commodityOrderId;
+     	commodityReturn.commodityOrderInfoId = this.commodityOrderInfoId;
      	commodityReturn.reason = this.reason;
      	commodityReturn.remark = this.remark;
      	commodityReturn.status = this.status;
@@ -128,7 +144,7 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
 	public boolean test(CommodityReturn t) {
 		if(t == null) return false;
 		return (this.id == null || this.id.equals(t.id))
-				&& (this.commodityOrderId == null || this.commodityOrderId.equals(t.commodityOrderId))
+				&& (this.commodityOrderInfoId == null || this.commodityOrderInfoId.equals(t.commodityOrderInfoId))
 				&& (this.reason == null || this.reason.equals(t.reason))
 				&& (this.remark == null || this.remark.equals(t.remark))
 				&& (this.status == null || this.status.equals(t.status))
@@ -145,8 +161,8 @@ public class CommodityReturn extends BaseModel implements Predicate<CommodityRet
 		if (this.id != null && !this.id.isEmpty()) {
 			element.id = this.id;
 		}
-		if (this.commodityOrderId != null && !this.commodityOrderId.isEmpty()) {
-			element.commodityOrderId = this.commodityOrderId;
+		if (this.commodityOrderInfoId != null && !this.commodityOrderInfoId.isEmpty()) {
+			element.commodityOrderInfoId = this.commodityOrderInfoId;
 		}
 		if (this.reason != null && !this.reason.isEmpty()) {
 			element.reason = this.reason;

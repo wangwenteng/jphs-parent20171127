@@ -1,34 +1,24 @@
 package com.jinpaihushi.jphs.commodity.controller;
 
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.controller.BaseController;
-import com.jinpaihushi.service.BaseService;
-import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
-import com.jinpaihushi.jphs.commodity.service.CommodityReturnService;
-import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
-import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
+import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
+import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
-import com.jinpaihushi.utils.PageInfos;
-import com.github.pagehelper.Page;
-
+import com.jinpaihushi.jphs.commodity.service.CommodityReturnService;
+import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
 
@@ -53,6 +43,15 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 		return commodityOrderInfoService;
 	}
 
+	
+	@RequestMapping(name = "123", path = "/test1.json")
+	@ResponseBody
+	public byte[] test1() throws IOException{
+		CommodityOrderInfo coi_up = new CommodityOrderInfo();
+		coi_up.setCommodityOrderId("15b1f377-3730-41e0-a497-16b9a5270ce3");
+		CommodityOrderInfo coi = commodityOrderInfoService.load(coi_up);
+		return JSONUtil.toJSONResult(1, "操作成功！", coi);
+	}
 	 
 	@RequestMapping(name = "获取退货商品的信息", path = "/tkDetail.json")
 	@ResponseBody
@@ -127,7 +126,7 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 			List<CommodityOrderInfo> coiList = commodityOrderInfoService.judgeProfit(coi);
 			if (coiList.size() <= 0) {
 				// 跳转到错误页
-				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
+				return JSONUtil.toJSONResult(1, "请核对参数后访问", coiList);
 			}
 			 
 			return JSONUtil.toJSONResult(1, "操作成功！", coiList);
@@ -167,7 +166,7 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 
 	@RequestMapping(name = "单个商品退货原因", path = "/tkOneReason.json")
 	@ResponseBody
-	public byte[] tkOneReason(CommodityOrderInfo coi,String reason,String tkFlag,String coId) {
+	public byte[] tkOneReason(CommodityOrderInfo coi,String remark,String reason,String tkFlag,String coId,String schedule,Integer sign,double price) {
 		try {
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("commodity.order.info.tkOneReason.json,coiId="+coi.getId() );
@@ -185,9 +184,15 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 			boolean b = false;
  
 			if(tkFlag.equals("Y")){
+				
 			   CommodityOrder co = new CommodityOrder();
+			   if(schedule.equals("1")){
+				   co.setSchedule(-2);
+				}else if(schedule.equals("2")){
+				   co.setSchedule(-6);
+				}
 			   co.setId(coId);
-			   co.setSchedule(-2);
+			   
 			   co.setStatus(0);
 			   b = commodityOrderService.update(co);
 			}
@@ -197,12 +202,15 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
 			}
 			  CommodityReturn cr = new CommodityReturn();
-			  cr.setCommodityOrderId(coId);
+			  cr.setCommodityOrderInfoId(coi.getId());
 			  cr.setReason(reason);
 			  cr.setId(UUID.randomUUID().toString());
 			  cr.setStatus(1);
+			  cr.setSign(sign);
 			  cr.setCreateTime(new Date());
 			  cr.setCreatorId(coi.getCreatorId());
+			  cr.setPrice(price);
+			   cr.setRemark(remark);
 				String result = commodityReturnService.insert(cr);
 
 			 

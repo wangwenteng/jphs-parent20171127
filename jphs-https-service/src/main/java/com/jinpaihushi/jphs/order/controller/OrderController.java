@@ -202,13 +202,13 @@ public class OrderController {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
-                Util.debugLog.debug("order.getUserOrderDetail.json orderId=" + orderId + " userId=" + userId);
+                Util.debugLog.debug("order.getUserOrderStatus.json orderId=" + orderId + " userId=" + userId);
             }
             if (StringUtils.isEmpty(orderId)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             String token = req.getHeader("token");
-            if (StringUtils.isEmpty(token)) {
+            /* if (StringUtils.isEmpty(token)) {
                 return JSONUtil.toJSONResult(3, "非法请求", null);
             }
             User user = (User) req.getSession().getAttribute("user");
@@ -218,12 +218,15 @@ public class OrderController {
             if (!flag) {
                 // 身份认证失败,返回错误信息
                 return JSONUtil.toJSONResult(2, "身份认证失败", null);
-            }
+            }*/
             Order result = orderService.loadById(orderId);
+            if (result == null) {
+                return JSONUtil.toJSONResult(0, "订单不存在", null);
+            }
             return JSONUtil.toJSONResult(1, "操作成功！", result.getSchedule());
         }
         catch (Exception e) {
-            Util.failLog.error("order.getUserOrderDetail.json orderId=" + orderId + " userId=" + userId, e);
+            Util.failLog.error("order.getUserOrderStatus.json orderId=" + orderId + " userId=" + userId, e);
         }
         return null;
     }
@@ -271,7 +274,7 @@ public class OrderController {
      * @param orderNo 订单编号
      * @param return_url 支付成功回调地址
      * @param payParice 支付金额
-     * @param type 支付平台 微信2 支付宝1
+     * @param type 支付平台 微信扫码2 支付宝1 3 微信web支付  4 微信公众号 
      * @param userId 用户id
      * @param show_url 商品展示页
      * @param source 支付类型 
@@ -282,7 +285,8 @@ public class OrderController {
     @ResponseBody
     public byte[] orderPay(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsName,
             String orderNo, String return_url, Double payParice, Integer type, String userId, String show_url,
-            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source, Integer serviceType) {
+            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source, Integer serviceType,
+            String openid) {
         try {
             String ip = req.getHeader("x-forwarded-for");
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -366,7 +370,7 @@ public class OrderController {
                 sParaTemp.put("out_trade_no", orderNo);
                 sParaTemp.put("price", payParice * 100);
                 sParaTemp.put("CREATE_IP", ip);
-
+                sParaTemp.put("serviceType", serviceType);
                 byte[] s = WechatPay.weixin_pay(sParaTemp.toString());
                 return s;
             }
@@ -382,8 +386,26 @@ public class OrderController {
                 sParaTemp.put("out_trade_no", orderNo);
                 sParaTemp.put("price", payParice * 100);
                 sParaTemp.put("CREATE_IP", ip);
-
+                sParaTemp.put("serviceType", serviceType);
                 byte[] s = WechatPay.weixin_webpay(sParaTemp.toString());
+                return s;
+            }
+            if (type == 4) {
+                Util.debugLog.debug("order.createOrder.json  weixin_webpay");
+                if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(openid) || StringUtils.isEmpty(goodsName)
+                        || payParice == null) {
+                    return JSONUtil.toJSONResult(0, "参数不能为空", null);
+                }
+                String remoteAddr = req.getRemoteAddr();
+                System.out.println(remoteAddr);
+                JSONObject sParaTemp = new JSONObject();
+                sParaTemp.put("body", goodsName);
+                sParaTemp.put("out_trade_no", orderNo);
+                sParaTemp.put("price", payParice * 100);
+                sParaTemp.put("CREATE_IP", ip);
+                sParaTemp.put("serviceType", serviceType);
+                sParaTemp.put("OPENID", openid);
+                byte[] s = WechatPay.weixin_wechatpay(sParaTemp.toString());
                 return s;
             }
 
@@ -437,7 +459,7 @@ public class OrderController {
             }
             Map<String, Object> result = orderService.createOrderNew(orderInfo);
             if (result == null) {
-                return JSONUtil.toJSONResult(0, "操作失败！", null);
+                return JSONUtil.toJSONResult(0, "网络异常！", null);
             }
             return JSONUtil.toJSONResult(1, "操作成功！", result);
         }

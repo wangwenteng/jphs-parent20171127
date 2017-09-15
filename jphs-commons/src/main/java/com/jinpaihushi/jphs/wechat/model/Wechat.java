@@ -46,7 +46,7 @@ public class Wechat extends BaseModel implements Predicate<Wechat>,
 	private String errcode;
 
     /**  */
-	@Length(max = 50, message = "{wecth.errmsg.illegal.length}")
+	@Length(max = 65535, message = "{goods.content.illegal.length}")
 	private String errmsg;
 
 	public Wechat(){}

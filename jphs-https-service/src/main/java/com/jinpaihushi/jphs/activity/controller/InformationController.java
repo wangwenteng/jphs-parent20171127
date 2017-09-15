@@ -294,7 +294,7 @@ public class InformationController extends BaseController<Information> {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("information.sendEvaluate.json");
             }
-            if (ObjectVerification.verification(evaluate)) {
+            if (ObjectVerification.verification(evaluate) || StringUtils.isEmpty(evaluate.getContent())) {
                 return JSONUtil.toJSONResult(0, "请核对参数！！", null);
             }
             /*String token = req.getHeader("token");
@@ -356,12 +356,12 @@ public class InformationController extends BaseController<Information> {
                 if (load.getStatus() == 0) {
                     load.setStatus(-1);
                     flag = informationCollectionService.update(load);
-                    return JSONUtil.toJSONResult(1, "您已取消收藏！", null);
+                    return JSONUtil.toJSONResult(1, "取消收藏！", null);
                 }
                 if (load.getStatus() == -1) {
                     load.setStatus(0);
                     flag = informationCollectionService.update(load);
-                    return JSONUtil.toJSONResult(1, "您已收藏成功！", load);
+                    return JSONUtil.toJSONResult(1, "收藏成功！", load);
                 }
             }
             collection.setId(UUIDUtils.getId());
@@ -369,7 +369,7 @@ public class InformationController extends BaseController<Information> {
             collection.setStatus(0);
             String result = informationCollectionService.insert(collection);
 
-            return JSONUtil.toJSONResult(1, "您已收藏成功！", result);
+            return JSONUtil.toJSONResult(1, "收藏成功！", result);
         }
         catch (Exception e) {
             // 记录日志-fail

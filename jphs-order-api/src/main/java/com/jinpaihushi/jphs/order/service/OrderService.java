@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.order.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.order.model.Order;
@@ -9,6 +10,8 @@ import com.jinpaihushi.jphs.order.model.OrderInfo;
 import com.jinpaihushi.jphs.order.model.OrderPojo;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
+
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -67,10 +70,31 @@ public interface OrderService extends BaseService<Order> {
     Map<String, Object> createOrderNew(OrderPojo orderInfo);
 
     /**
+     * 护士抢单
+     * @param orderId
+     * @param orderGoodsId
+     * @param user
+     * @return
+     */
+    String orderGrab(String orderId,String orderGoodsId,User user);
+    /**
+     * 
+     */
+    String startService(String orderId,String osId,User user);
+    String fulfilService(String osId,String orderId,String orderGoodsId,User user);
+    
+    /**
      * 取消订单
      * @param orderId
      * @param remark 
      * @return
      */
     String cancelOrder(String orderId, User user);
+    
+    /**
+     * 微信支付回调-服务
+     * @param map_re
+     * @return
+     */
+    boolean updateWechatOrderStutas(SortedMap<Object ,Object> map_re);
 }

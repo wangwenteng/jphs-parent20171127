@@ -48,8 +48,20 @@ public class CommodityOrderInfoServiceImpl extends BaseServiceImpl<CommodityOrde
 
 	@Override
 	public Integer confimOrder(String comId) {
-		// TODO Auto-generated method stub
-		return commodityOrderInfoDao.confimOrder(comId);
+		 
+		Integer result = 0;
+		
+		List<CommodityOrderInfo> confirmList = commodityOrderInfoDao.getConfirmList(comId);
+		
+		for (int i = 0; i < confirmList.size(); i++) {
+			 
+			if(confirmList.get(i).getStatus() == 2){
+				result = commodityOrderInfoDao.confimOrder(confirmList.get(i).getId());
+			}
+		}
+		
+		
+		return result;
 	}
 
 	@Override

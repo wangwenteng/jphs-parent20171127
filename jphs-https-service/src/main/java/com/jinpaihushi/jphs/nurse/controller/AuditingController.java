@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.nurse.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,6 @@ import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.department.service.DepartmentService;
 import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 import com.jinpaihushi.jphs.jobtitle.service.JobtitleService;
-import com.jinpaihushi.jphs.jobtitle.service.JobtitleTypeService;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.model.NurseInstitutions;
 import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
@@ -33,9 +33,11 @@ import com.jinpaihushi.jphs.nurse.service.NurseInstitutionsService;
 import com.jinpaihushi.jphs.nurse.service.NurseJobtitleService;
 import com.jinpaihushi.jphs.nurse.service.NurseSkillsService;
 import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.UUIDUtils;
 import com.jinpaihushi.utils.Util;
+import com.jinpaihushi.utils.Validate;
 
 import net.sf.json.JSONObject;
 
@@ -57,8 +59,6 @@ public class AuditingController {
     @Autowired
     private NurseInstitutionsService nurseInstitutionsService;
     @Autowired
-    private  JobtitleTypeService jobtitleTypeService;
-    @Autowired
     private  JobtitleService jobtitleService;
     
     @ResponseBody
@@ -79,28 +79,29 @@ public class AuditingController {
     
     @ResponseBody
     @RequestMapping(name = "获取职称和科室", path = "/getJobtitleAndDepartment.json")
-    public byte[] getJobtitleAndDepartment(HttpServletRequest req, HttpServletResponse resp, String authCode){
+    public byte[] getJobtitleAndDepartment(HttpServletRequest req, HttpServletResponse resp, String authCode,Integer type){
     	try {
+    		
+    		// 查空
+            if (StringUtils.isEmpty(type.toString())) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+    		
     		JSONObject json_re = new JSONObject();	
     		Department dept = new Department();
 			dept.setStatus(1);
 			List<Department> list = departmentService.list(dept);
 			json_re.put("department", list);
-			/*JobtitleType jt = new JobtitleType();
-			jt.setStatus(1);
-			List<JobtitleType> jt_list = jobtitleTypeService.list(jt);
-			json_re.put("jobtitleType", jt_list);
-			JSONArray ja = new JSONArray();
-			for(int a=0; a<jt_list.size(); a++){
-				Jobtitle j = new Jobtitle();
-				j.setStatus(1);
-				j.setJobtitleTypeId(jt_list.get(a).getId());
-				List<Jobtitle> j_list = jobtitleService.list(j);
-				ja.add(j_list);
+			String j_type = "c6c9f0ba0e8e464b807d8d2bd5deb8b7";
+			if(type == 1){
+				j_type = "c6c9f0ba0e8e464b807d8d2bd5deb8b7";
+			}else if (type == 2){
+				j_type = "ad58e9c2c78f44258054617570b6afc4";
+			}else if (type == 3){
+				j_type = "2b1e6ec74e3c40a880c8d3cd8708a6ca";
 			}
-			json_re.put("jobtitle", ja);*/
 			
-			List<Jobtitle> jobtitle =jobtitleService.jobtitleSelectList();
+			List<Jobtitle> jobtitle =jobtitleService.jobtitleSelectList(j_type);
 			json_re.put("jobtitle", jobtitle);
 			return JSONUtil.toJSONResult(1, "操作成功！", json_re);
     			
@@ -112,7 +113,7 @@ public class AuditingController {
     }
     
     @ResponseBody
-    @RequestMapping(name = "查看认证信息", path = "/getAudting.json")
+    @RequestMapping(name = "查看认证信息", path = "/getAudting.json",method = RequestMethod.POST)
     public byte[] lookAudting(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
             String nurseType) {
         try {
@@ -126,8 +127,8 @@ public class AuditingController {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("nurseAudting.pageone.json,authCode=" + authCode + " user=" + user.getId()
                         + " user=" + user.getPhone() + " token=" + token);
-            }
-            /*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+            }/*
+            if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
             }*/
             // 查空
@@ -168,19 +169,24 @@ public class AuditingController {
 
     @ResponseBody
     @RequestMapping(name = "护士认证", path = "/pageone.json",method = RequestMethod.POST)
-    @Transactional
     public byte[] audting(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
-            String goodSkills, String skillsArr, NurseJobtitles nurseJobtitles,String njId,String nurseName,Integer nurseType) {
+            String goodSkills, String skillsArr, NurseJobtitles nurseJobtitles,String workY ,String njId,String nurseName,Integer nurseType) {
         try {
             String token = "";
             try {
                 token = req.getHeader("token");
             }
             catch (Exception e) {
-            } 
+            }
+            
             NurseJobtitle nurseJobtitle = new NurseJobtitle();
             BeanUtils.copyProperties(nurseJobtitle, nurseJobtitles);
-            
+           if(!StringUtils.isEmpty(workY)){
+        	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        	   Date workYs =sdf.parse(workY);
+        	   nurseJobtitle.setWorkYears(workYs);
+           } 
+            nurseJobtitle.setStatus(user.getStatus());
             nurseJobtitle.setId(njId);
             nurseJobtitle.setName(nurseName);
             nurseJobtitle.setType(nurseType);
@@ -189,17 +195,17 @@ public class AuditingController {
                 Util.debugLog.debug("nurseAudting.pageone.json,authCode=" + authCode + " user=" + user.getId()
                         + " user=" + user.getPhone() + " token=" + token);
             }
-            /*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+            if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
-            }*/
+            }
             // 查空
-            if (StringUtils.isEmpty(String.valueOf(nurseJobtitle.getType())) || StringUtils.isEmpty(user.getId())
+           /* if (StringUtils.isEmpty(String.valueOf(nurseJobtitle.getType())) || StringUtils.isEmpty(user.getId())
                     || StringUtils.isEmpty(user.getPhone()) || StringUtils.isEmpty(user.getPassword())
                     || StringUtils.isEmpty(user.getType().toString())
-                    || StringUtils.isEmpty(authCode)/*
-                                                    || StringUtils.isEmpty(token)*/) {
+                    || StringUtils.isEmpty(authCode)
+                                                    || StringUtils.isEmpty(token)) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
-            }
+            }*/
 
             // 通用字段验证是否为空
            /* if (StringUtils.isEmpty(nurseJobtitles.getName()) || StringUtils.isEmpty(goodSkills)
@@ -246,6 +252,19 @@ public class AuditingController {
                     return JSONUtil.toJSONResult(0, "母婴师资格证参数不能为空", null);
                 }
             }*/
+            
+            if(!StringUtils.isEmpty(nurseJobtitle.getSfz())){
+            	/**
+            	* 验证输入身份证号
+            	* 
+            	* @param 待验证的字符串
+            	* @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
+            	*/
+            	if (!Validate.IsIDcard(nurseJobtitle.getSfz())){
+            		 return JSONUtil.toJSONResult(0, "身份证格式不正确", null);
+            	}
+            }
+            
             String nj_id = UUID.randomUUID().toString();
             nurseJobtitle.setCreateTime(new Date());
             nurseJobtitle.setCreatorId(user.getId());
@@ -277,9 +296,10 @@ public class AuditingController {
             		
             		NurseSkills nurseSkills = new NurseSkills();
         			nurseSkills.setCreatorId(user.getId());
+        			nurseSkills.setNurseType(nurseType);
         			nurseSkills.setType(2);
         			nurseSkills.setStatus(1);
-        			List<NurseSkills> nurseSkills_list = nurseSkillsService.list(nurseSkills);
+        			List<NurseSkills> nurseSkills_list = nurseSkillsService.getNurseSkillsAc(nurseSkills);
         			if(nurseSkills_list != null){
         				for(int a =0;a<nurseSkills_list.size();a++){
         					nurseSkillsService.deleteById(nurseSkills_list.get(a).getId());
@@ -314,9 +334,10 @@ public class AuditingController {
             		
             		NurseSkills nurseSkills = new NurseSkills();
         			nurseSkills.setCreatorId(user.getId());
+        			nurseSkills.setNurseType(nurseType);
         			nurseSkills.setType(1);
         			nurseSkills.setStatus(1);
-        			List<NurseSkills> nurseSkills_list = nurseSkillsService.list(nurseSkills);
+        			List<NurseSkills> nurseSkills_list = nurseSkillsService.getNurseSkillsAc(nurseSkills);
         			if(nurseSkills_list != null){
         				for(int a =0;a<nurseSkills_list.size();a++){
         					nurseSkillsService.deleteById(nurseSkills_list.get(a).getId());
@@ -356,6 +377,7 @@ public class AuditingController {
             if(!StringUtils.isEmpty(nurseJobtitle.getSculpture())){
             	NurseImages nurseImages_del = new NurseImages();
         		nurseImages_del.setCreatorId(user.getId());
+        		nurseImages_del.setSourceId(nj_id);
         		nurseImages_del.setType(1);
         		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
         		for(int a =0;a<list_img.size();a++){
@@ -373,6 +395,7 @@ public class AuditingController {
             if(!StringUtils.isEmpty(nurseJobtitle.getSfzz())){
             	NurseImages nurseImages_del = new NurseImages();
         		nurseImages_del.setCreatorId(user.getId());
+        		nurseImages_del.setSourceId(nj_id);
         		nurseImages_del.setType(4);
         		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
         		for(int a =0;a<list_img.size();a++){
@@ -381,7 +404,7 @@ public class AuditingController {
         		
         		// 身份证正面
         		nurseImages.setType(4);
-        		 nurseImages.setId(UUID.randomUUID().toString());
+        		nurseImages.setId(UUID.randomUUID().toString());
         		nurseImages.setUrl(nurseJobtitle.getSfzz());
         		nurseImagesService.insert(nurseImages);
         		
@@ -389,6 +412,7 @@ public class AuditingController {
             if(!StringUtils.isEmpty(nurseJobtitle.getSfzf())){
             	NurseImages nurseImages_del = new NurseImages();
         		nurseImages_del.setCreatorId(user.getId());
+        		nurseImages_del.setSourceId(nj_id);
         		nurseImages_del.setType(5);
         		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
         		for(int a =0;a<list_img.size();a++){
@@ -411,6 +435,7 @@ public class AuditingController {
             	if(nurseJobtitle.getCharteredProve() != null && !nurseJobtitle.getCharteredProve().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(6);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -426,6 +451,7 @@ public class AuditingController {
             	if(nurseJobtitle.getSeniorityProve() != null && !nurseJobtitle.getSeniorityProve().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(2);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -440,6 +466,7 @@ public class AuditingController {
             	if(nurseJobtitle.getHospitalContract() != null && !nurseJobtitle.getHospitalContract().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(7);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -454,6 +481,7 @@ public class AuditingController {
             	if(nurseJobtitle.getWorkCard() != null && !nurseJobtitle.getWorkCard().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(8);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -474,6 +502,7 @@ public class AuditingController {
             	if(nurseJobtitle.getTherapistZ() != null && !nurseJobtitle.getTherapistZ().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(9);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -488,6 +517,7 @@ public class AuditingController {
             	if(nurseJobtitle.getTherapistF() != null && !nurseJobtitle.getTherapistF().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(10);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){
@@ -506,6 +536,7 @@ public class AuditingController {
             	if(nurseJobtitle.getFransnanaCard() != null && !nurseJobtitle.getFransnanaCard().equals("")){
             		NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(user.getId());
+            		nurseImages_del.setSourceId(nj_id);
             		nurseImages_del.setType(11);
             		List<NurseImages> list_img = nurseImagesService.list(nurseImages_del);
             		for(int a =0;a<list_img.size();a++){

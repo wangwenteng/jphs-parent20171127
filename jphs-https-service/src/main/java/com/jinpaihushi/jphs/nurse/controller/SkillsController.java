@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.nurse.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
 import com.jinpaihushi.jphs.nurse.model.NurseSkills;
+import com.jinpaihushi.jphs.nurse.service.NurseJobtitleService;
 import com.jinpaihushi.jphs.nurse.service.NurseSkillsService;
 import com.jinpaihushi.jphs.skills.service.SkillsService;
 import com.jinpaihushi.jphs.user.model.User;
@@ -33,6 +37,8 @@ public class SkillsController {
 
     @Autowired
     NurseSkillsService nurseSkillsService;
+    @Autowired
+    NurseJobtitleService nurseJobtitleService;
 
     /**
      * my_skills=选择技能
@@ -47,7 +53,7 @@ public class SkillsController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(name = "护士设置技能", path = "/setNurseSkills")
+    @RequestMapping(name = "护士设置技能", path = "/setNurseSkills",method = RequestMethod.POST)
     @Transactional
     public byte[] nurseSkills(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
             String my_skills, String kf_skills, String hs_skills) {
@@ -112,7 +118,7 @@ public class SkillsController {
                         NurseSkills nurseNkill = new NurseSkills();
                         nurseNkill.setId(UUID.randomUUID().toString());
                         nurseNkill.setSkillsId(skill_arr_kf[a]);
-                        nurseNkill.setType(2);
+                        nurseNkill.setType(1);
                         nurseNkill.setCreateTime(new Date());
                         try {
                             nurseNkill.setCreatorName(user.getName());
@@ -134,7 +140,7 @@ public class SkillsController {
                         NurseSkills nurseNkill = new NurseSkills();
                         nurseNkill.setId(UUID.randomUUID().toString());
                         nurseNkill.setSkillsId(skill_arr_hs[a]);
-                        nurseNkill.setType(2);
+                        nurseNkill.setType(1);
                         nurseNkill.setCreateTime(new Date());
                         try {
                             nurseNkill.setCreatorName(user.getName());
@@ -157,7 +163,7 @@ public class SkillsController {
     }
 
     @ResponseBody
-    @RequestMapping(name = "获取技能列表", path = "/getskills.json")
+    @RequestMapping(name = "获取技能列表", path = "/getskills.json",method = RequestMethod.POST)
     public byte[] getSkills(HttpServletRequest req, HttpServletResponse resp, String authCode, User user,
             Integer nurseType) {
 
@@ -181,13 +187,32 @@ public class SkillsController {
                                                            ||StringUtils.isEmpty(token)*/) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
-            /*if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+            if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
-            }*/
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("nurseId", user.getId());
-            map.put("type", nurseType);
-            List<Map<String, Object>> skills_list = skillsService.getNurseSkills(map);
+            }
+            List<Map<String, Object>> skills_list_re = new ArrayList<Map<String, Object>>();
+            if(nurseType == null || nurseType.equals("")){
+            	NurseJobtitle nurseJobtitle = new NurseJobtitle();
+                nurseJobtitle.setStatus(1);
+                nurseJobtitle.setCreatorId(user.getId());
+                List<NurseJobtitle> nurseJobtitle_list = nurseJobtitleService.list(nurseJobtitle);
+                if(nurseJobtitle_list != null && nurseJobtitle_list.size()>0){
+    	            for(int a=0;a<nurseJobtitle_list.size();a++){
+    	            	Map<String, Object> map = new HashMap<String, Object>();
+    	            	map.put("nurseId", user.getId());
+    	            	map.put("type", nurseJobtitle_list.get(a).getType());
+    	            	List<Map<String, Object>> skills_list = skillsService.getNurseSkills(map);
+    	            	skills_list_re.addAll(skills_list);
+    	            }
+                }
+            }else{
+            	Map<String, Object> map = new HashMap<String, Object>();
+            	map.put("nurseId", user.getId());
+            	map.put("type", nurseType);
+            	List<Map<String, Object>> skills_list = skillsService.getNurseSkills(map);
+            	skills_list_re.addAll(skills_list);
+            }
+            
             /**
              * ifnot	护士是否勾选了该技能	0：未勾选
              * 							1：已勾选
@@ -197,7 +222,7 @@ public class SkillsController {
              * type	该技能属于那种职称	
              * 1.护士，2.康复师，3.母婴师
              */
-            return JSONUtil.toJSONResult(1, "查询成功", skills_list);
+            return JSONUtil.toJSONResult(1, "查询成功", skills_list_re);
         }
         catch (Exception e) {
             // 记录日志-fail

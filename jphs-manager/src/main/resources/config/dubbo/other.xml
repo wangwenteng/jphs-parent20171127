@@ -20,6 +20,10 @@
 		timeout="${dubbo.timeout}" check="false" />
 	<dubbo:reference id="informationEvaluateService" interface="com.jinpaihushi.jphs.information.service.InformationEvaluateService" 
 		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="informationChannelService" interface="com.jinpaihushi.jphs.information.service.InformationChannelService" 
+		timeout="${dubbo.timeout}" check="false" />
+	<dubbo:reference id="informationLikesService" interface="com.jinpaihushi.jphs.information.service.InformationLikesService" 
+		timeout="${dubbo.timeout}" check="false" />
 	<!--轮播图  -->
 	<dubbo:reference id="advertisingService" interface="com.jinpaihushi.jphs.activity.service.AdvertisingService" 
 		timeout="${dubbo.timeout}" check="false" />

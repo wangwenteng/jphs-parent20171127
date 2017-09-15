@@ -33,8 +33,8 @@ public class JobtitleServiceImpl extends BaseServiceImpl<Jobtitle> implements Jo
 		return jobtitleDao.checkName(jobtitle);
 	}
 	
-	public List<Jobtitle> jobtitleSelectList(){
-		return jobtitleDao.jobtitleSelectList();
+	public List<Jobtitle> jobtitleSelectList(String type){
+		return jobtitleDao.jobtitleSelectList(type);
 	}
 	
 }

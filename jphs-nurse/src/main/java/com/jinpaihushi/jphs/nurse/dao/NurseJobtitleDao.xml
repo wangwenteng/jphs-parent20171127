@@ -61,7 +61,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="hospital!=null and hospital!=''">
 			AND NJ.hospital=#{hospital}
 		</if>
-		<if test="studyInstitution!=null and studyInstitution=''">
+		<if test="studyInstitution!=null and studyInstitution !=''">
 			AND NJ.study_institution=#{studyInstitution}
 		</if>
 		<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
@@ -105,7 +105,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
-				AND NJ.id LIKE CONCAT('%', #{id}, '%')
+				AND NJ.id = #{id} 
 			</if>
 			<if test="name!=null and name!=''">
 				AND NJ.name LIKE CONCAT('%', #{name}, '%')
@@ -126,14 +126,13 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND NJ.study_institution=#{studyInstitution}
 			</if>
 			<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
-				AND NJ.nurse_institutions_id LIKE CONCAT('%', #{nurseInstitutionsId}, '%')
+				AND NJ.nurse_institutions_id = #{nurseInstitutionsId} 
 			</if>
 			<if test="departmentId!=null and departmentId!=''">
-				AND NJ.department_id LIKE CONCAT('%', #{departmentId},
-				'%')
+				AND NJ.department_id = #{departmentId} 
 			</if>
 			<if test="jobtitleId!=null and jobtitleId!=''">
-				AND NJ.jobtitle_id LIKE CONCAT('%', #{jobtitleId}, '%')
+				AND NJ.jobtitle_id = #{jobtitleId} 
 			</if>
 			<if test="workYears!=null">
 				AND NJ.work_years=#{workYears}
@@ -145,7 +144,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND NJ.address LIKE CONCAT('%', #{address}, '%')
 			</if>
 			<if test="creatorId!=null and creatorId!=''">
-				AND NJ.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+				AND NJ.creator_id = #{creatorId} 
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND NJ.creator_name LIKE CONCAT('%', #{creatorName}, '%')
@@ -500,14 +499,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<select id="getNurseList" resultType="java.util.HashMap">
-		SELECT DISTINCT
+		<!-- SELECT DISTINCT
 		nj.creator_id nurseId,
 		u.`name` nurseName,
 		u.sex
 		nurseSex,
 		IFNULL(n.hospital,'') nurseHospital,
 		(SELECT url FROM
-		nurse_images ni WHERE ni.creator_id =u.id AND ni.type =1)
+		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1)
 		url,
 		CASE
 		WHEN
@@ -534,7 +533,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		) serviceNumber,
 		p.lon,
 		p.lat,
-		ROUND(
+		COALESCE(ROUND(
 		6378.138 * 2 * ASIN(
 		SQRT(
 		POW(
@@ -549,7 +548,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		)
 		),
 		2
-		) AS distance
+		),'') AS distance
 		FROM
 		nurse_jobtitle nj
 		LEFT JOIN
@@ -557,9 +556,84 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN nurse n ON u.id
 		=
 		n.creator_id
-		LEFT JOIN position p ON u.id = p.creator_id
+		LEFT JOIN position p ON u.id = p.creator_id -->
+		SELECT DISTINCT
+		nj.creator_id nurseId,
+		u.`name` nurseName,
+		u.sex
+		nurseSex,
+		IFNULL(n.hospital,'') nurseHospital,
+		(SELECT url FROM
+		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1)
+		url,
+		CASE
+		WHEN
+		n.work_years IS NOT NULL THEN
+		(
+		(
+		YEAR (now()) - YEAR (n.work_years) - 1
+		) + (
+		DATE_FORMAT(n.work_years, '%m%d') &lt;= DATE_FORMAT(NOW(),
+		'%m%d')
+		)
+		)
+		ELSE
+		''
+		END AS workYear,
+		(
+		SELECT
+		COUNT(id)
+		FROM
+		`order` o
+		WHERE
+		o.accept_user_id = nj.creator_id
+		AND o.`schedule` = 5
+		) serviceNumber,d.lat,d.lon,IFNULL(d.distance,'0') distance
+		FROM
+		nurse_jobtitle nj
+		LEFT JOIN
+		`user` u ON nj.creator_id = u.id
+		LEFT JOIN nurse n ON u.id
+		=
+		n.creator_id
+	LEFT JOIN (
+	SELECT
+		ua.creator_id,
+		ua.lat,
+		ua.lon,
+		MIN(
+			ROUND(
+				6378.138 * 2 * ASIN(
+					SQRT(
+						POW(
+							SIN(
+								(
+									#{lat} * PI() / 180 - ua.lat * PI() / 180
+								) / 2
+							),
+							2
+						) + COS(
+							#{lat} * PI() / 180
+						) * COS(ua.lat * PI() / 180) * POW(
+							SIN(
+								(
+									#{lon} * PI() / 180 - ua.lon * PI() / 180
+								) / 2
+							),
+							2
+						)
+					)
+				),
+				2
+			)
+		) distance
+	FROM
+		user_address ua
+	GROUP BY
+		ua.creator_id
+) d ON d.creator_id = u.id
 		<where>
-			AND n.status =1 
+			AND n.`status` =1 
 			<if test="goodsId!=null and goodsId!=''">
 				AND nj.jobtitle_id in (SELECT DISTINCT jg.jobtitle_id
 				FROM `jobtitle_goods` jg WHERE jg.goods_id =#{goodsId} )
@@ -569,7 +643,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 		<if test="type==1">
-			ORDER BY distance ASC
+			ORDER BY d.distance ASC
 		</if>
 		<if test="type==2">
 			ORDER BY serviceNumber DESC
@@ -577,5 +651,60 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="type==3">
 			ORDER BY workYear DESC
 		</if>
+	</select>
+	<resultMap id="nurseJobtitleDetail"
+		type="com.jinpaihushi.jphs.nurse.model.NurseJobtitle">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sex" column="sex" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="hospital" column="hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="studyInstitution" column="study_institution" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="nurseInstitutionsId" column="nurse_institutions_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="departmentId" column="department_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="jobtitleId" column="jobtitle_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="workYears" column="work_years" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="education" column="education" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="address" column="address" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="jobtitleTypeName" column="jobtitleTypeName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="jobtitleName" column="jobtitleName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="departName" column="departName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+	</resultMap>
+	
+	<select id="getNurseJobtitleDetail" resultMap="nurseJobtitleDetail">
+		SELECT
+			jt.`name` jobtitleTypeName,
+			j.`name` jobtitleName,
+			d.`name` departName,
+			nj.*
+		FROM
+			nurse_jobtitle nj
+		LEFT JOIN jobtitle j ON nj.jobtitle_id = j.id
+		LEFT JOIN jobtitle_type jt ON j.jobtitle_type_id = jt.id
+		LEFT JOIN department d ON nj.department_id = d.id
+		<include refid="queryWhere" />
+		<include refid="orderby" />
 	</select>
 </mapper>
