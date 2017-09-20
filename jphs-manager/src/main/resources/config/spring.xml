@@ -29,7 +29,6 @@
 		<property name="maxIdle" value="${pool.maxIdle}" />
 		<property name="minEvictableIdleTimeMillis" value="${pool.minEvictableIdleTimeMillis}" />
 		<property name="timeBetweenEvictionRunsMillis" value="${pool.timeBetweenEvictionRunsMillis}" />
-		<property name="connectionInitSqls" value="set names utf8mb4;"/>
 		<property name="validationQuery" value="SELECT NOW() FROM DUAL"/>
 	</bean>
 	

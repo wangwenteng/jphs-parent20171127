@@ -336,15 +336,25 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             System.out.println("date当前时间:" + format.format(date));
             Calendar ca = Calendar.getInstance();
             ca.setTime(date);
-            ca.add(Calendar.HOUR_OF_DAY, hour);
-            System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
+            int hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            //判断当前时间的小时数
+            if(hour24<20){
+            	ca.add(Calendar.HOUR_OF_DAY, hour);
+            	System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
+            	hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            }else{
+            	System.out.println("date当前时间" + format.format(ca.getTime()));
+            	hour24=24;
+            }
             userWorktime = new Worktime();
             userWorktime.setCalendar(sdf.format(date));
             userWorktime.setUserid(userId);
             userWorktime = worktimeDao.load(userWorktime);
             if (userWorktime != null) {
-                int hour24 = ca.get(Calendar.HOUR_OF_DAY);
                 switch (hour24) {
+                case 24:;
+                case 23:;
+                case 22:;
                 case 21:
                     userWorktime.setH21(1);
                 case 20:

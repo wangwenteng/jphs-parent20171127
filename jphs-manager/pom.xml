@@ -60,11 +60,11 @@
 			<artifactId>jphs-shop-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-service</artifactId>
 			<version>${project.version}</version>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>

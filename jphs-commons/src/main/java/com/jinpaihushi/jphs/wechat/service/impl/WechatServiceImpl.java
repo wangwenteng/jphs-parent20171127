@@ -50,7 +50,7 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 		return wecthDao;
 	}
 
-	@Scheduled(cron = "${GET_WECTH_TOKEN}")
+//	@Scheduled(cron = "${GET_WECTH_TOKEN}")
 	public void getTokens() {
 		if (Util.debugLog.isDebugEnabled()) {
 			Util.debugLog.debug("我被线程池调用执行啦~！");
