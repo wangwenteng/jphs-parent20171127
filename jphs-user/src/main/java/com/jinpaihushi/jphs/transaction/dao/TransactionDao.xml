@@ -239,7 +239,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		id, order_id, amount, score,
 		operate, operate_source,remark, withdraw, pay_type,
 		out_trade_no, creator_id,
-		creator_name, create_time, status )VALUES(
+		creator_name, create_time, status,type )VALUES(
 		#{id,jdbcType=VARCHAR},
 		#{orderId,jdbcType=VARCHAR},
 		#{amount,jdbcType=DECIMAL},
@@ -253,7 +253,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
-		#{status,jdbcType=INTEGER} )
+		#{status,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER} )
 	</insert>
 
 	<insert id="inserts" useGeneratedKeys="false" parameterType="list">

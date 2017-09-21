@@ -184,7 +184,6 @@ public class HealthRecordsController {
             List<Map<String, Object>> list = peizhenRecordService.getHealthLog(query);
             Map<String, Object> map = list.get(0);
             PeizhenPharmacyRemind peizhenPharmacyRemind = new PeizhenPharmacyRemind();
-            peizhenPharmacyRemind.setCreatorId(userId);
             peizhenPharmacyRemind.setPeizhenRecordId(id);
             List<PeizhenPharmacyRemind> list2 = peizhenPharmacyRemindService.list(peizhenPharmacyRemind);
             map.put("peizhenPharmacyRemind", list2);

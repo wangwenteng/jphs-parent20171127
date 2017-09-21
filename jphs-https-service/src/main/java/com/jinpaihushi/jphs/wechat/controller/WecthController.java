@@ -67,4 +67,21 @@ public class WecthController {
 		return null;
 	}
 	
+	@ResponseBody
+	@RequestMapping(name= "获取用户信息-是否关注微信公众号" , path = "/follow.json")
+	public byte[] getUserWecthIfFollow(HttpServletRequest req, HttpServletResponse resp, String authCode,String openId){
+		try {
+			if (StringUtils.isEmpty(openId)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+            }
+			int f = wechatService.getUserWecthIfFollow(openId);
+			
+			return JSONUtil.toJSONResult(f, "操作成功！", null);
+		} catch (Exception e) {
+            // 记录日志-fail
+            Util.failLog.error("wechat.getUserWecthIfFollow.json,authCode="+authCode, e);
+        }
+		return null;
+	}
+	
 }

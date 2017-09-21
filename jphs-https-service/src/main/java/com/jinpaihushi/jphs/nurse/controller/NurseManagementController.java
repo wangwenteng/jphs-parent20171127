@@ -64,6 +64,7 @@ public class NurseManagementController {
             //判斷分組名稱是否存在
             PersonGroup group = new PersonGroup();
             group.setName(personGroup.getName());
+            group.setCreatorId(personGroup.getCreatorId());
             int i = personGroupService.count(group);
             if (i > 0) {
                 return JSONUtil.toJSONResult(0, "改分组已经存在！请不要重复添加！", null);
@@ -232,7 +233,13 @@ public class NurseManagementController {
             manager.setCreatorId(personManager.getCreatorId());
             List<PersonManager> list = personManagerService.list(manager);
             if (list.size() > 0) {
-                return JSONUtil.toJSONResult(0, "你已经发送过请求！", null);
+                if (list.get(0).getStatus() == -1) {
+                    return JSONUtil.toJSONResult(0, "您已经拒绝了该好友！", null);
+                }
+                else {
+                    return JSONUtil.toJSONResult(0, "您已经发送过请求了！", null);
+
+                }
             }
             //判断被添加者是否被别人添加
             manager = new PersonManager();
@@ -240,10 +247,7 @@ public class NurseManagementController {
             manager.setStatus(1);
             list = personManagerService.list(manager);
             if (list.size() > 0) {
-                if (personManager.getIsLeader() == 0) {
-                    return JSONUtil.toJSONResult(0, "你已经被别人添加！！", null);
-                }
-                else {
+                if (personManager.getIsLeader() == 1) {
                     return JSONUtil.toJSONResult(0, "该护士已经被别人添加！！", null);
                 }
             }
@@ -258,7 +262,6 @@ public class NurseManagementController {
             }
             //判断是否是管理者添加被管理者
             if (personManager.getIsLeader() == 0) {
-
                 //判断被添加的是同意还是拒绝
                 manager = new PersonManager();
                 manager.setCreatorId(personManager.getUserId());
@@ -273,6 +276,7 @@ public class NurseManagementController {
                     }
                 }
                 else {
+                    personManager.setStatus(-1);
                     manager.setStatus(-1);
                 }
                 personManagerService.update(manager);

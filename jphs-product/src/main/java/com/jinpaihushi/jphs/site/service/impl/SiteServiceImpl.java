@@ -106,6 +106,7 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 												pricePart.setId(UUID.randomUUID().toString());
 												pricePart.setSiteId(siteID);
 												pricePart.setStatus(1);
+												pricePart.setCreateTime(new Date());
 												pricePartDao.insert(pricePart);
 											}else{
 												pricePartDao.update(pricePart);
@@ -178,6 +179,7 @@ public class SiteServiceImpl extends BaseServiceImpl<Site> implements SiteServic
 												&& pricePart.getPrice() !=null && !pricePart.getPrice().equals("")){
 											pricePart.setId(UUID.randomUUID().toString());
 											pricePart.setSiteId(siteId);
+											pricePart.setCreateTime(new Date());
 											pricePart.setStatus(1);
 											try {
 												pricePart.setCreatorId(site.getCreatorId());

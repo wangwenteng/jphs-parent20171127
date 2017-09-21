@@ -94,6 +94,11 @@ public class Validate {
 		return match(regex, str);
 	}
 
+	public static void main(String[] args) {
+		System.out.println("340221198106238222".length());
+		System.out.println(IsIDcard("410222199303173539"));
+	}
+	
 	/**
 	 * 验证输入身份证号
 	 * 
@@ -101,7 +106,7 @@ public class Validate {
 	 * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
 	 */
 	public static boolean IsIDcard(String str) {
-		String regex = "(^\\d{18}$)|(^\\d{15}$)";
+		String regex = "(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)";
 		return match(regex, str);
 	}
 

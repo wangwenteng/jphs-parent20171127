@@ -11,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -71,7 +68,6 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
     @Value("${WorkTimeBy2}")
     private String WorkTimeBy2;
 
-    @Scheduled(cron = "${USER_PERIOD_DAY}")
     @Override
     public void updateUserWorkTime() {
         try {
@@ -118,9 +114,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         return result;
     }
 
-    @Scheduled(cron = "${NURSE_PERIOD_DAY}")
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public void updateAllNurseWorkTime() {
         System.out.println("开始更新护士日程信息-------");
         List<String> list = worktimeDao.getAllNurse();
@@ -256,17 +250,29 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             System.out.println("date当前时间:" + format.format(date));
             Calendar ca = Calendar.getInstance();
             ca.setTime(date);
-            ca.add(Calendar.HOUR_OF_DAY, hour);
-            System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
+            int hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            //判断当前时间的小时数
+            if (hour24 < 20) {
+                ca.add(Calendar.HOUR_OF_DAY, hour);
+                System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
+                hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            }
+            else {
+                System.out.println("date当前时间" + format.format(ca.getTime()));
+                hour24 = 24;
+            }
             userWorktime = new Worktime();
             userWorktime.setCalendar(sdf.format(date));
             userWorktime.setUserid("0");
             userWorktime = worktimeDao.load(userWorktime);
-            int hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            hour24 = ca.get(Calendar.HOUR_OF_DAY);
             switch (hour24) {
             case 24:
+                ;
             case 23:
+                ;
             case 22:
+                ;
             case 21:
                 userWorktime.setH21(1);
             case 20:
@@ -338,13 +344,14 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             ca.setTime(date);
             int hour24 = ca.get(Calendar.HOUR_OF_DAY);
             //判断当前时间的小时数
-            if(hour24<20){
-            	ca.add(Calendar.HOUR_OF_DAY, hour);
-            	System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
-            	hour24 = ca.get(Calendar.HOUR_OF_DAY);
-            }else{
-            	System.out.println("date当前时间" + format.format(ca.getTime()));
-            	hour24=24;
+            if (hour24 < 20) {
+                ca.add(Calendar.HOUR_OF_DAY, hour);
+                System.out.println("date当前时间+" + hour + "小时后:" + format.format(ca.getTime()));
+                hour24 = ca.get(Calendar.HOUR_OF_DAY);
+            }
+            else {
+                System.out.println("date当前时间" + format.format(ca.getTime()));
+                hour24 = 24;
             }
             userWorktime = new Worktime();
             userWorktime.setCalendar(sdf.format(date));
@@ -352,9 +359,12 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
             userWorktime = worktimeDao.load(userWorktime);
             if (userWorktime != null) {
                 switch (hour24) {
-                case 24:;
-                case 23:;
-                case 22:;
+                case 24:
+                    ;
+                case 23:
+                    ;
+                case 22:
+                    ;
                 case 21:
                     userWorktime.setH21(1);
                 case 20:
@@ -410,14 +420,11 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
                     //获取所有审核通过的护士
                     Nurse nurse = new Nurse();
                     nurse.setStatus(1);
-                    List<Nurse> list = nurseDao.list(nurse);
-                    //清空工作时间表的数据
-                    worktimeDao.deleteAll();
+                    List<String> list = nurseDao.getNurseIdNotHaveTime();
                     //插入护士的日程安排
-                    for (Nurse result : list) {
-                        insertNurseWorkTime(result.getCreatorId());
+                    for (String result : list) {
+                        insertNurseWorkTime(result);
                     }
-                    insertUserWorkTime();
                     return "1";
                 }
                 catch (Exception e) {

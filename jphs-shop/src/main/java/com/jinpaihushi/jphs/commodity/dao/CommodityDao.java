@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
@@ -45,5 +46,7 @@ public interface CommodityDao extends BaseDao<Commodity> {
 	boolean updateShareNumber(String commodityId);
 
 	boolean updateCount(Map<String, Object> map);
+
+	Page<Commodity> getPageList(Commodity commodity);
 
 }

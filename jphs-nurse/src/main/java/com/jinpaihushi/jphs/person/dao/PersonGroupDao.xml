@@ -285,7 +285,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="groupNurseQuery">
 		<where>
 			<if test="id!=null and id!=''">
-				AND PG.id LIKE = #{id}
+				AND PG.id  = #{id}
 			</if>
 			<if test="name!=null and name!=''">
 				AND PG.name LIKE CONCAT('%', #{name}, '%')
@@ -303,12 +303,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				AND PG.create_time=#{createTime}
 			</if>
 			<if test="creatorId!=null and creatorId!=''">
-				AND PG.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+				AND PG.creator_id  = #{creatorId} 
 			</if>
 			<if test="creatorName!=null and creatorName!=''">
 				AND PG.creator_name LIKE CONCAT('%', #{creatorName}, '%')
 			</if>
-			AND (pm.`status` IS NULL or pm.`status`=1)
 		</where>
 	</sql>
 	<select id="listNurse" resultMap="groupNurse">
@@ -320,7 +319,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type =1) m_url
 		FROM
 		`person_group` PG
-		LEFT JOIN person_manager pm ON pm.person_group_id = PG.id
+		LEFT JOIN person_manager pm ON pm.person_group_id = PG.id AND pm.`status` !=-1
 		LEFT JOIN `user` u ON pm.user_id = u.id
 		<include refid="groupNurseQuery" />
 		<include refid="orderby" />

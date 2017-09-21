@@ -1,9 +1,12 @@
 package com.jinpaihushi.jphs.commodity.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,8 @@ import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityImages;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
-import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
+import com.jinpaihushi.jphs.commodity.model.CommodityPrice;
 import com.jinpaihushi.jphs.commodity.service.CommodityService;
-import com.jinpaihushi.jphs.nurse.model.NurseCommodity;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 
 /**
@@ -56,7 +58,7 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		if(sort == ""){
 			sort = "";
 		}else if("1".equals(sort)){
-			sort = " cs.sort,com.create_time";
+			sort = " com.create_time";
 		}else if("2".equals(sort)){
 			sort = " counts";
 		}else if("3".equals(sort)){
@@ -78,8 +80,15 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		 if(nurseId != null){
 			 
 			 list = commodityDao.getNurseShareList(map);
+			
 		} 
-		
+		 for (int i = 0; i < list.size(); i++) {
+			 double profit = 0.0;
+			if(list.get(i).getProfit()<1){
+				profit = list.get(i).getProfit() *(list.get(i).getPrice() - list.get(i).getCostPrice());
+			}
+				 list.get(i).setProfit(profit);
+		}
 		return list;
 	}
 
@@ -99,6 +108,27 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 		if(query.size() >0){
 			commodity.setDetailUrl(query.get(0).getUrl());
 		}
+		List<CommodityPrice> cpList = commodity.getCommodityPrice();
+		HashSet<Double> set = new HashSet<Double>();
+		 double profit = 0.0;
+		for (int i = 0; i < cpList.size(); i++) {
+			
+			 
+			 if(cpList.get(i).getProfit()<1){
+				 profit = cpList.get(i).getProfit() *(cpList.get(i).getPrice() - cpList.get(i).getCostPrice());
+				 set.add(profit);
+				  
+			 }
+			 cpList.get(i).setProfit(profit);
+		}
+		 
+		 if(set.size()>1){
+			 profit =  Collections.max(set);
+			 for (int i = 0; i < cpList.size(); i++) {
+				 cpList.get(i).setProfit(profit);
+			 }
+		 } 
+		  
 		return commodity;
 		
 	}
@@ -177,20 +207,23 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 
 	@Override
 	public boolean updateBrowser(String commodityId) {
-		// TODO Auto-generated method stub
 		return commodityDao.updateBrowser(commodityId);
 	}
 
 	@Override
 	public boolean updateShareNumber(String commodityId) {
-		// TODO Auto-generated method stub
 		return commodityDao.updateShareNumber(commodityId);
 	}
 
 	@Override
 	public boolean updateCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return commodityDao.updateCount(map);
+	}
+
+	@Override
+	public Page<Commodity> getPageList(Commodity commodity) {
+		// TODO Auto-generated method stub
+		return commodityDao.getPageList(commodity);
 	}
 
 }

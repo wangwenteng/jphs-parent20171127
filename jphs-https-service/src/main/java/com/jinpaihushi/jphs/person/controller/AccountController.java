@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
-import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
@@ -246,10 +245,6 @@ public class AccountController {
             Double balance = DoubleUtils.sub(account.getBalance(), payParice);
             account.setBalance(balance);
             accountService.update(account);
-            Order order = new Order();
-            order.setId(orderId);
-            order.setSchedule(1);
-            orderService.update(order);
             return JSONUtil.toJSONResult(1, "支付成功！", null);
         }
         catch (Exception e) {

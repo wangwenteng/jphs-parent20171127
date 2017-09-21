@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.order.service.impl;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,6 +65,7 @@ import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.tools.DoPostSms;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.DoubleUtils;
+import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.TransactionTemplateUtils;
 import com.jinpaihushi.utils.UUIDUtils;
 import com.jinpaihushi.utils.Util;
@@ -370,8 +372,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     @Override
     public Map<String, Object> createOrderNew(OrderPojo orderInfo) {
 
-    	
-    	
         Map<String, Object> result = new HashMap<>();
         // 详细价格
         PricePart pricePart = pricePartDao.loadById(orderInfo.getPricePartId());
@@ -445,8 +445,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     order.setStatus(1);
                     order.setVoucherPrice(voucherUse == null ? 0.00 : voucherUse.getAmount());
                     order.setVoucherUseId(voucherUse == null ? null : orderInfo.getVoucherUseId());
-                    if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
+                    if (StringUtils.isNotEmpty(orderInfo.getExpectorId())) {
                         order.setAcceptUserId(orderInfo.getExpectorId());
+                        order.setAcceptTime(new Date());
+                    }
                     order.setCreateTime(new Date());
                     i = orderDao.insert(order);
                     if (i > 0) {
@@ -629,6 +631,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             // 如果是未支付状态的可以直接取消
             if (order.getSchedule() == 0) {
                 // 判断该订单是否使用优惠券
+                resetVouvher(orderId, order);
+                msg = "您的订单已经取消！";
+            }
+            if (StringUtils.isEmpty(order.getAcceptUserId())) {
                 resetVouvher(orderId, order);
                 msg = "您的订单已经取消！";
             }
@@ -816,7 +822,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     try {
                         User user = new User();
                         user.setId(orders.getCreatorId());
-                        user.setStatus(0);
+                        user.setStatus(1);
                         User orderUser = userDao.load(user);
                         // 记录日志-debug
                         if (Util.debugLog.isDebugEnabled()) {
@@ -825,7 +831,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         }
                         if (orderUser != null) {
                             // 发送验证码
-                            DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的您的订单：" + out_trade_no + "下单成功。",
+                            DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的订单：" + out_trade_no + "下单成功。",
                                     "SMS_69155344", "{\"out_trade_no\":\"" + out_trade_no + "\"}");
                         }
                         return true;
@@ -1134,91 +1140,97 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     Goods goods_one = new Goods();
                     goods_one.setId(orderGoodsId);
                     Goods good_u = goodsDao.load(goods_one);
-                    if(good_u == null || good_u.equals("")){
-                    	return "11";
+                    if (good_u == null || good_u.equals("")) {
+                        return "11";
                     }
                     String productId = good_u.getProductId();
-                    if(StringUtils.isEmpty(productId)){
-                    	return "11";
+                    if (StringUtils.isEmpty(productId)) {
+                        return "11";
                     }
-                    if(!productId.equals("139")){
-                    	OrderOther oo = new OrderOther();
-	                    oo.setOrderId(orderId);
-	                    oo.setStatus(1);
-	                    List<OrderOther> oo_list = orderOtherDao.list(oo);
-	
-	                    if (oo_list == null || oo_list.equals("") || oo_list.size() <= 0) {
-	                        return "10";
-	                    }
-	                    if (oo_list.get(0).getAddress() == null || oo_list.get(0).getAddress().equals("")) {
-	                        return "11";
-	                    }
-	                    UserAddress ua = new UserAddress();
-	                    ua.setCreatorId(user.getId());
-	                    ua.setStatus(0);
-	                    //	护士地址
-	                    List<UserAddress> ua_list = userAddressDao.list(ua);
-	                    if (ua_list == null || ua_list.equals("") || ua_list.size() <= 0) {
-	                        return "12";
-	                    }
-	                    //	订单地址
-	                    String oo_addess = oo_list.get(0).getAddress();
-	                    String[] oo_addess_arr = oo_addess.split(",");
-	                    if(oo_addess_arr.length < 1){
-	                    	return "14";
-	                    }
-	                    if (oo_addess_arr[0] == null || oo_addess_arr[0].equals("")) {
-	                        return "13";
-	                    }
-	                    boolean flag_adds = true;
-	                    if(productId.equals("141")){
-	                    	String jy_s = oo_addess_arr[0];
-	                    	for(int i =0;i<ua_list.size();i++){
-	                    		if (ua_list.get(i).getProvince() == null || ua_list.get(i).getProvince().equals("")) {
-		                            continue;
-		                        }
-		                        String ua_ss_pj = ua_list.get(i).getProvince();
-		                        if (ua_ss_pj.equals(jy_s)) {
-		                            flag_adds = false;
-		                            break;
-		                        }else if(ua_ss_pj.equals(jy_s+"市")){
-		                        	 flag_adds = false;
-			                         break;
-		                        }
-	                    	}
-	                    }else{
-		                   
-		                    if (oo_addess_arr[1] == null || oo_addess_arr[1].equals("")) {
-		                    	return "14";
-		                    }
-		                    String oo_ss_pj = "";
-		                    if (oo_addess_arr[1].equals("市辖区")) {
-		                        oo_ss_pj = oo_addess_arr[0] + oo_addess_arr[0];
-		                    }
-		                    else {
-		                        oo_ss_pj = oo_addess_arr[0] + oo_addess_arr[1];
-		                    }
-		                    if (oo_ss_pj.equals("")) {
-		                        return "15";
-		                    }
-		                   
-		                    for (int a = 0; a < ua_list.size(); a++) {
-		                        if (ua_list.get(a).getProvince() == null || ua_list.get(a).getProvince().equals("")) {
-		                            continue;
-		                        }
-		                        if (ua_list.get(a).getCity() == null || ua_list.get(a).getCity().equals("")) {
-		                            continue;
-		                        }
-		                        String ua_ss_pj = ua_list.get(a).getProvince() + ua_list.get(a).getCity();
-		                        if (ua_ss_pj.equals(oo_ss_pj)) {
-		                            flag_adds = false;
-		                            break;
-		                        }
-		                    }
-	                    }
-	                    if (flag_adds) {
-	                        return "16";
-	                    }
+                    if (!productId.equals("139")) {
+                        OrderOther oo = new OrderOther();
+                        oo.setOrderId(orderId);
+                        oo.setStatus(1);
+                        List<OrderOther> oo_list = orderOtherDao.list(oo);
+
+                        if (oo_list == null || oo_list.equals("") || oo_list.size() <= 0) {
+                            return "10";
+                        }
+                        if (oo_list.get(0).getAddress() == null || oo_list.get(0).getAddress().equals("")) {
+                            return "11";
+                        }
+                        UserAddress ua = new UserAddress();
+                        ua.setCreatorId(user.getId());
+                        ua.setStatus(0);
+                        //	护士地址
+                        List<UserAddress> ua_list = userAddressDao.list(ua);
+                        if (ua_list == null || ua_list.equals("") || ua_list.size() <= 0) {
+                            return "12";
+                        }
+                        //	订单地址
+                        String oo_addess = oo_list.get(0).getAddress();
+                        String[] oo_addess_arr = oo_addess.split(",");
+                        if (oo_addess_arr.length < 1) {
+                            return "14";
+                        }
+                        if (oo_addess_arr[0] == null || oo_addess_arr[0].equals("")) {
+                            return "13";
+                        }
+                        boolean flag_adds = true;
+                        if (productId.equals("141")) {
+                            String jy_s = oo_addess_arr[0];
+                            for (int i = 0; i < ua_list.size(); i++) {
+                                if (ua_list.get(i).getProvince() == null || ua_list.get(i).getProvince().equals("")) {
+                                    continue;
+                                }
+                                String ua_ss_pj = ua_list.get(i).getProvince();
+                                if (ua_ss_pj.equals(jy_s)) {
+                                    flag_adds = false;
+                                    break;
+                                }
+                                else if (ua_ss_pj.equals(jy_s + "市")) {
+                                    flag_adds = false;
+                                    break;
+                                }
+                                else if (ua_ss_pj.equals(jy_s + "省")) {
+                                    flag_adds = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+
+                            if (oo_addess_arr[1] == null || oo_addess_arr[1].equals("")) {
+                                return "14";
+                            }
+                            String oo_ss_pj = "";
+                            if (oo_addess_arr[1].equals("市辖区")) {
+                                oo_ss_pj = oo_addess_arr[0] + oo_addess_arr[0];
+                            }
+                            else {
+                                oo_ss_pj = oo_addess_arr[0] + oo_addess_arr[1];
+                            }
+                            if (oo_ss_pj.equals("")) {
+                                return "15";
+                            }
+
+                            for (int a = 0; a < ua_list.size(); a++) {
+                                if (ua_list.get(a).getProvince() == null || ua_list.get(a).getProvince().equals("")) {
+                                    continue;
+                                }
+                                if (ua_list.get(a).getCity() == null || ua_list.get(a).getCity().equals("")) {
+                                    continue;
+                                }
+                                String ua_ss_pj = ua_list.get(a).getProvince() + ua_list.get(a).getCity();
+                                if (ua_ss_pj.equals(oo_ss_pj)) {
+                                    flag_adds = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (flag_adds) {
+                            return "16";
+                        }
                     }
                     Order order = new Order();
                     order.setId(orderId);
@@ -1241,14 +1253,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         return "9";
                         //          				return JSONUtil.toJSONResult(0, "接单失败！", null);
                     }
-                }
-                catch (Exception e) {
+                }  catch (Exception e) {
                     e.printStackTrace();
                     //日志打印区
                     status.setRollbackOnly();//回滚
                     return "0";
                 }
-
                 return "1";
             }
         });
@@ -1256,6 +1266,163 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         return rs;
     }
 
+    /**
+     * 余额支付
+     * @return
+     */
+    public byte [] balancePayment(String orderId, String orderNo, Double payParice,String userId){
+    	TransactionTemplate transactionTemplate = TransactionTemplateUtils.getDefaultTransactionTemplate(txManager);
+        String rs = (String) transactionTemplate.execute(new TransactionCallback<Object>() {
+            //事务模板
+            public String doInTransaction(final TransactionStatus status) {
+                try {
+
+                    Order order = new Order();
+                    order.setOrderNo(orderNo);
+                    order.setStatus(1);
+                    order.setSchedule(0);
+                    Order orders = orderDao.load(order);
+
+                    if (orders == null || "".equals(orders)) {
+                    	status.setRollbackOnly();//回滚
+                        return "5";
+                    }
+                	
+                	 OrderGoods orderGoods = new OrderGoods();
+                     orderGoods.setOrderId(orders.getId());
+                     orderGoods = orderGoodsDao.load(orderGoods);
+                     //判断支付金额跟订单金额
+                     if (DoubleUtils.sub(orderGoods.getPayPrice(), payParice) != 0) {
+                         return "2";
+                     }
+                     Account model = new Account();
+                     model.setCreatorId(userId);
+                     Account account = accountDao.load(model);
+                     if(null == account || "".equals(account)){
+                    	 return "10";
+                     }
+                     if(null == account.getBalance() || "".equals(account.getBalance())){
+                    	 return "11";
+                     }
+                     /**
+                      * 用于余额不足
+                      */
+                     if (DoubleUtils.sub(account.getBalance(), payParice) < 0) {
+                         return "3";
+                     }
+                     /**
+                      * 用户余额减去-订单金额
+                      * 更新用户余额
+                      */
+                     Double balance = DoubleUtils.sub(account.getBalance(), payParice);
+                     account.setBalance(balance);
+                     int a = accountDao.update(account);
+                     if(a < 1){
+                    	 status.setRollbackOnly();//回滚
+                    	 return "4";
+                     }
+                     
+                     OrderGoods orderGoods_up = new OrderGoods();
+                     orderGoods_up.setOrderId(orders.getId());
+                     orderGoods_up.setStatus(1);
+                     OrderGoods orderGoods_ny = orderGoodsDao.load(orderGoods_up);
+                     if (orderGoods_ny == null || "".equals(orderGoods_ny)) {
+                    	 status.setRollbackOnly();//回滚
+                         return "6";
+                     }
+                     
+                    if(DoubleUtils.sub(orderGoods_ny.getPayPrice(), payParice) < 0){
+                    	status.setRollbackOnly();//回滚
+                        return "7";
+                    }
+
+	                 String remark = "";
+	                 if (orderGoods_ny.getTitle() != null && !orderGoods_ny.getTitle().equals("")) {
+	                     remark = orderGoods_ny.getTitle();
+	                 }
+	
+	                 Transaction transaction = new Transaction();
+	                 transaction.setId(UUID.randomUUID().toString());
+	                 transaction.setOrderId(orders.getId());
+	                 transaction.setAmount(payParice);
+	                 transaction.setScore((new Double(payParice)).intValue());
+	                 transaction.setOperate(3);
+	                 transaction.setOperateSource(1);
+	                 transaction.setRemark(remark);
+	                 transaction.setWithdraw(0);
+	                 transaction.setPayType(3);
+	                 transaction.setOutTradeNo(orderNo);
+	                 transaction.setCreatorId(orders.getCreatorId());
+	                 transaction.setCreatorName(orders.getCreatorName());
+	                 transaction.setCreateTime(new Date());
+	                 transaction.setStatus(1);
+	                 transaction.setType(1);
+	                 int ti = transactionDao.insert(transaction);
+	                 if (ti <= 0) {
+	                	 status.setRollbackOnly();//回滚
+	                     return "8";
+	                 }
+	                 Order orderUp = new Order();
+	                 orderUp.setId(orders.getId());
+	                 orderUp.setSchedule(1);
+	                 int orderUpbool = orderDao.update(orderUp);
+	                 if (orderUpbool < 1) {
+	                	 status.setRollbackOnly();//回滚
+	                     return "9";
+	                 }
+	                 User user = new User();
+                     user.setId(orders.getCreatorId());
+                     user.setStatus(1);
+                     User orderUser = userDao.load(user);
+                     if (orderUser != null) {
+                         // 发送验证码
+                         try {
+							DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的订单：" + orderNo + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + orderNo + "\"}");
+						} catch (Exception e) {
+						}
+                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //日志打印区
+                    status.setRollbackOnly();//回滚
+                    return "0";
+                }
+                return "1";
+            }
+        });
+        String msg = "支付成功";
+        int rsi = Integer.parseInt(rs);
+        if(rsi == 0){
+        	msg = "支付失败，请刷新重试";
+        }else if(rsi == 2){
+        	msg = "支付失败，订单异常";
+        }else if(rsi == 3){
+        	msg = "支付失败，余额不足";
+        }else if(rsi == 4){
+        	msg = "支付失败，订单异常";
+        }else if(rsi == 5){
+        	msg = "支付失败，订单数据异常";
+        }else if(rsi == 6){
+        	msg = "支付失败，订单数据异常-1";
+        }else if(rsi == 7){
+        	msg = "支付失败，金额异常";
+        }else if(rsi == 8){
+        	msg = "支付失败，添加消费记录异常";
+        }else if(rsi == 9){
+        	msg = "支付失败，订单状态异常";
+        }else if(rsi == 10){
+        	msg = "支付失败，用户账户异常";
+        }else if(rsi == 11){
+        	msg = "支付失败，用户账户余额异常";
+        }
+        
+        try {
+			return JSONUtil.toJSONResult(rsi, msg, null);
+		} catch (IOException e) {
+		}
+		return null;
+    }
+    
     private void resetVouvher(String orderId, Order order) {
         if (StringUtils.isNotEmpty(order.getVoucherUseId())) {
             // 将优惠券的使用时间以及状态修改为未使用状态

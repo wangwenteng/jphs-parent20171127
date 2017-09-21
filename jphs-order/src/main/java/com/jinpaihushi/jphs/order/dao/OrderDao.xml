@@ -246,6 +246,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="confirmTime" column="confirm_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 	</resultMap>
 	
 	<resultMap id="orderGlobal" type="com.jinpaihushi.jphs.order.model.Order">
@@ -1073,6 +1074,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			LEFT JOIN service_images si ON o.`id`=si.`source_id` AND si.`type`=1 
 			LEFT JOIN goods g ON og.`goods_id`=g.`id` 
 			WHERE o.status=#{status} 
+			 AND o.appointment_time > now() 
 			 AND o.accept_user_id IS NULL 
 			 AND g.`type`=#{type}  
 			 AND o.`schedule`=#{schedule}  
@@ -1246,7 +1248,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				LEFT JOIN order_service os ON o.`id`=os.`order_id`
 				LEFT JOIN `user` u ON o.`creator_id`=u.`id`
 				LEFT JOIN service_images si ON o.`id`=si.`source_id` AND si.`type`=1 
-				 WHERE o.status=1
+				 WHERE o.status=1 
+				 AND o.schedule != 0 
 				 AND o.accept_user_id=#{userId}
 				 <if test="schedule!=null and schedule!=''">
 					 AND o.`schedule`=#{schedule}
@@ -1320,5 +1323,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			 AND o.`schedule`=#{schedule} 
 			 ORDER BY o.appointment_time ASC LIMIT 1
 	</select>
-	
+	<select id="getCompletedOrder" resultMap="order">
+		SELECT
+			*
+		FROM
+			`order` o
+		LEFT JOIN (
+			SELECT DISTINCT
+				os.order_id,
+				MAX(os.end_service_time) confirm_time
+			FROM
+				order_service os
+			GROUP BY
+				os.order_id
+		) s ON o.id = s.order_id
+		WHERE
+			s.confirm_time > #{confirmTime}
+		AND o.`schedule` = #{schedule}
+	</select>
 </mapper>

@@ -18,4 +18,6 @@ public interface WechatService extends BaseService<Wechat> {
 	String getWXUserInfo(String code);
 	
 	void getTokens();
+	
+	int getUserWecthIfFollow(String openId);
 }

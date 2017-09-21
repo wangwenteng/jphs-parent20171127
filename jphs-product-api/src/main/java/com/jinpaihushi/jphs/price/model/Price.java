@@ -62,6 +62,12 @@ public class Price extends BaseModel implements Predicate<Price>,
 	/** 成本价 */
 	private Double costPrice;
 	
+	/** 护士参考最高价格 */
+    private Double maxPrice;
+
+    /** 发布服务超出比例 */
+    private Double outRatio;
+	
     /** 利润 */
 	private Double profit;
 
@@ -107,6 +113,34 @@ public class Price extends BaseModel implements Predicate<Price>,
 		this.id = id;
 	}
 
+	/**
+     * 获取护士参考最高价格
+     */
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    /**
+     * 设置护士参考最高价格
+     */
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    /**
+     * 获取发布服务超出比例
+     */
+    public Double getOutRatio() {
+        return outRatio;
+    }
+
+    /**
+     * 设置发布服务超出比例
+     */
+    public void setOutRatio(Double outRatio) {
+        this.outRatio = outRatio;
+    }
+	
 	/**
 	 * 获取prId
 	 */

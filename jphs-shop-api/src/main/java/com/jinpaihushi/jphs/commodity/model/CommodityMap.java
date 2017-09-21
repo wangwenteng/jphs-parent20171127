@@ -29,6 +29,7 @@ public class CommodityMap  {
 
 	private String cpId;
 
+	private double costPrice;
 	
 	private double price;
 	
@@ -188,6 +189,18 @@ public class CommodityMap  {
 
 	public void setProfit(double profit) {
 		this.profit = profit;
+	}
+
+
+
+	public double getCostPrice() {
+		return costPrice;
+	}
+
+
+
+	public void setCostPrice(double costPrice) {
+		this.costPrice = costPrice;
 	}
 
     

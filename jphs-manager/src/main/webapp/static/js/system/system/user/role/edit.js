@@ -2,7 +2,7 @@ $(function() {
 	$('#save').click(function() {
 		var roleIds = '';
 		var checkedId = $('input[name="roleId"]:checked');
-		if (checkedId.legth > 0) {
+		if (checkedId.length > 0) {
 			for (var i = 0; i < checkedId.length; i++) {
 				if ((i + 1) == checkedId.length) {
 					roleIds += checkedId[i].value;

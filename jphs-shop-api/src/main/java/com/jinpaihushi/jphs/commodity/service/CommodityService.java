@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
 import com.jinpaihushi.service.BaseService;
@@ -33,4 +34,6 @@ public interface CommodityService extends BaseService<Commodity> {
 	boolean updateShareNumber(String commodityId);
 	
 	boolean updateCount(Map<String, Object> map);
+	
+	Page<Commodity> getPageList(Commodity commodity);
 }

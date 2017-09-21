@@ -477,8 +477,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE
 		coi.user_id = ${userId}
 		AND ci.type = 1
-		<if test="status==-1">
-			AND coi.`status` = -1
+		<if test="status==-2">
+			AND coi.`status` = -2
 		</if>
 		<if test="status==0">
 			AND coi.`status` in (0 ,1)

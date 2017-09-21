@@ -4,12 +4,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.domain.Voucher;
 
 public class ExcelUtil {
 
@@ -219,7 +222,7 @@ public class ExcelUtil {
 	}
 	
 	
-	 /* public static void main(String[] args) throws IOException {
+	  public static void main(String[] args) throws IOException {
 	        int count = 13;
 	        JSONArray ja = new JSONArray();
 	        for(int i=0;i<count;i++){
@@ -241,13 +244,13 @@ public class ExcelUtil {
 	        headMap.put("effectTyp","性别");
 
 	        String title = "测试";
-	        
+	        /*
 	        OutputStream outXls = new FileOutputStream("E://a.xls");
 	        System.out.println("正在导出xls....");
 	        Date d = new Date();
 	        ExcelUtil.exportExcel(title,headMap,ja,null,outXls);
 	        System.out.println("共"+count+"条数据,执行"+(new Date().getTime()-d.getTime())+"ms");
-	        outXls.close();
+	        outXls.close();*/
 	        //
 	        OutputStream outXlsx = new FileOutputStream("d://b.xlsx");
 	        System.out.println("正在导出xlsx....");
@@ -256,5 +259,5 @@ public class ExcelUtil {
 	        System.out.println("共"+count+"条数据,执行"+(new Date().getTime()-d2.getTime())+"ms");
 	        outXlsx.close();
 
-	    }*/
+	    }
 }

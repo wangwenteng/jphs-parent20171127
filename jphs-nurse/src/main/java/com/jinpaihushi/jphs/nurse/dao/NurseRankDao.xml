@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwenteng
+	date	:	2017-09-20 09:27:06
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.nurse.dao.NurseRankDao">
+	
+	<sql id="field">
+		NR.id, NR.user_id, NR.ranking, NR.type, 
+		NR.base_server_number, NR.real_server_numer, NR.favorable_rate, NR.degree_heat, 
+		NR.status, NR.create_time, NR.update_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		NR.id NR_id, NR.user_id NR_user_id, 
+		NR.ranking NR_ranking, NR.type NR_type, 
+		NR.base_server_number NR_base_server_number, NR.real_server_numer NR_real_server_numer, 
+		NR.favorable_rate NR_favorable_rate, NR.degree_heat NR_degree_heat, 
+		NR.status NR_status, NR.create_time NR_create_time, 
+		NR.update_time NR_update_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		NR.id id, NR.user_id userId, 
+		NR.ranking ranking, NR.type type, 
+		NR.base_server_number baseServerNumber, NR.real_server_numer realServerNumer, 
+		NR.favorable_rate favorableRate, NR.degree_heat degreeHeat, 
+		NR.status status, NR.create_time createTime, 
+		NR.update_time updateTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND NR.id=#{id}
+		</if>
+		<if test="userId!=null and userId!=''">
+			AND NR.user_id=#{userId}
+		</if>
+		<if test="ranking!=null">
+			AND NR.ranking=#{ranking}
+		</if>
+		<if test="type!=null">
+			AND NR.type=#{type}
+		</if>
+		<if test="baseServerNumber!=null">
+			AND NR.base_server_number=#{baseServerNumber}
+		</if>
+		<if test="realServerNumer!=null">
+			AND NR.real_server_numer=#{realServerNumer}
+		</if>
+		<if test="favorableRate!=null">
+			AND NR.favorable_rate=#{favorableRate}
+		</if>
+		<if test="degreeHeat!=null">
+			AND NR.degree_heat=#{degreeHeat}
+		</if>
+		<if test="status!=null">
+			AND NR.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND NR.create_time=#{createTime}
+		</if>
+		<if test="updateTime!=null">
+			AND NR.update_time=#{updateTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND NR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="userId!=null and userId!=''">
+				AND NR.user_id LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test="ranking!=null">
+				AND NR.ranking=#{ranking}
+			</if>
+			<if test="type!=null">
+				AND NR.type=#{type}
+			</if>
+			<if test="baseServerNumber!=null">
+				AND NR.base_server_number=#{baseServerNumber}
+			</if>
+			<if test="realServerNumer!=null">
+				AND NR.real_server_numer=#{realServerNumer}
+			</if>
+			<if test="favorableRate!=null">
+				AND NR.favorable_rate=#{favorableRate}
+			</if>
+			<if test="degreeHeat!=null">
+				AND NR.degree_heat=#{degreeHeat}
+			</if>
+			<if test="status!=null">
+				AND NR.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND NR.create_time=#{createTime}
+			</if>
+			<if test="updateTime!=null">
+				AND NR.update_time=#{updateTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				NR.id=#{id}, 
+		   </if>
+           <if test="userId!=null">
+				NR.user_id=#{userId}, 
+		   </if>
+           <if test="ranking!=null">
+				NR.ranking=#{ranking}, 
+		   </if>
+           <if test="type!=null">
+				NR.type=#{type}, 
+		   </if>
+           <if test="baseServerNumber!=null">
+				NR.base_server_number=#{baseServerNumber}, 
+		   </if>
+           <if test="realServerNumer!=null">
+				NR.real_server_numer=#{realServerNumer}, 
+		   </if>
+           <if test="favorableRate!=null">
+				NR.favorable_rate=#{favorableRate}, 
+		   </if>
+           <if test="degreeHeat!=null">
+				NR.degree_heat=#{degreeHeat}, 
+		   </if>
+           <if test="status!=null">
+				NR.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				NR.create_time=#{createTime}, 
+		   </if>
+           <if test="updateTime!=null">
+				NR.update_time=#{updateTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="nurseRank" type="com.jinpaihushi.jphs.nurse.model.NurseRank">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="ranking" column="ranking" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="baseServerNumber" column="base_server_number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="realServerNumer" column="real_server_numer" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="favorableRate" column="favorable_rate" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="degreeHeat" column="degree_heat" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="updateTime" column="update_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="nurseRankGlobal" type="com.jinpaihushi.jphs.nurse.model.NurseRank">
+		<result property="id" column="NR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="userId" column="NR_user_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="ranking" column="NR_ranking" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="type" column="NR_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="baseServerNumber" column="NR_base_server_number" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="realServerNumer" column="NR_real_server_numer" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="favorableRate" column="NR_favorable_rate" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="degreeHeat" column="NR_degree_heat" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="NR_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="NR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="updateTime" column="NR_update_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.nurse.model.NurseRank">
+		INSERT INTO `NURSE_RANK`(
+			id, user_id, 
+			ranking, type, 
+			base_server_number, real_server_numer, 
+			favorable_rate, degree_heat, 
+			status, create_time, 
+			update_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+			#{ranking,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+			#{baseServerNumber,jdbcType=INTEGER}, #{realServerNumer,jdbcType=INTEGER}, 
+			#{favorableRate,jdbcType=DECIMAL}, #{degreeHeat,jdbcType=INTEGER}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `NURSE_RANK`(
+			id, user_id, 
+			ranking, type, 
+			base_server_number, real_server_numer, 
+			favorable_rate, degree_heat, 
+			status, create_time, 
+			update_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, 
+			#{item.ranking,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, 
+			#{item.baseServerNumber,jdbcType=INTEGER}, #{item.realServerNumer,jdbcType=INTEGER}, 
+			#{item.favorableRate,jdbcType=DECIMAL}, #{item.degreeHeat,jdbcType=INTEGER}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.updateTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE NR FROM `NURSE_RANK` NR WHERE NR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `NURSE_RANK` NR
+		SET 
+		NR.STATUS = -1
+		WHERE NR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `NURSE_RANK` NR
+		<include refid="dynamicSet" /> 
+	    WHERE NR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="nurseRank">
+		SELECT <include refid="field"/>
+		FROM `NURSE_RANK` NR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `NURSE_RANK` NR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="nurseRank">
+		SELECT <include refid="field"/>
+		FROM `NURSE_RANK` NR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="nurseRank">
+		SELECT <include refid="field"/>
+		FROM `NURSE_RANK` NR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="nurseRank">
+		SELECT <include refid="field"/>
+		FROM `NURSE_RANK` NR
+		WHERE NR.ID = #{id}
+	</select>
+	
+</mapper>

@@ -298,6 +298,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 							<result property="oldPrice" column="pr_old_price" javaType="Double" jdbcType="DECIMAL"></result>
 							<result property="costPrice" column="pr_cost_price" javaType="Double" jdbcType="DECIMAL"></result>
 							<result property="profit" column="pr_profit" javaType="Double" jdbcType="DECIMAL"></result>
+							<result property="maxPrice" column="pr_max_price" javaType="Double" jdbcType="DECIMAL"></result>
+							<result property="outRatio" column="pr_out_ratio" javaType="Double" jdbcType="DECIMAL"></result>
 				        </association>
 					</collection>
 			</collection>
@@ -622,7 +624,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             s.sub_title good_sub_title,
             s.product_id good_product_id,
             s.content good_content,
-            s.tool good_tool,
             s.insurance good_insurance,
             s.tijian_type_id good_tijian_type_id,
             s.tijian_hospital_id good_tijian_hospital_id,
@@ -654,7 +655,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
             pr.price pr_price,
             pr.old_price pr_old_price,
             pr.cost_price pr_cost_price,
-            pr.profit pr_profit
+            pr.profit pr_profit,
+            pr.max_price pr_max_price,
+            pr.out_ratio pr_out_ratio 
         FROM
             price_part pr
        LEFT JOIN `price` e ON e.id = pr.price_id

@@ -38,6 +38,6 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	Integer toUpdatePayPrice(String id,double payPrice);
 	
 	List<CommodityOrder> getStatusByOrderNo(String orderNo);
-	
+	byte [] balancePayment(String orderId, String orderNo, Double payParice,String userId);
 	boolean updateWechatCommodityOrderStutas(SortedMap<Object, Object> packageParams);
 }

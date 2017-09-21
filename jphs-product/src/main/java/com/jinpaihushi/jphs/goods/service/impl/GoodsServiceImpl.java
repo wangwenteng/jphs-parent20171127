@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.goods.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,9 @@ import com.jinpaihushi.jphs.goods.model.ImageType;
 import com.jinpaihushi.jphs.goods.model.ListPrice;
 import com.jinpaihushi.jphs.goods.service.GoodsService;
 import com.jinpaihushi.jphs.jobtitle.dao.JobtitleDao;
+import com.jinpaihushi.jphs.jobtitle.dao.JobtitleGoodsDao;
 import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
+import com.jinpaihushi.jphs.jobtitle.model.JobtitleGoods;
 import com.jinpaihushi.jphs.price.dao.PriceDao;
 import com.jinpaihushi.jphs.price.dao.PriceNurseDao;
 import com.jinpaihushi.jphs.price.dao.PricePartDao;
@@ -39,6 +42,7 @@ import com.jinpaihushi.jphs.service.dao.ServiceImagesDao;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.utils.DoubleUtils;
+import com.jinpaihushi.utils.UUIDUtils;
 
 /**
  * 
@@ -78,6 +82,9 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
 
     @Autowired
     private PriceNurseDao priceNurseDao;
+    
+    @Autowired
+    private JobtitleGoodsDao jobtitleGoodsDao;
 
     @Override
     protected BaseDao<Goods> getDao() {
@@ -237,6 +244,25 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
                                             catch (Exception e) {
                                             }
                                             pricePartDao.insert(pricePart);
+                                            
+                                            if(null != priceOne.getAptitudeIdArr() && !"".equals(priceOne.getAptitudeIdArr())){
+                                            	String [] aptitudeIdArr = priceOne.getAptitudeIdArr().split(",");
+                                            	for(int i=0; i<aptitudeIdArr.length; i++){
+                                            		JobtitleGoods jobtitleGoods = new JobtitleGoods();
+                                            		jobtitleGoods.setCreateTime(new Date());
+                                            		jobtitleGoods.setId(UUIDUtils.getId());
+                                            		jobtitleGoods.setJobtitleId(aptitudeIdArr[i]);
+                                            		jobtitleGoods.setStatus(1);
+                                            		jobtitleGoods.setGoodsId(ida);
+                                            		try {
+                                            			jobtitleGoods.setCreatorId(goods.getCreatorId());
+                                            			jobtitleGoods.setCreatorName(goods.getCreatorName());
+                                                    } catch
+                                            		(Exception e) {
+                                                    }
+                                            		jobtitleGoodsDao.insert(jobtitleGoods);
+                                            	}
+                                            }
                                         }
                                     }
                                 }
@@ -344,6 +370,35 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
                                                 && priceList.get(a).getGrade() != null) {
                                             priceList.get(a).setGoodsId(goods.getId());
                                             priceList.get(a).setGradeName(priceGradeOne.getGradeName());
+
+                                            if(null != priceList.get(a).getAptitudeIdArr() && !"".equals(priceList.get(a).getAptitudeIdArr())){
+                                            	JobtitleGoods jobtitleGoods_dl = new JobtitleGoods();
+                                            	jobtitleGoods_dl.setGoodsId(goods.getId());
+                                            	List<JobtitleGoods> jobtitleGoods_list = jobtitleGoodsDao.list(jobtitleGoods_dl);
+                                            	if(null != jobtitleGoods_list && !"".equals(jobtitleGoods_list) && jobtitleGoods_list.size()>0){
+                                            		for(int j=0;j<jobtitleGoods_list.size();j++){
+                                            			jobtitleGoodsDao.deleteById(jobtitleGoods_list.get(j).getId());
+                                            		}
+                                            	}
+                                            	
+                                            	String [] aptitudeIdArr = priceList.get(a).getAptitudeIdArr().split(",");
+                                            	for(int i=0; i<aptitudeIdArr.length; i++){
+                                            		JobtitleGoods jobtitleGoods = new JobtitleGoods();
+                                            		jobtitleGoods.setCreateTime(new Date());
+                                            		jobtitleGoods.setId(UUIDUtils.getId());
+                                            		jobtitleGoods.setJobtitleId(aptitudeIdArr[i]);
+                                            		jobtitleGoods.setStatus(1);
+                                            		jobtitleGoods.setGoodsId(goods.getId());
+                                            		try {
+                                            			jobtitleGoods.setCreatorId(goods.getCreatorId());
+                                            			jobtitleGoods.setCreatorName(goods.getCreatorName());
+                                                    } catch
+                                            		(Exception e) {
+                                                    }
+                                            		jobtitleGoodsDao.insert(jobtitleGoods);
+                                            	}
+                                            }
+                                            
                                             priceDao.update(priceList.get(a));
                                             PricePart pricePart = new PricePart();
                                             pricePart.setSiteId("0");
@@ -376,6 +431,27 @@ public class GoodsServiceImpl extends BaseServiceImpl<Goods> implements GoodsSer
                                             priceList.get(a).setGradeName(priceGradeOne.getGradeName());
                                             priceList.get(a).setGrade(priceGradeOne.getGrade());
                                             priceList.get(a).setStatus(0);
+
+                                            if(null != priceList.get(a).getAptitudeIdArr() && !"".equals(priceList.get(a).getAptitudeIdArr())){
+                                            	String [] aptitudeIdArr = priceList.get(a).getAptitudeIdArr().split(",");
+                                            	for(int i=0; i<aptitudeIdArr.length; i++){
+                                            		JobtitleGoods jobtitleGoods = new JobtitleGoods();
+                                            		jobtitleGoods.setCreateTime(new Date());
+                                            		jobtitleGoods.setId(UUIDUtils.getId());
+                                            		jobtitleGoods.setJobtitleId(aptitudeIdArr[i]);
+                                            		jobtitleGoods.setStatus(1);
+                                            		jobtitleGoods.setGoodsId(goods.getId());
+                                            		try {
+                                            			jobtitleGoods.setCreatorId(goods.getCreatorId());
+                                            			jobtitleGoods.setCreatorName(goods.getCreatorName());
+                                                    } catch
+                                            		(Exception e) {
+                                                    }
+                                            		jobtitleGoodsDao.insert(jobtitleGoods);
+                                            	}
+                                            }
+                                            
+                                            
                                             priceDao.insert(priceList.get(a));
                                             PricePart pricePart = new PricePart();
                                             pricePart.setSiteId("0");

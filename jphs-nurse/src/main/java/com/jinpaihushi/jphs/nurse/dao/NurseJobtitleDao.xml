@@ -499,66 +499,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<select id="getNurseList" resultType="java.util.HashMap">
-		<!-- SELECT DISTINCT
-		nj.creator_id nurseId,
-		u.`name` nurseName,
-		u.sex
-		nurseSex,
-		IFNULL(n.hospital,'') nurseHospital,
-		(SELECT url FROM
-		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1)
-		url,
-		CASE
-		WHEN
-		n.work_years IS NOT NULL THEN
-		(
-		(
-		YEAR (now()) - YEAR (n.work_years) - 1
-		) + (
-		DATE_FORMAT(n.work_years, '%m%d') &lt;= DATE_FORMAT(NOW(),
-		'%m%d')
-		)
-		)
-		ELSE
-		''
-		END AS workYear,
-		(
-		SELECT
-		COUNT(id)
-		FROM
-		`order` o
-		WHERE
-		o.accept_user_id = nj.creator_id
-		AND o.`schedule` = 5
-		) serviceNumber,
-		p.lon,
-		p.lat,
-		COALESCE(ROUND(
-		6378.138 * 2 * ASIN(
-		SQRT(
-		POW(
-		SIN(
-		(
-		#{lat} * PI() /
-		180 - p.lat * PI() / 180 ) / 2 ), 2 ) + COS(#{lat} * PI() / 180) *
-		COS(p.lat * PI() / 180) * POW(
-		SIN( ( #{lon} * PI() / 180 - p.lon *
-		PI() / 180 ) / 2 ), 2
-		)
-		)
-		),
-		2
-		),'') AS distance
-		FROM
-		nurse_jobtitle nj
-		LEFT JOIN
-		`user` u ON nj.creator_id = u.id
-		LEFT JOIN nurse n ON u.id
-		=
-		n.creator_id
-		LEFT JOIN position p ON u.id = p.creator_id -->
 		SELECT DISTINCT
-		nj.creator_id nurseId,
+		rn.user_id nurseId,
 		u.`name` nurseName,
 		u.sex
 		nurseSex,
@@ -580,19 +522,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ELSE
 		''
 		END AS workYear,
-		(
-		SELECT
-		COUNT(id)
+		 (rn.base_server_number+rn.real_server_numer) serviceNumber,d.lat,d.lon,d.city,IFNULL(d.distance,'0') distance
 		FROM
-		`order` o
-		WHERE
-		o.accept_user_id = nj.creator_id
-		AND o.`schedule` = 5
-		) serviceNumber,d.lat,d.lon,IFNULL(d.distance,'0') distance
-		FROM
-		nurse_jobtitle nj
-		LEFT JOIN
-		`user` u ON nj.creator_id = u.id
+		nurse_rank rn 
+		LEFT JOIN `user` u ON  u.id = rn.user_id
 		LEFT JOIN nurse n ON u.id
 		=
 		n.creator_id
@@ -601,6 +534,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ua.creator_id,
 		ua.lat,
 		ua.lon,
+		ua.city,
 		MIN(
 			ROUND(
 				6378.138 * 2 * ASIN(
@@ -632,24 +566,25 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	GROUP BY
 		ua.creator_id
 ) d ON d.creator_id = u.id
+
 		<where>
-			AND n.`status` =1 
+			AND n.`status` =1 AND rn.`status` =1   AND  d.distance &lt;30  AND d.city LIKE CONCAT(#{city}, '%') 
 			<if test="goodsId!=null and goodsId!=''">
-				AND nj.jobtitle_id in (SELECT DISTINCT jg.jobtitle_id
-				FROM `jobtitle_goods` jg WHERE jg.goods_id =#{goodsId} )
+				AND rn.user_id in(SELECT DISTINCT pn.creator_id FROM price_nurse pn WHERE pn.goods_id =#{goodsId})
 			</if>
 			<if test="nurseName!=null and nurseName!=''">
 				AND u.`name` LIKE CONCAT(#{nurseName}, '%') 
 			</if>
 		</where>
+		ORDER BY rn.type DESC ,rn.degree_heat DESC
 		<if test="type==1">
-			ORDER BY d.distance ASC
+			, d.distance ASC
 		</if>
 		<if test="type==2">
-			ORDER BY serviceNumber DESC
+			, serviceNumber DESC
 		</if>
 		<if test="type==3">
-			ORDER BY workYear DESC
+			, workYear DESC
 		</if>
 	</select>
 	<resultMap id="nurseJobtitleDetail"

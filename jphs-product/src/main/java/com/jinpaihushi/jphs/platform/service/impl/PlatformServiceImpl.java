@@ -164,7 +164,7 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
                 platformGoods.setCreateTime(new Date());
                 platformGoods.setCreatorId(platform.getCreatorId());
                 platformGoods.setCreatorName(platform.getCreatorName());
-                platformGoods.setStatus(0);
+                platformGoods.setStatus(1);
                 platformGoodsDao.insert(platformGoods);
             }
             PlatformSite platformSite = null;
@@ -177,7 +177,7 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
                 platformSite.setCreateTime(new Date());
                 platformSite.setCreatorId(platform.getCreatorId());
                 platformSite.setCreatorName(platform.getCreatorName());
-                platformSite.setStatus(0);
+                platformSite.setStatus(1);
                 platformSiteDao.insert(platformSite);
             }
         }
@@ -210,7 +210,7 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
                     platformGoods.setCreateTime(new Date());
                     platformGoods.setCreatorId(platform.getCreatorId());
                     platformGoods.setCreatorName(platform.getCreatorName());
-                    platformGoods.setStatus(0);
+                    platformGoods.setStatus(1);
                     platformGoodsDao.insert(platformGoods);
                 }
             }
@@ -234,7 +234,7 @@ public class PlatformServiceImpl extends BaseServiceImpl<Platform> implements Pl
                     platformSite.setCreateTime(new Date());
                     platformSite.setCreatorId(platform.getCreatorId());
                     platformSite.setCreatorName(platform.getCreatorName());
-                    platformSite.setStatus(0);
+                    platformSite.setStatus(1);
                     platformSiteDao.insert(platformSite);
                 }
             }

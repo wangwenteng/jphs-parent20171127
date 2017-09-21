@@ -316,6 +316,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="count" column="count" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="url" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<resultMap id="commodityGlobal"
@@ -493,6 +495,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="oldPrice" column="oldPrice" javaType="double"
 				jdbcType="DOUBLE"></result>
+		<result property="costPrice" column="costPrice" javaType="double"
+				jdbcType="DOUBLE"></result>
 		<result property="price" column="price" javaType="double"
 			jdbcType="DOUBLE"></result>
 		<result property="profit" column="profit" javaType="double"
@@ -505,6 +509,74 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 	 <result property="url" column="url" javaType="String"
 			jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="commodityInFo"
+		type="com.jinpaihushi.jphs.commodity.model.Commodity">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="businessId" column="business_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityTypeId" column="commodity_type_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="model" column="model" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="quality" column="quality" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="privacy" column="privacy" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="security" column="security" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="parameter" column="parameter" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="supportVoucher" column="support_voucher"
+			javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="limitNumber" column="limit_number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="protectDay" column="protect_day" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="sort" column="sort" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="shareNumber" column="share_number" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="browser" column="browser" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="count" column="count" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="url" column="url" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="businessName" column="businessName" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityType" column="commodityType" javaType="String"
+			jdbcType="VARCHAR"></result>
+		 <collection property="commodityPrice"
+			ofType="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
+			<result property="id" column="cpId" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="name" column="name" javaType="String"
+				jdbcType="VARCHAR"></result>
+			<result property="number" column="number" javaType="Integer"
+				jdbcType="INTEGER"></result>
+			<result property="price" column="price" javaType="Double"
+				jdbcType="DECIMAL"></result>
+			<result property="status" column="status" javaType="Integer"
+				jdbcType="INTEGER"></result>
+		</collection>
 	</resultMap>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
@@ -654,7 +726,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND c.id = #{columnId}
 		AND c.`status` = 1
 		AND cs.`status` = 1
-		GROUP BY com.id
+		GROUP BY cpId
 		<if test="nurseId !=null">
 			AND nc.creator_id = #{nurseId} 
 		</if>
@@ -677,6 +749,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ci.type,
 		cp.id cpId,
 		cp.price,
+		cp.cost_price ,
 		cp.`name`,
 		cp.profit
 		FROM
@@ -797,6 +870,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		com.sub_title,
 		cp.id cpId,
 		cp.old_price oldPrice,
+		cp.cost_price costPrice,
 		cp.price,
 		ci.url,
 		cp.profit,
@@ -838,6 +912,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		com.sub_title,
 		cp.id cpId,
 		cp.old_price oldPrice,
+		cp.cost_price costPrice,
 		cp.price,
 		ci.url,
 		cp.profit,
@@ -851,7 +926,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			LEFT JOIN commodity com ON (com.id = nc.commodity_id)
 		 WHERE nc.creator_id = #{nurseId} 
 		AND ci.type = 1
-		
+		GROUP BY commodityId
 		ORDER BY nc.create_time desc
 		 
 	</select>
@@ -876,5 +951,44 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		COM.count = count + #{number}
 		WHERE  COM.id = #{commodityId} 
 	</update>
+	
+	<select id="getPageList" resultMap="commodityInFo">
+SELECT
+	C.id,
+ci.url,
+b.`name` businessName,
+ct.`name`,
+	cp.`name`,
+	cp.number,
+	C.business_id,
+	C.commodity_type_id,
+	C.title,
+	C.sub_title,
+	C.model,
+	C.content,
+	C.quality,
+	C.privacy,
+	C. SECURITY,
+	C.parameter,
+	C.support_voucher,
+	C.limit_number,
+	C.protect_day,
+	C.sort,
+	C.remark,
+	C. STATUS,
+	C.create_time,
+	C.creator_id,
+	C.creator_name,
+	C.share_number,
+	C.browser,
+	C.count
+FROM
+	`COMMODITY` C
+LEFT JOIN commodity_images ci ON(ci.source_id = C.id)
+LEFT JOIN business b ON (b.id = C.business_id)
+LEFT JOIN commodity_type ct ON(ct.id = C.commodity_type_id)
+LEFT JOIN commodity_price cp ON (C.id = cp.commodity_id)
+WHERE ci.type = 1
+	</select>
 	
 </mapper>

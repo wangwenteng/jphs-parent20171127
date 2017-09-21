@@ -8,6 +8,7 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 		return wecthDao;
 	}
 
-//	@Scheduled(cron = "${GET_WECTH_TOKEN}")
+	@Scheduled(cron = "${GET_WECTH_TOKEN}")
 	public void getTokens() {
 		if (Util.debugLog.isDebugEnabled()) {
 			Util.debugLog.debug("我被线程池调用执行啦~！");
@@ -352,6 +353,38 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 		json_s.put("appid", w.getAppid());
 		json_s.put("resultcode", 1);
 		return json_s.toString();
+	}
+	
+	/**
+	 * 判断用户是否关注公众号
+	 * @param openId
+	 * @return
+	 */
+	@SuppressWarnings("static-access")
+	public int getUserWecthIfFollow(String openId){
+		Wechat w = wecthDao.getUnusedAccessToken(1);
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("获取微信公众    getUserWecthIfFollow==>>>>>>AccessToken==" +  w.getAccessToken());
+		}
+		String user_str = HttpRequest.sendGet("https://api.weixin.qq.com/cgi-bin/user/info","access_token=" + w.getAccessToken() + "&openid="+openId+"&lang=zh_CN", "");
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("获取微信公众    getUserWecthIfFollow==>>>>>>user_str==" +  user_str);
+		}
+		if(StringUtils.isEmpty(user_str)){
+			return 0;
+		}
+		JSONObject user_str_json = new JSONObject().fromObject(user_str);
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("获取微信公众    getUserWecthIfFollow==>>>>>>user_str_json==" +  user_str_json);
+		}
+		if(!user_str_json.containsKey("subscribe")){
+			return 0;
+		}
+		int subscribe = user_str_json.getInt("subscribe");
+		if (Util.debugLog.isDebugEnabled()) {
+			Util.debugLog.debug("获取微信公众    getUserWecthIfFollow==>>>>>>subscribe==" +  subscribe);
+		}
+		return subscribe;
 	}
 
 }

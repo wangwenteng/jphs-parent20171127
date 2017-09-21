@@ -52,7 +52,7 @@ public class TransactionController {
             Map<String, Object> query = new HashMap<String, Object>();
             query.put("userId", userId);
             query = transactionService.incomeSummary(query);
-            query.put("balance", account.getBalance());
+            query.put("balance", account.getBalance().toString());
             return JSONUtil.toJSONResult(1, "操作成功！", query);
         }
         catch (Exception e) {

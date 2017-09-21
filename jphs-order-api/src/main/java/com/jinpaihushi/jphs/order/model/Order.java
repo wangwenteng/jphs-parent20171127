@@ -60,7 +60,7 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     /** 交易id */
     @Length(max = 50, message = "{order.transactionId.illegal.length}")
     private String transactionId;
-    
+
     /** 推广码 */
     @Length(max = 50, message = "{order.code.illegal.length}")
     private String code;
@@ -69,11 +69,11 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     private Integer schedule;
 
     /** 是否需要用药记录 */
-   	private Integer isPz;
+    private Integer isPz;
 
     /** 是否需要康复记录 */
-   	private Integer isRr;
-    
+    private Integer isRr;
+
     /** 下单设备/来源 pc=5 */
     private Integer device;
 
@@ -121,10 +121,13 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 
     private Double discountPrice;
 
+    /** 完成订单时间 */
+    private Date confirmTime;
+
     private List<OrderService> orderServiceList;
 
     private OrderOther orderOther;
-    
+
     private List<ServiceImages> serviceOrderImages;
 
     public String getCode() {
@@ -134,7 +137,7 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     public void setCode(String code) {
         this.code = code;
     }
-    
+
     public Integer getOrderServiceNumber() {
         return orderServiceNumber;
     }
@@ -143,20 +146,28 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
         this.orderServiceNumber = orderServiceNumber;
     }
 
-    public  List<ServiceImages>  getServiceOrderImages() {
+    public List<ServiceImages> getServiceOrderImages() {
         return serviceOrderImages;
     }
 
-    public void setServiceOrderImages( List<ServiceImages>  serviceOrderImages) {
+    public void setServiceOrderImages(List<ServiceImages> serviceOrderImages) {
         this.serviceOrderImages = serviceOrderImages;
     }
-    
+
     public OrderOther getOrderOther() {
         return orderOther;
     }
 
     public void setOrderOther(OrderOther orderOther) {
         this.orderOther = orderOther;
+    }
+
+    public Date getConfirmTime() {
+        return confirmTime;
+    }
+
+    public void setConfirmTime(Date confirmTime) {
+        this.confirmTime = confirmTime;
     }
 
     public Order() {
@@ -176,34 +187,33 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
     public Double getPrice() {
         return price;
     }
-    
 
     /**
-	 * 获取是否需要用药记录
-	 */
-	public Integer getIsPz() {
-    	return isPz;
-    }
-  	
-	/**
-	 * 设置是否需要用药记录
-	 */
-	public void setIsPz(Integer isPz) {
-    	this.isPz = isPz;
+     * 获取是否需要用药记录
+     */
+    public Integer getIsPz() {
+        return isPz;
     }
 
-	/**
-	 * 获取是否需要康复记录
-	 */
-	public Integer getIsRr() {
-    	return isRr;
+    /**
+     * 设置是否需要用药记录
+     */
+    public void setIsPz(Integer isPz) {
+        this.isPz = isPz;
     }
-  	
-	/**
-	 * 设置是否需要康复记录
-	 */
-	public void setIsRr(Integer isRr) {
-    	this.isRr = isRr;
+
+    /**
+     * 获取是否需要康复记录
+     */
+    public Integer getIsRr() {
+        return isRr;
+    }
+
+    /**
+     * 设置是否需要康复记录
+     */
+    public void setIsRr(Integer isRr) {
+        this.isRr = isRr;
     }
 
     public void setPrice(Double price) {

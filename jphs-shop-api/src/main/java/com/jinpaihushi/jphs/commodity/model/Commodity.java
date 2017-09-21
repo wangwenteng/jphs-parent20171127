@@ -108,7 +108,13 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	
 	private String name;
 	
+	private String businessName;
+	
 	private double profit;
+	
+	private String commodityType;
+	
+	private List<CommodityPrice> skuNameList;
 	
 	public Commodity(){}
 
@@ -475,6 +481,33 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 
 	public void setCommodityId(String commodityId) {
 		this.commodityId = commodityId;
+	}
+
+	
+	
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+	
+
+	public String getCommodityType() {
+		return commodityType;
+	}
+
+	public void setCommodityType(String commodityType) {
+		this.commodityType = commodityType;
+	}
+	
+	public List<CommodityPrice> getSkuNameList() {
+		return skuNameList;
+	}
+
+	public void setSkuNameList(List<CommodityPrice> skuNameList) {
+		this.skuNameList = skuNameList;
 	}
 
 	public String toString() {

@@ -98,8 +98,13 @@ public class CommodityController extends BaseController<Commodity> {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			Commodity commodity = commodityService.getCommodityDetail(columnId,commodityId);
-			
-			commodityService.updateBrowser(commodityId);
+
+			 new Thread(){
+				 public void run(){
+
+					commodityService.updateBrowser(commodityId);
+				 }
+			 }.start();
 			
 			if(!"0".equals(re)){
 

@@ -96,13 +96,15 @@
 						<td width="30px">序号</td>
 						<td width="100px">服务名称</td>
 						<td width="60px">服务等级</td>
-						<td width="60px">服务等级名称</td>
+						<!-- <td width="60px">服务等级名称</td> -->
 						<td width="60px">服务次数</td>
 						<td width="60px">服务套餐名称</td>
 						<td width="60px" >成本价</td>
 						<td width="60px" >销售价格</td>
 						<td width="60px" >原价</td>
 						<td width="60px" >利润</td>
+						<td width="60px" >护士参考最高价格 </td>
+						<td width="60px" >发布服务超出比例</td>
 						<td width="60px" >派单模式</td>
 					</tr>
 					<c:forEach items="${listProduct }" var="productOne" varStatus="productStatus">
@@ -118,8 +120,8 @@
 											<%=i++%>
 										</td>
 										<td>${goodsOne.title }</td>
-										<td>${priceOne.grade }
-										<td>${priceOne.gradeName }
+										<td>${priceOne.grade }</td>
+										<%-- <td>${priceOne.gradeName } --%>
 											<%-- <c:if test="${priceOne.grade == 0 }">
 												初级
 											</c:if>
@@ -129,7 +131,7 @@
 											<c:if test="${priceOne.grade == 2 }">
 												高级
 											</c:if> --%>
-										</td>
+										<!-- </td> -->
 										<td>${priceOne.serviceNumber }</td>
 										<td>${priceOne.title }</td>
 										<td><input style="width:100%" class="form-control" readonly="readonly" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.costPrice"  value="${priceOne.pricePart.costPrice }" /></td>
@@ -139,6 +141,10 @@
 											onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.price }';}if(${priceOne.pricePart.costPrice } > this.value){alert('原价价格必须大于成本价格');this.value='${priceOne.pricePart.oldPrice }';}" /></td>
 										<td><input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.profit" value="${priceOne.pricePart.profit }" 
 											onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.price }';}if(${priceOne.pricePart.profit } > this.value){alert('站点利润必须大于/等于原利润');this.value='${priceOne.pricePart.profit }';}" /></td>
+										
+										<td><input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.maxPrice" value="${priceOne.pricePart.maxPrice }"  onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');" /></td>
+										<td><input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.outRatio" value="${priceOne.pricePart.outRatio }" 
+											onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');" /></td>
 										<td><c:if test="${goodsOne.type == 0 }">
 												内部订单
 											</c:if>
@@ -161,9 +167,8 @@
 											<input type="hidden" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.status" value="${priceOne.pricePart.status }"/>
 											<%=i++%>
 										</td>
-										<td>${goodsOne.title }</td>
+										<td>${goodsOne.title }</td> 
 										<td>${priceOne.grade }</td>
-										<td>${priceOne.gradeName }
 										<td>${priceOne.serviceNumber }</td>
 										<td>${priceOne.title }</td>
 										<td><input style="width:100%" class="form-control" readonly="readonly" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.costPrice"  value="${priceOne.pricePart.costPrice }" /></td>
@@ -176,6 +181,10 @@
 										<td>
 											<input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.profit" value="${priceOne.pricePart.profit }" 
 												onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');this.value='${priceOne.pricePart.price }';}if(${priceOne.pricePart.profit } > this.value){alert('站点利润必须大于/等于原利润');this.value='${priceOne.pricePart.profit }';}" /></td>
+										<td><input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.maxPrice" value="${priceOne.pricePart.maxPrice }" 
+											onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');" /></td>
+										<td><input style="width:100%" class="form-control" name="productList[${productStatus.index }].goodsList[${goodsStatus.index }].priceList[${priceStatus.index }].pricePart.outRatio" value="${priceOne.pricePart.outRatio }" 
+											onchange="if( ! /^([1-9]\d{0,9}|0)([.]?|(\.\d{1,2})?)$/.test(this.value)){alert('只能输入数字，小数点后只能保留两位');" /></td>
 										<td>
 											<c:if test="${goodsOne.type == 0 }">
 												内部订单

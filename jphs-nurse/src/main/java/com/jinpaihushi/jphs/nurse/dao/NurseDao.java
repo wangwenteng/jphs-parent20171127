@@ -34,4 +34,5 @@ public interface NurseDao extends BaseDao<Nurse> {
 
     int auditNurse(Nurse nurse);
 
+    List<String> getNurseIdNotHaveTime();
 }

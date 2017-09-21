@@ -92,10 +92,11 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
             priceNurse.setPricePartId(pricePartId);
             priceNurse.setCreatorId(nurseId);
             priceNurse = priceNurseDao.load(priceNurse);
-            if(priceNurse==null){
-         	   return null;
-            }else{
-         	   salePrice = priceNurse.getPrice();
+            if (priceNurse == null) {
+                return null;
+            }
+            else {
+                salePrice = priceNurse.getPrice();
             }
         }
         else {
@@ -124,7 +125,8 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
                     if (bg.doubleValue() > salePrice) {
                         // 不满足要求移除改优惠券
                         vocherList.remove(i);
-                        i=-1;break;
+                        i = -1;
+                        break;
                     }
                 }
                 if (((Integer) vocherList.get(i).get("type")) == 3) {
@@ -132,7 +134,8 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
                     if (bg.doubleValue() > salePrice) {
                         // 不满足要求移除改优惠券
                         vocherList.remove(i);
-                        i=-1;break;
+                        i = -1;
+                        break;
                     }
                 }
             }
@@ -180,22 +183,21 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
 
     @Override
     public Double getGoodsPrice(String voucherUseId, String pricePartId, String nurseId) {
+        // 获取商品的价格信息
+        PricePart pricePart = pricePartDao.loadById(pricePartId);
         Double price = null;
+        price = pricePart.getPrice();
         if (!StringUtils.isEmpty(nurseId)) {
             PriceNurse priceNurse = new PriceNurse();
             priceNurse.setPricePartId(pricePartId);
             priceNurse.setCreatorId(nurseId);
             priceNurse = priceNurseDao.load(priceNurse);
-            if(priceNurse==null){
-         	   return null;
-            }else{
-            	price = priceNurse.getPrice();
+            if (priceNurse == null) {
+                return null;
             }
-        }
-        else {
-            // 获取商品的价格信息
-            PricePart pricePart = pricePartDao.loadById(pricePartId);
-            price = pricePart.getPrice();
+            else {
+                price = priceNurse.getPrice();
+            }
         }
         // 获取优惠券的信息
         Voucher voucher = voucherDao.getVocherByUser(voucherUseId);

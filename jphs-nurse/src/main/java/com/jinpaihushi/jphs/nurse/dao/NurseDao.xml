@@ -683,15 +683,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		d.name departmentName,
 		(SELECT url FROM
 		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1) url,
-		(
-		SELECT
-		COUNT(id)
-		FROM
-		`order` o
-		WHERE
-		o.accept_user_id = n.creator_id
-		AND o.`schedule` = 5
-		) serviceNumber,
+		(rn.base_server_number+rn.real_server_numer) serviceNumber,
 		CASE
 		WHEN n.work_years IS NOT NULL THEN
 		(
@@ -718,28 +710,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ELSE
 		''
 		END AS age,
-		COALESCE(ROUND(
-		6378.138 * 2 * ASIN(
-		SQRT(
-		POW(
-		SIN(
-		(
-		#{lat} * PI() / 180 - p.lat * PI() / 180
-		) / 2
-		),
-		2
-		) + COS(#{lat} * PI() / 180) * COS(p.lat * PI() / 180) * POW(
-		SIN(
-		(
-		#{lon} * PI() / 180 - p.lon * PI() / 180
-		) / 2
-		),
-		2
-		)
-		)
-		),
-		2
-		),'') AS distance
+		dd.distance
 		FROM
 		nurse n
 		LEFT JOIN `user` u ON n.creator_id = u.id
@@ -747,6 +718,43 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		n.department_id = d.id
 		LEFT JOIN position p ON n.creator_id =
 		p.creator_id
+		LEFT JOIN (
+	SELECT
+		ua.creator_id,
+		ua.lat,
+		ua.lon,
+		MIN(
+			ROUND(
+				6378.138 * 2 * ASIN(
+					SQRT(
+						POW(
+							SIN(
+								(
+									39 * PI() / 180 - ua.lat * PI() / 180
+								) / 2
+							),
+							2
+						) + COS(
+							39 * PI() / 180
+						) * COS(ua.lat * PI() / 180) * POW(
+							SIN(
+								(
+									116 * PI() / 180 - ua.lon * PI() / 180
+								) / 2
+							),
+							2
+						)
+					)
+				),
+				2
+			)
+		) distance
+	FROM
+		user_address ua
+	GROUP BY
+		ua.creator_id
+) dd ON dd.creator_id = n.creator_id
+LEFT JOIN nurse_rank rn ON u.id = rn.user_id
 		WHERE n.creator_id = #{userId}
 	</select>
 	<resultMap type="com.jinpaihushi.jphs.goods.model.Grade" id="grade">
@@ -807,4 +815,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<include refid="dynamicSet" />
 		WHERE N.creator_id = #{creatorId}
 	</update>
+	<select id="getNurseIdNotHaveTime" resultType="java.lang.String">
+		SELECT DISTINCT
+			u.id
+		FROM
+			`user` u
+		LEFT JOIN nurse n ON u.id = n.creator_id
+		WHERE n.`status` =1 AND u.id NOT in(SELECT DISTINCT userId FROM worktime)
+	</select>
 </mapper>

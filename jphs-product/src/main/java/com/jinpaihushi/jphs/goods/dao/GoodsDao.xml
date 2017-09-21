@@ -1011,6 +1011,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND pp.id NOT IN (
 	SELECT pn.price_part_id FROM price_nurse pn WHERE pn.creator_id =  #{creatorId} and pn.`status` = 0
 )
+	AND jg.goods_id NOT IN( 
+	SELECT g.id FROM goods g 
+		LEFT JOIN product p ON (p.id = g.product_id) 
+		WHERE p.id = 139
+)
 		GROUP BY pp.id 
 		ORDER BY
 			jg.goods_id,

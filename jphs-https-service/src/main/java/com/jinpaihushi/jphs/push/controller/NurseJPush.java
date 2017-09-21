@@ -25,13 +25,13 @@ public class NurseJPush {
 
     //极光推送技术难题解决：http://blog.163.com/lujun19888@126/blog/static/30821972201531011362680/
     @Value("${Jpush}")
-    private String Jpush = "true";
+    private String Jpush;
 
     public static void main(String[] args) {
         //发送通知
         try {
-            new NurseJPush().jpushAlias("您有新的消息123123===", "42884", "00");
-            new NurseJPush().jpushTag("您有新的消息123123---", "18513683374", "00");
+            new NurseJPush().jpushAlias("您有新的消息123123===", "42890", "00");
+            new NurseJPush().jpushTag("您有新的消息123123---", "18513683376", "00");
             //jpushTag("您有新的消息123","15210452542");
             //jpushTag("您有新的消息123","18605442910");
         }

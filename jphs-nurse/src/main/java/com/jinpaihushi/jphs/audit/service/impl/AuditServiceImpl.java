@@ -15,13 +15,14 @@ import com.jinpaihushi.jphs.audit.dao.AuditDao;
 import com.jinpaihushi.jphs.audit.model.Audit;
 import com.jinpaihushi.jphs.audit.service.AuditService;
 import com.jinpaihushi.jphs.department.dao.DepartmentDao;
-import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.nurse.dao.NurseDao;
 import com.jinpaihushi.jphs.nurse.dao.NurseImagesDao;
 import com.jinpaihushi.jphs.nurse.dao.NurseJobtitleDao;
+import com.jinpaihushi.jphs.nurse.dao.NurseRankDao;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
+import com.jinpaihushi.jphs.nurse.model.NurseRank;
 import com.jinpaihushi.jphs.person.dao.PersonGroupDao;
 import com.jinpaihushi.jphs.person.model.PersonGroup;
 import com.jinpaihushi.jphs.user.dao.UserDao;
@@ -62,7 +63,7 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
     private NurseImagesDao nurseImagesDao;
 
     @Autowired
-    private DepartmentDao departmentDao;
+    private NurseRankDao nurseRankDao;
 
     @Autowired
     private PlatformTransactionManager txManager;
@@ -133,6 +134,18 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                         personGroupDao.insert(personGroup);
                         //插入日程安排
                         worktimeService.insertNurseWorkTime(audit.getCreatorId());
+                        //将护士信息推送到护士列表中
+                        NurseRank nurseRank = new NurseRank();
+                        nurseRank.setId(UUIDUtils.getId());
+                        nurseRank.setUserId(audit.getCreatorId());
+                        nurseRank.setType(1);
+                        nurseRank.setBaseServerNumber(100);
+                        nurseRank.setRealServerNumer(0);
+                        nurseRank.setDegreeHeat(0);
+                        nurseRank.setFavorableRate(0.00);
+                        nurseRank.setCreateTime(new Date());
+                        nurseRank.setStatus(1);
+                        nurseRankDao.insert(nurseRank);
                     }
                     user = new User();
                     user.setId(audit.getCreatorId());
@@ -142,8 +155,7 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                     userDao.update(user);
                     if (jobtitle.getType() == 1) {
                         nurse.setHospital(jobtitle.getHospital());
-                        Department department = departmentDao.loadById(jobtitle.getDepartmentId());
-                        nurse.setDepartmentId(department.getName());
+                        nurse.setDepartmentId(jobtitle.getDepartmentId());
                     }
                     //修改护士的状态
                     nurse.setStatus(1);

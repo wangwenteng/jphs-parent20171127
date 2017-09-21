@@ -24,7 +24,11 @@ import com.github.pagehelper.PageInfo;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.jphs.account.model.Account;
 import com.jinpaihushi.jphs.account.service.AccountService;
+import com.jinpaihushi.jphs.department.model.Department;
+import com.jinpaihushi.jphs.department.service.DepartmentService;
 import com.jinpaihushi.jphs.information.service.InformationService;
+import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
+import com.jinpaihushi.jphs.jobtitle.service.JobtitleService;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
@@ -71,7 +75,13 @@ public class UserController extends BaseController<User> {
     private NurseJobtitleService nurseJobtitleService;
 
     @Autowired
+    private JobtitleService jobtitleService;
+
+    @Autowired
     private NurseService nurseService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
@@ -127,7 +137,7 @@ public class UserController extends BaseController<User> {
                 if (n != null) {
                     if (n.getWorkYears() != null) {
                         long wk = DateUtils.getDistanceDays(new Date(), n.getWorkYears());
-                        n.setWorkYear(new String().valueOf(wk / 365));
+                        n.setWorkYear(new String().valueOf((wk / 365) + 1));
                     }
                     if (StringUtils.isNotEmpty(n.getSfz()) && n.getSfz().length() > 14) {
                         long wk = DateUtils.getDistanceDays(new Date(), sdf.parse(n.getSfz().substring(6, 14)));
@@ -135,6 +145,10 @@ public class UserController extends BaseController<User> {
                     }
                     else {
                         n.setAge(1);
+                    }
+                    if (StringUtils.isNotEmpty(n.getDepartmentId())) {
+                        Department department = departmentService.loadById(n.getDepartmentId());
+                        n.setDepartmentName(department.getName());
                     }
                     user.setNurse(new JSONObject().fromObject(n));
                     NurseJobtitle jobtitle = new NurseJobtitle();
@@ -144,19 +158,8 @@ public class UserController extends BaseController<User> {
                     List<NurseJobtitle> list = nurseJobtitleService.list(jobtitle);
                     for (NurseJobtitle nurseJobtitle : list) {
                         //                    .护士，2.康复师，3.母婴师
-                        switch (nurseJobtitle.getType()) {
-                        case 1:
-                            roleName += "护士/";
-                            break;
-                        case 2:
-                            roleName += "康复师/";
-                            break;
-                        case 3:
-                            roleName += "母婴师/";
-                            break;
-                        default:
-                            break;
-                        }
+                        Jobtitle jobtitle2 = jobtitleService.loadById(nurseJobtitle.getJobtitleId());
+                        roleName += jobtitle2.getName() + "/";
                     }
                     if (roleName.length() > 0)
                         roleName = roleName.substring(0, roleName.length() - 1);
@@ -401,6 +404,7 @@ public class UserController extends BaseController<User> {
      * lon 经度
      * lat 纬度
      * nurseName 护士姓名
+     * @param city 定位城市
      * @param query
      * @return
      */
@@ -410,16 +414,19 @@ public class UserController extends BaseController<User> {
             @RequestParam(value = "lon", defaultValue = "116.403119", required = true) String lon,
             @RequestParam(value = "lat", defaultValue = "39.914492", required = true) String lat, String goodsId,
             /*@RequestParam(value = "type", defaultValue = "0", required = true) Integer type,*/ String nurseName,
-            @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
+            String city, @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
             @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId
-                /* + " type=" + type*/ + " nurseName=" + nurseName);
+                /* + " type=" + type*/ + " nurseName=" + nurseName+ " city=" + city);
             }
             if (StringUtils.isEmpty(lon) || StringUtils.isEmpty(lat)) {
                 lon = "116.403119";
                 lat = "39.914492";
+            }
+            if (StringUtils.isEmpty(city)) {
+                return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // String token = req.getHeader("token");
             // if (StringUtils.isEmpty(token)) {
@@ -439,6 +446,7 @@ public class UserController extends BaseController<User> {
             query.put("goodsId", goodsId);
             /*query.put("type", type);*/
             query.put("nurseName", nurseName);
+            query.put("city", city);
             if (StringUtils.isNotEmpty(nurseName)) {
                 query.put("type", 1);
             }
@@ -450,7 +458,7 @@ public class UserController extends BaseController<User> {
         catch (Exception e) {
             Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId /*+ " type="
                                                                                                            + type*/
-                    + " nurseName=" + nurseName, e);
+                    + " nurseName=" + nurseName+ " city=" + city, e);
         }
         return null;
     }

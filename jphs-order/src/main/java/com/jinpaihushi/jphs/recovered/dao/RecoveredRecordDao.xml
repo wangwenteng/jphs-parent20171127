@@ -307,11 +307,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getHealthLog" resultType="java.util.HashMap">
 		SELECT
+		hl.id,
 		hl.user_id,
 		u.`name` userName,
 		u.sex sex,
-		ni.url headPicture,
+		(SELECT url FROM
+		nurse_images ni WHERE ni.source_id =u.id AND ni.type =1)
+		 headPicture,
 		IFNULL(o.accept_time, '') accept_time,
+		IFNULL(oo.hospital,'') hospital,
+		IFNULL(og.title,'')  title,
 		<if test="id!=null and id!=''">
 			IFNULL(o.accept_user_id, '') nurseId,
 			IFNULL(ua.`name`, '') nurseName,
@@ -319,24 +324,27 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			IFNULL(hl.estimate,'') estimate ,
 			IFNULL(hl.propose,'') propose,
 		</if>
-		CASE
-		WHEN u.birthday IS NOT NULL THEN
-		(
-		(
-		YEAR (now()) - YEAR (u.birthday) - 1
-		) + (
-		DATE_FORMAT(u.birthday, '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
-		)
-		)
+		CASE u.birthday
+		WHEN u.birthday IS  NULL THEN
+		'0'
 		ELSE
-		''
+				
+				(
+					YEAR(now()) - YEAR(str_to_date(u.birthday,'%Y-%m')) - 1
+				)
+			+ (
+					DATE_FORMAT(str_to_date(u.birthday,'%Y-%m'), '%m%d') &lt;= DATE_FORMAT(NOW(), '%m%d')
+				)
 		END AS age
 		FROM
 		recovered_record hl
 		LEFT JOIN `user` u ON hl.user_id = u.id
 		LEFT JOIN nurse_images ni ON u.id = ni.source_id
 		LEFT JOIN `order` o ON hl.order_id = o.id
+		LEFT JOIN order_goods og ON hl.order_id = og.order_id
 		LEFT JOIN `user` ua ON o.accept_user_id = ua.id
+		LEFT JOIN order_other oo ON o.id =
+		oo.order_id
 		<where>
 			AND hl.status =1 AND hl.user_id = #{userId}
 			<if test="id!=null and id!=''">

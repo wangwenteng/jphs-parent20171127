@@ -253,6 +253,7 @@ public class NurseIndexController extends BaseController<Nurse> {
             q_o_map.put("status", 1);
             q_o_map.put("type", 1);
             List<Map<String, Object>> q_order_list = orderService.getOrderGoodsList(q_o_map);
+            
             //   资讯集合
             Map<String, Object> query = new HashMap<>();
             query.put("channelId", channelId);

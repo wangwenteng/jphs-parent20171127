@@ -43,7 +43,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<select id="getRecommendNurse" resultType="java.util.HashMap">
 		 SELECT DISTINCT
-			nj.creator_id nurseId,
+			rn.user_id nurseId,
 			u.`name` nurseName,
 			u.sex nurseSex,
 			IFNULL(n.hospital, '') nurseHospital,
@@ -53,7 +53,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				FROM
 					nurse_images ni
 				WHERE
-					ni.creator_id = u.id
+					ni.source_id = u.id
 				AND ni.type = 1
 			) url,
 			CASE
@@ -68,28 +68,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ELSE
 			''
 		END AS workYear,
-		 (
-			SELECT
-				COUNT(id)
-			FROM
-				`order` o
-			WHERE
-				o.accept_user_id = nj.creator_id
-			AND o.`schedule` = 5
-		) serviceNumber,
+		(rn.base_server_number+rn.real_server_numer) serviceNumber,
 		 d.lat,
 		 d.lon,
+		 d.city,
 		 d.distance,
 		 t.*
 		FROM
-			nurse_jobtitle nj
-		LEFT JOIN `user` u ON nj.creator_id = u.id
+			nurse_rank rn
+		LEFT JOIN `user` u ON rn.user_id = u.id
 		LEFT JOIN nurse n ON u.id = n.creator_id
 		LEFT JOIN (
 			SELECT
 				ua.creator_id,
 				ua.lat,
 				ua.lon,
+				ua.city,
 				MIN(
 					ROUND(
 						6378.138 * 2 * ASIN(
@@ -139,134 +133,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			WHERE
 				pn. STATUS = 0
 			AND pn.goods_id = #{goodsId}
-		) t ON t.creator_id = nj.creator_id
-		LEFT JOIN worktime w ON w.userId = nj.creator_id
+		) t ON t.creator_id = rn.user_id
+		LEFT JOIN worktime w ON w.userId = rn.user_id
 		WHERE
-			nj.jobtitle_id IN (
-				SELECT DISTINCT
-					jg.jobtitle_id
-				FROM
-					`jobtitle_goods` jg
-				WHERE
-					jg.goods_id = #{goodsId}
-			)
-		AND w.calendar =#{calendar} 
+		w.calendar =#{calendar}
+		AND rn.status=1 
 		AND w.${h}=0
 		AND t.price_id = #{priceId}
 		AND d.distance &lt;30
 		ORDER BY
 			serviceNumber DESC 
-	
-	
-		<!-- SELECT * FROM (SELECT DISTINCT
-		nj.creator_id nurseId,
-		u.`name`
-		nurseName,
-		u.sex nurseSex,
-		IFNULL(n.hospital, '') nurseHospital,
-		(
-		SELECT
-		url
-		FROM
-		nurse_images ni
-		WHERE
-		ni.source_id = u.id
-		AND ni.type = 1
-		) url,
-		CASE
-		WHEN n.work_years IS
-		NOT NULL THEN
-		(
-		(
-		YEAR (now()) - YEAR
-		(n.work_years) - 1
-		) + (
-		DATE_FORMAT(n.work_years, '%m%d') &lt;=
-		DATE_FORMAT(NOW(), '%m%d')
-		)
-		)
-		ELSE
-		''
-		END AS workYear,
-		(
-		SELECT
-		COUNT(id)
-		FROM
-		`order` o
-		WHERE
-		o.accept_user_id = nj.creator_id
-		AND o.`schedule` = 5
-		) serviceNumber,
-		p.lon,
-		p.lat,
-		ROUND(
-		6378.138 * 2 * ASIN(
-		SQRT(
-		POW(
-		SIN(
-		(
-		#{lat} * PI()
-		/ 180 - p.lat * PI() / 180
-		) / 2
-		),
-		2
-		) + COS(#{lat} * PI() /
-		180) *
-		COS(p.lat * PI() / 180) * POW(
-		SIN(
-		(
-		#{lon} * PI() / 180 - p.lon *
-		PI() / 180
-		) / 2
-		),
-		2
-		)
-		)
-		),
-		2
-		) AS distance,t.*
-		FROM
-		nurse_jobtitle nj
-		LEFT JOIN
-		`user` u ON nj.creator_id = u.id
-		LEFT JOIN nurse n ON u.id =
-		n.creator_id
-		LEFT JOIN position p ON u.id = p.creator_id
-		LEFT JOIN (
-		SELECT
-		pn.creator_id,
-		pp.price_id,
-		pn.price_part_id,
-		pn.price,
-		p.service_number,
-		p.service_time,
-		p.unit,
-		p.title
-		FROM
-		price_nurse pn
-		LEFT
-		JOIN price_part pp ON pn.price_part_id = pp.id
-		LEFT JOIN goods g ON
-		pn.goods_id = g.id
-		LEFT JOIN price p ON pp.price_id = p.id
-		WHERE
-		pn.
-		STATUS = 0
-		AND pn.goods_id = #{goodsId}
-		) t ON t.creator_id =
-		nj.creator_id
-		LEFT JOIN worktime w ON w.userId = nj.creator_id
-		WHERE
-		nj.jobtitle_id IN (
-		SELECT DISTINCT
-		jg.jobtitle_id
-		FROM
-		`jobtitle_goods`
-		jg
-		WHERE
-		jg.goods_id = #{goodsId}
-		)AND w.calendar =#{calendar} AND 
-		w.${h}=0  AND t.price_id =#{priceId}
-		ORDER BY serviceNumber DESC ) a WHERE a.distance &lt;30-->
 	</select>
 </mapper>

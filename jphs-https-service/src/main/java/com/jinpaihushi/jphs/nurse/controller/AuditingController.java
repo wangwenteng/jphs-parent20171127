@@ -14,7 +14,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,7 +58,37 @@ public class AuditingController {
     @Autowired
     private NurseInstitutionsService nurseInstitutionsService;
     @Autowired
-    private  JobtitleService jobtitleService;
+    private  JobtitleService jobtitleService;/*
+    @Autowired
+    private  GoodsService goodsService;
+    @Autowired
+    private  JobtitleGoods jobtitleGoods;
+    
+    @ResponseBody
+    @RequestMapping(name = "服务和职称关联", path = "/setNj.json")
+    public byte[] setNj(HttpServletRequest req, HttpServletResponse resp){
+    	try{
+    		Jobtitle jobtitle = new Jobtitle();
+    		jobtitle.setStatus(1);
+    		List<Jobtitle> jobtitle_list = jobtitleService.list(jobtitle);
+    		Goods goods = new Goods();
+    		goods.setStatus(1);
+    		List<Goods> goods_list = goodsService.list(goods);
+    		for(int a=0;a<jobtitle_list.size();a++){
+    			for(int b=0;b<goods_list.size();b++){
+    				Jobtitle jobtitle_one = jobtitle_list.get(a);
+    				Goods goods_one = goods_list.get(a);
+    				
+        		}
+    		}
+    		
+    		return JSONUtil.toJSONResult(1, "操作成功！", null);
+    	}catch (Exception e) {
+    		  // 记录日志-fail
+            Util.failLog.error("nurseAudting.setNj.json,", e);
+    	}
+    	return null; 
+    }*/
     
     @ResponseBody
     @RequestMapping(name = "获取机构列表", path = "/getNurseInstitutions.json")

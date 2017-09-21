@@ -11,8 +11,6 @@ import com.jinpaihushi.jphs.order.model.OrderPojo;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.service.BaseService;
 
-import net.sf.json.JSONObject;
-
 /**
  * 
  * @author yangsong
@@ -69,6 +67,15 @@ public interface OrderService extends BaseService<Order> {
 
     Map<String, Object> createOrderNew(OrderPojo orderInfo);
 
+    /**
+     * 用户余额支付
+     * @param orderId
+     * @param orderNo
+     * @param payParice
+     * @param userId
+     * @return
+     */
+    byte[] balancePayment(String orderId, String orderNo, Double payParice,String userId);
     /**
      * 护士抢单
      * @param orderId
