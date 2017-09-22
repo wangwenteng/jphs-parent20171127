@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyHealthyDao">
+	
+	<sql id="field">
+		FH.id, FH.family_member_id, FH.title, FH.cycle, 
+		FH.history, FH.history_content, FH.history_cycle, FH.plan, 
+		FH.plan_content, FH.plan_cycle, FH.diet, FH.diet_content, 
+		FH.diet_cycle, FH.status, FH.create_time, FH.creator_id, 
+		FH.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FH.id FH_id, FH.family_member_id FH_family_member_id, 
+		FH.title FH_title, FH.cycle FH_cycle, 
+		FH.history FH_history, FH.history_content FH_history_content, 
+		FH.history_cycle FH_history_cycle, FH.plan FH_plan, 
+		FH.plan_content FH_plan_content, FH.plan_cycle FH_plan_cycle, 
+		FH.diet FH_diet, FH.diet_content FH_diet_content, 
+		FH.diet_cycle FH_diet_cycle, FH.status FH_status, 
+		FH.create_time FH_create_time, FH.creator_id FH_creator_id, 
+		FH.creator_name FH_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FH.id id, FH.family_member_id familyMemberId, 
+		FH.title title, FH.cycle cycle, 
+		FH.history history, FH.history_content historyContent, 
+		FH.history_cycle historyCycle, FH.plan plan, 
+		FH.plan_content planContent, FH.plan_cycle planCycle, 
+		FH.diet diet, FH.diet_content dietContent, 
+		FH.diet_cycle dietCycle, FH.status status, 
+		FH.create_time createTime, FH.creator_id creatorId, 
+		FH.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FH.id=#{id}
+		</if>
+		<if test="familyMemberId!=null and familyMemberId!=''">
+			AND FH.family_member_id=#{familyMemberId}
+		</if>
+		<if test="title!=null and title!=''">
+			AND FH.title=#{title}
+		</if>
+		<if test="cycle!=null and cycle!=''">
+			AND FH.cycle=#{cycle}
+		</if>
+		<if test="history!=null and history!=''">
+			AND FH.history=#{history}
+		</if>
+		<if test="historyContent!=null and historyContent!=''">
+			AND FH.history_content=#{historyContent}
+		</if>
+		<if test="historyCycle!=null and historyCycle!=''">
+			AND FH.history_cycle=#{historyCycle}
+		</if>
+		<if test="plan!=null and plan!=''">
+			AND FH.plan=#{plan}
+		</if>
+		<if test="planContent!=null and planContent!=''">
+			AND FH.plan_content=#{planContent}
+		</if>
+		<if test="planCycle!=null and planCycle!=''">
+			AND FH.plan_cycle=#{planCycle}
+		</if>
+		<if test="diet!=null and diet!=''">
+			AND FH.diet=#{diet}
+		</if>
+		<if test="dietContent!=null and dietContent!=''">
+			AND FH.diet_content=#{dietContent}
+		</if>
+		<if test="dietCycle!=null and dietCycle!=''">
+			AND FH.diet_cycle=#{dietCycle}
+		</if>
+		<if test="status!=null">
+			AND FH.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FH.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FH.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FH.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FH.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="familyMemberId!=null and familyMemberId!=''">
+				AND FH.family_member_id LIKE CONCAT('%', #{familyMemberId}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND FH.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="cycle!=null and cycle!=''">
+				AND FH.cycle LIKE CONCAT('%', #{cycle}, '%')
+			</if>
+			<if test="history!=null and history!=''">
+				AND FH.history LIKE CONCAT('%', #{history}, '%')
+			</if>
+			<if test="historyContent!=null and historyContent!=''">
+				AND FH.history_content LIKE CONCAT('%', #{historyContent}, '%')
+			</if>
+			<if test="historyCycle!=null and historyCycle!=''">
+				AND FH.history_cycle LIKE CONCAT('%', #{historyCycle}, '%')
+			</if>
+			<if test="plan!=null and plan!=''">
+				AND FH.plan LIKE CONCAT('%', #{plan}, '%')
+			</if>
+			<if test="planContent!=null and planContent!=''">
+				AND FH.plan_content LIKE CONCAT('%', #{planContent}, '%')
+			</if>
+			<if test="planCycle!=null and planCycle!=''">
+				AND FH.plan_cycle LIKE CONCAT('%', #{planCycle}, '%')
+			</if>
+			<if test="diet!=null and diet!=''">
+				AND FH.diet LIKE CONCAT('%', #{diet}, '%')
+			</if>
+			<if test="dietContent!=null and dietContent!=''">
+				AND FH.diet_content LIKE CONCAT('%', #{dietContent}, '%')
+			</if>
+			<if test="dietCycle!=null and dietCycle!=''">
+				AND FH.diet_cycle LIKE CONCAT('%', #{dietCycle}, '%')
+			</if>
+			<if test="status!=null">
+				AND FH.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FH.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FH.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FH.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FH.id=#{id}, 
+		   </if>
+           <if test="familyMemberId!=null">
+				FH.family_member_id=#{familyMemberId}, 
+		   </if>
+           <if test="title!=null">
+				FH.title=#{title}, 
+		   </if>
+           <if test="cycle!=null">
+				FH.cycle=#{cycle}, 
+		   </if>
+           <if test="history!=null">
+				FH.history=#{history}, 
+		   </if>
+           <if test="historyContent!=null">
+				FH.history_content=#{historyContent}, 
+		   </if>
+           <if test="historyCycle!=null">
+				FH.history_cycle=#{historyCycle}, 
+		   </if>
+           <if test="plan!=null">
+				FH.plan=#{plan}, 
+		   </if>
+           <if test="planContent!=null">
+				FH.plan_content=#{planContent}, 
+		   </if>
+           <if test="planCycle!=null">
+				FH.plan_cycle=#{planCycle}, 
+		   </if>
+           <if test="diet!=null">
+				FH.diet=#{diet}, 
+		   </if>
+           <if test="dietContent!=null">
+				FH.diet_content=#{dietContent}, 
+		   </if>
+           <if test="dietCycle!=null">
+				FH.diet_cycle=#{dietCycle}, 
+		   </if>
+           <if test="status!=null">
+				FH.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FH.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FH.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FH.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyHealthy" type="com.jinpaihushi.jphs.family.model.FamilyHealthy">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyMemberId" column="family_member_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cycle" column="cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="history" column="history" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="historyContent" column="history_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="historyCycle" column="history_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="plan" column="plan" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="planContent" column="plan_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="planCycle" column="plan_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diet" column="diet" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dietContent" column="diet_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dietCycle" column="diet_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyHealthyGlobal" type="com.jinpaihushi.jphs.family.model.FamilyHealthy">
+		<result property="id" column="FH_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyMemberId" column="FH_family_member_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="FH_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cycle" column="FH_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="history" column="FH_history" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="historyContent" column="FH_history_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="historyCycle" column="FH_history_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="plan" column="FH_plan" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="planContent" column="FH_plan_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="planCycle" column="FH_plan_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="diet" column="FH_diet" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dietContent" column="FH_diet_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="dietCycle" column="FH_diet_cycle" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FH_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FH_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FH_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FH_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyHealthy">
+		INSERT INTO `FAMILY_HEALTHY`(
+			id, family_member_id, 
+			title, cycle, 
+			history, history_content, 
+			history_cycle, plan, 
+			plan_content, plan_cycle, 
+			diet, diet_content, 
+			diet_cycle, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{familyMemberId,jdbcType=VARCHAR}, 
+			#{title,jdbcType=VARCHAR}, #{cycle,jdbcType=VARCHAR}, 
+			#{history,jdbcType=VARCHAR}, #{historyContent,jdbcType=VARCHAR}, 
+			#{historyCycle,jdbcType=VARCHAR}, #{plan,jdbcType=VARCHAR}, 
+			#{planContent,jdbcType=VARCHAR}, #{planCycle,jdbcType=VARCHAR}, 
+			#{diet,jdbcType=VARCHAR}, #{dietContent,jdbcType=VARCHAR}, 
+			#{dietCycle,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_HEALTHY`(
+			id, family_member_id, 
+			title, cycle, 
+			history, history_content, 
+			history_cycle, plan, 
+			plan_content, plan_cycle, 
+			diet, diet_content, 
+			diet_cycle, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.familyMemberId,jdbcType=VARCHAR}, 
+			#{item.title,jdbcType=VARCHAR}, #{item.cycle,jdbcType=VARCHAR}, 
+			#{item.history,jdbcType=VARCHAR}, #{item.historyContent,jdbcType=VARCHAR}, 
+			#{item.historyCycle,jdbcType=VARCHAR}, #{item.plan,jdbcType=VARCHAR}, 
+			#{item.planContent,jdbcType=VARCHAR}, #{item.planCycle,jdbcType=VARCHAR}, 
+			#{item.diet,jdbcType=VARCHAR}, #{item.dietContent,jdbcType=VARCHAR}, 
+			#{item.dietCycle,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FH FROM `FAMILY_HEALTHY` FH WHERE FH.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_HEALTHY` FH
+		SET 
+		FH.STATUS = -1
+		WHERE FH.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_HEALTHY` FH
+		<include refid="dynamicSet" /> 
+	    WHERE FH.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyHealthy">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_HEALTHY` FH
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_HEALTHY` FH
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyHealthy">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_HEALTHY` FH
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyHealthy">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_HEALTHY` FH
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyHealthy">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_HEALTHY` FH
+		WHERE FH.ID = #{id}
+	</select>
+	
+</mapper>

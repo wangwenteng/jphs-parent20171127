@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyOrderDao">
+	
+	<sql id="field">
+		FO.id, FO.family_package_id, FO.pay_price, FO.wx_no, 
+		FO.end_time, FO.code, FO.status, FO.create_time, 
+		FO.creator_id, FO.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FO.id FO_id, FO.family_package_id FO_family_package_id, 
+		FO.pay_price FO_pay_price, FO.wx_no FO_wx_no, 
+		FO.end_time FO_end_time, FO.code FO_code, 
+		FO.status FO_status, FO.create_time FO_create_time, 
+		FO.creator_id FO_creator_id, FO.creator_name FO_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FO.id id, FO.family_package_id familyPackageId, 
+		FO.pay_price payPrice, FO.wx_no wxNo, 
+		FO.end_time endTime, FO.code code, 
+		FO.status status, FO.create_time createTime, 
+		FO.creator_id creatorId, FO.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FO.id=#{id}
+		</if>
+		<if test="familyPackageId!=null and familyPackageId!=''">
+			AND FO.family_package_id=#{familyPackageId}
+		</if>
+		<if test="payPrice!=null">
+			AND FO.pay_price=#{payPrice}
+		</if>
+		<if test="wxNo!=null and wxNo!=''">
+			AND FO.wx_no=#{wxNo}
+		</if>
+		<if test="endTime!=null">
+			AND FO.end_time=#{endTime}
+		</if>
+		<if test="code!=null and code!=''">
+			AND FO.code=#{code}
+		</if>
+		<if test="status!=null">
+			AND FO.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FO.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FO.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FO.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FO.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="familyPackageId!=null and familyPackageId!=''">
+				AND FO.family_package_id LIKE CONCAT('%', #{familyPackageId}, '%')
+			</if>
+			<if test="payPrice!=null">
+				AND FO.pay_price=#{payPrice}
+			</if>
+			<if test="wxNo!=null and wxNo!=''">
+				AND FO.wx_no LIKE CONCAT('%', #{wxNo}, '%')
+			</if>
+			<if test="endTime!=null">
+				AND FO.end_time=#{endTime}
+			</if>
+			<if test="code!=null and code!=''">
+				AND FO.code LIKE CONCAT('%', #{code}, '%')
+			</if>
+			<if test="status!=null">
+				AND FO.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FO.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FO.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FO.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FO.id=#{id}, 
+		   </if>
+           <if test="familyPackageId!=null">
+				FO.family_package_id=#{familyPackageId}, 
+		   </if>
+           <if test="payPrice!=null">
+				FO.pay_price=#{payPrice}, 
+		   </if>
+           <if test="wxNo!=null">
+				FO.wx_no=#{wxNo}, 
+		   </if>
+           <if test="endTime!=null">
+				FO.end_time=#{endTime}, 
+		   </if>
+           <if test="code!=null">
+				FO.code=#{code}, 
+		   </if>
+           <if test="status!=null">
+				FO.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FO.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FO.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FO.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyOrder" type="com.jinpaihushi.jphs.family.model.FamilyOrder">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyPackageId" column="family_package_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="payPrice" column="pay_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="wxNo" column="wx_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyOrderGlobal" type="com.jinpaihushi.jphs.family.model.FamilyOrder">
+		<result property="id" column="FO_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyPackageId" column="FO_family_package_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="payPrice" column="FO_pay_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="wxNo" column="FO_wx_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="endTime" column="FO_end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="code" column="FO_code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FO_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FO_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FO_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FO_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyOrder">
+		INSERT INTO `FAMILY_ORDER`(
+			id, family_package_id, 
+			pay_price, wx_no, 
+			end_time, code, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{familyPackageId,jdbcType=VARCHAR}, 
+			#{payPrice,jdbcType=DECIMAL}, #{wxNo,jdbcType=VARCHAR}, 
+			#{endTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_ORDER`(
+			id, family_package_id, 
+			pay_price, wx_no, 
+			end_time, code, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.familyPackageId,jdbcType=VARCHAR}, 
+			#{item.payPrice,jdbcType=DECIMAL}, #{item.wxNo,jdbcType=VARCHAR}, 
+			#{item.endTime,jdbcType=TIMESTAMP}, #{item.code,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FO FROM `FAMILY_ORDER` FO WHERE FO.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_ORDER` FO
+		SET 
+		FO.STATUS = -1
+		WHERE FO.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_ORDER` FO
+		<include refid="dynamicSet" /> 
+	    WHERE FO.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyOrder">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_ORDER` FO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_ORDER` FO
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyOrder">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_ORDER` FO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyOrder">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_ORDER` FO
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyOrder">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_ORDER` FO
+		WHERE FO.ID = #{id}
+	</select>
+	
+</mapper>

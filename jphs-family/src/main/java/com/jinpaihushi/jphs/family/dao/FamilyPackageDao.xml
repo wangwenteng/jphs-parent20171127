@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyPackageDao">
+	
+	<sql id="field">
+		FP.id, FP.type, FP.title, FP.sub_title, 
+		FP.price, FP.image, FP.content, FP.status, 
+		FP.create_time, FP.creator_id, FP.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FP.id FP_id, FP.type FP_type, 
+		FP.title FP_title, FP.sub_title FP_sub_title, 
+		FP.price FP_price, FP.image FP_image, 
+		FP.content FP_content, FP.status FP_status, 
+		FP.create_time FP_create_time, FP.creator_id FP_creator_id, 
+		FP.creator_name FP_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FP.id id, FP.type type, 
+		FP.title title, FP.sub_title subTitle, 
+		FP.price price, FP.image image, 
+		FP.content content, FP.status status, 
+		FP.create_time createTime, FP.creator_id creatorId, 
+		FP.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FP.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND FP.type=#{type}
+		</if>
+		<if test="title!=null and title!=''">
+			AND FP.title=#{title}
+		</if>
+		<if test="subTitle!=null and subTitle!=''">
+			AND FP.sub_title=#{subTitle}
+		</if>
+		<if test="price!=null">
+			AND FP.price=#{price}
+		</if>
+		<if test="image!=null and image!=''">
+			AND FP.image=#{image}
+		</if>
+		<if test="content!=null and content!=''">
+			AND FP.content=#{content}
+		</if>
+		<if test="status!=null">
+			AND FP.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FP.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FP.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FP.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FP.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND FP.type=#{type}
+			</if>
+			<if test="title!=null and title!=''">
+				AND FP.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="subTitle!=null and subTitle!=''">
+				AND FP.sub_title LIKE CONCAT('%', #{subTitle}, '%')
+			</if>
+			<if test="price!=null">
+				AND FP.price=#{price}
+			</if>
+			<if test="image!=null and image!=''">
+				AND FP.image LIKE CONCAT('%', #{image}, '%')
+			</if>
+			<if test="content!=null and content!=''">
+				AND FP.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+			<if test="status!=null">
+				AND FP.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FP.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FP.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FP.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FP.id=#{id}, 
+		   </if>
+           <if test="type!=null">
+				FP.type=#{type}, 
+		   </if>
+           <if test="title!=null">
+				FP.title=#{title}, 
+		   </if>
+           <if test="subTitle!=null">
+				FP.sub_title=#{subTitle}, 
+		   </if>
+           <if test="price!=null">
+				FP.price=#{price}, 
+		   </if>
+           <if test="image!=null">
+				FP.image=#{image}, 
+		   </if>
+           <if test="content!=null">
+				FP.content=#{content}, 
+		   </if>
+           <if test="status!=null">
+				FP.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FP.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FP.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FP.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyPackage" type="com.jinpaihushi.jphs.family.model.FamilyPackage">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="sub_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="image" column="image" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyPackageGlobal" type="com.jinpaihushi.jphs.family.model.FamilyPackage">
+		<result property="id" column="FP_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="FP_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="title" column="FP_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="subTitle" column="FP_sub_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="FP_price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="image" column="FP_image" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="content" column="FP_content" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FP_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FP_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FP_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FP_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyPackage">
+		INSERT INTO `FAMILY_PACKAGE`(
+			id, type, 
+			title, sub_title, 
+			price, image, 
+			content, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
+			#{price,jdbcType=DECIMAL}, #{image,jdbcType=VARCHAR}, 
+			#{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_PACKAGE`(
+			id, type, 
+			title, sub_title, 
+			price, image, 
+			content, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.title,jdbcType=VARCHAR}, #{item.subTitle,jdbcType=VARCHAR}, 
+			#{item.price,jdbcType=DECIMAL}, #{item.image,jdbcType=VARCHAR}, 
+			#{item.content,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FP FROM `FAMILY_PACKAGE` FP WHERE FP.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_PACKAGE` FP
+		SET 
+		FP.STATUS = -1
+		WHERE FP.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_PACKAGE` FP
+		<include refid="dynamicSet" /> 
+	    WHERE FP.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyPackage">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_PACKAGE` FP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_PACKAGE` FP
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyPackage">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_PACKAGE` FP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyPackage">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_PACKAGE` FP
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyPackage">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_PACKAGE` FP
+		WHERE FP.ID = #{id}
+	</select>
+	
+</mapper>

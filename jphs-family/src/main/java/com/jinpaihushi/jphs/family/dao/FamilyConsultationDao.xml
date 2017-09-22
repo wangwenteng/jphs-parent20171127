@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:53
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyConsultationDao">
+	
+	<sql id="field">
+		FC.id, FC.quiz, FC.answer, FC.status, 
+		FC.create_time, FC.creator_id, FC.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FC.id FC_id, FC.quiz FC_quiz, 
+		FC.answer FC_answer, FC.status FC_status, 
+		FC.create_time FC_create_time, FC.creator_id FC_creator_id, 
+		FC.creator_name FC_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FC.id id, FC.quiz quiz, 
+		FC.answer answer, FC.status status, 
+		FC.create_time createTime, FC.creator_id creatorId, 
+		FC.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FC.id=#{id}
+		</if>
+		<if test="quiz!=null and quiz!=''">
+			AND FC.quiz=#{quiz}
+		</if>
+		<if test="answer!=null and answer!=''">
+			AND FC.answer=#{answer}
+		</if>
+		<if test="status!=null">
+			AND FC.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FC.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FC.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FC.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="quiz!=null and quiz!=''">
+				AND FC.quiz LIKE CONCAT('%', #{quiz}, '%')
+			</if>
+			<if test="answer!=null and answer!=''">
+				AND FC.answer LIKE CONCAT('%', #{answer}, '%')
+			</if>
+			<if test="status!=null">
+				AND FC.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FC.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FC.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FC.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FC.id=#{id}, 
+		   </if>
+           <if test="quiz!=null">
+				FC.quiz=#{quiz}, 
+		   </if>
+           <if test="answer!=null">
+				FC.answer=#{answer}, 
+		   </if>
+           <if test="status!=null">
+				FC.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FC.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FC.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FC.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyConsultation" type="com.jinpaihushi.jphs.family.model.FamilyConsultation">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="quiz" column="quiz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="answer" column="answer" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyConsultationGlobal" type="com.jinpaihushi.jphs.family.model.FamilyConsultation">
+		<result property="id" column="FC_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="quiz" column="FC_quiz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="answer" column="FC_answer" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FC_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyConsultation">
+		INSERT INTO `FAMILY_CONSULTATION`(
+			id, quiz, 
+			answer, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{quiz,jdbcType=VARCHAR}, 
+			#{answer,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_CONSULTATION`(
+			id, quiz, 
+			answer, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.quiz,jdbcType=VARCHAR}, 
+			#{item.answer,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FC FROM `FAMILY_CONSULTATION` FC WHERE FC.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_CONSULTATION` FC
+		SET 
+		FC.STATUS = -1
+		WHERE FC.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_CONSULTATION` FC
+		<include refid="dynamicSet" /> 
+	    WHERE FC.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyConsultation">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CONSULTATION` FC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_CONSULTATION` FC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyConsultation">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CONSULTATION` FC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyConsultation">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CONSULTATION` FC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyConsultation">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CONSULTATION` FC
+		WHERE FC.ID = #{id}
+	</select>
+	
+</mapper>

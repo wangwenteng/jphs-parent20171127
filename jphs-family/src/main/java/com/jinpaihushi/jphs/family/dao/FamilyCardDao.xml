@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:53
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyCardDao">
+	
+	<sql id="field">
+		FC.id, FC.type, FC.no, FC.code, 
+		FC.remmond, FC.batch_no, FC.use_time, FC.status, 
+		FC.remark, FC.create_time, FC.creator_id, FC.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FC.id FC_id, FC.type FC_type, 
+		FC.no FC_no, FC.code FC_code, 
+		FC.remmond FC_remmond, FC.batch_no FC_batch_no, 
+		FC.use_time FC_use_time, FC.status FC_status, 
+		FC.remark FC_remark, FC.create_time FC_create_time, 
+		FC.creator_id FC_creator_id, FC.creator_name FC_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FC.id id, FC.type type, 
+		FC.no no, FC.code code, 
+		FC.remmond remmond, FC.batch_no batchNo, 
+		FC.use_time useTime, FC.status status, 
+		FC.remark remark, FC.create_time createTime, 
+		FC.creator_id creatorId, FC.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FC.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND FC.type=#{type}
+		</if>
+		<if test="no!=null and no!=''">
+			AND FC.no=#{no}
+		</if>
+		<if test="code!=null and code!=''">
+			AND FC.code=#{code}
+		</if>
+		<if test="remmond!=null and remmond!=''">
+			AND FC.remmond=#{remmond}
+		</if>
+		<if test="batchNo!=null and batchNo!=''">
+			AND FC.batch_no=#{batchNo}
+		</if>
+		<if test="useTime!=null">
+			AND FC.use_time=#{useTime}
+		</if>
+		<if test="status!=null">
+			AND FC.status=#{status}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND FC.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND FC.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FC.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FC.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND FC.type=#{type}
+			</if>
+			<if test="no!=null and no!=''">
+				AND FC.no LIKE CONCAT('%', #{no}, '%')
+			</if>
+			<if test="code!=null and code!=''">
+				AND FC.code LIKE CONCAT('%', #{code}, '%')
+			</if>
+			<if test="remmond!=null and remmond!=''">
+				AND FC.remmond LIKE CONCAT('%', #{remmond}, '%')
+			</if>
+			<if test="batchNo!=null and batchNo!=''">
+				AND FC.batch_no LIKE CONCAT('%', #{batchNo}, '%')
+			</if>
+			<if test="useTime!=null">
+				AND FC.use_time=#{useTime}
+			</if>
+			<if test="status!=null">
+				AND FC.status=#{status}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND FC.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND FC.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FC.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FC.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FC.id=#{id}, 
+		   </if>
+           <if test="type!=null">
+				FC.type=#{type}, 
+		   </if>
+           <if test="no!=null">
+				FC.no=#{no}, 
+		   </if>
+           <if test="code!=null">
+				FC.code=#{code}, 
+		   </if>
+           <if test="remmond!=null">
+				FC.remmond=#{remmond}, 
+		   </if>
+           <if test="batchNo!=null">
+				FC.batch_no=#{batchNo}, 
+		   </if>
+           <if test="useTime!=null">
+				FC.use_time=#{useTime}, 
+		   </if>
+           <if test="status!=null">
+				FC.status=#{status}, 
+		   </if>
+           <if test="remark!=null">
+				FC.remark=#{remark}, 
+		   </if>
+           <if test="createTime!=null">
+				FC.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FC.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FC.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyCard" type="com.jinpaihushi.jphs.family.model.FamilyCard">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remmond" column="remmond" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="batchNo" column="batch_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="useTime" column="use_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyCardGlobal" type="com.jinpaihushi.jphs.family.model.FamilyCard">
+		<result property="id" column="FC_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="FC_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="no" column="FC_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="FC_code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="remmond" column="FC_remmond" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="batchNo" column="FC_batch_no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="useTime" column="FC_use_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="status" column="FC_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="FC_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="FC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyCard">
+		INSERT INTO `FAMILY_CARD`(
+			id, type, 
+			no, code, 
+			remmond, batch_no, 
+			use_time, status, 
+			remark, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{no,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+			#{remmond,jdbcType=VARCHAR}, #{batchNo,jdbcType=VARCHAR}, 
+			#{useTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+			#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_CARD`(
+			id, type, 
+			no, code, 
+			remmond, batch_no, 
+			use_time, status, 
+			remark, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.no,jdbcType=VARCHAR}, #{item.code,jdbcType=VARCHAR}, 
+			#{item.remmond,jdbcType=VARCHAR}, #{item.batchNo,jdbcType=VARCHAR}, 
+			#{item.useTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}, 
+			#{item.remark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FC FROM `FAMILY_CARD` FC WHERE FC.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_CARD` FC
+		SET 
+		FC.STATUS = -1
+		WHERE FC.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_CARD` FC
+		<include refid="dynamicSet" /> 
+	    WHERE FC.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyCard">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CARD` FC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_CARD` FC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyCard">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CARD` FC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyCard">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CARD` FC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyCard">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_CARD` FC
+		WHERE FC.ID = #{id}
+	</select>
+	
+</mapper>

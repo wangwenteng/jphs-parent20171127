@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyRegisterDao">
+	
+	<sql id="field">
+		FR.id, FR.type, FR.hospital, FR.department, 
+		FR.title, FR.phone, FR.appointment_time, FR.week, 
+		FR.status, FR.create_time, FR.creator_id, FR.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FR.id FR_id, FR.type FR_type, 
+		FR.hospital FR_hospital, FR.department FR_department, 
+		FR.title FR_title, FR.phone FR_phone, 
+		FR.appointment_time FR_appointment_time, FR.week FR_week, 
+		FR.status FR_status, FR.create_time FR_create_time, 
+		FR.creator_id FR_creator_id, FR.creator_name FR_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FR.id id, FR.type type, 
+		FR.hospital hospital, FR.department department, 
+		FR.title title, FR.phone phone, 
+		FR.appointment_time appointmentTime, FR.week week, 
+		FR.status status, FR.create_time createTime, 
+		FR.creator_id creatorId, FR.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FR.id=#{id}
+		</if>
+		<if test="type!=null">
+			AND FR.type=#{type}
+		</if>
+		<if test="hospital!=null and hospital!=''">
+			AND FR.hospital=#{hospital}
+		</if>
+		<if test="department!=null and department!=''">
+			AND FR.department=#{department}
+		</if>
+		<if test="title!=null and title!=''">
+			AND FR.title=#{title}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND FR.phone=#{phone}
+		</if>
+		<if test="appointmentTime!=null">
+			AND FR.appointment_time=#{appointmentTime}
+		</if>
+		<if test="week!=null and week!=''">
+			AND FR.week=#{week}
+		</if>
+		<if test="status!=null">
+			AND FR.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FR.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FR.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FR.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FR.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="type!=null">
+				AND FR.type=#{type}
+			</if>
+			<if test="hospital!=null and hospital!=''">
+				AND FR.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="department!=null and department!=''">
+				AND FR.department LIKE CONCAT('%', #{department}, '%')
+			</if>
+			<if test="title!=null and title!=''">
+				AND FR.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND FR.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="appointmentTime!=null">
+				AND FR.appointment_time=#{appointmentTime}
+			</if>
+			<if test="week!=null and week!=''">
+				AND FR.week LIKE CONCAT('%', #{week}, '%')
+			</if>
+			<if test="status!=null">
+				AND FR.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FR.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FR.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FR.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FR.id=#{id}, 
+		   </if>
+           <if test="type!=null">
+				FR.type=#{type}, 
+		   </if>
+           <if test="hospital!=null">
+				FR.hospital=#{hospital}, 
+		   </if>
+           <if test="department!=null">
+				FR.department=#{department}, 
+		   </if>
+           <if test="title!=null">
+				FR.title=#{title}, 
+		   </if>
+           <if test="phone!=null">
+				FR.phone=#{phone}, 
+		   </if>
+           <if test="appointmentTime!=null">
+				FR.appointment_time=#{appointmentTime}, 
+		   </if>
+           <if test="week!=null">
+				FR.week=#{week}, 
+		   </if>
+           <if test="status!=null">
+				FR.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FR.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FR.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FR.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyRegister" type="com.jinpaihushi.jphs.family.model.FamilyRegister">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="hospital" column="hospital" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="department" column="department" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="week" column="week" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyRegisterGlobal" type="com.jinpaihushi.jphs.family.model.FamilyRegister">
+		<result property="id" column="FR_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="FR_type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="hospital" column="FR_hospital" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="department" column="FR_department" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="title" column="FR_title" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="FR_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="appointmentTime" column="FR_appointment_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="week" column="FR_week" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FR_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyRegister">
+		INSERT INTO `FAMILY_REGISTER`(
+			id, type, 
+			hospital, department, 
+			title, phone, 
+			appointment_time, week, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+			#{hospital,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+			#{title,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+			#{appointmentTime,jdbcType=TIMESTAMP}, #{week,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_REGISTER`(
+			id, type, 
+			hospital, department, 
+			title, phone, 
+			appointment_time, week, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+			#{item.hospital,jdbcType=VARCHAR}, #{item.department,jdbcType=VARCHAR}, 
+			#{item.title,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR}, 
+			#{item.appointmentTime,jdbcType=TIMESTAMP}, #{item.week,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FR FROM `FAMILY_REGISTER` FR WHERE FR.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_REGISTER` FR
+		SET 
+		FR.STATUS = -1
+		WHERE FR.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_REGISTER` FR
+		<include refid="dynamicSet" /> 
+	    WHERE FR.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyRegister">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_REGISTER` FR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_REGISTER` FR
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyRegister">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_REGISTER` FR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyRegister">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_REGISTER` FR
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyRegister">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_REGISTER` FR
+		WHERE FR.ID = #{id}
+	</select>
+	
+</mapper>

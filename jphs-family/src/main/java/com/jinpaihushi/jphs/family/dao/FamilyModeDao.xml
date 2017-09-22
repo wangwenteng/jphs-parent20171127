@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyModeDao">
+	
+	<sql id="field">
+		FM.id, FM.family_package_id, FM.access_mode, FM.validate_code, 
+		FM.begin_time, FM.end_time, FM.day, FM.unit, 
+		FM.status, FM.create_time, FM.creator_id, FM.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FM.id FM_id, FM.family_package_id FM_family_package_id, 
+		FM.access_mode FM_access_mode, FM.validate_code FM_validate_code, 
+		FM.begin_time FM_begin_time, FM.end_time FM_end_time, 
+		FM.day FM_day, FM.unit FM_unit, 
+		FM.status FM_status, FM.create_time FM_create_time, 
+		FM.creator_id FM_creator_id, FM.creator_name FM_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FM.id id, FM.family_package_id familyPackageId, 
+		FM.access_mode accessMode, FM.validate_code validateCode, 
+		FM.begin_time beginTime, FM.end_time endTime, 
+		FM.day day, FM.unit unit, 
+		FM.status status, FM.create_time createTime, 
+		FM.creator_id creatorId, FM.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FM.id=#{id}
+		</if>
+		<if test="familyPackageId!=null and familyPackageId!=''">
+			AND FM.family_package_id=#{familyPackageId}
+		</if>
+		<if test="accessMode!=null">
+			AND FM.access_mode=#{accessMode}
+		</if>
+		<if test="validateCode!=null and validateCode!=''">
+			AND FM.validate_code=#{validateCode}
+		</if>
+		<if test="beginTime!=null">
+			AND FM.begin_time=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			AND FM.end_time=#{endTime}
+		</if>
+		<if test="day!=null">
+			AND FM.day=#{day}
+		</if>
+		<if test="unit!=null and unit!=''">
+			AND FM.unit=#{unit}
+		</if>
+		<if test="status!=null">
+			AND FM.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FM.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FM.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FM.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FM.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="familyPackageId!=null and familyPackageId!=''">
+				AND FM.family_package_id LIKE CONCAT('%', #{familyPackageId}, '%')
+			</if>
+			<if test="accessMode!=null">
+				AND FM.access_mode=#{accessMode}
+			</if>
+			<if test="validateCode!=null and validateCode!=''">
+				AND FM.validate_code LIKE CONCAT('%', #{validateCode}, '%')
+			</if>
+			<if test="beginTime!=null">
+				AND FM.begin_time=#{beginTime}
+			</if>
+			<if test="endTime!=null">
+				AND FM.end_time=#{endTime}
+			</if>
+			<if test="day!=null">
+				AND FM.day=#{day}
+			</if>
+			<if test="unit!=null and unit!=''">
+				AND FM.unit LIKE CONCAT('%', #{unit}, '%')
+			</if>
+			<if test="status!=null">
+				AND FM.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FM.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FM.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FM.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FM.id=#{id}, 
+		   </if>
+           <if test="familyPackageId!=null">
+				FM.family_package_id=#{familyPackageId}, 
+		   </if>
+           <if test="accessMode!=null">
+				FM.access_mode=#{accessMode}, 
+		   </if>
+           <if test="validateCode!=null">
+				FM.validate_code=#{validateCode}, 
+		   </if>
+           <if test="beginTime!=null">
+				FM.begin_time=#{beginTime}, 
+		   </if>
+           <if test="endTime!=null">
+				FM.end_time=#{endTime}, 
+		   </if>
+           <if test="day!=null">
+				FM.day=#{day}, 
+		   </if>
+           <if test="unit!=null">
+				FM.unit=#{unit}, 
+		   </if>
+           <if test="status!=null">
+				FM.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FM.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FM.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FM.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyMode" type="com.jinpaihushi.jphs.family.model.FamilyMode">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyPackageId" column="family_package_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="accessMode" column="access_mode" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="validateCode" column="validate_code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="beginTime" column="begin_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="day" column="day" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyModeGlobal" type="com.jinpaihushi.jphs.family.model.FamilyMode">
+		<result property="id" column="FM_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="familyPackageId" column="FM_family_package_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="accessMode" column="FM_access_mode" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="validateCode" column="FM_validate_code" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="beginTime" column="FM_begin_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="endTime" column="FM_end_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="day" column="FM_day" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="unit" column="FM_unit" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FM_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FM_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FM_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FM_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyMode">
+		INSERT INTO `FAMILY_MODE`(
+			id, family_package_id, 
+			access_mode, validate_code, 
+			begin_time, end_time, 
+			day, unit, 
+			status, create_time, 
+			creator_id, creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{familyPackageId,jdbcType=VARCHAR}, 
+			#{accessMode,jdbcType=INTEGER}, #{validateCode,jdbcType=VARCHAR}, 
+			#{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+			#{day,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_MODE`(
+			id, family_package_id, 
+			access_mode, validate_code, 
+			begin_time, end_time, 
+			day, unit, 
+			status, create_time, 
+			creator_id, creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.familyPackageId,jdbcType=VARCHAR}, 
+			#{item.accessMode,jdbcType=INTEGER}, #{item.validateCode,jdbcType=VARCHAR}, 
+			#{item.beginTime,jdbcType=TIMESTAMP}, #{item.endTime,jdbcType=TIMESTAMP}, 
+			#{item.day,jdbcType=INTEGER}, #{item.unit,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FM FROM `FAMILY_MODE` FM WHERE FM.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_MODE` FM
+		SET 
+		FM.STATUS = -1
+		WHERE FM.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_MODE` FM
+		<include refid="dynamicSet" /> 
+	    WHERE FM.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyMode">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MODE` FM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_MODE` FM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyMode">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MODE` FM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyMode">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MODE` FM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyMode">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MODE` FM
+		WHERE FM.ID = #{id}
+	</select>
+	
+</mapper>

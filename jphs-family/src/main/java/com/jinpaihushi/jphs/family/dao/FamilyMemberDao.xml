@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyMemberDao">
+	
+	<sql id="field">
+		FM.id, FM.name, FM.phone, FM.sfz, 
+		FM.relation, FM.status, FM.create_time, FM.creator_id, 
+		FM.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FM.id FM_id, FM.name FM_name, 
+		FM.phone FM_phone, FM.sfz FM_sfz, 
+		FM.relation FM_relation, FM.status FM_status, 
+		FM.create_time FM_create_time, FM.creator_id FM_creator_id, 
+		FM.creator_name FM_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FM.id id, FM.name name, 
+		FM.phone phone, FM.sfz sfz, 
+		FM.relation relation, FM.status status, 
+		FM.create_time createTime, FM.creator_id creatorId, 
+		FM.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FM.id=#{id}
+		</if>
+		<if test="name!=null and name!=''">
+			AND FM.name=#{name}
+		</if>
+		<if test="phone!=null and phone!=''">
+			AND FM.phone=#{phone}
+		</if>
+		<if test="sfz!=null and sfz!=''">
+			AND FM.sfz=#{sfz}
+		</if>
+		<if test="relation!=null and relation!=''">
+			AND FM.relation=#{relation}
+		</if>
+		<if test="status!=null">
+			AND FM.status=#{status}
+		</if>
+		<if test="createTime!=null">
+			AND FM.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FM.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FM.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FM.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="name!=null and name!=''">
+				AND FM.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				AND FM.phone LIKE CONCAT('%', #{phone}, '%')
+			</if>
+			<if test="sfz!=null and sfz!=''">
+				AND FM.sfz LIKE CONCAT('%', #{sfz}, '%')
+			</if>
+			<if test="relation!=null and relation!=''">
+				AND FM.relation LIKE CONCAT('%', #{relation}, '%')
+			</if>
+			<if test="status!=null">
+				AND FM.status=#{status}
+			</if>
+			<if test="createTime!=null">
+				AND FM.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FM.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FM.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FM.id=#{id}, 
+		   </if>
+           <if test="name!=null">
+				FM.name=#{name}, 
+		   </if>
+           <if test="phone!=null">
+				FM.phone=#{phone}, 
+		   </if>
+           <if test="sfz!=null">
+				FM.sfz=#{sfz}, 
+		   </if>
+           <if test="relation!=null">
+				FM.relation=#{relation}, 
+		   </if>
+           <if test="status!=null">
+				FM.status=#{status}, 
+		   </if>
+           <if test="createTime!=null">
+				FM.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FM.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FM.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyMember" type="com.jinpaihushi.jphs.family.model.FamilyMember">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sfz" column="sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="relation" column="relation" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyMemberGlobal" type="com.jinpaihushi.jphs.family.model.FamilyMember">
+		<result property="id" column="FM_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="FM_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="phone" column="FM_phone" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="sfz" column="FM_sfz" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="relation" column="FM_relation" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FM_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="FM_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FM_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FM_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyMember">
+		INSERT INTO `FAMILY_MEMBER`(
+			id, name, 
+			phone, sfz, 
+			relation, status, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+			#{phone,jdbcType=VARCHAR}, #{sfz,jdbcType=VARCHAR}, 
+			#{relation,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_MEMBER`(
+			id, name, 
+			phone, sfz, 
+			relation, status, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
+			#{item.phone,jdbcType=VARCHAR}, #{item.sfz,jdbcType=VARCHAR}, 
+			#{item.relation,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FM FROM `FAMILY_MEMBER` FM WHERE FM.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_MEMBER` FM
+		SET 
+		FM.STATUS = -1
+		WHERE FM.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_MEMBER` FM
+		<include refid="dynamicSet" /> 
+	    WHERE FM.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyMember">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MEMBER` FM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_MEMBER` FM
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyMember">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MEMBER` FM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyMember">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MEMBER` FM
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyMember">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_MEMBER` FM
+		WHERE FM.ID = #{id}
+	</select>
+	
+</mapper>

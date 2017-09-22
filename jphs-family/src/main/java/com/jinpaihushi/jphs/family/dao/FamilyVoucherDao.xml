@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	scj
+	date	:	2017-09-22 15:56:54
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.family.dao.FamilyVoucherDao">
+	
+	<sql id="field">
+		FV.id, FV.voucher_id, FV.status, FV.remark, 
+		FV.create_time, FV.creator_id, FV.creator_name
+	</sql>
+
+	<sql id="fieldGlobal">
+		FV.id FV_id, FV.voucher_id FV_voucher_id, 
+		FV.status FV_status, FV.remark FV_remark, 
+		FV.create_time FV_create_time, FV.creator_id FV_creator_id, 
+		FV.creator_name FV_creator_name
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		FV.id id, FV.voucher_id voucherId, 
+		FV.status status, FV.remark remark, 
+		FV.create_time createTime, FV.creator_id creatorId, 
+		FV.creator_name creatorName
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND FV.id=#{id}
+		</if>
+		<if test="voucherId!=null and voucherId!=''">
+			AND FV.voucher_id=#{voucherId}
+		</if>
+		<if test="status!=null">
+			AND FV.status=#{status}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND FV.remark=#{remark}
+		</if>
+		<if test="createTime!=null">
+			AND FV.create_time=#{createTime}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND FV.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND FV.creator_name=#{creatorName}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND FV.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="voucherId!=null and voucherId!=''">
+				AND FV.voucher_id LIKE CONCAT('%', #{voucherId}, '%')
+			</if>
+			<if test="status!=null">
+				AND FV.status=#{status}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND FV.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND FV.create_time=#{createTime}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND FV.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND FV.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				FV.id=#{id}, 
+		   </if>
+           <if test="voucherId!=null">
+				FV.voucher_id=#{voucherId}, 
+		   </if>
+           <if test="status!=null">
+				FV.status=#{status}, 
+		   </if>
+           <if test="remark!=null">
+				FV.remark=#{remark}, 
+		   </if>
+           <if test="createTime!=null">
+				FV.create_time=#{createTime}, 
+		   </if>
+           <if test="creatorId!=null">
+				FV.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				FV.creator_name=#{creatorName}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="familyVoucher" type="com.jinpaihushi.jphs.family.model.FamilyVoucher">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherId" column="voucher_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<resultMap id="familyVoucherGlobal" type="com.jinpaihushi.jphs.family.model.FamilyVoucher">
+		<result property="id" column="FV_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="voucherId" column="FV_voucher_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="FV_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="FV_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="FV_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="FV_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="FV_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.family.model.FamilyVoucher">
+		INSERT INTO `FAMILY_VOUCHER`(
+			id, voucher_id, 
+			status, remark, 
+			create_time, creator_id, 
+			creator_name
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{voucherId,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+			#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `FAMILY_VOUCHER`(
+			id, voucher_id, 
+			status, remark, 
+			create_time, creator_id, 
+			creator_name
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.voucherId,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.remark,jdbcType=VARCHAR}, 
+			#{item.createTime,jdbcType=TIMESTAMP}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FV FROM `FAMILY_VOUCHER` FV WHERE FV.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `FAMILY_VOUCHER` FV
+		SET 
+		FV.STATUS = -1
+		WHERE FV.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `FAMILY_VOUCHER` FV
+		<include refid="dynamicSet" /> 
+	    WHERE FV.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="familyVoucher">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_VOUCHER` FV
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `FAMILY_VOUCHER` FV
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="familyVoucher">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_VOUCHER` FV
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="familyVoucher">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_VOUCHER` FV
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="familyVoucher">
+		SELECT <include refid="field"/>
+		FROM `FAMILY_VOUCHER` FV
+		WHERE FV.ID = #{id}
+	</select>
+	
+</mapper>

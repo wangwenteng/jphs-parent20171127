@@ -30,6 +30,8 @@
 		<module>jphs-https-service</module>
 		<module>jphs-shop-api</module>
 		<module>jphs-shop</module>
+		<module>jphs-family</module>
+		<module>jphs-family-api</module>
 	</modules>
 
 	<properties>

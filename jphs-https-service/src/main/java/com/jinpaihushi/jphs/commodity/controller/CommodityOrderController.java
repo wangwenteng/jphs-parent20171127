@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.commodity.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -409,6 +410,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 				map.put("AcceptStation", "暂无快递信息");
 				return JSONUtil.toJSONResult(0, "操作成功！", map);
 			}
+			 
 			return JSONUtil.toJSONResult(1, "操作成功！", list );
 		} catch (Exception e) {
 			Util.failLog.error("commodityOrder.getLogistics.json,expCode =" + expCode + ",expNo="+expNo,e);
