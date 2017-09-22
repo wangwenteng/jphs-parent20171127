@@ -13,6 +13,8 @@ import com.jinpaihushi.jphs.commodity.model.CommodityPrice;
  */
 @Repository("commodityPriceDao")
 public interface CommodityPriceDao extends BaseDao<CommodityPrice> {
+
+	Integer getCount(String commodityId);
 	
 	
 	

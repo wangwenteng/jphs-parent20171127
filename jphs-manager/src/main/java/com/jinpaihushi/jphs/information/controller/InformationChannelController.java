@@ -27,88 +27,89 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "InformationChannel", path = "/information/channel")
+@RequestMapping(name = "资讯频道", path = "/information/channel")
 public class InformationChannelController extends BaseController<InformationChannel> {
 
-	@Autowired
-	private InformationChannelService informationChannelService;
+    @Autowired
+    private InformationChannelService informationChannelService;
 
-	@Override
-	protected BaseService<InformationChannel> getService() {
-		return informationChannelService;
-	}
+    @Override
+    protected BaseService<InformationChannel> getService() {
+        return informationChannelService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			InformationChannel informationChannel, Integer p, Integer n) {
-		startPage(p, n);
-		Page<InformationChannel> list = informationChannelService.query(informationChannel);
-		PageInfos<InformationChannel> pageInfo = new PageInfos<InformationChannel>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "information/channel/list";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            InformationChannel informationChannel, Integer p, Integer n) {
+        startPage(p, n);
+        Page<InformationChannel> list = informationChannelService.query(informationChannel);
+        PageInfos<InformationChannel> pageInfo = new PageInfos<InformationChannel>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "information/channel/list";
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		InformationChannel informationChannel = informationChannelService.loadById(id);
-		modelMap.put("informationChannel", informationChannel);
-		return "information/channel/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        InformationChannel informationChannel = informationChannelService.loadById(id);
+        modelMap.put("informationChannel", informationChannel);
+        return "information/channel/edit";
+    }
 
-		return "information/channel/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		InformationChannel informationChannel = informationChannelService.loadById(id);
-		modelMap.put("informationChannel", informationChannel);
-		return "information/channel/detail";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, InformationChannel informationChannel) {
+        return "information/channel/edit";
+    }
 
-		if (informationChannel.getId() != null && !informationChannel.getId().equals("")) {
-			boolean b = informationChannelService.update(informationChannel);
-			if (b == false) {
-				// 跳转到错误页
-				return "redirect:/information/channel/err.jhtml";
-			}
-		} else {
-			try {
-				SystemUser user = (SystemUser) hs.getAttribute("session_user");
-				informationChannel.setCreatorId(user.getId());
-				informationChannel.setCreatorName(user.getName());
-			} catch (Exception e) {
-			}
-			informationChannel.setId(UUID.randomUUID().toString());
-			String result = informationChannelService.insert(informationChannel);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/information/channel/err.jhtml";
-			}
-		}
-		return "redirect:/information/channel/index.jhtml";
-	}
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        InformationChannel informationChannel = informationChannelService.loadById(id);
+        modelMap.put("informationChannel", informationChannel);
+        return "information/channel/detail";
+    }
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,InformationChannel informationChannel) {
-		boolean b = informationChannelService.update(informationChannel);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/information/channel/err.jhtml";
-		}
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            InformationChannel informationChannel) {
 
-		return "redirect:/information/channel/index.jhtml";
-	}
-	
-	
+        if (informationChannel.getId() != null && !informationChannel.getId().equals("")) {
+            boolean b = informationChannelService.update(informationChannel);
+            if (b == false) {
+                // 跳转到错误页
+                return "redirect:/information/channel/err.jhtml";
+            }
+        }
+        else {
+            try {
+                SystemUser user = (SystemUser) hs.getAttribute("session_user");
+                informationChannel.setCreatorId(user.getId());
+                informationChannel.setCreatorName(user.getName());
+            }
+            catch (Exception e) {
+            }
+            informationChannel.setId(UUID.randomUUID().toString());
+            String result = informationChannelService.insert(informationChannel);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/information/channel/err.jhtml";
+            }
+        }
+        return "redirect:/information/channel/index.jhtml";
+    }
+
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            InformationChannel informationChannel) {
+        boolean b = informationChannelService.update(informationChannel);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/information/channel/err.jhtml";
+        }
+
+        return "redirect:/information/channel/index.jhtml";
+    }
 
 }

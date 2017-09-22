@@ -21,6 +21,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.account.dao.AccountDao;
 import com.jinpaihushi.jphs.account.model.Account;
@@ -265,6 +266,7 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 										 status.setRollbackOnly();// 回滚
 											return "1";
 									 }
+									 System.out.println( number2);
 									commodityOrderInfo.setNumber(number2);
 									commodityOrderInfo.setUserId(car.getUserId());
 									commodityOrderInfo.setCode(car.getCode());
@@ -502,18 +504,22 @@ System.out.println(id);
     					}
     					CommodityOrderInfo coi_up = new CommodityOrderInfo();
     					coi_up.setCommodityOrderId(map_c.get("id").toString());
-    					CommodityOrderInfo coi = commodityOrderInfoDao.load(coi_up);
-    					coi_up.setId(coi.getId());
-    					coi_up.setStatus(2);
-    					int coid =commodityOrderInfoDao.update(coi_up);
-    					if(coid < 1){
-    						status.setRollbackOnly();//回滚
-    						return "3";
-    					}
-    					String remark = "";
-    					if (coi.getTitle() != null && !coi.getTitle().equals("")) {
-    						remark = coi.getTitle();
-    					}
+    					 List<CommodityOrderInfo> coi_list = commodityOrderInfoDao.list(coi_up);
+     					String remark = "";
+     					for(int y=0;y<coi_list.size();y++){
+     						CommodityOrderInfo coi = coi_list.get(y);
+     						coi_up.setId(coi.getId());
+     						coi_up.setStatus(2);
+     						int coid = commodityOrderInfoDao.update(coi_up);
+     						if (coi.getTitle() != null && !coi.getTitle().equals("")) {
+     							remark += coi.getTitle();
+     						}
+     						if(coid < 1){
+        						status.setRollbackOnly();//回滚
+        						return "3";
+        					}
+     					}
+    					
     					Transaction transaction = new Transaction();
     					transaction.setId(UUID.randomUUID().toString());
     					transaction.setOrderId(map_c.get("id").toString());
@@ -643,15 +649,21 @@ System.out.println(id);
 					commodityOrderDao.update(commodityOrder_up);
 					CommodityOrderInfo coi_up = new CommodityOrderInfo();
 					coi_up.setCommodityOrderId(map_c.get("id").toString());
-					CommodityOrderInfo coi = commodityOrderInfoDao.load(coi_up);
-					coi_up.setId(coi.getId());
-					coi_up.setStatus(2);
-					commodityOrderInfoDao.update(coi_up);
-
+					List<CommodityOrderInfo> coi_list = commodityOrderInfoDao.list(coi_up);
 					String remark = "";
-					if (coi.getTitle() != null && !coi.getTitle().equals("")) {
-						remark = coi.getTitle();
+					for(int y=0;y<coi_list.size();y++){
+						CommodityOrderInfo coi = coi_list.get(y);
+						coi_up.setId(coi.getId());
+						coi_up.setStatus(2);
+						commodityOrderInfoDao.update(coi_up);
+						if (coi.getTitle() != null && !coi.getTitle().equals("")) {
+							remark += coi.getTitle();
+						}
 					}
+					
+
+					
+					
 
 					Transaction transaction = new Transaction();
 					transaction.setId(UUID.randomUUID().toString());
@@ -712,6 +724,12 @@ System.out.println(id);
 	public List<CommodityOrder> getStatusByOrderNo(String orderNo) {
 		// TODO Auto-generated method stub
 		return commodityOrderDao.getStatusByOrderNo(orderNo);
+	}
+
+	@Override
+	public Page<CommodityOrder> getList(CommodityOrder commodityOrder) {
+		// TODO Auto-generated method stub
+		return commodityOrderDao.getList(commodityOrder);
 	}
 
 }

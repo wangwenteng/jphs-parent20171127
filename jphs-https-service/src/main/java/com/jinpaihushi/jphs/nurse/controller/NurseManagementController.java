@@ -228,18 +228,22 @@ public class NurseManagementController {
                 return JSONUtil.toJSONResult(0, "你不能添加自己", null);
             }
             PersonManager manager = new PersonManager();
-            //判断是否已经发送过请求
+            //判断是是否已经添加过
             manager.setUserId(personManager.getUserId());
             manager.setCreatorId(personManager.getCreatorId());
+            manager.setStatus(0);
             List<PersonManager> list = personManagerService.list(manager);
             if (list.size() > 0) {
-                if (list.get(0).getStatus() == -1) {
-                    return JSONUtil.toJSONResult(0, "您已经拒绝了该好友！", null);
-                }
-                else {
                     return JSONUtil.toJSONResult(0, "您已经发送过请求了！", null);
-
-                }
+            }
+            //判断被添加者是否已经添加过添加者
+            manager = new PersonManager();
+            manager.setCreatorId(personManager.getUserId());
+            manager.setUserId(personManager.getCreatorId());
+            manager.setStatus(1);
+            list = personManagerService.list(manager);
+            if (list.size() > 0) {
+                return JSONUtil.toJSONResult(0, "您已经在对方好友列表中！！", null);
             }
             //判断被添加者是否被别人添加
             manager = new PersonManager();
@@ -251,15 +255,7 @@ public class NurseManagementController {
                     return JSONUtil.toJSONResult(0, "该护士已经被别人添加！！", null);
                 }
             }
-            //判断被添加者是否已经添加过添加者
-            manager = new PersonManager();
-            manager.setCreatorId(personManager.getUserId());
-            manager.setUserId(personManager.getCreatorId());
-            manager.setStatus(1);
-            list = personManagerService.list(manager);
-            if (list.size() > 0) {
-                return JSONUtil.toJSONResult(0, "您已经在对方好友列表中！！", null);
-            }
+           
             //判断是否是管理者添加被管理者
             if (personManager.getIsLeader() == 0) {
                 //判断被添加的是同意还是拒绝

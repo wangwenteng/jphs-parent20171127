@@ -63,6 +63,13 @@ public interface OrderDao extends BaseDao<Order> {
      * @return
      */
     Order nurseOrderDetails(Order order);
+    
+    /**
+     * 已枪订单
+     * @param map
+     * @return
+     */
+    List<Map<String, Object>> orderaccNotNullList(Map<String, Object> map);
 
     /**
      * @param query
@@ -72,4 +79,8 @@ public interface OrderDao extends BaseDao<Order> {
      * @return
      */
     List<Order> getCompletedOrder(Map<String, Object> query);
+
+    List<Map<String, Object>> getOrderUnpaid();
+
+    Map<String, Object> getSmsMessage(String orderId);
 }

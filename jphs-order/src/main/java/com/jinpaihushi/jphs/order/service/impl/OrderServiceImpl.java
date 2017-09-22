@@ -47,9 +47,12 @@ import com.jinpaihushi.jphs.order.model.OrderOther;
 import com.jinpaihushi.jphs.order.model.OrderPojo;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.price.dao.PriceDao;
+import com.jinpaihushi.jphs.price.dao.PriceNurseDao;
 import com.jinpaihushi.jphs.price.dao.PricePartDao;
 import com.jinpaihushi.jphs.price.model.Price;
+import com.jinpaihushi.jphs.price.model.PriceNurse;
 import com.jinpaihushi.jphs.price.model.PricePart;
+import com.jinpaihushi.jphs.push.service.NurseJPushService;
 import com.jinpaihushi.jphs.service.dao.ServiceImagesDao;
 import com.jinpaihushi.jphs.service.model.ServiceImages;
 import com.jinpaihushi.jphs.system.service.DoPostSmsService;
@@ -62,7 +65,6 @@ import com.jinpaihushi.jphs.user.model.UserAddress;
 import com.jinpaihushi.jphs.voucher.dao.VoucherRepertoryDao;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
-import com.jinpaihushi.tools.DoPostSms;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
@@ -139,16 +141,36 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     private GoodsDao goodsDao;
 
     @Autowired
+    private PriceNurseDao priceNurseDao;
+
+    @Autowired
     private VoucherService voucherService;
 
     @Autowired
     private DoPostSmsService doPostSmsService;
 
-    @Value("${SMS_user_createOrder}")
-    private String SMS_user_createOrder;
+    @Autowired
+    private NurseJPushService nurseJPushService;
 
-    @Value("${SMSt_Nurse_orders}")
-    private String SMSt_Nurse_orders;
+    //#护士接单
+    @Value("${SMS_Nurse_orders}")
+    private String SMS_Nurse_orders;
+
+    //#护士接单
+    @Value("${SMS_Nurse_order}")
+    private String SMS_Nurse_order;
+
+    //     #给护士派单（上门服务）
+    @Value("${SMS_nurse_delivery_order}")
+    private String SMS_nurse_delivery_order;
+
+    //支付成功
+    @Value("${SMS_pay_success}")
+    private String SMS_pay_success;
+
+    //支付成功
+    @Value("${SMS_cancel_order}")
+    private String SMS_cancel_order;
 
     @Override
     protected BaseDao<Order> getDao() {
@@ -352,11 +374,31 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     }
 
     public List<Map<String, Object>> getOrderGoodsList(Map<String, Object> map) {
-        return orderDao.orderNotList(map);
+        List<Map<String, Object>> q_order_list = orderDao.orderNotList(map);
+        if(q_order_list.size() < 10){
+         Map<String, Object> q_o_map_s = new HashMap<String, Object>();
+         q_o_map_s.put("status", 1);
+         q_o_map_s.put("type", 1);
+         List<Map<String, Object>> q_order_list_s = orderDao.orderaccNotNullList(q_o_map_s);
+         if(q_order_list_s.size() > 0 ){
+           	 int size_l = 10 - q_order_list.size();
+           	 if(size_l > q_order_list_s.size()){
+           		 q_order_list.addAll(q_order_list_s); 
+           	 }else{
+           		 q_order_list.addAll(q_order_list_s.subList(0, size_l));
+           	 }
+         }
+        }
+
+        return q_order_list;
     }
 
     public List<Map<String, Object>> nurseOrderList(Map<String, Object> map) {
         return orderDao.nurseOrderList(map);
+    }
+
+    public List<Map<String, Object>> orderaccNotNullList(Map<String, Object> map) {
+        return orderDao.orderaccNotNullList(map);
     }
 
     /**
@@ -376,22 +418,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         // 详细价格
         PricePart pricePart = pricePartDao.loadById(orderInfo.getPricePartId());
 
-        // 获取价格基本信息
-        Price price = priceDao.loadById(pricePart.getPriceId());
-        //判断利润格式
-        Double profit = pricePart.getProfit();
-        Double nursePrice = 0.00;
-        if (profit > 1) {
-            nursePrice = DoubleUtils.sub(pricePart.getPrice(), pricePart.getProfit());
-        }
-        else {
-            nursePrice = DoubleUtils.sub(pricePart.getPrice(), DoubleUtils.mul(pricePart.getPrice(), profit));
-        }
-        Double onePrice = DoubleUtils.div(nursePrice, price.getServiceNumber(), 2);
         // 用户优惠券的价格
 
-        // 先获取商品的基本信息
-        Goods goods = goodsDao.getGoodsByPricePart(orderInfo.getPricePartId());
         User user = userDao.loadById(orderInfo.getCreatorId());
         if (user == null)
             return null;
@@ -403,6 +431,33 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             public String doInTransaction(final TransactionStatus status) {
                 int i = 0;
                 try {
+                    // 先获取商品的基本信息
+                    Goods goods = goodsDao.getGoodsByPricePart(orderInfo.getPricePartId());
+                    Double salePrice = 0.00;
+                    Price price = priceDao.loadById(pricePart.getPriceId());
+                    if (StringUtils.isNotEmpty(orderInfo.getExpectorId())) {
+                        PriceNurse priceNurse = new PriceNurse();
+                        priceNurse.setPricePartId(orderInfo.getPricePartId());
+                        priceNurse.setGoodsId(goods.getId());
+                        priceNurse.setStatus(0);
+                        priceNurse.setCreatorId(orderInfo.getExpectorId());
+                        PriceNurse resultPrice = priceNurseDao.load(priceNurse);
+                        salePrice = resultPrice.getPrice();
+                    }
+                    else {
+                        salePrice = pricePart.getPrice();
+                    }
+                    // 获取价格基本信息
+                    //判断利润格式
+                    Double profit = pricePart.getProfit();
+                    Double nursePrice = 0.00;
+                    if (profit > 1) {
+                        nursePrice = DoubleUtils.sub(salePrice, pricePart.getProfit());
+                    }
+                    else {
+                        nursePrice = DoubleUtils.sub(salePrice, DoubleUtils.mul(salePrice, profit));
+                    }
+                    Double onePrice = DoubleUtils.div(nursePrice, price.getServiceNumber(), 2);
                     //判断是否有订单id
                     if (StringUtils.isNotEmpty(orderInfo.getOrderId())) {
                         //判断订单的支付状态
@@ -415,9 +470,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         orderOtherDao.deleteByOrderId(orderInfo.getOrderId());
                         orderServiceDao.deleteByOrderId(orderInfo.getOrderId());
                     }
-                    VoucherUse voucherUse = null;
+                    Double voucherUsePrice = 0.00;
                     if (StringUtils.isNotEmpty(orderInfo.getVoucherUseId())) {
-                        voucherUse = voucherUseDao.loadById(orderInfo.getVoucherUseId());
+                        String nurseId = null;
+                        if (StringUtils.isNotEmpty(orderInfo.getExpectorId())) {
+                            nurseId = orderInfo.getExpectorId();
+                        }
+                        voucherUsePrice = voucherService.getGoodsPrice(orderInfo.getVoucherUseId(),
+                                orderInfo.getPricePartId(), nurseId);
                     }
                     String address = "";
                     String detailAddress = "";
@@ -443,8 +503,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     order.setOrderNo(Common.getOrderNumber());
                     order.setSchedule(0);
                     order.setStatus(1);
-                    order.setVoucherPrice(voucherUse == null ? 0.00 : voucherUse.getAmount());
-                    order.setVoucherUseId(voucherUse == null ? null : orderInfo.getVoucherUseId());
+                    order.setVoucherPrice(DoubleUtils.sub(salePrice, voucherUsePrice));
                     if (StringUtils.isNotEmpty(orderInfo.getExpectorId())) {
                         order.setAcceptUserId(orderInfo.getExpectorId());
                         order.setAcceptTime(new Date());
@@ -471,7 +530,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         if (StringUtils.isNotEmpty(orderInfo.getExpectorId()))
                             orderGoods.setExpectorId(orderInfo.getExpectorId());
                         orderGoods.setTitle(goods.getTitle());
-                        orderGoods.setPrice(pricePart.getPrice());
+                        orderGoods.setPrice(salePrice);
                         orderGoods.setProfit(pricePart.getProfit());
                         i = orderGoodsDao.insert(orderGoods);
                         if (i > 0) {
@@ -604,8 +663,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         });
         if (Integer.parseInt(rs) == 1) {
             //发送短信
-            String goodsName = (String) result.get("goodsName");
-            doPostSmsService.sendSms(user.getPhone(), SMS_user_createOrder, "{\"name\":\"" + goodsName + "\"}");
             return result;
         }
         else {
@@ -677,6 +734,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 else {
                     msg = "非法操作！";
 
+                }
+                if (StringUtils.isNotEmpty(order.getAcceptUserId())) {
+                    Map<String, Object> map = getSmsMessage(orderId);
+                    doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_cancel_order,
+                            "{\"order_no\":\"" + map.get("order_no").toString() + "\"}");
                 }
             }
         }
@@ -811,7 +873,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 }
                 Order orderUp = new Order();
                 orderUp.setId(orders.getId());
-                orderUp.setSchedule(1);
+                if(orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())){
+	               	 orderUp.setSchedule(2);
+	               }else{
+	               	orderUp.setSchedule(1);
+	               }
                 int orderUpbool = orderDao.update(orderUp);
                 // 记录日志-debug
                 if (Util.debugLog.isDebugEnabled()) {
@@ -830,9 +896,26 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                                     + JSONObject.fromObject(orderUser).toString());
                         }
                         if (orderUser != null) {
+                            Map<String, Object> map = orderDao.getSmsMessage(orders.getId());
                             // 发送验证码
-                            DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的订单：" + out_trade_no + "下单成功。",
-                                    "SMS_69155344", "{\"out_trade_no\":\"" + out_trade_no + "\"}");
+                            //通知用户下单成功
+                            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
+                                    "{\"out_trade_no\":\"" + out_trade_no + "\"}");
+                            //判断订单有没有接单人有的话通知护士
+                            if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                                //通知用户
+                                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
+                                                + map.get("nurseName").toString() + "\",\"phone\":"
+                                                + map.get("nursePhone").toString() + "\"}");
+                                //通知护士有新的订单
+                                doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
+                                        "{\"name\":\"" + map.get("userName").toString() + "\"}");
+                                //推送消息
+                                nurseJPushService.jpushTag(
+                                        "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                        map.get("nursePhone").toString(), "0");
+                            }
                         }
                         return true;
                     }
@@ -855,7 +938,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 }
             }
         }
-        catch (Exception e) {
+        catch (
+
+        Exception e) {
             Util.failLog.error("wechatOrderServiceImpl.updateOrderStutas：1e=", e);
         }
         return false;
@@ -1253,12 +1338,29 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         return "9";
                         //          				return JSONUtil.toJSONResult(0, "接单失败！", null);
                     }
-                }  catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     //日志打印区
                     status.setRollbackOnly();//回滚
                     return "0";
                 }
+                Map<String, Object> map = getSmsMessage(orderId);
+                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
+                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
+                                + map.get("nurseName").toString() + "\",\"phone\":" + map.get("nursePhone").toString()
+                                + "\"}");
+                //通知护士有新的订单
+                doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_Nurse_order,
+                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":"
+                                + map.get("order_no").toString() + "\",\"time\":" + map.get("accept_time").toString()
+                                + "\"}");
+                //推送消息
+                nurseJPushService.jpushTag(
+                        "您接到一笔" + map.get("goodsName").toString() + "订单，单号：" + map.get("order_no").toString() + "，预约时间："
+                                + map.get("accept_time").toString()
+                                + "。请到官网下载打印相关服务注意事项和同意书后及时联系客户，服务开始时做好录音准备，避免造成纠纷。",
+                        map.get("nursePhone").toString(), "0");
                 return "1";
             }
         });
@@ -1270,8 +1372,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
      * 余额支付
      * @return
      */
-    public byte [] balancePayment(String orderId, String orderNo, Double payParice,String userId){
-    	TransactionTemplate transactionTemplate = TransactionTemplateUtils.getDefaultTransactionTemplate(txManager);
+    public byte[] balancePayment(String orderId, String orderNo, Double payParice, String userId) {
+        TransactionTemplate transactionTemplate = TransactionTemplateUtils.getDefaultTransactionTemplate(txManager);
         String rs = (String) transactionTemplate.execute(new TransactionCallback<Object>() {
             //事务模板
             public String doInTransaction(final TransactionStatus status) {
@@ -1284,104 +1386,127 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     Order orders = orderDao.load(order);
 
                     if (orders == null || "".equals(orders)) {
-                    	status.setRollbackOnly();//回滚
+                        status.setRollbackOnly();//回滚
                         return "5";
                     }
-                	
-                	 OrderGoods orderGoods = new OrderGoods();
-                     orderGoods.setOrderId(orders.getId());
-                     orderGoods = orderGoodsDao.load(orderGoods);
-                     //判断支付金额跟订单金额
-                     if (DoubleUtils.sub(orderGoods.getPayPrice(), payParice) != 0) {
-                         return "2";
-                     }
-                     Account model = new Account();
-                     model.setCreatorId(userId);
-                     Account account = accountDao.load(model);
-                     if(null == account || "".equals(account)){
-                    	 return "10";
-                     }
-                     if(null == account.getBalance() || "".equals(account.getBalance())){
-                    	 return "11";
-                     }
-                     /**
-                      * 用于余额不足
-                      */
-                     if (DoubleUtils.sub(account.getBalance(), payParice) < 0) {
-                         return "3";
-                     }
-                     /**
-                      * 用户余额减去-订单金额
-                      * 更新用户余额
-                      */
-                     Double balance = DoubleUtils.sub(account.getBalance(), payParice);
-                     account.setBalance(balance);
-                     int a = accountDao.update(account);
-                     if(a < 1){
-                    	 status.setRollbackOnly();//回滚
-                    	 return "4";
-                     }
-                     
-                     OrderGoods orderGoods_up = new OrderGoods();
-                     orderGoods_up.setOrderId(orders.getId());
-                     orderGoods_up.setStatus(1);
-                     OrderGoods orderGoods_ny = orderGoodsDao.load(orderGoods_up);
-                     if (orderGoods_ny == null || "".equals(orderGoods_ny)) {
-                    	 status.setRollbackOnly();//回滚
-                         return "6";
-                     }
-                     
-                    if(DoubleUtils.sub(orderGoods_ny.getPayPrice(), payParice) < 0){
-                    	status.setRollbackOnly();//回滚
+
+                    OrderGoods orderGoods = new OrderGoods();
+                    orderGoods.setOrderId(orders.getId());
+                    orderGoods = orderGoodsDao.load(orderGoods);
+                    //判断支付金额跟订单金额
+                    if (DoubleUtils.sub(orderGoods.getPayPrice(), payParice) != 0) {
+                        return "2";
+                    }
+                    Account model = new Account();
+                    model.setCreatorId(userId);
+                    Account account = accountDao.load(model);
+                    if (null == account || "".equals(account)) {
+                        return "10";
+                    }
+                    if (null == account.getBalance() || "".equals(account.getBalance())) {
+                        return "11";
+                    }
+                    /**
+                     * 用于余额不足
+                     */
+                    if (DoubleUtils.sub(account.getBalance(), payParice) < 0) {
+                        return "3";
+                    }
+                    /**
+                     * 用户余额减去-订单金额
+                     * 更新用户余额
+                     */
+                    Double balance = DoubleUtils.sub(account.getBalance(), payParice);
+                    account.setBalance(balance);
+                    int a = accountDao.update(account);
+                    if (a < 1) {
+                        status.setRollbackOnly();//回滚
+                        return "4";
+                    }
+
+                    OrderGoods orderGoods_up = new OrderGoods();
+                    orderGoods_up.setOrderId(orders.getId());
+                    orderGoods_up.setStatus(1);
+                    OrderGoods orderGoods_ny = orderGoodsDao.load(orderGoods_up);
+                    if (orderGoods_ny == null || "".equals(orderGoods_ny)) {
+                        status.setRollbackOnly();//回滚
+                        return "6";
+                    }
+
+                    if (DoubleUtils.sub(orderGoods_ny.getPayPrice(), payParice) < 0) {
+                        status.setRollbackOnly();//回滚
                         return "7";
                     }
 
-	                 String remark = "";
-	                 if (orderGoods_ny.getTitle() != null && !orderGoods_ny.getTitle().equals("")) {
-	                     remark = orderGoods_ny.getTitle();
-	                 }
-	
-	                 Transaction transaction = new Transaction();
-	                 transaction.setId(UUID.randomUUID().toString());
-	                 transaction.setOrderId(orders.getId());
-	                 transaction.setAmount(payParice);
-	                 transaction.setScore((new Double(payParice)).intValue());
-	                 transaction.setOperate(3);
-	                 transaction.setOperateSource(1);
-	                 transaction.setRemark(remark);
-	                 transaction.setWithdraw(0);
-	                 transaction.setPayType(3);
-	                 transaction.setOutTradeNo(orderNo);
-	                 transaction.setCreatorId(orders.getCreatorId());
-	                 transaction.setCreatorName(orders.getCreatorName());
-	                 transaction.setCreateTime(new Date());
-	                 transaction.setStatus(1);
-	                 transaction.setType(1);
-	                 int ti = transactionDao.insert(transaction);
-	                 if (ti <= 0) {
-	                	 status.setRollbackOnly();//回滚
-	                     return "8";
-	                 }
-	                 Order orderUp = new Order();
-	                 orderUp.setId(orders.getId());
-	                 orderUp.setSchedule(1);
-	                 int orderUpbool = orderDao.update(orderUp);
-	                 if (orderUpbool < 1) {
-	                	 status.setRollbackOnly();//回滚
-	                     return "9";
-	                 }
-	                 User user = new User();
-                     user.setId(orders.getCreatorId());
-                     user.setStatus(1);
-                     User orderUser = userDao.load(user);
-                     if (orderUser != null) {
-                         // 发送验证码
-                         try {
-							DoPostSms.sendSms(orderUser.getPhone(), "【金牌护士】您的订单：" + orderNo + "下单成功。", "SMS_69155344", "{\"out_trade_no\":\"" + orderNo + "\"}");
-						} catch (Exception e) {
-						}
-                     }
-                } catch (Exception e) {
+                    String remark = "";
+                    if (orderGoods_ny.getTitle() != null && !orderGoods_ny.getTitle().equals("")) {
+                        remark = orderGoods_ny.getTitle();
+                    }
+
+                    Transaction transaction = new Transaction();
+                    transaction.setId(UUID.randomUUID().toString());
+                    transaction.setOrderId(orders.getId());
+                    transaction.setAmount(payParice);
+                    transaction.setScore((new Double(payParice)).intValue());
+                    transaction.setOperate(3);
+                    transaction.setOperateSource(1);
+                    transaction.setRemark(remark);
+                    transaction.setWithdraw(0);
+                    transaction.setPayType(3);
+                    transaction.setOutTradeNo(orderNo);
+                    transaction.setCreatorId(orders.getCreatorId());
+                    transaction.setCreatorName(orders.getCreatorName());
+                    transaction.setCreateTime(new Date());
+                    transaction.setStatus(1);
+                    transaction.setType(1);
+                    int ti = transactionDao.insert(transaction);
+                    if (ti <= 0) {
+                        status.setRollbackOnly();//回滚
+                        return "8";
+                    }
+                    Order orderUp = new Order();
+                    orderUp.setId(orders.getId());
+                    if(orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())){
+                    	 orderUp.setSchedule(2);
+                    }else{
+                    	orderUp.setSchedule(1);
+                    }
+                    int orderUpbool = orderDao.update(orderUp);
+                    if (orderUpbool < 1) {
+                        status.setRollbackOnly();//回滚
+                        return "9";
+                    }
+                    User user = new User();
+                    user.setId(orders.getCreatorId());
+                    user.setStatus(1);
+                    User orderUser = userDao.load(user);
+                    if (orderUser != null) {
+                        // 发送验证码
+                        try {
+                            Map<String, Object> map = getSmsMessage(orders.getId());
+                            // 发送验证码
+                            //通知用户下单成功
+                            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
+                                    "{\"out_trade_no\":\"" + map.get("order_no").toString() + "\"}");
+                            //判断订单有没有接单人有的话通知护士
+                            if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
+                                                + map.get("nurseName").toString() + "\",\"phone\":"
+                                                + map.get("nursePhone").toString() + "\"}");
+                                //通知护士有新的订单
+                                doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
+                                        "{\"name\":\"" + map.get("userName").toString() + "\"}");
+                                nurseJPushService.jpushTag(
+                                        "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                        map.get("nursePhone").toString(), "0");
+                            }
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                     //日志打印区
                     status.setRollbackOnly();//回滚
@@ -1392,37 +1517,48 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         });
         String msg = "支付成功";
         int rsi = Integer.parseInt(rs);
-        if(rsi == 0){
-        	msg = "支付失败，请刷新重试";
-        }else if(rsi == 2){
-        	msg = "支付失败，订单异常";
-        }else if(rsi == 3){
-        	msg = "支付失败，余额不足";
-        }else if(rsi == 4){
-        	msg = "支付失败，订单异常";
-        }else if(rsi == 5){
-        	msg = "支付失败，订单数据异常";
-        }else if(rsi == 6){
-        	msg = "支付失败，订单数据异常-1";
-        }else if(rsi == 7){
-        	msg = "支付失败，金额异常";
-        }else if(rsi == 8){
-        	msg = "支付失败，添加消费记录异常";
-        }else if(rsi == 9){
-        	msg = "支付失败，订单状态异常";
-        }else if(rsi == 10){
-        	msg = "支付失败，用户账户异常";
-        }else if(rsi == 11){
-        	msg = "支付失败，用户账户余额异常";
+        if (rsi == 0) {
+            msg = "支付失败，请刷新重试";
         }
-        
+        else if (rsi == 2) {
+            msg = "支付失败，订单异常";
+        }
+        else if (rsi == 3) {
+            msg = "支付失败，余额不足";
+        }
+        else if (rsi == 4) {
+            msg = "支付失败，订单异常";
+        }
+        else if (rsi == 5) {
+            msg = "支付失败，订单数据异常";
+        }
+        else if (rsi == 6) {
+            msg = "支付失败，订单数据异常-1";
+        }
+        else if (rsi == 7) {
+            msg = "支付失败，金额异常";
+        }
+        else if (rsi == 8) {
+            msg = "支付失败，添加消费记录异常";
+        }
+        else if (rsi == 9) {
+            msg = "支付失败，订单状态异常";
+        }
+        else if (rsi == 10) {
+            msg = "支付失败，用户账户异常";
+        }
+        else if (rsi == 11) {
+            msg = "支付失败，用户账户余额异常";
+        }
+
         try {
-			return JSONUtil.toJSONResult(rsi, msg, null);
-		} catch (IOException e) {
-		}
-		return null;
+            return JSONUtil.toJSONResult(rsi, msg, null);
+        }
+        catch (IOException e) {
+        }
+        return null;
     }
-    
+
     private void resetVouvher(String orderId, Order order) {
         if (StringUtils.isNotEmpty(order.getVoucherUseId())) {
             // 将优惠券的使用时间以及状态修改为未使用状态
@@ -1440,6 +1576,21 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         // 修改主订单进度
         order.setSchedule(6);
         orderDao.update(order);
+    }
+
+    @Override
+    public List<Order> getCompletedOrder(Map<String, Object> query) {
+        return orderDao.getCompletedOrder(query);
+    }
+
+    @Override
+    public List<Map<String, Object>> getOrderUnpaid() {
+        return orderDao.getOrderUnpaid();
+    }
+
+    @Override
+    public Map<String, Object> getSmsMessage(String id) {
+        return orderDao.getSmsMessage(id);
     }
 
 }

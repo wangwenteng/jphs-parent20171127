@@ -80,7 +80,7 @@
 		<p>
 			<span>接单时间：</span>
 			<fmt:formatDate value="${order.acceptTime }"
-				pattern="yyyy-mm-dd  HH:mm:ss" />
+				pattern="yyyy-MM-dd  HH:mm:ss" />
 		</p>
 		<p>
 			<span>接单人联系电话：</span>${nurse.phone }</p>

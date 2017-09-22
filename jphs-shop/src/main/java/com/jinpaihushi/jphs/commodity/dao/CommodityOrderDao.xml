@@ -808,4 +808,41 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE
 			co.order_no  LIKE CONCAT(CONCAT('%', #{orderNo}), '%')
 	</select>
+	
+	
+	<select id="getList" resultMap="co">
+		SELECT
+			co.id commodityOrderId,
+			co.order_no,
+			co.pay_price,
+			co.voucher_use_id,
+			co.voucher_price,
+			co.create_time,
+			co.`schedule`,
+			co.`status`,
+			u.`name` creator_name
+		FROM
+			`commodity_order` co
+		LEFT JOIN commodity_order_info coi ON (co.id = coi.commodity_id)
+		LEFT JOIN commodity_logistics cl ON (
+			cl.commodity_order_id = co.id
+		)
+		LEFT JOIN logistics l ON (l.id = cl.logistics_id)
+		LEFT JOIN commodity_price cp ON (
+			cp.commodity_id = coi.commodity_id
+		)
+		LEFT JOIN `user` u ON (u.id = co.creator_id)
+		WHERE
+			1 = 1
+		<if test="orderNo!=null and orderNo!=''">
+		      
+		AND	co.order_no LIKE CONCAT('%', #{orderNo}, '%')
+		</if>
+		<if test="schedule!=null">
+		      
+		AND	co.`schedule` = #{schedule}
+		</if>
+		ORDER BY
+			create_time DESC
+	</select>
 </mapper>

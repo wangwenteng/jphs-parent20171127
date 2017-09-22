@@ -303,4 +303,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
+	<select id="getBasePrice" resultType="java.util.HashMap">
+		SELECT DISTINCT
+			jg.goods_id goodsId,
+			pp.id pricePartId,
+			pp.price price
+		FROM
+		jobtitle j 
+		LEFT JOIN jobtitle_goods jg ON jg.jobtitle_id = j.id
+		LEFT JOIN price p ON p.goods_id = jg.goods_id
+		LEFT JOIN price_part pp ON pp.price_id = p.id
+		WHERE
+			j.jobtitle_type_id=#{jobtitleTypeId}
+			AND j.`status` = 1
+			AND jg.`status` = 1
+			AND p.`status` = 1
+			AND pp.`status` = 1
+			AND pp.site_id = 0
+	</select>
 </mapper>

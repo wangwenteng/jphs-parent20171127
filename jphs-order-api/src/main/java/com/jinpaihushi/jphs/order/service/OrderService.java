@@ -29,6 +29,8 @@ public interface OrderService extends BaseService<Order> {
      */
     Map<String, Object> createOrder(OrderInfo orderInfo);
 
+    
+    List<Map<String, Object>> orderaccNotNullList(Map<String, Object> map);
     /**
      * 获取用的个人中心的订单列表
      * @param user 用户对象
@@ -75,7 +77,8 @@ public interface OrderService extends BaseService<Order> {
      * @param userId
      * @return
      */
-    byte[] balancePayment(String orderId, String orderNo, Double payParice,String userId);
+    byte[] balancePayment(String orderId, String orderNo, Double payParice, String userId);
+
     /**
      * 护士抢单
      * @param orderId
@@ -83,13 +86,15 @@ public interface OrderService extends BaseService<Order> {
      * @param user
      * @return
      */
-    String orderGrab(String orderId,String orderGoodsId,User user);
+    String orderGrab(String orderId, String orderGoodsId, User user);
+
     /**
      * 
      */
-    String startService(String orderId,String osId,User user);
-    String fulfilService(String osId,String orderId,String orderGoodsId,User user);
-    
+    String startService(String orderId, String osId, User user);
+
+    String fulfilService(String osId, String orderId, String orderGoodsId, User user);
+
     /**
      * 取消订单
      * @param orderId
@@ -97,11 +102,24 @@ public interface OrderService extends BaseService<Order> {
      * @return
      */
     String cancelOrder(String orderId, User user);
-    
+
     /**
      * 微信支付回调-服务
      * @param map_re
      * @return
      */
-    boolean updateWechatOrderStutas(SortedMap<Object ,Object> map_re);
+    boolean updateWechatOrderStutas(SortedMap<Object, Object> map_re);
+
+    /**
+     * @param query
+     *        query 参数
+     *              1. 日期  confirmTime 
+     *              2. 订单状态 schedule 已完成的
+     * @return
+     */
+    List<Order> getCompletedOrder(Map<String, Object> query);
+
+    List<Map<String, Object>> getOrderUnpaid();
+
+    Map<String, Object> getSmsMessage(String id);
 }

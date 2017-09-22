@@ -29,126 +29,129 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "InformationEvaluate", path = "/information/evaluate")
+@RequestMapping(name = "资讯评价", path = "/information/evaluate")
 public class InformationEvaluateController extends BaseController<InformationEvaluate> {
 
-	@Autowired
-	private InformationEvaluateService informationEvaluateService;
-	
-	@Autowired
-	private InformationService informationService;
+    @Autowired
+    private InformationEvaluateService informationEvaluateService;
 
-	@Override
-	protected BaseService<InformationEvaluate> getService() {
-		return informationEvaluateService;
-	}
+    @Autowired
+    private InformationService informationService;
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			InformationEvaluate informationEvaluate, Integer p, Integer n) {
-		startPage(p, n);
-		Page<InformationEvaluate> list = informationEvaluateService.query(informationEvaluate);
-		PageInfos<InformationEvaluate> pageInfo = new PageInfos<InformationEvaluate>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "information/evaluate/list";
-	}
+    @Override
+    protected BaseService<InformationEvaluate> getService() {
+        return informationEvaluateService;
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		InformationEvaluate informationEvaluate = informationEvaluateService.loadById(id);
-		
-		Information information = new Information();
-		if(informationEvaluate.getInformationId() != null && !"".equals(informationEvaluate.getInformationId())){
-			information = informationService.loadById(informationEvaluate.getInformationId());
-		}
-		modelMap.put("information", information);
-		modelMap.put("informationEvaluate", informationEvaluate);
-		return "information/evaluate/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            InformationEvaluate informationEvaluate, Integer p, Integer n) {
+        startPage(p, n);
+        Page<InformationEvaluate> list = informationEvaluateService.query(informationEvaluate);
+        PageInfos<InformationEvaluate> pageInfo = new PageInfos<InformationEvaluate>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "information/evaluate/list";
+    }
 
-		return "information/evaluate/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		InformationEvaluate informationEvaluate = informationEvaluateService.loadById(id);
-		Information information = new Information();
-		if(informationEvaluate.getInformationId() != null && !"".equals(informationEvaluate.getInformationId())){
-			information = informationService.loadById(informationEvaluate.getInformationId());
-		}
-		modelMap.put("information", information);
-		modelMap.put("informationEvaluate", informationEvaluate);
-		return "information/evaluate/detail";
-	}
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        InformationEvaluate informationEvaluate = informationEvaluateService.loadById(id);
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, InformationEvaluate informationEvaluate,
-			String auditarr,String audit,String essence) {
+        Information information = new Information();
+        if (informationEvaluate.getInformationId() != null && !"".equals(informationEvaluate.getInformationId())) {
+            information = informationService.loadById(informationEvaluate.getInformationId());
+        }
+        modelMap.put("information", information);
+        modelMap.put("informationEvaluate", informationEvaluate);
+        return "information/evaluate/edit";
+    }
 
-		if (informationEvaluate.getId() != null && !informationEvaluate.getId().equals("") && !audit.equals("1")) {
-			boolean b = informationEvaluateService.update(informationEvaluate);
-			if (b == false) {
-				// 跳转到错误页
-				return "redirect:/information/evaluate/err.jhtml";
-			}
-		} else {
-			if(auditarr != null && !"".equals(auditarr) && audit != null && !"".equals(audit) ){
-				String [] str_arr = auditarr.split(",");
-				InformationEvaluate informationEvaluateUp = new InformationEvaluate();
-				informationEvaluateUp.setStatus(Integer.valueOf(audit));
-				for(int a=0;a<str_arr.length;a++){
-					informationEvaluateUp.setId(str_arr[a]);
-					informationEvaluateService.update(informationEvaluateUp);
-				}
-			}else if( audit != null && !"".equals(audit)){
-				if(audit.equals("1")){
-					if(essence.equals("0")){
-						informationEvaluate.setEssence(-1);
-					}else{
-						informationEvaluate.setEssence(0);
-					}
-					
-					informationEvaluateService.update(informationEvaluate);
-				}
-				return "redirect:/information/evaluate/index.jhtml";
-			}else{
-				
-				try {
-					SystemUser user = (SystemUser) hs.getAttribute("session_user");
-					informationEvaluate.setCreatorId(user.getId());
-					informationEvaluate.setCreatorName(user.getName());
-				} catch (Exception e) {
-				}
-				informationEvaluate.setId(UUID.randomUUID().toString());
-				String result = informationEvaluateService.insert(informationEvaluate);
-				if (result.length() <= 0) {
-					// 跳转到错误页
-					return "redirect:/information/evaluate/err.jhtml";
-				}
-			}
-			}
-		return "redirect:/information/evaluate/index.jhtml";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+        return "information/evaluate/edit";
+    }
 
-		boolean b = informationEvaluateService.deleteById(id);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/information/evaluate/err.jhtml";
-		}
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        InformationEvaluate informationEvaluate = informationEvaluateService.loadById(id);
+        Information information = new Information();
+        if (informationEvaluate.getInformationId() != null && !"".equals(informationEvaluate.getInformationId())) {
+            information = informationService.loadById(informationEvaluate.getInformationId());
+        }
+        modelMap.put("information", information);
+        modelMap.put("informationEvaluate", informationEvaluate);
+        return "information/evaluate/detail";
+    }
 
-		return "redirect:/information/evaluate/index.jhtml";
-	}
-	
-	
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            InformationEvaluate informationEvaluate, String auditarr, String audit, String essence) {
+
+        if (informationEvaluate.getId() != null && !informationEvaluate.getId().equals("") && !audit.equals("1")) {
+            boolean b = informationEvaluateService.update(informationEvaluate);
+            if (b == false) {
+                // 跳转到错误页
+                return "redirect:/information/evaluate/err.jhtml";
+            }
+        }
+        else {
+            if (auditarr != null && !"".equals(auditarr) && audit != null && !"".equals(audit)) {
+                String[] str_arr = auditarr.split(",");
+                InformationEvaluate informationEvaluateUp = new InformationEvaluate();
+                informationEvaluateUp.setStatus(Integer.valueOf(audit));
+                for (int a = 0; a < str_arr.length; a++) {
+                    informationEvaluateUp.setId(str_arr[a]);
+                    informationEvaluateService.update(informationEvaluateUp);
+                }
+            }
+            else if (audit != null && !"".equals(audit)) {
+                if (audit.equals("1")) {
+                    if (essence.equals("0")) {
+                        informationEvaluate.setEssence(-1);
+                    }
+                    else {
+                        informationEvaluate.setEssence(0);
+                    }
+
+                    informationEvaluateService.update(informationEvaluate);
+                }
+                return "redirect:/information/evaluate/index.jhtml";
+            }
+            else {
+
+                try {
+                    SystemUser user = (SystemUser) hs.getAttribute("session_user");
+                    informationEvaluate.setCreatorId(user.getId());
+                    informationEvaluate.setCreatorName(user.getName());
+                }
+                catch (Exception e) {
+                }
+                informationEvaluate.setId(UUID.randomUUID().toString());
+                String result = informationEvaluateService.insert(informationEvaluate);
+                if (result.length() <= 0) {
+                    // 跳转到错误页
+                    return "redirect:/information/evaluate/err.jhtml";
+                }
+            }
+        }
+        return "redirect:/information/evaluate/index.jhtml";
+    }
+
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+
+        boolean b = informationEvaluateService.deleteById(id);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/information/evaluate/err.jhtml";
+        }
+
+        return "redirect:/information/evaluate/index.jhtml";
+    }
 
 }

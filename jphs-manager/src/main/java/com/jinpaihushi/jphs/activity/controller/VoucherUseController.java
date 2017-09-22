@@ -24,37 +24,35 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "VoucherUse", path = "/voucher/use")
+@RequestMapping(name = "用户优惠券", path = "/voucher/use")
 public class VoucherUseController extends BaseController<VoucherUse> {
 
-	@Autowired
-	private VoucherUseService voucherUseService;
+    @Autowired
+    private VoucherUseService voucherUseService;
 
-	@Override
-	protected BaseService<VoucherUse> getService() {
-		return voucherUseService;
-	}
+    @Override
+    protected BaseService<VoucherUse> getService() {
+        return voucherUseService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			VoucherUse voucherUse, Integer p, Integer n) {
-		startPage(p, n);
-		//Page<VoucherUse> list = voucherUseService.query(voucherUse);
-		Page<VoucherUse> list = voucherUseService.getList(voucherUse);
-		PageInfos<VoucherUse> pageInfo = new PageInfos<VoucherUse>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "voucher/voucher/use/list/index";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            VoucherUse voucherUse, Integer p, Integer n) {
+        startPage(p, n);
+        //Page<VoucherUse> list = voucherUseService.query(voucherUse);
+        Page<VoucherUse> list = voucherUseService.getList(voucherUse);
+        PageInfos<VoucherUse> pageInfo = new PageInfos<VoucherUse>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "voucher/voucher/use/list/index";
+    }
 
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap, String id) {
-		VoucherUse voucherUse = voucherUseService.loadById(id);
-		modelMap.put("voucherUse", voucherUse);
-		return "voucher/voucher/use/detail/index";
-	}
-	
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        VoucherUse voucherUse = voucherUseService.loadById(id);
+        modelMap.put("voucherUse", voucherUse);
+        return "voucher/voucher/use/detail/index";
+    }
 
 }

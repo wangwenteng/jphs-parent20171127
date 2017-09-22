@@ -1,6 +1,7 @@
 package com.jinpaihushi.jphs.jobtitle.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,9 @@ import com.jinpaihushi.jphs.jobtitle.model.Jobtitle;
 @Repository("jobtitleDao")
 public interface JobtitleDao extends BaseDao<Jobtitle> {
 
-	int checkName(Jobtitle jobtitle);
-	
-	
-	List<Jobtitle> jobtitleSelectList(String type);
+    int checkName(Jobtitle jobtitle);
+
+    List<Jobtitle> jobtitleSelectList(String type);
+
+    List<Map<String, Object>> getBasePrice(String jobtitleTypeId);
 }

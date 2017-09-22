@@ -245,7 +245,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(name = "快捷登录", path = "/quickLogin.json")
     public byte[] quickLogin(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String validateCode,
-            String smsCode, String phone, String type, String openid) {
+            String smsCode, String phone, String type, String openid, String name) {
         try {
             // 记录日志-debug
             if (Util.debugLog.isDebugEnabled()) {
@@ -314,8 +314,11 @@ public class LoginController {
                 }
                 // 设置用户的注册端
                 // 设置当前注册类型为用户
-                if (StringUtils.isEmpty(user.getName())) {
+                if (StringUtils.isEmpty(name)) {
                     user.setName(user.getPhone());
+                }
+                else {
+                    user.setName(name);
                 }
                 user.setStatus(1);
                 user.setSex(0);

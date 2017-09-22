@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.dao.BaseDao;
+import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
 
 /**
@@ -39,4 +41,6 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	List<CommodityOrder> getOrderList1(Map<String, Object> map);
 
 	List<CommodityOrder> getStatusByOrderNo(String orderNo);
+	
+	Page<CommodityOrder> getList(CommodityOrder commodityOrder);
 }

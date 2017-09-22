@@ -4,36 +4,41 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <!--
 	author	:	yangsong
-	date	:	2017-08-08 17:44:48
+	date	:	2017-09-20 13:49:06
 	version	:	1.0
 -->
 <mapper namespace="com.jinpaihushi.jphs.business.dao.BusinessDao">
 	
 	<sql id="field">
-		B.id, B.name, B.address, B.contacts_name, 
-		B.contacts_phone, B.settlement_cycle, B.bank, B.openingBank, 
-		B.cardNumber, B.status, B.remark, B.create_time, 
-		B.creator_id, B.creator_name
+		B.id, B.name, B.official_website_url, B.address, 
+		B.contacts_name, B.contacts_phone, B.settlement_cycle, B.bank, 
+		B.open_bank_address, B.card_number, B.card_name, B.status, 
+		B.remark, B.create_time, B.creator_id, B.creator_name, 
+		B.unit, B.pay_type
 	</sql>
 
 	<sql id="fieldGlobal">
 		B.id B_id, B.name B_name, 
-		B.address B_address, B.contacts_name B_contacts_name, 
-		B.contacts_phone B_contacts_phone, B.settlement_cycle B_settlement_cycle, 
-		B.bank B_bank, B.openingBank B_openingBank, 
-		B.cardNumber B_cardNumber, B.status B_status, 
+		B.official_website_url B_official_website_url, B.address B_address, 
+		B.contacts_name B_contacts_name, B.contacts_phone B_contacts_phone, 
+		B.settlement_cycle B_settlement_cycle, B.bank B_bank, 
+		B.open_bank_address B_open_bank_address, B.card_number B_card_number, 
+		B.card_name B_card_name, B.status B_status, 
 		B.remark B_remark, B.create_time B_create_time, 
-		B.creator_id B_creator_id, B.creator_name B_creator_name
+		B.creator_id B_creator_id, B.creator_name B_creator_name, 
+		B.unit B_unit, B.pay_type B_pay_type
 	</sql>
 	
 	<sql id="fieldWithAlias">
 		B.id id, B.name name, 
-		B.address address, B.contacts_name contactsName, 
-		B.contacts_phone contactsPhone, B.settlement_cycle settlementCycle, 
-		B.bank bank, B.openingBank openingbank, 
-		B.cardNumber cardnumber, B.status status, 
+		B.official_website_url officialWebsiteUrl, B.address address, 
+		B.contacts_name contactsName, B.contacts_phone contactsPhone, 
+		B.settlement_cycle settlementCycle, B.bank bank, 
+		B.open_bank_address openBankAddress, B.card_number cardNumber, 
+		B.card_name cardName, B.status status, 
 		B.remark remark, B.create_time createTime, 
-		B.creator_id creatorId, B.creator_name creatorName
+		B.creator_id creatorId, B.creator_name creatorName, 
+		B.unit unit, B.pay_type payType
 	</sql>
 	
 	<sql id="condition">
@@ -42,6 +47,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="name!=null and name!=''">
 			AND B.name=#{name}
+		</if>
+		<if test="officialWebsiteUrl!=null and officialWebsiteUrl!=''">
+			AND B.official_website_url=#{officialWebsiteUrl}
 		</if>
 		<if test="address!=null and address!=''">
 			AND B.address=#{address}
@@ -58,11 +66,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="bank!=null and bank!=''">
 			AND B.bank=#{bank}
 		</if>
-		<if test="openingbank!=null and openingbank!=''">
-			AND B.openingBank=#{openingbank}
+		<if test="openBankAddress!=null and openBankAddress!=''">
+			AND B.open_bank_address=#{openBankAddress}
 		</if>
-		<if test="cardnumber!=null and cardnumber!=''">
-			AND B.cardNumber=#{cardnumber}
+		<if test="cardNumber!=null and cardNumber!=''">
+			AND B.card_number=#{cardNumber}
+		</if>
+		<if test="cardName!=null and cardName!=''">
+			AND B.card_name=#{cardName}
 		</if>
 		<if test="status!=null">
 			AND B.status=#{status}
@@ -78,6 +89,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="creatorName!=null and creatorName!=''">
 			AND B.creator_name=#{creatorName}
+		</if>
+		<if test="unit!=null and unit!=''">
+			AND B.unit=#{unit}
+		</if>
+		<if test="payType!=null and payType!=''">
+			AND B.pay_type=#{payType}
 		</if>
 	</sql>
 	
@@ -95,6 +112,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="name!=null and name!=''">
 				AND B.name LIKE CONCAT('%', #{name}, '%')
 			</if>
+			<if test="officialWebsiteUrl!=null and officialWebsiteUrl!=''">
+				AND B.official_website_url LIKE CONCAT('%', #{officialWebsiteUrl}, '%')
+			</if>
 			<if test="address!=null and address!=''">
 				AND B.address LIKE CONCAT('%', #{address}, '%')
 			</if>
@@ -110,11 +130,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="bank!=null and bank!=''">
 				AND B.bank LIKE CONCAT('%', #{bank}, '%')
 			</if>
-			<if test="openingbank!=null and openingbank!=''">
-				AND B.openingBank LIKE CONCAT('%', #{openingbank}, '%')
+			<if test="openBankAddress!=null and openBankAddress!=''">
+				AND B.open_bank_address LIKE CONCAT('%', #{openBankAddress}, '%')
 			</if>
-			<if test="cardnumber!=null and cardnumber!=''">
-				AND B.cardNumber LIKE CONCAT('%', #{cardnumber}, '%')
+			<if test="cardNumber!=null and cardNumber!=''">
+				AND B.card_number LIKE CONCAT('%', #{cardNumber}, '%')
+			</if>
+			<if test="cardName!=null and cardName!=''">
+				AND B.card_name LIKE CONCAT('%', #{cardName}, '%')
 			</if>
 			<if test="status!=null">
 				AND B.status=#{status}
@@ -131,6 +154,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="creatorName!=null and creatorName!=''">
 				AND B.creator_name LIKE CONCAT('%', #{creatorName}, '%')
 			</if>
+			<if test="unit!=null and unit!=''">
+				AND B.unit LIKE CONCAT('%', #{unit}, '%')
+			</if>
+			<if test="payType!=null and payType!=''">
+				AND B.pay_type LIKE CONCAT('%', #{payType}, '%')
+			</if>
 		</where>
 	</sql>
 	
@@ -141,6 +170,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		   </if>
            <if test="name!=null">
 				B.name=#{name}, 
+		   </if>
+           <if test="officialWebsiteUrl!=null">
+				B.official_website_url=#{officialWebsiteUrl}, 
 		   </if>
            <if test="address!=null">
 				B.address=#{address}, 
@@ -157,11 +189,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="bank!=null">
 				B.bank=#{bank}, 
 		   </if>
-           <if test="openingbank!=null">
-				B.openingBank=#{openingbank}, 
+           <if test="openBankAddress!=null">
+				B.open_bank_address=#{openBankAddress}, 
 		   </if>
-           <if test="cardnumber!=null">
-				B.cardNumber=#{cardnumber}, 
+           <if test="cardNumber!=null">
+				B.card_number=#{cardNumber}, 
+		   </if>
+           <if test="cardName!=null">
+				B.card_name=#{cardName}, 
 		   </if>
            <if test="status!=null">
 				B.status=#{status}, 
@@ -178,6 +213,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
            <if test="creatorName!=null">
 				B.creator_name=#{creatorName}, 
 		   </if>
+           <if test="unit!=null">
+				B.unit=#{unit}, 
+		   </if>
+           <if test="payType!=null">
+				B.pay_type=#{payType}, 
+		   </if>
 		</set>
 	</sql>
 	
@@ -190,54 +231,66 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<resultMap id="business" type="com.jinpaihushi.jphs.business.model.Business">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="officialWebsiteUrl" column="official_website_url" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="address" column="address" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="contactsName" column="contacts_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="contactsPhone" column="contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="settlementCycle" column="settlement_cycle" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="bank" column="bank" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="openingbank" column="openingBank" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="cardnumber" column="cardNumber" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openBankAddress" column="open_bank_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardNumber" column="card_number" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardName" column="card_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="payType" column="pay_type" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<resultMap id="businessGlobal" type="com.jinpaihushi.jphs.business.model.Business">
 		<result property="id" column="B_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="name" column="B_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="officialWebsiteUrl" column="B_official_website_url" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="address" column="B_address" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="contactsName" column="B_contacts_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="contactsPhone" column="B_contacts_phone" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="settlementCycle" column="B_settlement_cycle" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="bank" column="B_bank" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="openingbank" column="B_openingBank" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="cardnumber" column="B_cardNumber" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="openBankAddress" column="B_open_bank_address" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardNumber" column="B_card_number" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cardName" column="B_card_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="status" column="B_status" javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="remark" column="B_remark" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="createTime" column="B_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="B_creator_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="B_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="unit" column="B_unit" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="payType" column="B_pay_type" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.business.model.Business">
 		INSERT INTO `BUSINESS`(
 			id, name, 
-			address, contacts_name, 
-			contacts_phone, settlement_cycle, 
-			bank, openingBank, 
-			cardNumber, status, 
+			official_website_url, address, 
+			contacts_name, contacts_phone, 
+			settlement_cycle, bank, 
+			open_bank_address, card_number, 
+			card_name, status, 
 			remark, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name, 
+			unit, pay_type
 		)VALUES(
 			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-			#{address,jdbcType=VARCHAR}, #{contactsName,jdbcType=VARCHAR}, 
-			#{contactsPhone,jdbcType=VARCHAR}, #{settlementCycle,jdbcType=VARCHAR}, 
-			#{bank,jdbcType=VARCHAR}, #{openingbank,jdbcType=VARCHAR}, 
-			#{cardnumber,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+			#{officialWebsiteUrl,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+			#{contactsName,jdbcType=VARCHAR}, #{contactsPhone,jdbcType=VARCHAR}, 
+			#{settlementCycle,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, 
+			#{openBankAddress,jdbcType=VARCHAR}, #{cardNumber,jdbcType=VARCHAR}, 
+			#{cardName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
 			#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}
+			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, 
+			#{unit,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -246,24 +299,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <![CDATA[
         INSERT INTO `BUSINESS`(
 			id, name, 
-			address, contacts_name, 
-			contacts_phone, settlement_cycle, 
-			bank, openingBank, 
-			cardNumber, status, 
+			official_website_url, address, 
+			contacts_name, contacts_phone, 
+			settlement_cycle, bank, 
+			open_bank_address, card_number, 
+			card_name, status, 
 			remark, create_time, 
-			creator_id, creator_name
+			creator_id, creator_name, 
+			unit, pay_type
         )]]>
        	VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
 			#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, 
-			#{item.address,jdbcType=VARCHAR}, #{item.contactsName,jdbcType=VARCHAR}, 
-			#{item.contactsPhone,jdbcType=VARCHAR}, #{item.settlementCycle,jdbcType=VARCHAR}, 
-			#{item.bank,jdbcType=VARCHAR}, #{item.openingbank,jdbcType=VARCHAR}, 
-			#{item.cardnumber,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+			#{item.officialWebsiteUrl,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, 
+			#{item.contactsName,jdbcType=VARCHAR}, #{item.contactsPhone,jdbcType=VARCHAR}, 
+			#{item.settlementCycle,jdbcType=VARCHAR}, #{item.bank,jdbcType=VARCHAR}, 
+			#{item.openBankAddress,jdbcType=VARCHAR}, #{item.cardNumber,jdbcType=VARCHAR}, 
+			#{item.cardName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
 			#{item.remark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}
+			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR}, 
+			#{item.unit,jdbcType=VARCHAR}, #{item.payType,jdbcType=VARCHAR}
 			)
 		</foreach>
 	</insert>

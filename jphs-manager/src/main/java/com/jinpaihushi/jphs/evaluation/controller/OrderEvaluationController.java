@@ -26,88 +26,90 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "Evaluation", path = "/order/evaluation")
+@RequestMapping(name = "订单评价", path = "/order/evaluation")
 public class OrderEvaluationController extends BaseController<Evaluation> {
 
-	@Autowired
-	private EvaluationService evaluationService;
+    @Autowired
+    private EvaluationService evaluationService;
 
-	@Override
-	protected BaseService<Evaluation> getService() {
-		return evaluationService;
-	}
+    @Override
+    protected BaseService<Evaluation> getService() {
+        return evaluationService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			Evaluation evaluation, Integer p, Integer n) {
-		startPage(p, n);
-		Page<Evaluation> list = evaluationService.getList(evaluation);
-		PageInfos<Evaluation> pageInfo = new PageInfos<Evaluation>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "order/evaluation/list";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            Evaluation evaluation, Integer p, Integer n) {
+        startPage(p, n);
+        Page<Evaluation> list = evaluationService.getList(evaluation);
+        PageInfos<Evaluation> pageInfo = new PageInfos<Evaluation>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "order/evaluation/list";
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		Evaluation evaluation = evaluationService.loadById(id);
-		modelMap.put("evaluation", evaluation);
-		return "order/evaluation/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        Evaluation evaluation = evaluationService.loadById(id);
+        modelMap.put("evaluation", evaluation);
+        return "order/evaluation/edit";
+    }
 
-		return "order/evaluation/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		Evaluation evaluation = evaluationService.loadById(id);
-		modelMap.put("evaluation", evaluation);
-		return "order/evaluation/detail";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Evaluation evaluation) {
+        return "order/evaluation/edit";
+    }
 
-		if (evaluation.getId() != null && !evaluation.getId().equals("")) {
-			boolean b = evaluationService.update(evaluation);
-			if (b == false) {
-				// 跳转到错误页
-				return "redirect:/evaluation/err.jhtml";
-			}
-		} else {
-			evaluation.setId(UUID.randomUUID().toString());
-			String result = evaluationService.insert(evaluation);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/evaluation/err.jhtml";
-			}
-		}
-		return "redirect:/order/evaluation/index.jhtml";
-	}
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        Evaluation evaluation = evaluationService.loadById(id);
+        modelMap.put("evaluation", evaluation);
+        return "order/evaluation/detail";
+    }
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            Evaluation evaluation) {
 
-		boolean b = evaluationService.deleteById(id);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/evaluation/err.jhtml";
-		}
+        if (evaluation.getId() != null && !evaluation.getId().equals("")) {
+            boolean b = evaluationService.update(evaluation);
+            if (b == false) {
+                // 跳转到错误页
+                return "redirect:/evaluation/err.jhtml";
+            }
+        }
+        else {
+            evaluation.setId(UUID.randomUUID().toString());
+            String result = evaluationService.insert(evaluation);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/evaluation/err.jhtml";
+            }
+        }
+        return "redirect:/order/evaluation/index.jhtml";
+    }
 
-		return "redirect:/order/evaluation/index.jhtml";
-	}
-	
-	
-	@RequestMapping(name = "修改状态", path = "/updateStatus.jhtml")
-	public String updateStatus(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Evaluation evaluation) {
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
 
-		 evaluationService.update(evaluation);
-		return "redirect:/order/evaluation/index.jhtml";
-	}
+        boolean b = evaluationService.deleteById(id);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/evaluation/err.jhtml";
+        }
+
+        return "redirect:/order/evaluation/index.jhtml";
+    }
+
+    @RequestMapping(name = "修改状态", path = "/updateStatus.jhtml")
+    public String updateStatus(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            Evaluation evaluation) {
+
+        evaluationService.update(evaluation);
+        return "redirect:/order/evaluation/index.jhtml";
+    }
 }

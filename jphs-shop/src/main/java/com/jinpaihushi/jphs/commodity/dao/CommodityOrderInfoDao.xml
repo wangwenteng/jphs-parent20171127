@@ -236,6 +236,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="userId" column="user_id" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="userName" column="userName" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="profit" column="profit" javaType="Double"
 			jdbcType="DECIMAL"></result>
 		<result property="title" column="title" javaType="String"
@@ -502,11 +504,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		coi.commodity_id,
 		coi.title,
 		coi.commodity_price_name,
+		coi.commodity_model,
+		coi.profit,
+		coi.price,
 		coi.number,
-		coi.user_id
+		u.`name` userName,
+		coi.remark
 		FROM
 		commodity_order_info coi
 		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
+		LEFT JOIN `user` u ON  (u.id = coi.user_id)
 		WHERE coi.commodity_order_id = #{coId}
 		AND ci.type = 1
 	</select>

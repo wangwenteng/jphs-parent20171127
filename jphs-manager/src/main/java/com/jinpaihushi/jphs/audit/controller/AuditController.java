@@ -59,6 +59,7 @@ public class AuditController extends BaseController<Audit> {
             NurseJobtitle nurseJobtitle, Integer p, Integer n) {
         startPage(p, n);
         nurseJobtitle.setStatus(0);
+        nurseJobtitle.setOrderby("nj.create_time DESC");
         List<NurseJobtitle> list = nurseJobtitleService.getNurseJobtitleDetail(nurseJobtitle);
         PageInfos<NurseJobtitle> pageInfo = new PageInfos<NurseJobtitle>(list, req);
         // 科室列表

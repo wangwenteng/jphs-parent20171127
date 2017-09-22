@@ -1066,7 +1066,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			u.phone AS userPhone,
 			u.name AS userName,
 			u.sex AS userSex,
-			si.url
+			si.url,
+			CASE WHEN o.`accept_user_id` IN ('', NULL) THEN 0 WHEN o.`accept_user_id` IS NULL THEN 0
+			ELSE 1 END isJd 
 			FROM `order` o
 			LEFT JOIN order_other oo ON o.`id`=oo.`order_id`
 			LEFT JOIN order_goods og ON o.`id`=og.`order_id`
@@ -1078,13 +1080,75 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			 AND o.accept_user_id IS NULL 
 			 AND g.`type`=#{type}  
 			 AND o.`schedule`=#{schedule}  
-			 ORDER BY o.create_time DESC 
+			 ORDER BY o.create_time DESC LIMIT 0,10 
+	</select>
+	
+	<select id="orderaccNotNullList" resultType="java.util.HashMap" >
+		 SELECT
+			o.id order_id,
+			o.order_no,
+			o.voucher_price,
+			o.voucher_use_id,
+			o.platform_id,
+			o.expector_id,
+			o.accept_user_id,
+			o.appointment_time,
+			o.accept_time,
+			o.transaction_id,
+			o.`schedule`,
+			o.device,
+			o.remarks,
+			o.create_time,
+			o.creator_id,
+			oo.id AS oo_id,
+			oo.order_id AS oo_order_id,
+			oo.department_id AS
+			oo_department_id,
+			oo.hospital AS oo_hospital,
+			oo.address AS oo_address,
+			oo.detail_address AS oo_detail_address,
+			oo.drug AS oo_drug,
+			oo.tool AS oo_tool,
+			oo.public_name AS oo_public_name,
+			oo.public_content AS oo_public_content,
+			oo.status AS oo_status,
+			oo.create_time AS oo_create_time,
+			oo.creator_id AS oo_creator_id,
+			oo.remarks AS oo_remarks,
+			og.id AS og_id,
+			og.order_id AS og_order_id,
+			og.goods_id AS og_goods_id,
+			og.title AS og_title,
+			og.price AS og_price,
+			og.pay_price AS og_pay_price,
+			og.profit AS og_profit,
+			og.expector_id AS og_expector_id,
+			og.executor_id AS og_executor_id,
+			og.`status` AS og_status,
+			og.create_time AS og_create_time,
+			og.remark AS og_remark,
+			u.phone AS userPhone,
+			u.name AS userName,
+			u.sex AS userSex,
+			si.url,
+			CASE WHEN o.`accept_user_id` IN ('', NULL) THEN 0 WHEN o.`accept_user_id` IS NULL THEN 0
+			ELSE 1 END isJd 
+			FROM `order` o
+			LEFT JOIN order_other oo ON o.`id`=oo.`order_id`
+			LEFT JOIN order_goods og ON o.`id`=og.`order_id`
+			LEFT JOIN `user` u ON o.`creator_id`=u.`id`
+			LEFT JOIN service_images si ON o.`id`=si.`source_id` AND si.`type`=1 
+			LEFT JOIN goods g ON og.`goods_id`=g.`id` 
+			WHERE o.status=#{status} 
+			 AND o.accept_user_id IS NOT NULL 
+			 AND g.`type`=#{type}  
+			 ORDER BY o.create_time DESC LIMIT 0,10 
 	</select>
 	
 	<select id="nurseOrderDetails" resultMap="nurseOrderDetails">
 		SELECT
 				o.id o_id,
-				o.order_no o_order_no,
+				o.order_no o_order_no, 
 				o.voucher_price o_voucher_price,
 				o.voucher_use_id o_voucher_use_id,
 				o.platform_id o_platform_id,
@@ -1340,5 +1404,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE
 			s.confirm_time > #{confirmTime}
 		AND o.`schedule` = #{schedule}
+	</select>
+	<select id="getOrderUnpaid" resultType="java.util.HashMap">
+		SELECT DISTINCT
+			o.id,
+			u.`name` NAME,
+			u.phone phone,
+			og.title title
+		FROM
+			`order` o
+		LEFT JOIN `user` u ON o.creator_id = u.id
+		LEFT JOIN order_goods og ON og.order_id = o.id
+		WHERE
+			o.`schedule` = 0 AND TIMESTAMPDIFF(MINUTE,o.create_time,NOW())=15
+	</select>
+	<select id="getSmsMessage" resultType="java.util.HashMap"> 
+	SELECT
+		o.id,
+		o.order_no,
+	IFNULL(u.`name`,'') userName,
+	IFNULL(u.phone,'') userPhone,
+	IFNULL(n.`name`,'') nurseName,
+	IFNULL(n.phone,'') nursePhone,
+	IFNULL(og.title,'') goodsName,
+	o.accept_time
+FROM
+	`order` o
+LEFT JOIN `user` u ON o.creator_id = u.id
+LEFT JOIN `user` n ON o.accept_user_id = n.id
+LEFT JOIN order_goods og ON og.order_id = o.id
+
+WHERE o.id =#{orderId}
 	</select>
 </mapper>

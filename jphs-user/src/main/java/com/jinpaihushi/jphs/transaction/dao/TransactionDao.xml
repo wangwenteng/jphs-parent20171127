@@ -555,7 +555,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateWithdrawals" parameterType="java.util.Map">
 		UPDATE `transaction` tr
-		SET tr.withdraw = 1
+		SET tr.withdraw = 2
 		<where>
 			<if test="orderId!=null and orderId!=''">
 			AND	tr.order_id

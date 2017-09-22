@@ -26,4 +26,7 @@
 	<div class="login_foot">
 		<button type="submit" id="save" class="login_btn">登录</button>
 	</div>
+	<div class="public-cell public-cell-about login_input">
+		<span >sdaf</span>
+	</div>
 </form></body>

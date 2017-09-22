@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 
+import com.github.pagehelper.Page;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
 import com.jinpaihushi.service.BaseService;
 
@@ -40,4 +41,6 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	List<CommodityOrder> getStatusByOrderNo(String orderNo);
 	byte [] balancePayment(String orderId, String orderNo, Double payParice,String userId);
 	boolean updateWechatCommodityOrderStutas(SortedMap<Object, Object> packageParams);
+	
+	Page<CommodityOrder> getList(CommodityOrder commodityOrder);
 }

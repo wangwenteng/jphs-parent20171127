@@ -751,6 +751,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		) distance
 	FROM
 		user_address ua
+		WHERE ua.`status` =0
 	GROUP BY
 		ua.creator_id
 ) dd ON dd.creator_id = n.creator_id

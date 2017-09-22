@@ -6,11 +6,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -51,7 +50,7 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 		return wecthDao;
 	}
 
-	@Scheduled(cron = "${GET_WECTH_TOKEN}")
+	//@Scheduled(cron = "${GET_WECTH_TOKEN}")
 	public void getTokens() {
 		if (Util.debugLog.isDebugEnabled()) {
 			Util.debugLog.debug("我被线程池调用执行啦~！");

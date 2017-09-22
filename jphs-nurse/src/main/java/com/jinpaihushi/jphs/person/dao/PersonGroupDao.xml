@@ -319,7 +319,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		(SELECT url FROM nurse_images WHERE source_id = pm.user_id AND type =1) m_url
 		FROM
 		`person_group` PG
-		LEFT JOIN person_manager pm ON pm.person_group_id = PG.id AND pm.`status` !=-1
+		LEFT JOIN person_manager pm ON pm.person_group_id = PG.id AND pm.`status` =1
 		LEFT JOIN `user` u ON pm.user_id = u.id
 		<include refid="groupNurseQuery" />
 		<include refid="orderby" />

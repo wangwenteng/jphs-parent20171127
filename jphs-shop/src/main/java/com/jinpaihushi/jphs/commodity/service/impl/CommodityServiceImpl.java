@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.STSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,9 @@ import com.jinpaihushi.jphs.car.dao.CarDao;
 import com.jinpaihushi.jphs.car.model.Car;
 import com.jinpaihushi.jphs.commodity.dao.CommodityDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityImagesDao;
+import com.jinpaihushi.jphs.commodity.dao.CommodityOrderDao;
 import com.jinpaihushi.jphs.commodity.dao.CommodityOrderInfoDao;
+import com.jinpaihushi.jphs.commodity.dao.CommodityPriceDao;
 import com.jinpaihushi.jphs.commodity.model.Commodity;
 import com.jinpaihushi.jphs.commodity.model.CommodityImages;
 import com.jinpaihushi.jphs.commodity.model.CommodityMap;
@@ -38,6 +41,8 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 	private CommodityDao commodityDao;
 	@Autowired
 	private CommodityOrderInfoDao commodityOrderInfoDao;
+	@Autowired
+	private CommodityPriceDao commodityPriceDao;
 	@Autowired
 	private CommodityImagesDao commodityImagesDao;
 	@Autowired
@@ -223,7 +228,17 @@ public class CommodityServiceImpl extends BaseServiceImpl<Commodity> implements 
 	@Override
 	public Page<Commodity> getPageList(Commodity commodity) {
 		// TODO Auto-generated method stub
-		return commodityDao.getPageList(commodity);
+		
+		Page<Commodity> pageList = commodityDao.getPageList(commodity);
+	 
+		/*Integer totals = 0;
+		for (int i = 0; i < pageList.size(); i++) {
+			totals = commodityPriceDao.getCount(pageList.get(i).getId());
+			pageList.get(i).setTotals(totals);
+		}
+		*/
+		
+		return pageList;
 	}
 
 }

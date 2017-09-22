@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,8 @@ import com.jinpaihushi.jphs.account.service.AccountService;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
+import com.jinpaihushi.jphs.push.service.NurseJPushService;
+import com.jinpaihushi.jphs.system.service.DoPostSmsService;
 import com.jinpaihushi.jphs.transaction.service.TransactionService;
 import com.jinpaihushi.jphs.withdraw.model.WithdrawCash;
 import com.jinpaihushi.jphs.withdraw.service.WithdrawCashService;
@@ -41,6 +44,24 @@ public class AccountController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private DoPostSmsService doPostSmsService;
+
+    @Autowired
+    private NurseJPushService nurseJPushService;
+
+    //#护士接单
+    @Value("${SMS_Nurse_orders}")
+    private String SMS_Nurse_orders;
+
+    //     #给护士派单（上门服务）
+    @Value("${SMS_nurse_delivery_order}")
+    private String SMS_nurse_delivery_order;
+
+    //支付成功
+    @Value("${SMS_pay_success}")
+    private String SMS_pay_success;
 
     @Autowired
     private OrderGoodsService orderGoodsService;

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +42,18 @@ public class NurseOrderController {
 
     @Autowired
     private DoPostSmsService doPostSmsService;
+
+    //马上出门
+    @Value("${SMS_nurse_atOnceService}")
+    private String SMS_nurse_atOnceService;
+
+    //开始服务
+    @Value("${SMS_start_server}")
+    private String SMS_start_server;
+
+    //结束服务
+    @Value("${SMS_end_server}")
+    private String SMS_end_server;
 
     @ResponseBody
     @RequestMapping(name = "完成服务", path = "/fulfilService.json")
@@ -97,11 +110,14 @@ public class NurseOrderController {
             }
 
             int a = 1;
-            String msg = "操作成功！记得提醒客户帮您确认订单完成哦";
+            String msg = "操作成功！确认订单完成";
             if (!rs.equals("1")) {
                 a = 0;
                 msg = "完成失败，请刷新重试!";
             }
+            Map<String, Object> map = orderService.getSmsMessage(orderId);
+            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_end_server, "{\"service_name\":"
+                    + map.get("goodsName").toString() + "\",\"name\":" + map.get("nurseName").toString() + "\"}");
             return JSONUtil.toJSONResult(a, msg, re_order);
 
         }
@@ -175,6 +191,10 @@ public class NurseOrderController {
                 a = 0;
                 msg = "订单执行失败，请刷新重试!";
             }
+            //给用户发送短信
+            Map<String, Object> map = orderService.getSmsMessage(orderId);
+            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_start_server, "{\"service_name\":"
+                    + map.get("goodsName").toString() + "\",\"name\":" + map.get("nurseName").toString() + "\"}");
             return JSONUtil.toJSONResult(a, msg, re_order);
         }
         catch (Exception e) {
@@ -265,7 +285,10 @@ public class NurseOrderController {
             }
 
             if (b) {
-                //                doPostSmsService.sendSms(mobile, contentCode, param);
+                Map<String, Object> map = orderService.getSmsMessage(orderId);
+                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_nurse_atOnceService, "{\"name\":"
+                        + map.get("nurseName").toString() + "\",\"phone\":" + map.get("nursePhone").toString() + "\"}");
+
                 return JSONUtil.toJSONResult(1, "操作成功！请准时到达服务地点，服务开始前请点击“开始服务”更新服务状态哦~", re_order);
             }
             else {

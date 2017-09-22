@@ -24,6 +24,7 @@ import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseImages;
 import com.jinpaihushi.jphs.nurse.service.NurseImagesService;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
+import com.jinpaihushi.jphs.push.service.NurseJPushService;
 import com.jinpaihushi.jphs.system.service.DoPostSmsService;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.service.UserService;
@@ -58,8 +59,16 @@ public class RegistController {
     @Autowired
     private DoPostSmsService doPostSmsService;
 
+    @Autowired
+    private NurseJPushService nurseJPushService;
+
+    //验证码
     @Value("${SMS_Verification_Code}")
     private String SMS_Verification_Code;
+
+    //护士注册
+    @Value("${SMS_nurse_regist}")
+    private String SMS_nurse_regist;
 
     @SuppressWarnings("static-access")
     @ResponseBody
@@ -197,7 +206,8 @@ public class RegistController {
                     return JSONUtil.toJSONResult(0, "注册成功,登录失败，请返回首页重试！", null);
                 }
                 user_login.setNurse(new JSONObject().fromObject(nurse_s));
-
+                doPostSmsService.sendSms(user_login.getPhone(), SMS_nurse_regist, "");
+                nurseJPushService.jpushTag("您已成为“金牌护士”。在APP个人中心完成“资质认证后”即可开始服务。", user_login.getPhone(), "0");
             }
             return JSONUtil.toJSONResult(1, "注册成功！", user_login);
 

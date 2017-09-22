@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
+import com.jinpaihushi.jphs.push.service.NurseJPushService;
 import com.jinpaihushi.jphs.system.service.DoPostSmsService;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.transaction.service.TransactionService;
@@ -50,6 +52,18 @@ public class AlipaySignController {
     @Autowired
     private DoPostSmsService doPostSmsService;
 
+    @Autowired
+    private NurseJPushService nurseJPushService;
+
+    //#护士接单
+    @Value("${SMS_Nurse_orders}")
+    private String SMS_Nurse_orders;
+
+    //    #给护士派单（上门服务）
+    @Value("${SMS_nurse_delivery_order}")
+    private String SMS_nurse_delivery_order;
+
+    //支付成功
     @Value("${SMS_pay_success}")
     private String SMS_pay_success;
 
@@ -206,10 +220,10 @@ public class AlipaySignController {
                                                 .debug("alipay.notify.json;=两个价格比对-" + (total_fee_ali == payPrice));
                                     }
                                     String remark = "";
-                    	        	if(orderGoods_ny.getTitle() != null && !orderGoods_ny.getTitle().equals("")){
-                    	        		remark = orderGoods_ny.getTitle();
-                    	        	}
-                                    
+                                    if (orderGoods_ny.getTitle() != null && !orderGoods_ny.getTitle().equals("")) {
+                                        remark = orderGoods_ny.getTitle();
+                                    }
+
                                     Transaction transaction = new Transaction();
                                     transaction.setId(UUID.randomUUID().toString());
                                     transaction.setOrderId(orders.getId());
@@ -235,7 +249,11 @@ public class AlipaySignController {
                                     if (i > 0) {
                                         Order orderUp = new Order();
                                         orderUp.setId(orders.getId());
-                                        orderUp.setSchedule(1);
+                                        if(orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())){
+                                       	 orderUp.setSchedule(2);
+                                       }else{
+                                       	orderUp.setSchedule(1);
+                                       }
                                         boolean orderUpbool = orderService.update(orderUp);
                                         try {
                                             User user = new User();
@@ -248,9 +266,28 @@ public class AlipaySignController {
                                                     Util.debugLog.debug("alipay.notify.json;订单用户信息orderUser="
                                                             + JSONObject.fromObject(orderUser).toString());
                                                 }
+                                                Map<String, Object> map = orderService.getSmsMessage(orders.getId());
                                                 // 发送验证码
-                                                doPostSmsService.sendSms(orderUser.getPhone(), SMS_pay_success,
-                                                        "{\"out_trade_no\":\"" + no + "\"}");
+                                                //通知用户下单成功
+                                                doPostSmsService.sendSms(map.get("userPhone").toString(),
+                                                        SMS_pay_success, "{\"out_trade_no\":\"" + no + "\"}");
+                                                //判断订单有没有接单人有的话通知护士
+                                                if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                                                    doPostSmsService.sendSms(map.get("userPhone").toString(),
+                                                            SMS_Nurse_orders,
+                                                            "{\"service_name\":\"" + map.get("goodsName").toString()
+                                                                    + "\",\"name\":" + map.get("nurseName").toString()
+                                                                    + "\",\"phone\":" + map.get("nursePhone").toString()
+                                                                    + "\"}");
+                                                    //通知护士有新的订单
+                                                    doPostSmsService.sendSms(map.get("nursePhone").toString(),
+                                                            SMS_nurse_delivery_order,
+                                                            "{\"name\":\"" + map.get("userName").toString() + "\"}");
+                                                    nurseJPushService.jpushTag(
+                                                            "有一笔新的订单待处理，发单人：" + map.get("userName").toString()
+                                                                    + "，请及时联系发单人处理该订单！",
+                                                            map.get("nursePhone").toString(), "0");
+                                                }
                                             }
 
                                         }
@@ -445,15 +482,18 @@ public class AlipaySignController {
                             commodityOrderService.update(commodityOrder_up);
                             CommodityOrderInfo coi_up = new CommodityOrderInfo();
                             coi_up.setCommodityOrderId(map_c.get("id").toString());
-                            CommodityOrderInfo coi = commodityOrderInfoService.load(coi_up);
-                            coi_up.setId(coi.getId());
-                            coi_up.setStatus(2);
-                            commodityOrderInfoService.update(coi_up);
+                            List<CommodityOrderInfo> coi_list = commodityOrderInfoService.list(coi_up);
                             String remark = "";
-                            if(coi.getTitle() != null && !coi.getTitle().equals("")){
-                            	remark = coi.getTitle();
+                            for (int y = 0; y < coi_list.size(); y++) {
+                                CommodityOrderInfo coi = coi_list.get(y);
+                                coi_up.setId(coi.getId());
+                                coi_up.setStatus(2);
+                                commodityOrderInfoService.update(coi_up);
+                                if (coi.getTitle() != null && !coi.getTitle().equals("")) {
+                                    remark += coi.getTitle();
+                                }
                             }
-                            
+
                             Transaction transaction = new Transaction();
                             transaction.setId(UUID.randomUUID().toString());
                             transaction.setOrderId(map_c.get("id").toString());

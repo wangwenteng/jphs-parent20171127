@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import com.jinpaihushi.jphs.order.model.Order;
 import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderService;
+import com.jinpaihushi.jphs.push.service.NurseJPushService;
 import com.jinpaihushi.jphs.system.service.DoPostSmsService;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.transaction.service.TransactionService;
@@ -54,6 +56,18 @@ public class UnionpayController {
     @Autowired
     private DoPostSmsService doPostSmsService;
 
+    @Autowired
+    private NurseJPushService nurseJPushService;
+
+    //#护士接单
+    @Value("${SMS_Nurse_orders}")
+    private String SMS_Nurse_orders;
+
+    //    #给护士派单（上门服务）
+    @Value("${SMS_nurse_delivery_order}")
+    private String SMS_nurse_delivery_order;
+
+    //支付成功
     @Value("${SMS_pay_success}")
     private String SMS_pay_success;
 
@@ -175,8 +189,24 @@ public class UnionpayController {
                             }
                             if (orderUser != null) {
                                 // 发送验证码
-                                doPostSmsService.sendSms(orderUser.getPhone(), SMS_pay_success,
-                                        "{\"out_trade_no\":\"" + orderId + "\"}");
+                                Map<String, Object> map = orderService.getSmsMessage(orders.getId());
+                                // 发送验证码
+                                //通知用户下单成功
+                                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
+                                        "{\"out_trade_no\":\"" + map.get("order_no").toString() + "\"}");
+                                //判断订单有没有接单人有的话通知护士
+                                if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                                    doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
+                                            "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
+                                                    + map.get("nurseName").toString() + "\",\"phone\":"
+                                                    + map.get("nursePhone").toString() + "\"}");
+                                    //通知护士有新的订单
+                                    doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
+                                            "{\"name\":\"" + map.get("userName").toString() + "\"}");
+                                    nurseJPushService.jpushTag(
+                                            "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                            map.get("nursePhone").toString(), "0");
+                                }
                             }
 
                         }

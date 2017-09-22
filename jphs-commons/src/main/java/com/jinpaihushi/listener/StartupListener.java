@@ -53,7 +53,7 @@ public class StartupListener extends AbstractApplicationListener<ContextRefreshe
 		SpringContext.setContext(event.getApplicationContext());
 		logger.info("=========================================");
 		// 获取微信公众号token
-		wechatService.getTokens();
+		//wechatService.getTokens();
 		logger.info("初始化结束");
 		// 初始化之后创建超级管理员
 			/*String userId = systemUserService.initSystemUser();

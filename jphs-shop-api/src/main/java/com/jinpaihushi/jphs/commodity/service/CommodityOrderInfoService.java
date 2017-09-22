@@ -23,4 +23,5 @@ public interface CommodityOrderInfoService extends BaseService<CommodityOrderInf
 	Integer confimOrder(String comId);
 	
 	List<CommodityOrderInfo> getList(String coId);
+	
 }

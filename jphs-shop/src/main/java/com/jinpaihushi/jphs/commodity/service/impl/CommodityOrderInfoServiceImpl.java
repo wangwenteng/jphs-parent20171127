@@ -69,5 +69,6 @@ public class CommodityOrderInfoServiceImpl extends BaseServiceImpl<CommodityOrde
 		// TODO Auto-generated method stub
 		return commodityOrderInfoDao.getList(coId);
 	}
+
 	
 }

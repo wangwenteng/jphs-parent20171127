@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.commodity.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -115,6 +116,12 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 	private String commodityType;
 	
 	private List<CommodityPrice> skuNameList;
+	
+	private Integer totals;
+	
+	private Date beginTime;
+	
+	private Date stopTime;
 	
 	public Commodity(){}
 
@@ -508,6 +515,33 @@ public class Commodity extends BaseModel implements Predicate<Commodity>,
 
 	public void setSkuNameList(List<CommodityPrice> skuNameList) {
 		this.skuNameList = skuNameList;
+	}
+
+	
+	
+	public Integer getTotals() {
+		return totals;
+	}
+
+	public void setTotals(Integer totals) {
+		this.totals = totals;
+	}
+	
+
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(Date stopTime) {
+		this.stopTime = stopTime;
 	}
 
 	public String toString() {

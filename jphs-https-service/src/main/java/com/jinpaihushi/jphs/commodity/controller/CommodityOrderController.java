@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			List<CommodityOrder> list = commodityOrderService.getListByOrderNo(result);
 			String goodsName = "";
 			
-			Set<String> set = new HashSet<String>();
+			Set<String> set = new LinkedHashSet<String>();
 			for (int i = 0;i<list.size();i++ ){
 				double money = 0.0;
 					List<CommodityOrderInfo> coiList = commodityOrderInfoService.getListByCoId(list.get(i).getId());
@@ -111,7 +112,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 				 commodityOrderService.toUpdatePayPrice(list.get(i).getId(),money);
 			}
 			 for (String str : set) {  
-				  goodsName += "，"+str;
+				  goodsName += ","+str;
 			} 
 
 
@@ -368,7 +369,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 		*/	 
-			String result = api.getOrderTracesByJson("ZTO", "447893110782");
+			String result = api.getOrderTracesByJson(expCode, expNo);
 
 			String replaceAll = result.replaceAll("\"", "");
 			// System.out.println(replaceAll);
@@ -376,11 +377,13 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 
 			String substring = split[1].substring(3);
 			String substring2 = substring.substring(0, substring.length() - 2).trim();
+				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+				if(substring2.length() >0){
 			String substring3 = substring2.substring(0, substring2.length() - 1).trim();
 			String[] split2 = substring3.split("},");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = null;
-			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			 
 			
 			for (int i = 0; i < split2.length; i++) {
 
@@ -399,8 +402,12 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 					}
 				}
 			}
+				}
 			if (list.size() == 0) {
-				return JSONUtil.toJSONResult(0, "暂无快递信息", 0);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("AcceptTime", new Date());
+				map.put("AcceptStation", "暂无快递信息");
+				return JSONUtil.toJSONResult(0, "操作成功！", map);
 			}
 			return JSONUtil.toJSONResult(1, "操作成功！", list );
 		} catch (Exception e) {

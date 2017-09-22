@@ -26,83 +26,83 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "VoucherRepertory", path = "/voucher/repertory")
+@RequestMapping(name = "优惠券仓库", path = "/voucher/repertory")
 public class VoucherRepertoryController extends BaseController<VoucherRepertory> {
 
-	@Autowired
-	private VoucherRepertoryService voucherRepertoryService;
+    @Autowired
+    private VoucherRepertoryService voucherRepertoryService;
 
-	@Override
-	protected BaseService<VoucherRepertory> getService() {
-		return voucherRepertoryService;
-	}
+    @Override
+    protected BaseService<VoucherRepertory> getService() {
+        return voucherRepertoryService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			VoucherRepertory voucherRepertory, Integer p, Integer n) {
-		startPage(p, n);
-		Page<VoucherRepertory> list = voucherRepertoryService.query(voucherRepertory);
-		PageInfos<VoucherRepertory> pageInfo = new PageInfos<VoucherRepertory>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "activity/voucher/repertory/list";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            VoucherRepertory voucherRepertory, Integer p, Integer n) {
+        startPage(p, n);
+        Page<VoucherRepertory> list = voucherRepertoryService.query(voucherRepertory);
+        PageInfos<VoucherRepertory> pageInfo = new PageInfos<VoucherRepertory>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "activity/voucher/repertory/list";
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		VoucherRepertory voucherRepertory = voucherRepertoryService.loadById(id);
-		modelMap.put("voucherRepertory", voucherRepertory);
-		return "activity/voucher/repertory/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        VoucherRepertory voucherRepertory = voucherRepertoryService.loadById(id);
+        modelMap.put("voucherRepertory", voucherRepertory);
+        return "activity/voucher/repertory/edit";
+    }
 
-		return "activity/voucher/repertory/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		VoucherRepertory voucherRepertory = voucherRepertoryService.loadById(id);
-		modelMap.put("voucherRepertory", voucherRepertory);
-		return "activity/voucher/repertory/detail";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, VoucherRepertory voucherRepertory) {
+        return "activity/voucher/repertory/edit";
+    }
 
-		if (voucherRepertory.getId() != null && !voucherRepertory.getId().equals("")) {
-			boolean b = voucherRepertoryService.update(voucherRepertory);
-			if (b == false) {
-				// 跳转到错误页
-				return "redirect:/voucher/repertory/err.jhtml";
-			}
-		} else {
-			voucherRepertory.setId(UUID.randomUUID().toString());
-			String result = voucherRepertoryService.insert(voucherRepertory);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/voucher/repertory/err.jhtml";
-			}
-		}
-		return "redirect:/voucher/repertory/index.jhtml";
-	}
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        VoucherRepertory voucherRepertory = voucherRepertoryService.loadById(id);
+        modelMap.put("voucherRepertory", voucherRepertory);
+        return "activity/voucher/repertory/detail";
+    }
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            VoucherRepertory voucherRepertory) {
 
-		boolean b = voucherRepertoryService.deleteById(id);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/voucher/repertory/err.jhtml";
-		}
+        if (voucherRepertory.getId() != null && !voucherRepertory.getId().equals("")) {
+            boolean b = voucherRepertoryService.update(voucherRepertory);
+            if (b == false) {
+                // 跳转到错误页
+                return "redirect:/voucher/repertory/err.jhtml";
+            }
+        }
+        else {
+            voucherRepertory.setId(UUID.randomUUID().toString());
+            String result = voucherRepertoryService.insert(voucherRepertory);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/voucher/repertory/err.jhtml";
+            }
+        }
+        return "redirect:/voucher/repertory/index.jhtml";
+    }
 
-		return "redirect:/voucher/repertory/index.jhtml";
-	}
-	
-	
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+
+        boolean b = voucherRepertoryService.deleteById(id);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/voucher/repertory/err.jhtml";
+        }
+
+        return "redirect:/voucher/repertory/index.jhtml";
+    }
 
 }

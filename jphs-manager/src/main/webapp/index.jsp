@@ -54,7 +54,7 @@
 		<div class="public-cell public-cell-about login_input">
 			<img src="/static/img/login/zhanghao.png" />
 			<div class="public_primary">
-				<input type="text" id="userName" name="userName" placeholder="邮箱前缀或手机号码" />
+				<input type="text" id="userName" name="userName" placeholder="企业邮箱或手机号码" />
 			</div>
 		</div>
 		<div class="public-cell public-cell-about login_input">
@@ -67,6 +67,10 @@
 		<div class="login_foot">
 			<button type="submit" id="save" class="login_btn">登录</button>
 		</div>
+		<div style="color: red;text-align: center;font-size: 18px" class="login_foot">
+			${message }
+		</div>
+		
 	</form>
 </body>
 </html>

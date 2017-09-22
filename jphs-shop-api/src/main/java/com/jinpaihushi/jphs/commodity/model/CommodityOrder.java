@@ -90,6 +90,8 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	
 	private CommodityImages commodityImages;
 	
+	private String receivename;
+	
 	public CommodityOrder(){}
 
 	public CommodityOrder(String id){
@@ -321,6 +323,14 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	}
 	
 	
+
+/*	public String getReceivename() {
+		return receivename;
+	}
+
+	public void setReceivename(String receivename) {
+		this.receivename = receivename;
+	}*/
 
 	public String getPhone() {
 		return phone;

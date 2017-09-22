@@ -28,89 +28,89 @@ import com.jinpaihushi.utils.UUIDUtils;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "Advertising", path = "/advertising")
+@RequestMapping(name = "轮播图", path = "/advertising")
 public class AdvertisingController extends BaseController<Advertising> {
 
-	@Autowired
-	private AdvertisingService advertisingService;
+    @Autowired
+    private AdvertisingService advertisingService;
 
-	@Override
-	protected BaseService<Advertising> getService() {
-		return advertisingService;
-	}
+    @Override
+    protected BaseService<Advertising> getService() {
+        return advertisingService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			Advertising advertising, Integer p, Integer n) {
-		startPage(p, n);
-		Page<Advertising> list = advertisingService.query(advertising);
-		PageInfos<Advertising> pageInfo = new PageInfos<Advertising>(list, req);
-		System.out.println("-------------list:"+list);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		System.out.println("========pageInfo:"+pageInfo);
-		return "activity/advertising/list";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            Advertising advertising, Integer p, Integer n) {
+        startPage(p, n);
+        Page<Advertising> list = advertisingService.query(advertising);
+        PageInfos<Advertising> pageInfo = new PageInfos<Advertising>(list, req);
+        System.out.println("-------------list:" + list);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        System.out.println("========pageInfo:" + pageInfo);
+        return "activity/advertising/list";
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		Advertising advertising = advertisingService.loadById(id);
-		modelMap.put("advertising", advertising);
-		return "activity/advertising/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        Advertising advertising = advertisingService.loadById(id);
+        modelMap.put("advertising", advertising);
+        return "activity/advertising/edit";
+    }
 
-		return "activity/advertising/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		Advertising advertising = advertisingService.loadById(id);
-		modelMap.put("advertising", advertising);
-		return "activity/advertising/detail";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, Advertising advertising) {
-		SystemUser session_user = (SystemUser) req.getSession().getAttribute("session_user");
-		if (advertising.getId() != null && !advertising.getId().equals("")) {
-			String result= advertisingService.updateAdvertising(advertising);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/advertising/err.jhtml";
-			}
-		} else {
-			advertising.setId(UUIDUtils.getId());
-			advertising.setCreateTime(new Date());
-			advertising.setCreatorId(session_user.getId());
-			advertising.setCreatorName(session_user.getName());
-			advertising.setStatus(0);
-			String result = advertisingService.insertAdvertising(advertising);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/advertising/err.jhtml";
-			}
-		}
-		return "redirect:/advertising/index.jhtml";
-	}
+        return "activity/advertising/edit";
+    }
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        Advertising advertising = advertisingService.loadById(id);
+        modelMap.put("advertising", advertising);
+        return "activity/advertising/detail";
+    }
 
-		boolean b = advertisingService.deleteById(id);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/advertising/err.jhtml";
-		}
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            Advertising advertising) {
+        SystemUser session_user = (SystemUser) req.getSession().getAttribute("session_user");
+        if (advertising.getId() != null && !advertising.getId().equals("")) {
+            String result = advertisingService.updateAdvertising(advertising);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/advertising/err.jhtml";
+            }
+        }
+        else {
+            advertising.setId(UUIDUtils.getId());
+            advertising.setCreateTime(new Date());
+            advertising.setCreatorId(session_user.getId());
+            advertising.setCreatorName(session_user.getName());
+            advertising.setStatus(0);
+            String result = advertisingService.insertAdvertising(advertising);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/advertising/err.jhtml";
+            }
+        }
+        return "redirect:/advertising/index.jhtml";
+    }
 
-		return "redirect:/advertising/index.jhtml";
-	}
-	
-	
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+
+        boolean b = advertisingService.deleteById(id);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/advertising/err.jhtml";
+        }
+
+        return "redirect:/advertising/index.jhtml";
+    }
 
 }

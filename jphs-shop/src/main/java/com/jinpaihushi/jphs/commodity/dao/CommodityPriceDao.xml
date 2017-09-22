@@ -305,4 +305,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE CP.ID = #{id}
 	</select>
 	
+	<select id="getCount" resultType="java.lang.Integer">
+		SELECT SUM(number) FROM `COMMODITY_PRICE` CP
+		 WHERE CP.COMMODITY_ID = #{commodityId}
+	</select>
+	
 </mapper>

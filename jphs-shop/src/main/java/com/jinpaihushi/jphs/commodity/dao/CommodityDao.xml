@@ -9,7 +9,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		C.id, C.business_id, C.commodity_type_id, C.title,
 		C.sub_title, C.model, C.content, C.quality, C.privacy, C.security,
 		C.parameter, C.support_voucher, C.limit_number, C.protect_day, C.sort,
-		C.remark, C.status, C.create_time, C.creator_id, C.creator_name,C.share_number,
+		C.remark, C.status, C.create_time, C.creator_id,
+		C.creator_name,C.share_number,
 		C.browser,C.count
 	</sql>
 
@@ -21,7 +22,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		C.support_voucher C_support_voucher, C.limit_number C_limit_number,
 		C.protect_day C_protect_day, C.sort C_sort, C.remark C_remark,
 		C.status C_status, C.create_time C_create_time, C.creator_id
-		C_creator_id, C.creator_name C_creator_name,C.share_number C_share_number,
+		C_creator_id, C.creator_name C_creator_name,C.share_number
+		C_share_number,
 		C.browser C_browser,C.count C_count
 	</sql>
 
@@ -32,7 +34,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		security, C.parameter parameter, C.support_voucher supportVoucher,
 		C.limit_number limitNumber, C.protect_day protectDay, C.sort sort,
 		C.remark remark, C.status status, C.create_time createTime,
-		C.creator_id creatorId, C.creator_name creatorName,C.share_number shareNumber,
+		C.creator_id creatorId, C.creator_name creatorName,C.share_number
+		shareNumber,
 		C.browser browser,C.count count
 	</sql>
 
@@ -316,8 +319,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="count" column="count" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="url" column="url" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 
 	<resultMap id="commodityGlobal"
@@ -361,9 +363,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="C_creator_name"
 			javaType="String" jdbcType="VARCHAR"></result>
-		
-		<result property="shareNumber" column="C_share_number" javaType="Integer"
-			jdbcType="INTEGER"></result>
+
+		<result property="shareNumber" column="C_share_number"
+			javaType="Integer" jdbcType="INTEGER"></result>
 		<result property="browser" column="C_browser" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="count" column="C_count" javaType="Integer"
@@ -462,55 +464,54 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</collection>
 
 	</resultMap>
-	
-	
+
+
 	<resultMap id="info"
 		type="com.jinpaihushi.jphs.commodity.model.Commodity">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="cpId" column="cpId" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property="url" column="url"
-			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="oldPrice" column="oldPrice" javaType="double"
-				jdbcType="DOUBLE"></result>
+			jdbcType="DOUBLE"></result>
 		<result property="onePrice" column="onePrice" javaType="double"
-				jdbcType="DOUBLE"></result>
+			jdbcType="DOUBLE"></result>
 		<result property="name" column="name" javaType="String"
-				jdbcType="VARCHAR"></result>
+			jdbcType="VARCHAR"></result>
 		<result property="title" column="title" javaType="String"
-				jdbcType="VARCHAR"></result>
+			jdbcType="VARCHAR"></result>
 		<result property="subTitle" column="sub_title" javaType="String"
 			jdbcType="VARCHAR"></result>
 	</resultMap>
-	
-	
+
+
 	<resultMap id="list"
 		type="com.jinpaihushi.jphs.commodity.model.CommodityMap">
-		<result property="cpId" column="cpId" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityId" column="commodityId"
-			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="cpId" column="cpId" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityId" column="commodityId" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="title" column="title" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="subTitle" column="sub_title" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="oldPrice" column="oldPrice" javaType="double"
-				jdbcType="DOUBLE"></result>
+			jdbcType="DOUBLE"></result>
 		<result property="costPrice" column="costPrice" javaType="double"
-				jdbcType="DOUBLE"></result>
+			jdbcType="DOUBLE"></result>
 		<result property="price" column="price" javaType="double"
 			jdbcType="DOUBLE"></result>
 		<result property="profit" column="profit" javaType="double"
-				jdbcType="DOUBLE"></result>
+			jdbcType="DOUBLE"></result>
 		<result property="browser" column="browser" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="shareNumber" column="shareNumber" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
-	 <result property="url" column="url" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
-	
+
 	<resultMap id="commodityInFo"
 		type="com.jinpaihushi.jphs.commodity.model.Commodity">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
@@ -531,6 +532,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="privacy" column="privacy" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="security" column="security" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="totals" column="totals" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="parameter" column="parameter" javaType="String"
 			jdbcType="VARCHAR"></result>
@@ -558,13 +561,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="count" column="count" javaType="Integer"
 			jdbcType="INTEGER"></result>
-		<result property="url" column="url" javaType="String"
-			jdbcType="VARCHAR"></result>
+		<result property="url" column="url" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="businessName" column="businessName" javaType="String"
 			jdbcType="VARCHAR"></result>
-		<result property="commodityType" column="commodityType" javaType="String"
-			jdbcType="VARCHAR"></result>
-		 <collection property="commodityPrice"
+		<result property="commodityType" column="commodityType"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<collection property="skuNameList"
 			ofType="com.jinpaihushi.jphs.commodity.model.CommodityPrice">
 			<result property="id" column="cpId" javaType="String"
 				jdbcType="VARCHAR"></result>
@@ -710,16 +712,20 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ci.url,
 		cp.profit,
 		com.`status`,
- 			com.browser,
-		 com.shareNumber,
-		 com.count counts
+		com.browser,
+		com.shareNumber,
+		com.count counts
 		FROM
 		commodity com
-		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
-		LEFT JOIN commodity_images ci ON (ci.source_id = com.id)
+		LEFT JOIN commodity_price cp ON (com.id =
+		cp.commodity_id)
+		LEFT JOIN commodity_images ci ON (ci.source_id =
+		com.id)
 		LEFT JOIN `column` c ON (1 = 1)
-		LEFT JOIN column_service cs ON (c.id = cs.column_id)
-		LEFT JOIN nurse_commodity nc ON (nc.commodity_id = com.id)
+		LEFT JOIN column_service cs ON
+		(c.id = cs.column_id)
+		LEFT JOIN nurse_commodity nc ON (nc.commodity_id
+		= com.id)
 		WHERE
 		cs.link = com.id
 		AND ci.type = '1'
@@ -728,7 +734,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND cs.`status` = 1
 		GROUP BY cpId
 		<if test="nurseId !=null">
-			AND nc.creator_id = #{nurseId} 
+			AND nc.creator_id = #{nurseId}
 		</if>
 		<if test="sort !=null">
 			${sort}
@@ -754,14 +760,16 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		cp.profit
 		FROM
 		commodity com
-		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
+		LEFT JOIN commodity_price cp ON (com.id =
+		cp.commodity_id)
 		LEFT
-		JOIN commodity_images ci ON (com.id = ci.source_id)
+		JOIN commodity_images ci ON (com.id =
+		ci.source_id)
 		WHERE
-		  ci.type = '1'
+		ci.type = '1'
 		AND
 		com.id =#{commodityId}
-		 AND cp.`status` = 1
+		AND cp.`status` = 1
 		ORDER BY cp.sort
 	</select>
 
@@ -777,11 +785,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ci.url
 		FROM
 		nurse_commodity nc
-		LEFT JOIN commodity com ON (com.id = nc.commodity_id)
+		LEFT JOIN commodity com ON
+		(com.id = nc.commodity_id)
 		LEFT JOIN
-		commodity_price cp ON(com.id = cp.commodity_id)
+		commodity_price cp ON(com.id =
+		cp.commodity_id)
 		LEFT JOIN
-		commodity_images ci ON (com.id = ci.source_id)
+		commodity_images ci ON (com.id =
+		ci.source_id)
 		where nc.id=#{nurseId}
 	</select>
 
@@ -803,40 +814,45 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		coi.profit,
 		ci.url,
 		co.`schedule`
-		FROM commodity_order_info coi
-		LEFT JOIN commodity_order co ON( coi.commodity_order_id = co.id)
+		FROM
+		commodity_order_info coi
+		LEFT JOIN commodity_order co ON(
+		coi.commodity_order_id = co.id)
 		LEFT JOIN
-		commodity_images ci ON (coi.commodity_id = ci.source_id)
+		commodity_images ci ON
+		(coi.commodity_id = ci.source_id)
 		WHERE
 		coi.user_id = #{userId}
-		AND coi.commodity_id = #{commodityId}
+		AND
+		coi.commodity_id = #{commodityId}
 		<if test="schedule!=null">
 			AND co.`schedule` = #{schedule}
 		</if>
 	</select>
-	
-	
+
+
 	<select id="getInfo" resultMap="info">
-	 	SELECT
-			ci.url,
-			com.id ,
-			cp.id cpId,
-			cp.price oldPrice,
-			cp.`name` ,
-			com.title,
-			com.sub_title ,
-			cp.price onePrice
+		SELECT
+		ci.url,
+		com.id ,
+		cp.id cpId,
+		cp.price oldPrice,
+		cp.`name` ,
+		com.title,
+		com.sub_title ,
+		cp.price onePrice
 		FROM
-			commodity com
+		commodity com
 		LEFT JOIN commodity_images ci ON (com.id = ci.source_id)
-		LEFT JOIN commodity_price cp ON (cp.commodity_id = com.id)
+		LEFT JOIN
+		commodity_price cp ON (cp.commodity_id = com.id)
 		WHERE
-			com.id = #{commodityId}
+		com.id = #{commodityId}
 		AND CP.Id=#{commodityPriceId}
 		AND ci.type = 1
-	
+
 	</select>
-	
+
 	<select id="getOneDetail" resultMap="shop">
 		SELECT
 		com.id commodityId,
@@ -852,17 +868,19 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		cp.`name`
 		FROM
 		commodity com
-		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
+		LEFT JOIN
+		commodity_price cp ON (com.id = cp.commodity_id)
 		LEFT
-		JOIN commodity_images ci ON (com.id = ci.source_id)
+		JOIN
+		commodity_images ci ON (com.id = ci.source_id)
 		WHERE
-		  ci.type = '1'
+		ci.type = '1'
 		AND
 		com.id =#{commodityId}
 		AND cp.id = #{cpId}
 		ORDER BY price desc
 	</select>
-	
+
 	<select id="getList" resultMap="list">
 		SELECT
 		com.id commodityId,
@@ -880,12 +898,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		com.count counts
 		FROM
 		commodity com
-		LEFT JOIN commodity_price cp ON (com.id = cp.commodity_id)
-		LEFT JOIN commodity_images ci ON (ci.source_id = com.id)
+		LEFT JOIN commodity_price cp ON (com.id =
+		cp.commodity_id)
+		LEFT JOIN commodity_images ci ON (ci.source_id =
+		com.id)
 		LEFT JOIN `column` c ON (1 = 1)
-		LEFT JOIN column_service cs ON (c.id = cs.column_id)
-		LEFT JOIN nurse_commodity nc ON (nc.commodity_id = com.id)
-		LEFT JOIN commodity_order_info coi ON (coi.commodity_id = com.id)
+		LEFT JOIN column_service cs ON
+		(c.id = cs.column_id)
+		LEFT JOIN nurse_commodity nc ON (nc.commodity_id
+		= com.id)
+		LEFT JOIN commodity_order_info coi ON (coi.commodity_id =
+		com.id)
 		WHERE
 		cs.link = com.id
 		AND ci.type = '1'
@@ -893,21 +916,22 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND c.`status` = 1
 		AND cs.`status` = 1
 		AND com.`status` = 1
-		 AND cp.`status` = 1
+		AND cp.`status` = 1
 		<if test="nurseId !=null">
-			AND coi.user_id= #{nurseId} 
+			AND coi.user_id= #{nurseId}
 		</if>
 		GROUP BY com.id
-		
+
 		<if test="sort !=null">
 			${sort}
 		</if>
-		 
+
 	</select>
-	
-	
+
+
 	<select id="getNurseShareList" resultMap="list">
-		SELECT com.id commodityId,
+		SELECT com.id
+		commodityId,
 		com.title,
 		com.sub_title,
 		cp.id cpId,
@@ -920,75 +944,95 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		nc.browser,
 		nc.shareNumber,
 		nc.count
-		 FROM nurse_commodity nc
-			LEFT JOIN commodity_images ci ON (ci.source_id = nc.commodity_id)
-			LEFT JOIN commodity_price cp ON(cp.commodity_id = nc.commodity_id)
-			LEFT JOIN commodity com ON (com.id = nc.commodity_id)
-		 WHERE nc.creator_id = #{nurseId} 
+		FROM nurse_commodity nc
+		LEFT JOIN commodity_images ci ON (ci.source_id = nc.commodity_id)
+		LEFT JOIN commodity_price cp ON(cp.commodity_id = nc.commodity_id)
+		LEFT JOIN commodity com ON (com.id = nc.commodity_id)
+		WHERE nc.creator_id = #{nurseId}
 		AND ci.type = 1
 		GROUP BY commodityId
 		ORDER BY nc.create_time desc
-		 
+
 	</select>
-	
+
 	<update id="updateBrowser">
-	   UPDATE `COMMODITY` COM
-		SET 
+		UPDATE `COMMODITY` COM
+		SET
 		COM.browser = browser + 1
-		WHERE  COM.id = #{commodityId} 
+		WHERE COM.id = #{commodityId}
 	</update>
-	
+
 	<update id="updateShareNumber">
-	   UPDATE `COMMODITY` COM
-		SET 
+		UPDATE `COMMODITY` COM
+		SET
 		COM.share_number = share_number + 1
-		WHERE  COM.id = #{commodityId} 
+		WHERE COM.id = #{commodityId}
 	</update>
-	
+
 	<update id="updateCount">
-	   UPDATE `COMMODITY` COM
-		SET 
+		UPDATE `COMMODITY` COM
+		SET
 		COM.count = count + #{number}
-		WHERE  COM.id = #{commodityId} 
+		WHERE COM.id = #{commodityId}
 	</update>
-	
+
 	<select id="getPageList" resultMap="commodityInFo">
-SELECT
-	C.id,
-ci.url,
-b.`name` businessName,
-ct.`name`,
-	cp.`name`,
-	cp.number,
-	C.business_id,
-	C.commodity_type_id,
-	C.title,
-	C.sub_title,
-	C.model,
-	C.content,
-	C.quality,
-	C.privacy,
-	C. SECURITY,
-	C.parameter,
-	C.support_voucher,
-	C.limit_number,
-	C.protect_day,
-	C.sort,
-	C.remark,
-	C. STATUS,
-	C.create_time,
-	C.creator_id,
-	C.creator_name,
-	C.share_number,
-	C.browser,
-	C.count
-FROM
-	`COMMODITY` C
-LEFT JOIN commodity_images ci ON(ci.source_id = C.id)
-LEFT JOIN business b ON (b.id = C.business_id)
-LEFT JOIN commodity_type ct ON(ct.id = C.commodity_type_id)
-LEFT JOIN commodity_price cp ON (C.id = cp.commodity_id)
-WHERE ci.type = 1
+		SELECT
+		C.id,
+		ci.url,
+		b.`name` businessName,
+		ct.`name` commodityType,
+		(select SUM(comp.number) from commodity_price comp WHERE comp.commodity_id =
+		C.id) totals,
+		cp.`name`,
+		cp.number,
+		C.business_id,
+		C.commodity_type_id,
+		C.title,
+		C.sub_title,
+		C.model,
+		C.content,
+		C.quality,
+		C.privacy,
+		C. SECURITY,
+		C.parameter,
+		C.support_voucher,
+		C.limit_number,
+		C.protect_day,
+		C.sort,
+		C.remark,
+		C. STATUS,
+		C.create_time,
+		C.creator_id,
+		C.creator_name,
+		C.share_number,
+		C.browser,
+		C.count
+		FROM
+		`COMMODITY` C
+		LEFT JOIN commodity_images ci ON(ci.source_id = C.id)
+		LEFT JOIN business b ON (b.id = C.business_id)
+		LEFT JOIN commodity_type ct ON(ct.id = C.commodity_type_id)
+		LEFT JOIN commodity_price cp ON (C.id = cp.commodity_id)
+		WHERE ci.type = 1
+		<if test="title!=null">
+		   AND title LIKE CONCAT('%', #{title}, '%')
+		</if> 
+		<if test="businessId!=null">
+		   AND	business_id = #{businessId}
+		</if> 
+		<if test="commodityTypeId!=null">
+		   AND	commodity_type_id = #{commodityTypeId}
+		</if> 
+		<if test="model!=null">
+		   AND	model LIKE CONCAT('%', #{model}, '%')
+		</if> 
+		<if test="status!=null">
+		   AND	C.STATUS = #{status}
+		</if>    
+		<!-- <if test="totals!=null">
+		   AND	totals = #{status}
+		</if>  -->
 	</select>
-	
+
 </mapper>

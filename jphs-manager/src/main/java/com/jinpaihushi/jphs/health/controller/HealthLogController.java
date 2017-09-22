@@ -26,83 +26,83 @@ import com.jinpaihushi.utils.PageInfos;
  * @version 1.0
  */
 @Controller
-@RequestMapping(name = "HealthLog", path = "/health/log")
+@RequestMapping(name = "健康", path = "/health/log")
 public class HealthLogController extends BaseController<HealthLog> {
 
-	@Autowired
-	private HealthLogService healthLogService;
+    @Autowired
+    private HealthLogService healthLogService;
 
-	@Override
-	protected BaseService<HealthLog> getService() {
-		return healthLogService;
-	}
+    @Override
+    protected BaseService<HealthLog> getService() {
+        return healthLogService;
+    }
 
-	@RequestMapping(name = "列表页", path = "/index.jhtml")
-	public String index(HttpSession hs, HttpServletRequest req,
-			HttpServletResponse resp, ModelMap modelMap,
-			HealthLog healthLog, Integer p, Integer n) {
-		startPage(p, n);
-		Page<HealthLog> list = healthLogService.query(healthLog);
-		PageInfos<HealthLog> pageInfo = new PageInfos<HealthLog>(list, req);
-		modelMap.put("list", list);
-		modelMap.put("pageInfo", pageInfo);
-		return "user/health/log/list";
-	}
+    @RequestMapping(name = "列表页", path = "/index.jhtml")
+    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            HealthLog healthLog, Integer p, Integer n) {
+        startPage(p, n);
+        Page<HealthLog> list = healthLogService.query(healthLog);
+        PageInfos<HealthLog> pageInfo = new PageInfos<HealthLog>(list, req);
+        modelMap.put("list", list);
+        modelMap.put("pageInfo", pageInfo);
+        return "user/health/log/list";
+    }
 
-	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		HealthLog healthLog = healthLogService.loadById(id);
-		modelMap.put("healthLog", healthLog);
-		return "user/health/log/edit";
-	}
-	
-	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-	public String redirectAddPage(ModelMap modelMap) {
+    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        HealthLog healthLog = healthLogService.loadById(id);
+        modelMap.put("healthLog", healthLog);
+        return "user/health/log/edit";
+    }
 
-		return "user/health/log/edit";
-	}
-	
-	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			String id) {
-		HealthLog healthLog = healthLogService.loadById(id);
-		modelMap.put("healthLog", healthLog);
-		return "user/health/log/detail";
-	}
+    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+    public String redirectAddPage(ModelMap modelMap) {
 
-	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, HealthLog healthLog) {
+        return "user/health/log/edit";
+    }
 
-		if (healthLog.getId() != null && !healthLog.getId().equals("")) {
-			boolean b = healthLogService.update(healthLog);
-			if (b == false) {
-				// 跳转到错误页
-				return "redirect:/health/log/err.jhtml";
-			}
-		} else {
-			healthLog.setId(UUID.randomUUID().toString());
-			String result = healthLogService.insert(healthLog);
-			if (result.length() <= 0) {
-				// 跳转到错误页
-				return "redirect:/health/log/err.jhtml";
-			}
-		}
-		return "redirect:/health/log/index.jhtml";
-	}
+    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+        HealthLog healthLog = healthLogService.loadById(id);
+        modelMap.put("healthLog", healthLog);
+        return "user/health/log/detail";
+    }
 
-	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
-	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id) {
+    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            HealthLog healthLog) {
 
-		boolean b = healthLogService.deleteById(id);
-		if (b == false) {
-			// 跳转到错误页
-			return "redirect:/health/log/err.jhtml";
-		}
+        if (healthLog.getId() != null && !healthLog.getId().equals("")) {
+            boolean b = healthLogService.update(healthLog);
+            if (b == false) {
+                // 跳转到错误页
+                return "redirect:/health/log/err.jhtml";
+            }
+        }
+        else {
+            healthLog.setId(UUID.randomUUID().toString());
+            String result = healthLogService.insert(healthLog);
+            if (result.length() <= 0) {
+                // 跳转到错误页
+                return "redirect:/health/log/err.jhtml";
+            }
+        }
+        return "redirect:/health/log/index.jhtml";
+    }
 
-		return "redirect:/health/log/index.jhtml";
-	}
-	
-	
+    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
+    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+            String id) {
+
+        boolean b = healthLogService.deleteById(id);
+        if (b == false) {
+            // 跳转到错误页
+            return "redirect:/health/log/err.jhtml";
+        }
+
+        return "redirect:/health/log/index.jhtml";
+    }
 
 }

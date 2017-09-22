@@ -36,6 +36,12 @@
 						src="/static/images/Group7.png" />会员优惠券</a>
 				</dd>
 			</jphs:hasPermission>
+			<jphs:hasPermission url="/voucher/user/index.jhtml">
+				<dd>
+					<a href="/withdraw/cash/index.jhtml"><img
+						src="/static/images/Group7.png" />提现管理</a>
+				</dd>
+			</jphs:hasPermission>
 		</div>
 
 

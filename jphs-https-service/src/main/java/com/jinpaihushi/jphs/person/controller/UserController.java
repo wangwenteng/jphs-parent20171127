@@ -419,14 +419,15 @@ public class UserController extends BaseController<User> {
         try {
             if (Util.debugLog.isDebugEnabled()) {
                 Util.debugLog.debug("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId
-                /* + " type=" + type*/ + " nurseName=" + nurseName+ " city=" + city);
+                /* + " type=" + type*/ + " nurseName=" + nurseName + " city=" + city);
             }
             if (StringUtils.isEmpty(lon) || StringUtils.isEmpty(lat)) {
                 lon = "116.403119";
                 lat = "39.914492";
             }
             if (StringUtils.isEmpty(city)) {
-                return JSONUtil.toJSONResult(0, "参数不能为空", null);
+                city = "北京";
+                //                return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // String token = req.getHeader("token");
             // if (StringUtils.isEmpty(token)) {
@@ -458,7 +459,7 @@ public class UserController extends BaseController<User> {
         catch (Exception e) {
             Util.failLog.error("user.getNurseList.json lon=" + lon + " lat=" + lat + " goodsId=" + goodsId /*+ " type="
                                                                                                            + type*/
-                    + " nurseName=" + nurseName+ " city=" + city, e);
+                    + " nurseName=" + nurseName + " city=" + city, e);
         }
         return null;
     }

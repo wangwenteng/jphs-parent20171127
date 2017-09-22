@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.audit.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import com.jinpaihushi.dao.BaseDao;
 import com.jinpaihushi.jphs.audit.dao.AuditDao;
 import com.jinpaihushi.jphs.audit.model.Audit;
 import com.jinpaihushi.jphs.audit.service.AuditService;
-import com.jinpaihushi.jphs.department.dao.DepartmentDao;
+import com.jinpaihushi.jphs.jobtitle.dao.JobtitleDao;
 import com.jinpaihushi.jphs.nurse.dao.NurseDao;
 import com.jinpaihushi.jphs.nurse.dao.NurseImagesDao;
 import com.jinpaihushi.jphs.nurse.dao.NurseJobtitleDao;
@@ -25,6 +26,8 @@ import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
 import com.jinpaihushi.jphs.nurse.model.NurseRank;
 import com.jinpaihushi.jphs.person.dao.PersonGroupDao;
 import com.jinpaihushi.jphs.person.model.PersonGroup;
+import com.jinpaihushi.jphs.price.model.PriceNurse;
+import com.jinpaihushi.jphs.price.service.PriceNurseService;
 import com.jinpaihushi.jphs.user.dao.UserDao;
 import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.worktime.service.WorktimeService;
@@ -67,6 +70,12 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
 
     @Autowired
     private PlatformTransactionManager txManager;
+
+    @Autowired
+    private JobtitleDao jobtitleDao;
+
+    @Autowired
+    private PriceNurseService priceNurseService;
 
     @Override
     protected BaseDao<Audit> getDao() {
@@ -172,6 +181,32 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                     nurseJobtitle.setStatus(1);
                     nurseJobtitle.setId(nurseJobtitleId);
                     i = nurseJobtitleDao.update(nurseJobtitle);
+                    //判断职称类型
+                    String jobtitleTypeId = "";
+                    if (jobtitle.getType() == 1) {
+                        jobtitleTypeId = "c6c9f0ba0e8e464b807d8d2bd5deb8b7";
+                    }
+                    if (jobtitle.getType() == 2) {
+                        jobtitleTypeId = "ad58e9c2c78f44258054617570b6afc4";
+                    }
+                    if (jobtitle.getType() == 3) {
+                        jobtitleTypeId = "2b1e6ec74e3c40a880c8d3cd8708a6ca";
+                    }
+                    PriceNurse priceNurse = null;
+                    List<Map<String, Object>> basePrice = jobtitleDao.getBasePrice(jobtitleTypeId);
+                    for (Map<String, Object> map : basePrice) {
+                        Double price = Double.parseDouble(map.get("price").toString());
+                        priceNurse = new PriceNurse();
+                        priceNurse.setId(UUIDUtils.getId());
+                        priceNurse.setGoodsId((String) map.get("goodsId"));
+                        priceNurse.setPricePartId((String) map.get("pricePartId"));
+                        priceNurse.setPrice(price);
+                        priceNurse.setStatus(0);
+                        priceNurse.setCreateTime(new Date());
+                        priceNurse.setCreatorId(audit.getCreatorId());
+                        priceNurse.setCreatorName(audit.getCreatorName());
+                        priceNurseService.insert(priceNurse);
+                    }
                     return "1";
 
                 }

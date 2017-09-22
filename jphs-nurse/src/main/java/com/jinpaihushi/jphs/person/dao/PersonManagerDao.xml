@@ -332,7 +332,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		user_id
 		FROM
 		person_manager
-		WHERE status=1 ) AND (u.id =#{searchName} OR u.phone =#{searchName} ) AND n.`status` =1 
+		WHERE status=1 AND is_leader =1) AND (u.id =#{searchName} OR u.phone =#{searchName} ) AND n.`status` =1 
 	</select>
 	<update id="updateLeaderStatus">
 		UPDATE `PERSON_MANAGER` PM
