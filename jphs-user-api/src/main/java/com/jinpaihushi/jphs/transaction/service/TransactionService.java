@@ -17,7 +17,7 @@ public interface TransactionService extends BaseService<Transaction> {
 
     Page<Transaction> getUserInfo(Transaction transaction);
 
-    boolean refund(Transaction transaction);
+    String refund(Transaction transaction, String orderNo, String cancelOrderId);
 
     Map<String, Object> incomeSummary(Map<String, Object> map);
 

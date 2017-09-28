@@ -38,7 +38,12 @@
 								test="${e.schedule == 3}">执行中</c:if> <c:if
 								test="${e.schedule == 4}">待确定</c:if> <c:if
 								test="${e.schedule == 5}">已完成</c:if> <c:if
-								test="${e.schedule == 6}">已取消</c:if> <c:if
+								test="${e.schedule == 6}"><c:if test="${e.otherStatus!=null}">
+									<c:if test="${e.otherStatus==0}"><span style="color: #F0BB1C;">待处理</span></c:if>
+									<c:if test="${e.otherStatus==1}"><span style="color: #34BC2C;">已退款</span></c:if>
+								</c:if>
+								<c:if test="${e.otherStatus==null}">已取消</c:if>
+								</c:if> <c:if
 								test="${e.schedule == 7}">申诉中</c:if></td>
 						<td>
 							<jphs:hasPermission url="/order/detail.jhtml">

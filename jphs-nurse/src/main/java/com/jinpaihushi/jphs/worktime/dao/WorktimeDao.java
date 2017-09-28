@@ -1,6 +1,7 @@
 package com.jinpaihushi.jphs.worktime.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -38,5 +39,16 @@ public interface WorktimeDao extends BaseDao<Worktime> {
     int deleteAll();
 
     int updateByUserId(Worktime userWorktime);
+    /**
+     * 修改护士的日程
+     * Calendar 时间
+     * h_k 时间段
+     * h_v 时间段的值
+     * userid 用户id
+     * @param map
+     * @return
+     */
+    int editDateByUserId(Map<String,Object> map);
+    List<Worktime> listByQuery(Worktime query);
 
 }

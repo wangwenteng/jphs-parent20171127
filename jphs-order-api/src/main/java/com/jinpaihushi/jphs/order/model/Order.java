@@ -130,6 +130,16 @@ public class Order extends BaseModel implements Predicate<Order>, Updator<Order>
 
     private List<ServiceImages> serviceOrderImages;
 
+    private Integer otherStatus;
+
+    public Integer getOtherStatus() {
+        return otherStatus;
+    }
+
+    public void setOtherStatus(Integer otherStatus) {
+        this.otherStatus = otherStatus;
+    }
+
     public String getCode() {
         return code;
     }

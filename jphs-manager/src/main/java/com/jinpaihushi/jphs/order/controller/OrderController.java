@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -124,25 +123,26 @@ public class OrderController extends BaseController<Order> {
 
     @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
     public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            String id, Nurse nurse,Integer p, Integer n) {
+            String id, Nurse nurse, Integer p, Integer n) {
         Order order = orderService.getUserOrderDetail(id, null);
-        String days=null;
-        String hour =null;
-        if(null!=nurse&&nurse.getWorkYear()!=null){
-//        	 String appointmentTime = format.format(order.getAppointmentTime());
-//             days = appointmentTime.substring(0, 10);
-//             hour = appointmentTime.substring(11, 13);
-//        }else{
-        	days = nurse.getWorkYear().split(" ")[0];
-        	hour=nurse.getWorkYear().split(" ")[1];
-        	nurse.setCalendar(days);
-            nurse.setH("h_"+Integer.parseInt(hour));
+        String days = null;
+        String hour = null;
+        if (null != nurse && nurse.getWorkYear() != null) {
+            //           String appointmentTime = format.format(order.getAppointmentTime());
+            //             days = appointmentTime.substring(0, 10);
+            //             hour = appointmentTime.substring(11, 13);
+            //        }else{
+            days = nurse.getWorkYear().split(" ")[0];
+            hour = nurse.getWorkYear().split(" ")[1];
+            nurse.setCalendar(days);
+            nurse.setH("h_" + Integer.parseInt(hour));
         }
-        String city =null;
-        if(order.getOrderOther().getAddress().split(",")[1].equals("市辖区")){
-        	city =order.getOrderOther().getAddress().split(",")[0];
-        }else{
-        	city =order.getOrderOther().getAddress().split(",")[1];
+        String city = null;
+        if (order.getOrderOther().getAddress().split(",")[1].equals("市辖区")) {
+            city = order.getOrderOther().getAddress().split(",")[0];
+        }
+        else {
+            city = order.getOrderOther().getAddress().split(",")[1];
         }
         nurse.setAreas(city);
         startPage(p, n);
@@ -279,13 +279,22 @@ public class OrderController extends BaseController<Order> {
         return "redirect:/order/detail.jhtml?id=" + orderOther.getId();
     }
 
+    /**
+     * @param hs
+     * @param req
+     * @param resp
+     * @param modelMap
+     * @param transaction
+     * @param type 支付类型<!-- (1支付宝，2微信，3余额，4银联，5vip卡支付) -->
+     * @return
+     */
     @RequestMapping(name = "退款", path = "/refund.jhtml")
     public String refund(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Transaction transaction) {
+            Transaction transaction, String orderNo, String cancelOrderId) {
 
-        transactionService.refund(transaction);
+        transactionService.refund(transaction, orderNo, cancelOrderId);
 
-        return "redirect:/order/detail.jhtml?id=" + transaction.getId();
+        return "redirect:/order/detail.jhtml?id=" + transaction.getOrderId();
     }
 
     @RequestMapping(name = "跳转到添加页", path = "/edit.jhtml")

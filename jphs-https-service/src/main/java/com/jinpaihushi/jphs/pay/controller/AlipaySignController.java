@@ -308,7 +308,7 @@ public class AlipaySignController {
                                                     else {
                                                         area = address.split(",")[1].substring(0, 2);
                                                     }
-                                                    nurseJPushService.jpushTag("",
+                                                    nurseJPushService.jpushTag("有新的用户下单了，快去抢哦！",
                                                             MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
                                                 }
                                             }

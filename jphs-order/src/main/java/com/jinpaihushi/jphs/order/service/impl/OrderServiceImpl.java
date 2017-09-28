@@ -913,11 +913,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 resetVouvher(orderId, order);
                 msg = "您的订单已经取消！";
             }
-            if (StringUtils.isEmpty(order.getAcceptUserId())) {
-                resetVouvher(orderId, order);
-                refundFlag = true;
-                msg = "您的订单已经取消！";
-            }
+            //            if (StringUtils.isEmpty(order.getAcceptUserId())) {
+            //                resetVouvher(orderId, order);
+            //                refundFlag = true;
+            //                msg = "您的订单已经取消！";
+            //            }
             if (order.getSchedule() < 3 && order.getSchedule() > 0) {
                 // 判断该订单是否有护士接单
                 // 判断护士是否已经出发
@@ -932,7 +932,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                  */
                 Double hour = DoubleUtils.div(serviceTime.getTime() - new Date().getTime(), 3600 * 1000, 2);
                 if (hour > 2 && hour < 5) {
-                    refundMoney = DoubleUtils.mul(refundMoney, 0.1);
+                    refundMoney = DoubleUtils.mul(refundMoney, 0.9);
                     resetVouvher(orderId, order);
                     refundFlag = true;
                     msg = "您的订单已经取消！订单取消后，退款将原路返回，预计1-5个工作日，实际时间以银行到账时间为准";
@@ -958,16 +958,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     msg = "非法操作！";
 
                 }
-                if (StringUtils.isNotEmpty(order.getAcceptUserId())) {
-                    Map<String, Object> map = getSmsMessage(orderId);
-                    doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_cancel_order,
-                            "{\"order_no\":\"" + map.get("order_no").toString() + "\"}");
-                    //通知客服
-                    doPostSmsService.sendSms("13581912414", SMS_notice_order,
-                            "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
-                                    + map.get("order_no").toString() + "\"}");
-                }
             }
+            Map<String, Object> map = getSmsMessage(orderId);
+            if (StringUtils.isNotEmpty(order.getAcceptUserId())) {
+                doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_cancel_order,
+                        "{\"order_no\":\"" + map.get("order_no").toString() + "\"}");
+            }
+            //通知客服
+            doPostSmsService.sendSms("13581912414", SMS_notice_order, "{\"service_name\":\""
+                    + map.get("goodsName").toString() + "\",\"order_no\":\"" + map.get("order_no").toString() + "\"}");
         }
         if (refundFlag) {
             CancelOrder cancelOrder = new CancelOrder();
@@ -1157,7 +1156,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                                 else {
                                     area = address.split(",")[1].substring(0, 2);
                                 }
-                                nurseJPushService.jpushTag("", MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
+                                nurseJPushService.jpushTag("有新的用户下单了，快去抢哦！",
+                                        MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
                             }
                         }
                         return true;
@@ -1203,7 +1203,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             //事务模板
             public String doInTransaction(final TransactionStatus status) {
                 try {
-                    //	完成本次服务
+                    //  完成本次服务
                     com.jinpaihushi.jphs.order.model.OrderService os_one = new com.jinpaihushi.jphs.order.model.OrderService();
                     os_one.setStatus(1);
                     os_one.setOrderId(orderId);
@@ -1212,7 +1212,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     com.jinpaihushi.jphs.order.model.OrderService one_os = orderServiceDao.load(os_one);
                     if (one_os == null) {
                         return "2";
-                        //      				return JSONUtil.toJSONResult(0, "订单完成失败，请刷新重试", null);
+                        //                      return JSONUtil.toJSONResult(0, "订单完成失败，请刷新重试", null);
                     }
                     com.jinpaihushi.jphs.order.model.OrderService one_os_up = new com.jinpaihushi.jphs.order.model.OrderService();
                     one_os_up.setSchedule(3);
@@ -1348,7 +1348,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     if (or_start <= 0) {
                         String str = null;
                         System.out.println(str.toString());
-                        //	      				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
+                        //                      return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
                     }
                     com.jinpaihushi.jphs.order.model.OrderService os_total = new com.jinpaihushi.jphs.order.model.OrderService();
                     os_total.setStatus(1);
@@ -1359,7 +1359,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     com.jinpaihushi.jphs.order.model.OrderService one_os = orderServiceDao.load(os_total);
                     if (one_os == null) {
                         System.out.println(1 / 0);
-                        //	      				return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
+                        //                      return JSONUtil.toJSONResult(0, "订单执行失败，请刷新重试", null);
                     }
                     com.jinpaihushi.jphs.order.model.OrderService one_os_up = new com.jinpaihushi.jphs.order.model.OrderService();
                     one_os_up.setSchedule(1);
@@ -1418,7 +1418,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     // 1.根据 name，password,type查询完整信息
                     query = userDao.queryUser(query);
 
-                    // 2.错误		查询用户信息为空弄
+                    // 2.错误     查询用户信息为空弄
                     if (query == null) {
                         return 0 + "";
 
@@ -1429,41 +1429,41 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     }
                     catch (NumberFormatException e) {
                         return "2";
-                        //          				return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
+                        //                          return JSONUtil.toJSONResult(0, "字符串转整形失败", null);
                     }
 
-                    // 3.错误		判断用户是否是护士
+                    // 3.错误     判断用户是否是护士
                     if (tid != 0) {
                         return "3";
-                        //          				return JSONUtil.toJSONResult(0, "用户不是护士！", null);
+                        //                          return JSONUtil.toJSONResult(0, "用户不是护士！", null);
                     }
 
                     Nurse nurse = new Nurse();
                     nurse.setCreatorId(user.getId());
                     nurse = nurseDao.load(nurse);
-                    // 4.错误		用户未申请审核护士资格
+                    // 4.错误     用户未申请审核护士资格
                     if (nurse == null) {
                         return "4";
-                        //          				return JSONUtil.toJSONResult(0, "未申请护士资格！", null);
+                        //                          return JSONUtil.toJSONResult(0, "未申请护士资格！", null);
                     }
-                    // 5.错误		已封号
+                    // 5.错误     已封号
                     if (nurse.getActive() != 1) {
                         return "5";
-                        //          				return JSONUtil.toJSONResult(0, "护士已被封号，请联系客服确认！", null);
+                        //                          return JSONUtil.toJSONResult(0, "护士已被封号，请联系客服确认！", null);
                     }
-                    // 6.错误		未通过审核
+                    // 6.错误     未通过审核
                     if (nurse.getStatus() != 1) {
                         return "6";
-                        //          				return JSONUtil.toJSONResult(0, "护士未通过审核！", null);
+                        //                          return JSONUtil.toJSONResult(0, "护士未通过审核！", null);
                     }
                     Map<String, Object> jobtitleGoods = new HashMap<String, Object>();
                     jobtitleGoods.put("goodsId", orderGoodsId);
                     jobtitleGoods.put("nurseId", user.getId());
                     int hhh = jobtitleGoodsDao.getJobtitleCount(jobtitleGoods);
-                    // 7.错误		护士权限不能接此类型订单
+                    // 7.错误     护士权限不能接此类型订单
                     if (hhh <= 0) {
                         return "7";
-                        //          				return JSONUtil.toJSONResult(0, "护士权限未达到！", null);
+                        //                          return JSONUtil.toJSONResult(0, "护士权限未达到！", null);
                     }
                     Goods goods_one = new Goods();
                     goods_one.setId(orderGoodsId);
@@ -1481,10 +1481,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     orders.setSchedule(1);
                     orders.setStatus(1);
                     orders = orderDao.load(orders);
-                    // 8.错误		该订单已被抢走
+                    // 8.错误     该订单已被抢走
                     if (orders == null) {
                         return "8";
-                        //          				return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
+                        //                          return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
                     }
 
                     //根据预约时间修改护士的日程     appointment_time
@@ -1640,12 +1640,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         UserAddress ua = new UserAddress();
                         ua.setCreatorId(user.getId());
                         ua.setStatus(0);
-                        //	护士地址
+                        //  护士地址
                         List<UserAddress> ua_list = userAddressDao.list(ua);
                         if (ua_list == null || ua_list.equals("") || ua_list.size() <= 0) {
                             return "12";
                         }
-                        //	订单地址
+                        //  订单地址
                         String oo_addess = oo_list.get(0).getAddress();
                         String[] oo_addess_arr = oo_addess.split(",");
                         if (oo_addess_arr.length < 1) {
@@ -1716,10 +1716,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     order.setSchedule(1);
                     order.setStatus(1);
                     order = orderDao.load(order);
-                    // 8.错误		该订单已被抢走
+                    // 8.错误     该订单已被抢走
                     if (order == null) {
                         return "8";
-                        //          				return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
+                        //                          return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
                     }
 
                     Order order_up = new Order();
@@ -1728,10 +1728,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     order_up.setAcceptTime(new Date());
                     order_up.setAcceptUserId(user.getId());
                     int order_up_falg = orderDao.update(order_up);
-                    // 9.错误		接单失败
+                    // 9.错误     接单失败
                     if (order_up_falg <= 0) {
                         return "9";
-                        //          				return JSONUtil.toJSONResult(0, "接单失败！", null);
+                        //                          return JSONUtil.toJSONResult(0, "接单失败！", null);
                     }
                     if (!flag) {
                         switch (Integer.parseInt(hour)) {
@@ -1956,7 +1956,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                                 else {
                                     area = address.split(",")[1].substring(0, 2);
                                 }
-                                nurseJPushService.jpushTag("", MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
+                                nurseJPushService.jpushTag("有新的用户下单了，快去抢哦！",
+                                        MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
                             }
                         }
                         catch (Exception e) {

@@ -90,12 +90,14 @@
 </div>
 <div class="details_box clearfix">
 	<p class="details_box_xinxi">服务信息</p>
-	<div class="col-md-6">
-		<table style="width: 800px; height: 100px; text-align: center;">
-			<th>序号</th>
+	<div >
+		<table id="dateTable" cellpadding="0" cellspacing="0"
+	class="data_table text-center" style="width:865px;text-align: center;">
+<!-- 		<table style="width: 800px; height: 100px; text-align: center;">-->			<th>序号</th>
 			<th>患者姓名</th>
 			<th>患者电话</th>
 			<th>预约时间</th>
+			<th>出发时间</th>
 			<th>服务开始时间</th>
 			<th>护士确认结束时间</th>
 			<th>功能服务者</th>
@@ -109,6 +111,8 @@
 							<td>${e.patientName}</td>
 							<td>${e.patientPhone}</td>
 							<td><fmt:formatDate value="${e.appointmentTime}"
+									pattern="yyyy-MM-dd HH" /></td>
+							<td><fmt:formatDate value="${e.setoutTime}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td><fmt:formatDate value="${e.startServiceTime}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -121,11 +125,11 @@
 									test="${e.schedule==3 }">已完成</c:if> <c:if
 									test="${e.schedule==4 }">已取消</c:if></td>
 							<td>
-								<jphs:hasPermission url="/product/redirectUpdate.jhtml">				
+								<%-- <jphs:hasPermission url="/product/redirectUpdate.jhtml">				
 								<a onclick="redirectUpdatePage('${e.id}')" title="修改">
 									<img  src="/static/images/xiugai.png">
 								</a>
-								</jphs:hasPermission>
+								</jphs:hasPermission> --%>
 							</td>
 						</tr>
 					</c:forEach>
@@ -216,6 +220,7 @@
 	
 	</div>
 	</c:if>
+	<c:if test="${transactionUser!=null }">
 	<div class="details_box clearfix">
 		<p class="details_box_xinxi">退款信息</p>
 		<c:choose>
@@ -243,6 +248,7 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
+	</c:if>
 </c:if>
 <%-- <div class="details_box clearfix">
 	<p class="details_box_xinxi">评价信息</p>
@@ -283,8 +289,8 @@
 			</div>
 			<form action="/order/updatePatientName.jhtml" method="get">
 				<div style="width: 500px; height: 50px">
-					<input type="hidden" id="creatorId" name="creatorId" value="" /> <input
-						type="hidden" id="creatorName" name="creatorName" value="" /> <label
+					<input type="hidden" id="creatorId" name="creatorId" value="${user.id }" /> <input
+						type="hidden" id="creatorName" name="creatorName" value="${user.name }" /> <label
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
@@ -326,8 +332,8 @@
 			</div>
 			<form action="/order/updateAppointmentTime.jhtml" method="post">
 				<div style="width: 500px; height: 50px">
-					<input type="hidden" id="creatorId" name="creatorId" value="" /> <input
-						type="hidden" id="creatorName" name="creatorName" value="" /> <label
+					<input type="hidden" id="creatorId" name="creatorId" value="${user.id }" /> <input
+						type="hidden" id="creatorName" name="creatorName" value="${user.name }" /> <label
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
@@ -378,8 +384,8 @@
 			</div>
 			<form action="/order/updateDetailAddress.jhtml" method="post">
 				<div>
-					<input type="hidden" id="creatorId" name="creatorId" value="" /> <input
-						type="hidden" id="creatorName" name="creatorName" value="" /> <label
+					<input type="hidden" id="creatorId" name="creatorId" value="${user.id }" /> <input
+						type="hidden" id="creatorName" name="creatorName" value="${user.name }" /> <label
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
@@ -464,22 +470,24 @@
 			</div>
 			<form action="/order/refund.jhtml" method="post">
 				<div style="width: 500px; height: 50px">
-					<input type="hidden" id="creatorId" name="creatorId" value="" /> <input
-						type="hidden" id="creatorName" name="creatorName" value="" /> <label
+					<input type="hidden" id="payType" name="payType" value="${transactionUser.payType }" /> 
+					<input type="hidden" id="creatorId" name="creatorId" value="${user.id }" /> 
+					<input type="hidden" id="creatorName" name="creatorName" value="${user.name }" /> 
+					<label
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
-							<span>订单编号：</span>${order.orderNo} <<input type="hidden"
-								id="orderId" name="orderId" value="${order.orderNo }"> <input
-								type="hidden" id="id" name="id" value="${order.id }">
+							<span>订单编号：</span>${order.orderNo} 
+							<input type="hidden"id="orderId" name="orderId" value="${order.id }">
+							<input type="hidden"id="orderNo" name="orderNo" value="${order.orderNo }">
 						</p>
 						<p>
-							退款金额：<input id="amount" name="amount" placeholder="元"> <input
+							退款金额：<input id="amount" name="amount"  value="${cancelOrder.price }">元<input
 								id="operate" name="operate" value="4" type="hidden">
 						</p>
 						<p>
 							备注：
-							<textarea rows="2" id="remark" name="remark" style="width: 100%"></textarea>
+							<textarea rows="2" id="remark" name="remark" style="width: 100%">${order.orderGoods.title }退款</textarea>
 						</p>
 					</div>
 				</div>

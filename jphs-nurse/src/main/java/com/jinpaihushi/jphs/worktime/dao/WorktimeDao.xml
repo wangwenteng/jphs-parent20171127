@@ -655,4 +655,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</set>
 	</sql>
+	<select id="listByQuery" resultMap="worktime">
+		SELECT
+		W.id, W.userId, SUBSTR(W.calendar,6,5) calendar, W.week, W.h_9, W.h_10, W.h_11,
+		W.h_12, W.h_13, W.h_14, W.h_15, W.h_16, W.h_17, W.h_18, W.h_19,
+		W.h_20, W.h_21, W.w_9, W.w_10, W.w_11, W.w_12, W.w_13, W.w_14, W.w_15,
+		W.w_16, W.w_17, W.w_18, W.w_19, W.w_20, W.w_21, W.createTime
+		FROM `WORKTIME` W
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	<update id="editDateByUserId">
+		UPDATE worktime w SET w.${h_k} = #{h_v} WHERE w.userId =#{userId} AND w.calendar =#{calendar}
+	</update>
 </mapper>

@@ -402,6 +402,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="otherStatus" column="otherStatus" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="createTime" column="create_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
@@ -526,7 +528,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  `o`.`schedule` ,
 		  `og`.`price`,
 		  `og`.`pay_price`,
-		  `oo`.`detail_address`
+		  `oo`.`detail_address`,
+		  co.`status` otherStatus
 		FROM
 		  `jphs`.`order` AS `o` 
 		  LEFT JOIN `jphs`.`order_goods` AS `og` 
@@ -539,6 +542,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    ON (`og`.`goods_id` = `g`.`id`) 
 		  LEFT JOIN `jphs`.`order_other` AS `oo`
 		    ON (`o`.`id` = `oo`.`order_id`)
+		    LEFT JOIN cancel_order co ON co.source_id  = o.id
 		<where>
 		<if test="schedule!=null">
 			AND o.`schedule` = #{schedule}

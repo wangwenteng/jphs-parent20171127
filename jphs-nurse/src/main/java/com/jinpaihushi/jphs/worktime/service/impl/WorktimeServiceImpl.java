@@ -110,7 +110,7 @@ public class WorktimeServiceImpl extends BaseServiceImpl<Worktime> implements Wo
         Worktime query = new Worktime();
         query.setUserid(userId);
         query.setOrderby("calendar ASC");
-        result = worktimeDao.list(query);
+        result = worktimeDao.listByQuery(query);
         return result;
     }
 

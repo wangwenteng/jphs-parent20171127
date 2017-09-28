@@ -27,8 +27,8 @@
 			</c:otherwise>
 		</c:choose>
 	</c:if>
-	<c:if test="${order.schedule==6&&transactionUser!=null }">
-	<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#amountModal">退款</button>
+	<c:if test="${order.schedule==6&&transactionUser!=null&&refund==null }">
+		<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#amountModal">退款</button>
 	</c:if>
 		<input type="button" class="public-info public_btn public_btn_left"
 				name="button1" id="button1" value="返回" onclick="history.go(-1)" />
