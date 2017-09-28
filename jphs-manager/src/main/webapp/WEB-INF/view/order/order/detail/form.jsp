@@ -201,7 +201,7 @@
 <c:if test="${order.schedule==6 }">
 	<c:if test="${null!=cancelOrder }">
 	<div class="details_box clearfix">
-		<p class="details_box_xinxi">取消订单信息</p>
+		<p class="details_box_xinxi">取消订单信息：${cancelOrder.id }</p>
 		<div class="col-md-6">
 			<p>
 				<span>取消时间：</span>
@@ -215,6 +215,15 @@
 			<p>
 				<span>退款金额：</span>
 				<c:if test="${cancelOrder.price!=null }">${cancelOrder.price }</c:if>
+			</p>
+			<p>
+				<span>退款状态：</span>
+				<c:if test="${cancelOrder.status==1 }">
+					已退款
+				</c:if>
+				<c:if test="${cancelOrder.status==0 }">
+					处理中
+				</c:if>
 			</p>
 		</div>
 	
@@ -479,7 +488,9 @@
 						<p>
 							<span>订单编号：</span>${order.orderNo} 
 							<input type="hidden"id="orderId" name="orderId" value="${order.id }">
-							<input type="hidden"id="orderNo" name="orderNo" value="${order.orderNo }">
+							<input type="hidden"id="totalMoney" name="totalMoney" value="${order.orderGoods.payPrice }">
+							<input type="hidden"id="outTradeNo" name="outTradeNo" value="${transactionUser.outTradeNo }">
+							<input type="hidden"id="cancelOrderId" name="cancelOrderId" value="${cancelOrder.id }">
 						</p>
 						<p>
 							退款金额：<input id="amount" name="amount"  value="${cancelOrder.price }">元<input

@@ -1,6 +1,5 @@
 package com.jinpaihushi.jphs.order.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,310 +47,298 @@ import com.jinpaihushi.utils.PageInfos;
 @RequestMapping(name = "服务订单", path = "/order")
 public class OrderController extends BaseController<Order> {
 
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-    @Autowired
-    private NurseService nurseService;
+	@Autowired
+	private NurseService nurseService;
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private CancelOrderService cancelOrderService;
+	@Autowired
+	private CancelOrderService cancelOrderService;
 
-    @Autowired
-    private OrderOtherService orderOtherService;
+	@Autowired
+	private OrderOtherService orderOtherService;
 
-    @Autowired
-    private OrderServiceService orderServiceService;
+	@Autowired
+	private OrderServiceService orderServiceService;
 
-    @Autowired
-    private TransactionService transactionService;
+	@Autowired
+	private TransactionService transactionService;
+	@Autowired
+	private InsuranceService insuranceService;
 
-    @Autowired
-    private InsuranceService insuranceService;
+	@Override
+	protected BaseService<Order> getService() {
+		return orderService;
+	}
 
-    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	@RequestMapping(name = "列表页", path = "/index.jhtml")
+	public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			Order order, Integer p, Integer n) {
+		startPage(p, n);
+		order.setStatus(1);
+		// Page<Order> list = orderService.query(order);
+		Page<Order> list = orderService.getList(order);
+		PageInfos<Order> pageInfo = new PageInfos<Order>(list, req);
+		modelMap.put("list", list);
+		modelMap.put("pageInfo", pageInfo);
+		if (null != order && null != order.getSchedule()) {
+			if (order.getSchedule() == 0) {
+				modelMap.put("content", "待支付");
+			} else if (order.getSchedule() == 1) {
+				modelMap.put("content", "待接单");
+			} else if (order.getSchedule() == 2) {
+				modelMap.put("content", "已结单");
+			} else if (order.getSchedule() == 3) {
+				modelMap.put("content", "执行中");
+			} else if (order.getSchedule() == 4) {
+				modelMap.put("content", "待确定");
+			} else if (order.getSchedule() == 5) {
+				modelMap.put("content", "已完成");
+			} else if (order.getSchedule() == 6) {
+				modelMap.put("content", "已取消");
+			} else {
+				modelMap.put("content", "申诉中");
+			}
+		} else {
+			modelMap.put("content", "全部订单");
+		}
+		return "order/order/list";
+	}
 
-    @Override
-    protected BaseService<Order> getService() {
-        return orderService;
-    }
+	@RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
+	public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String id, Nurse nurse, Integer p, Integer n) {
+		Order order = orderService.getUserOrderDetail(id, null);
+		String days = null;
+		String hour = null;
+		if (null != nurse && nurse.getWorkYear() != null) {
+			// String appointmentTime =
+			// format.format(order.getAppointmentTime());
+			// days = appointmentTime.substring(0, 10);
+			// hour = appointmentTime.substring(11, 13);
+			// }else{
+			days = nurse.getWorkYear().split(" ")[0];
+			hour = nurse.getWorkYear().split(" ")[1];
+			nurse.setCalendar(days);
+			nurse.setH("h_" + Integer.parseInt(hour));
+		}
+		String city = null;
+		if (order.getOrderOther().getAddress().split(",")[1].equals("市辖区")) {
+			city = order.getOrderOther().getAddress().split(",")[0];
+		} else {
+			city = order.getOrderOther().getAddress().split(",")[1];
+		}
+		nurse.setAreas(city);
+		startPage(p, n);
+		List<Nurse> list = nurseService.getSomeNurse(nurse);
+		PageInfos<Nurse> pageInfo = new PageInfos<Nurse>(list, req);
+		modelMap.put("list", list);
+		modelMap.put("order", order);
+		modelMap.put("pageInfo", pageInfo);
+		return "order/order/edit";
+	}
 
-    @RequestMapping(name = "列表页", path = "/index.jhtml")
-    public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Order order, Integer p, Integer n) {
-        startPage(p, n);
-        order.setStatus(1);
-        // Page<Order> list = orderService.query(order);
-        Page<Order> list = orderService.getList(order);
-        PageInfos<Order> pageInfo = new PageInfos<Order>(list, req);
-        modelMap.put("list", list);
-        modelMap.put("pageInfo", pageInfo);
-        if (null != order && null != order.getSchedule()) {
-            if (order.getSchedule() == 0) {
-                modelMap.put("content", "待支付");
-            }
-            else if (order.getSchedule() == 1) {
-                modelMap.put("content", "待接单");
-            }
-            else if (order.getSchedule() == 2) {
-                modelMap.put("content", "已结单");
-            }
-            else if (order.getSchedule() == 3) {
-                modelMap.put("content", "执行中");
-            }
-            else if (order.getSchedule() == 4) {
-                modelMap.put("content", "待确定");
-            }
-            else if (order.getSchedule() == 5) {
-                modelMap.put("content", "已完成");
-            }
-            else if (order.getSchedule() == 6) {
-                modelMap.put("content", "已取消");
-            }
-            else {
-                modelMap.put("content", "申诉中");
-            }
-        }
-        else {
-            modelMap.put("content", "全部订单");
-        }
-        return "order/order/list";
-    }
+	@RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
+	public String redirectAddPage(ModelMap modelMap) {
 
-    @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
-    public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            String id, Nurse nurse, Integer p, Integer n) {
-        Order order = orderService.getUserOrderDetail(id, null);
-        String days = null;
-        String hour = null;
-        if (null != nurse && nurse.getWorkYear() != null) {
-            //           String appointmentTime = format.format(order.getAppointmentTime());
-            //             days = appointmentTime.substring(0, 10);
-            //             hour = appointmentTime.substring(11, 13);
-            //        }else{
-            days = nurse.getWorkYear().split(" ")[0];
-            hour = nurse.getWorkYear().split(" ")[1];
-            nurse.setCalendar(days);
-            nurse.setH("h_" + Integer.parseInt(hour));
-        }
-        String city = null;
-        if (order.getOrderOther().getAddress().split(",")[1].equals("市辖区")) {
-            city = order.getOrderOther().getAddress().split(",")[0];
-        }
-        else {
-            city = order.getOrderOther().getAddress().split(",")[1];
-        }
-        nurse.setAreas(city);
-        startPage(p, n);
-        List<Nurse> list = nurseService.getSomeNurse(nurse);
-        PageInfos<Nurse> pageInfo = new PageInfos<Nurse>(list, req);
-        modelMap.put("list", list);
-        modelMap.put("order", order);
-        modelMap.put("pageInfo", pageInfo);
-        return "order/order/edit";
-    }
+		return "order/order/edit";
+	}
 
-    @RequestMapping(name = "跳转到添加页", path = "/redirectAddPage.jhtml")
-    public String redirectAddPage(ModelMap modelMap) {
+	@RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
+	public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String id) {
 
-        return "order/order/edit";
-    }
+		// 查询订单相关信息
+		Order order = orderService.getUserOrderDetail(id, null);
+		// 查询订单创建者的信息，即user
+		User user = userService.loadById(order.getCreatorId());
+		// 查询接单者的信息，即nurse
+		User nurse = userService.loadById(order.getAcceptUserId());
 
-    @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
-    public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            String id) {
+		Transaction transaction = new Transaction();
+		Insurance insurance = new Insurance();
+		CancelOrder cancelOrder = new CancelOrder();
+		cancelOrder.setSourceId(id);
+		List<CancelOrder> list = cancelOrderService.list(cancelOrder);
+		if (list.size() > 0) {
+			modelMap.put("cancelOrder", list.get(0));
+		} else {
+			modelMap.put("cancelOrder", null);
+		}
+		// 查询用户积分的相关信息
+		transaction.setOrderId(order.getId());
+		transaction.setOperate(3);
+		List<Transaction> transactionUserList = transactionService.list(transaction);
+		if (transactionUserList.size() > 0) {
+			modelMap.put("transactionUser", transactionUserList.get(0));
+		} else {
+			modelMap.put("transactionUser", null);
+		}
+		// 查询退款
+		transaction.setOperate(4);
 
-        //查询订单相关信息
-        Order order = orderService.getUserOrderDetail(id, null);
-        //查询订单创建者的信息，即user
-        User user = userService.loadById(order.getCreatorId());
-        //查询接单者的信息，即nurse
-        User nurse = userService.loadById(order.getAcceptUserId());
+		Page<Transaction> refundList = transactionService.query(transaction);
+		if (refundList.size() > 0) {
+			modelMap.put("refund", refundList.get(0));
+		} else {
+			modelMap.put("refund", null);
+		}
 
-        Transaction transaction = new Transaction();
-        Insurance insurance = new Insurance();
-        CancelOrder cancelOrder = new CancelOrder();
-        cancelOrder.setSourceId(id);
-        List<CancelOrder> list = cancelOrderService.list(cancelOrder);
-        if (list.size() > 0) {
-            modelMap.put("cancelOrder", list.get(0));
-        }
-        else {
-            modelMap.put("cancelOrder", null);
-        }
-        // 查询用户积分的相关信息
-        transaction.setOrderId(order.getId());
-        transaction.setOperate(3);
-        List<Transaction> transactionUserList = transactionService.list(transaction);
-        if (transactionUserList.size() > 0) {
-            modelMap.put("transactionUser", transactionUserList.get(0));
-        }
-        else {
-            modelMap.put("transactionUser", null);
-        }
-        // 查询退款
-        transaction.setOperate(4);
+		// 查询护士积分的相关信息
+		if (nurse != null) {
+			transaction.setCreatorId(nurse.getId());
+		}
+		transaction.setOperate(null);
+		Page<Transaction> transactionNurseList = transactionService.query(transaction);
 
-        Page<Transaction> refundList = transactionService.query(transaction);
-        if (refundList.size() > 0) {
-            modelMap.put("refund", refundList.get(0));
-        }
-        else {
-            modelMap.put("refund", null);
-        }
+		if (transactionNurseList.size() > 0) {
+			modelMap.put("transactionNurse", transactionNurseList.get(0));
+		} else {
+			modelMap.put("transactionNurse", null);
+		}
 
-        // 查询护士积分的相关信息
-        if (nurse != null) {
-            transaction.setCreatorId(nurse.getId());
-        }
-        transaction.setOperate(null);
-        Page<Transaction> transactionNurseList = transactionService.query(transaction);
+		// 查询保险
+		insurance.setOrderId(order.getId());
+		Page<Insurance> insuranceList = insuranceService.query(insurance);
+		if (insuranceList.size() > 0) {
+			modelMap.put("insurance", insuranceList.get(0));
+		} else {
+			modelMap.put("insurance", null);
+		}
+		modelMap.put("nurse", nurse);
+		modelMap.put("user", user);
+		modelMap.put("order", order);
+		return "order/order/detail";
+	}
 
-        if (transactionNurseList.size() > 0) {
-            modelMap.put("transactionNurse", transactionNurseList.get(0));
-        }
-        else {
-            modelMap.put("transactionNurse", null);
-        }
+	@RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
+	public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			Order order) {
+		orderService.update(order);
+		return "redirect:detail.jhtml?id=" + order.getId();
+	}
 
-        //查询保险
-        insurance.setOrderId(order.getId());
-        Page<Insurance> insuranceList = insuranceService.query(insurance);
-        if (insuranceList.size() > 0) {
-            modelMap.put("insurance", insuranceList.get(0));
-        }
-        else {
-            modelMap.put("insurance", null);
-        }
-        modelMap.put("nurse", nurse);
-        modelMap.put("user", user);
-        modelMap.put("order", order);
-        return "order/order/detail";
-    }
+	@RequestMapping(name = "删除数据", path = "/delete.jhtml")
+	public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			String id) {
 
-    @RequestMapping(name = "添加或修改数据", path = "/insert.jhtml")
-    public String insert(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Order order) {
-        orderService.update(order);
-        return "redirect:detail.jhtml?id=" + order.getId();
-    }
+		boolean b = orderService.deleteById(id);
+		if (b == false) {
+			// 跳转到错误页
+			return "redirect:/order/err.jhtml";
+		}
 
-    @RequestMapping(name = "删除数据", path = "/delete.jhtml")
-    public String delete(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            String id) {
+		return "redirect:/order/index.jhtml";
+	}
 
-        boolean b = orderService.deleteById(id);
-        if (b == false) {
-            // 跳转到错误页
-            return "redirect:/order/err.jhtml";
-        }
+	@RequestMapping(name = "修改患者联系方式", path = "/updatePatientName.jhtml")
+	public String updatePatientName(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			com.jinpaihushi.jphs.order.model.OrderService orderServiceInfo) {
 
-        return "redirect:/order/index.jhtml";
-    }
+		orderServiceService.updatePatientPhone(orderServiceInfo);
 
-    @RequestMapping(name = "修改患者联系方式", path = "/updatePatientName.jhtml")
-    public String updatePatientName(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            com.jinpaihushi.jphs.order.model.OrderService orderServiceInfo) {
+		return "redirect:/order/detail.jhtml?id=" + orderServiceInfo.getId();
+	}
 
-        orderServiceService.updatePatientPhone(orderServiceInfo);
+	@RequestMapping(name = "修改预约时间", path = "/updateAppointmentTime.jhtml")
+	public String updateAppointmentTime(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
+			ModelMap modelMap, Order order) {
 
-        return "redirect:/order/detail.jhtml?id=" + orderServiceInfo.getId();
-    }
+		orderService.update(order);
 
-    @RequestMapping(name = "修改预约时间", path = "/updateAppointmentTime.jhtml")
-    public String updateAppointmentTime(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
-            ModelMap modelMap, Order order) {
+		return "redirect:/order/detail.jhtml?id=" + order.getId();
+	}
 
-        orderService.update(order);
+	@RequestMapping(name = "修改服务地址", path = "/updateDetailAddress.jhtml")
+	public String updateDetailAddress(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
+			ModelMap modelMap, OrderOther orderOther) {
+		System.out.println(orderOther.getAddress());
+		orderOtherService.updateDetailAddress(orderOther);
 
-        return "redirect:/order/detail.jhtml?id=" + order.getId();
-    }
+		return "redirect:/order/detail.jhtml?id=" + orderOther.getId();
+	}
 
-    @RequestMapping(name = "修改服务地址", path = "/updateDetailAddress.jhtml")
-    public String updateDetailAddress(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
-            ModelMap modelMap, OrderOther orderOther) {
-        System.out.println(orderOther.getAddress());
-        orderOtherService.updateDetailAddress(orderOther);
+	/**
+	 * @param hs
+	 * @param req
+	 * @param resp
+	 * @param modelMap
+	 * @param transaction
+	 * @param type
+	 *            支付类型<!-- (1支付宝，2微信，3余额，4银联，5vip卡支付) -->
+	 * @return
+	 */
+	@RequestMapping(name = "退款", path = "/refund.jhtml")
+	public String refund(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			Transaction transaction, String cancelOrderId) {
+		CancelOrder cancelOrder = new CancelOrder();
+		cancelOrder.setStatus(1);
+		cancelOrder.setId(cancelOrderId);
+		cancelOrderService.update(cancelOrder);
+		transactionService.refund(transaction, cancelOrderId);
 
-        return "redirect:/order/detail.jhtml?id=" + orderOther.getId();
-    }
+		return "redirect:/order/detail.jhtml?id=" + transaction.getOrderId();
+	}
 
-    /**
-     * @param hs
-     * @param req
-     * @param resp
-     * @param modelMap
-     * @param transaction
-     * @param type 支付类型<!-- (1支付宝，2微信，3余额，4银联，5vip卡支付) -->
-     * @return
-     */
-    @RequestMapping(name = "退款", path = "/refund.jhtml")
-    public String refund(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Transaction transaction, String orderNo, String cancelOrderId) {
+	@RequestMapping(name = "跳转到添加页", path = "/edit.jhtml")
+	public String edit(ModelMap modelMap) {
 
-        transactionService.refund(transaction, orderNo, cancelOrderId);
+		return "order/order/detail/edit";
+	}
 
-        return "redirect:/order/detail.jhtml?id=" + transaction.getOrderId();
-    }
+	@RequestMapping(name = "跳转到修改页", path = "/toEdit.jhtml")
+	public String toEdit(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id,
+			Nurse nurse) {
+		Order order = orderService.loadById(id);
+		List<Nurse> list = nurseService.getSomeNurse(nurse);
 
-    @RequestMapping(name = "跳转到添加页", path = "/edit.jhtml")
-    public String edit(ModelMap modelMap) {
+		modelMap.put("list", list);
+		modelMap.put("order", order);
+		return "order/order/detail/edit";
+	}
 
-        return "order/order/detail/edit";
-    }
+	@RequestMapping(name = "生成订单Excel", path = "/getExcel.jhtml")
+	@ResponseBody
+	public void getExcel(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
+			Order order) {
 
-    @RequestMapping(name = "跳转到修改页", path = "/toEdit.jhtml")
-    public String toEdit(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, String id,
-            Nurse nurse) {
-        Order order = orderService.loadById(id);
-        List<Nurse> list = nurseService.getSomeNurse(nurse);
+		Page<Order> list = orderService.getList(order);
 
-        modelMap.put("list", list);
-        modelMap.put("order", order);
-        return "order/order/detail/edit";
-    }
+		int count = list.size();
+		Order o = new Order();
+		JSONArray ja = new JSONArray();
 
-    @RequestMapping(name = "生成订单Excel", path = "/getExcel.jhtml")
-    @ResponseBody
-    public void getExcel(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Order order) {
+		for (int i = 0; i < list.size(); i++) {
 
-        Page<Order> list = orderService.getList(order);
+			o.setId(list.get(i).getId());
 
-        int count = list.size();
-        Order o = new Order();
-        JSONArray ja = new JSONArray();
+			o.setDiscountPrice(list.get(i).getPrice() - list.get(i).getPayPrice());
+			o.setPrice(list.get(i).getPrice());
+			o.setPayPrice(list.get(i).getPayPrice());
+			o.setUserName(list.get(i).getUserName());
+			o.setPhone(list.get(i).getPhone());
+			o.setDetailAddress(list.get(i).getDetailAddress());
+			o.setCreateTime(list.get(i).getCreateTime());
+			ja.add(o);
+		}
 
-        for (int i = 0; i < list.size(); i++) {
+		Map<String, String> headMap = new LinkedHashMap<String, String>();
+		headMap.put("id", "订单编号");
+		headMap.put("price", "订单金额");
+		headMap.put("discountPrice", "优惠金额");
+		headMap.put("payPrice", "实付金额");
+		headMap.put("userName", "下单人姓名");
+		headMap.put("phone", "电话");
+		headMap.put("detailAddress", "地址");
+		headMap.put("createTime", "下单时间");
 
-            o.setId(list.get(i).getId());
+		String title = "订单信息";
 
-            o.setDiscountPrice(list.get(i).getPrice() - list.get(i).getPayPrice());
-            o.setPrice(list.get(i).getPrice());
-            o.setPayPrice(list.get(i).getPayPrice());
-            o.setUserName(list.get(i).getUserName());
-            o.setPhone(list.get(i).getPhone());
-            o.setDetailAddress(list.get(i).getDetailAddress());
-            o.setCreateTime(list.get(i).getCreateTime());
-            ja.add(o);
-        }
-
-        Map<String, String> headMap = new LinkedHashMap<String, String>();
-        headMap.put("id", "订单编号");
-        headMap.put("price", "订单金额");
-        headMap.put("discountPrice", "优惠金额");
-        headMap.put("payPrice", "实付金额");
-        headMap.put("userName", "下单人姓名");
-        headMap.put("phone", "电话");
-        headMap.put("detailAddress", "地址");
-        headMap.put("createTime", "下单时间");
-
-        String title = "订单信息";
-
-        ExcelUtil.downloadExcelFile(title, headMap, ja, resp);
-    }
+		ExcelUtil.downloadExcelFile(title, headMap, ja, resp);
+	}
 
 }
