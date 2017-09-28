@@ -52,7 +52,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND COI.profit=#{profit}
 		</if>
 		<if test="title!=null and title!=''">
-			AND COI.title=#{title}
+			AND COI.title LIKE CONCAT('%', #{title}, '%') 
 		</if>
 		<if test="oldPrice!=null">
 			AND COI.old_price=#{oldPrice}
@@ -256,6 +256,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="status" column="status" javaType="Integer"
 			jdbcType="INTEGER"></result>
+		<result property="crStatus" column="crStatus" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="crReason" column="crReason" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
@@ -501,6 +505,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<select id="getList" resultMap="commodityOrderInfo">
 		SELECT
 		ci.url,
+		coi.id,
 		coi.commodity_id,
 		coi.title,
 		coi.commodity_price_name,
@@ -509,25 +514,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		coi.price,
 		coi.number,
 		u.`name` userName,
-		coi.remark
+		coi.remark 
 		FROM
 		commodity_order_info coi
 		LEFT JOIN commodity_images ci ON (ci.source_id = coi.commodity_id)
 		LEFT JOIN `user` u ON  (u.id = coi.user_id)
 		WHERE coi.commodity_order_id = #{coId}
 		AND ci.type = 1
+		 
 	</select>
 
 	<select id="getOrderInfo" resultMap="commodityOrderInfo">
 		SELECT
 		coi.*,
-		url
+		url 
 		FROM
 		commodity_order_info coi
 		LEFT JOIN commodity_images ci ON (coi.commodity_id = ci.source_id)
+		 
 		WHERE
 		coi.commodity_order_id = #{coId}
 		AND ci.type=1
+		 
 	</select>
 
 

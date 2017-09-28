@@ -55,6 +55,14 @@ public class NurseOrderController {
     @Value("${SMS_end_server}")
     private String SMS_end_server;
 
+    //结束服务多次
+    @Value("${SMS_end_many_server}")
+    private String SMS_end_many_server;
+
+    //结束服务通知客服
+    @Value("${SMS_notice_order_over}")
+    private String SMS_notice_order_over;
+
     @ResponseBody
     @RequestMapping(name = "完成服务", path = "/fulfilService.json")
     public byte[] fulfilService(HttpServletRequest req, HttpServletResponse resp, String osId, String authCode,
@@ -116,8 +124,23 @@ public class NurseOrderController {
                 msg = "完成失败，请刷新重试!";
             }
             Map<String, Object> map = orderService.getSmsMessage(orderId);
-            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_end_server, "{\"service_name\":"
-                    + map.get("goodsName").toString() + "\",\"name\":" + map.get("nurseName").toString() + "\"}");
+            //判断是不是多次服务
+            int totalNumber = Integer.parseInt(map.get("totalNumber").toString());
+            int successNumber = Integer.parseInt(map.get("successNumber").toString());
+            if (totalNumber > 1 && totalNumber != successNumber) {
+                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_end_many_server,
+                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":\""
+                                + map.get("nurseName").toString() + "\",\"number\":\""
+                                + map.get("successNumber").toString() + "\"}");
+            }
+            if (totalNumber == successNumber) {
+                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_end_server, "{\"service_name\":\""
+                        + map.get("goodsName").toString() + "\",\"name\":\"" + map.get("nurseName").toString() + "\"}");
+                //通知客服
+                doPostSmsService.sendSms("13581912414", SMS_notice_order_over,
+                        "{\"order_no\":\"" + map.get("order_no").toString() + "\",\"service_name\":\""
+                                + map.get("goodsName").toString() + "\"}");
+            }
             return JSONUtil.toJSONResult(a, msg, re_order);
 
         }
@@ -193,8 +216,8 @@ public class NurseOrderController {
             }
             //给用户发送短信
             Map<String, Object> map = orderService.getSmsMessage(orderId);
-            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_start_server, "{\"service_name\":"
-                    + map.get("goodsName").toString() + "\",\"name\":" + map.get("nurseName").toString() + "\"}");
+            doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_start_server, "{\"service_name\":\""
+                    + map.get("goodsName").toString() + "\",\"name\":\"" + map.get("nurseName").toString() + "\"}");
             return JSONUtil.toJSONResult(a, msg, re_order);
         }
         catch (Exception e) {
@@ -286,8 +309,9 @@ public class NurseOrderController {
 
             if (b) {
                 Map<String, Object> map = orderService.getSmsMessage(orderId);
-                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_nurse_atOnceService, "{\"name\":"
-                        + map.get("nurseName").toString() + "\",\"phone\":" + map.get("nursePhone").toString() + "\"}");
+                doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_nurse_atOnceService,
+                        "{\"name\":\"" + map.get("nurseName").toString() + "\",\"phone\":\""
+                                + map.get("nursePhone").toString() + "\"}");
 
                 return JSONUtil.toJSONResult(1, "操作成功！请准时到达服务地点，服务开始前请点击“开始服务”更新服务状态哦~", re_order);
             }
@@ -535,6 +559,12 @@ public class NurseOrderController {
             else if (rs.equals("16")) {
                 a = 0;
                 msg = "和您的出门地址不匹配，请选择就近订单！";
+            }else if (rs.equals("17")) {
+                a = 0;
+                msg = "该时间段您的预约已满。";
+            }else if (rs.equals("17")) {
+                a = 0;
+                msg = "您还未设置空闲时间。";
             }
 
             return JSONUtil.toJSONResult(a, msg, null);

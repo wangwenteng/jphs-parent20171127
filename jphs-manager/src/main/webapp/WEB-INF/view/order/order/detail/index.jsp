@@ -14,14 +14,24 @@
 	
 	
 	<!-- <button class="public-info public_btn public_btn_left" >打印</button> -->
-	<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#phoneModal">修改患者联系电话</button>
-	
-	<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#timeModal">修改预约时间</button>
-	<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#addressModal">修改服务地址</button>
-	<button class="public-info public_btn public_btn_center" onclick="redirectUpdatePage('${order.id}')">修改接单人</button>
-	
+	<c:if test="${order.schedule>0&&order.schedule<5 }">
+		<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#phoneModal">修改患者联系电话</button>
+		<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#timeModal">修改预约时间</button>
+		<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#addressModal">修改服务地址</button>
+		<c:choose>
+			<c:when test="${order.acceptUserId!=null&& order.acceptUserId!=''}">
+				<button class="public-info public_btn public_btn_center" onclick="redirectUpdatePage('${order.id}')">修改接单人</button>
+			</c:when>
+			<c:otherwise>
+				<button class="public-info public_btn public_btn_center" onclick="redirectUpdatePage('${order.id}')">派单</button>
+			</c:otherwise>
+		</c:choose>
+	</c:if>
+	<c:if test="${order.schedule==6&&transactionUser!=null }">
 	<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#amountModal">退款</button>
-	
+	</c:if>
+		<input type="button" class="public-info public_btn public_btn_left"
+				name="button1" id="button1" value="返回" onclick="history.go(-1)" />
 	</div>
 	<hr class="mt-5" />
 	<div class="mr-50 ml-50 pb-20" >

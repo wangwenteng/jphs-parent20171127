@@ -1,7 +1,5 @@
 package com.jinpaihushi.utils;
 
-
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -9,14 +7,12 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * Created by IntelliJ IDEA. User: garmbrood Time: 2009-4-7 16:32:56 Company:
@@ -67,7 +63,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static final String SUMMER_START_TIME = "-05-04 00:00:00";// 夏季开始日期
 
 	public static final String WINTER_START_TIME = "-10-08 00:00:00";// 冬季开始日期
-	
+
 	/**
 	 * >= 前一个小时 HH:00:00 毫秒数
 	 * 
@@ -115,6 +111,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
 	/**
 	 * 获取某月最大天数
+	 * 
 	 * @param yearMonth
 	 * @return
 	 */
@@ -224,50 +221,49 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	// 根据输入的月份，得到当年的月份时间
 	public static Date coverDate(int month) {
 
-		String str = new SimpleDateFormat("yyyy").format(new Date()) + ""
-				+ month;
+		String str = new SimpleDateFormat("yyyy").format(new Date()) + "" + month;
 
 		return parse(str, "yyyyMM");
 	}
 
 	// 查询月的第一天日期号>=
-//	public static String getMonthFirstDay(Date date) {
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(date);
-//		// 暂时使用 上个月 取数据
-//		// cal.add(2, -1);
-//		int firstDay = cal.getActualMinimum(5);
-//		Date firstDate = cal.getTime();
-//		firstDate.setDate(firstDay);
-//		SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
-//		String str = sdf.format(firstDate);
-//		return str;
-//	}
+	// public static String getMonthFirstDay(Date date) {
+	// Calendar cal = Calendar.getInstance();
+	// cal.setTime(date);
+	// // 暂时使用 上个月 取数据
+	// // cal.add(2, -1);
+	// int firstDay = cal.getActualMinimum(5);
+	// Date firstDate = cal.getTime();
+	// firstDate.setDate(firstDay);
+	// SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
+	// String str = sdf.format(firstDate);
+	// return str;
+	// }
 
 	// 查询月的最后一天日期号>=
-//	public static String getMonthLastDay(Date date) {
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(date);
-//		int firstDay = cal.getActualMaximum(5);
-//		Date firstDate = cal.getTime();
-//		firstDate.setDate(firstDay);
-//		SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
-//		String str = sdf.format(firstDate);
-//		return str;
-//	}
+	// public static String getMonthLastDay(Date date) {
+	// Calendar cal = Calendar.getInstance();
+	// cal.setTime(date);
+	// int firstDay = cal.getActualMaximum(5);
+	// Date firstDate = cal.getTime();
+	// firstDate.setDate(firstDay);
+	// SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
+	// String str = sdf.format(firstDate);
+	// return str;
+	// }
 
 	// 查询月下一个月的第一天<
-//	public static String getNextMonthFirstDay(Date date) {
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(date);
-//		cal.add(2, 1);
-//		int firstDay = cal.getActualMinimum(5);
-//		Date firstDate = cal.getTime();
-//		firstDate.setDate(firstDay);
-//		SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
-//		String str = sdf.format(firstDate);
-//		return str;
-//	}
+	// public static String getNextMonthFirstDay(Date date) {
+	// Calendar cal = Calendar.getInstance();
+	// cal.setTime(date);
+	// cal.add(2, 1);
+	// int firstDay = cal.getActualMinimum(5);
+	// Date firstDate = cal.getTime();
+	// firstDate.setDate(firstDay);
+	// SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE_STR);
+	// String str = sdf.format(firstDate);
+	// return str;
+	// }
 
 	public static Map<String, SimpleDateFormat> getFormaters() {
 		return formaters;
@@ -276,26 +272,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	private static Map<String, SimpleDateFormat> formaters = new HashMap<String, SimpleDateFormat>();
 
 	static {
-		SimpleDateFormat defaultFormater = new SimpleDateFormat(FORMAT_DEFAULT,
-				Locale.CHINA);
+		SimpleDateFormat defaultFormater = new SimpleDateFormat(FORMAT_DEFAULT, Locale.CHINA);
 		formaters.put(FORMAT_DEFAULT, defaultFormater);
-		formaters.put(FORMAT_DATE, new SimpleDateFormat(FORMAT_DATE,
-				Locale.CHINA));
-		formaters.put(FORMAT_TIME, new SimpleDateFormat(FORMAT_TIME,
-				Locale.CHINA));
-		formaters.put(FORMAT_SHORT_DATE_TIME, new SimpleDateFormat(
-				FORMAT_SHORT_DATE_TIME, Locale.CHINA));
-		formaters.put(FORMAT_CHINESE_NO_SECOND, new SimpleDateFormat(
-				FORMAT_CHINESE_NO_SECOND, Locale.CHINA));
-		formaters.put(FORMAT_CHINESE, new SimpleDateFormat(FORMAT_CHINESE,
-				Locale.CHINA));
+		formaters.put(FORMAT_DATE, new SimpleDateFormat(FORMAT_DATE, Locale.CHINA));
+		formaters.put(FORMAT_TIME, new SimpleDateFormat(FORMAT_TIME, Locale.CHINA));
+		formaters.put(FORMAT_SHORT_DATE_TIME, new SimpleDateFormat(FORMAT_SHORT_DATE_TIME, Locale.CHINA));
+		formaters.put(FORMAT_CHINESE_NO_SECOND, new SimpleDateFormat(FORMAT_CHINESE_NO_SECOND, Locale.CHINA));
+		formaters.put(FORMAT_CHINESE, new SimpleDateFormat(FORMAT_CHINESE, Locale.CHINA));
 		formaters.put(FORMAT_DATE_TIME, defaultFormater);
-		formaters.put(FORMAT_NO_SECOND, new SimpleDateFormat(FORMAT_NO_SECOND,
-				Locale.CHINA));
-		formaters.put(FORMAT_JAPAN, new SimpleDateFormat(FORMAT_JAPAN,
-				Locale.JAPAN));
-		formaters.put(FORMAT_CHINESE_NO_SECOND_1, new SimpleDateFormat(
-				FORMAT_CHINESE_NO_SECOND_1, Locale.CHINA));
+		formaters.put(FORMAT_NO_SECOND, new SimpleDateFormat(FORMAT_NO_SECOND, Locale.CHINA));
+		formaters.put(FORMAT_JAPAN, new SimpleDateFormat(FORMAT_JAPAN, Locale.JAPAN));
+		formaters.put(FORMAT_CHINESE_NO_SECOND_1, new SimpleDateFormat(FORMAT_CHINESE_NO_SECOND_1, Locale.CHINA));
 
 	}
 
@@ -409,8 +396,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 					break;
 				} catch (ParseException e) {
 					// 格式化失败，继续尝试下一个
-					logger.debug("尝试将日期:" + str + "以“" + _pattern
-							+ "”格式化--失败=.=!");
+					logger.debug("尝试将日期:" + str + "以“" + _pattern + "”格式化--失败=.=!");
 				}
 			} else if (_pattern.equals(FORMAT_JAPAN)) {
 				try {
@@ -548,8 +534,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return beginTime.getTime();
 	}
 
-	public static void main(String[] args) throws Exception {
-//		System.out.println(getYesterdayDateStr("yyyy-MM-dd 23:00:00"));
+//	public static void main(String[] args) throws Exception {
+		// System.out.println(getYesterdayDateStr("yyyy-MM-dd 23:00:00"));
 		// beforeOneHourTime();
 		// System.out.println(dateStrToWeekDay("20141030"));
 		// System.out.println(getYesterdayDateStr("yyyy-MM-dd"));
@@ -606,87 +592,121 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		//
 		// logger.debug(DateUtils.isAfter(date5,date1));
 
-//		System.out.println(parseDateTime("2017-2-32 11:33:30", "y-M-d H:m:s"));
-		
-		String string = "2016-9-4 21:59:06";
+		// System.out.println(parseDateTime("2017-2-32 11:33:30", "y-M-d
+		// H:m:s"));
+
+	/*	String string = "2016-9-4 21:59:06";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		System.out.println(sdf.parse(string));
-		
-    	long s = DateUtils.getDistanceDays(sdf.parse(string),new Date());
-    	
-		System.out.println("ssss....."+s);
-	}
+
+		long s = DateUtils.getDistanceDays(sdf.parse(string), new Date());
+
+		System.out.println("ssss....." + s);
+	}*/
 
 	/**
 	 * localDateTime 转成 date
+	 * 
 	 * @param dateTime
 	 * @return
 	 * @author huoht
 	 */
-	public static Date dateTimeToDate(LocalDateTime dateTime){
+	public static Date dateTimeToDate(LocalDateTime dateTime) {
 		return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
-	
+
 	/**
 	 * Date 转成 LocalDateTime
+	 * 
 	 * @param date
 	 * @return
 	 * @author huoht
 	 */
-	public static LocalDateTime dateToDateTime(Date date){
+	public static LocalDateTime dateToDateTime(Date date) {
 		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
 	}
-	
+
 	public static String getNowTime() {
 		return DateUtils.format(new Date());
 	}
-	
+
 	/**
 	 * LocalDateTime转字符串
+	 * 
 	 * @param dateTime
 	 * @param pattern
 	 * @return
 	 * @author huoht
 	 */
-	public static String format(LocalDateTime dateTime,String pattern){
+	public static String format(LocalDateTime dateTime, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return dateTime.format(formatter);
 	}
-	
+
 	/**
 	 * 字符串装LocalDateTime
+	 * 
 	 * @param date
 	 * @param pattern
 	 * @return
 	 * @author huoht
 	 */
-	public static LocalDateTime parseDateTime(String date,String pattern){
+	public static LocalDateTime parseDateTime(String date, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return LocalDateTime.parse(date, formatter);
 	}
-	
-	/** 
-     * 两个时间之间相差距离多少天 
-     * @param one 时间参数 1： 
-     * @param two 时间参数 2： 
-     * @return 相差天数 
-     */  
-    public static long getDistanceDays(Date str1, Date str2) throws Exception{  
-        long days=0;  
-        try {  
-            long time1 = str1.getTime();  
-            long time2 = str2.getTime();  
-            long diff ;  
-            if(time1<time2) {  
-                diff = time2 - time1;  
-            } else {  
-                diff = time1 - time2;  
-            }  
-            days = diff / (1000 * 60 * 60 * 24);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-        return days;  
-    }  
-    
+
+	/**
+	 * 两个时间之间相差距离多少天
+	 * 
+	 * @param one
+	 *            时间参数 1：
+	 * @param two
+	 *            时间参数 2：
+	 * @return 相差天数
+	 */
+	public static long getDistanceDays(Date str1, Date str2) throws Exception {
+		long days = 0;
+		try {
+			long time1 = str1.getTime();
+			long time2 = str2.getTime();
+			long diff;
+			if (time1 < time2) {
+				diff = time2 - time1;
+			} else {
+				diff = time1 - time2;
+			}
+			days = diff / (1000 * 60 * 60 * 24);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return days;
+	}
+
+	/**
+	 * 指定日期加上天数后的日期
+	 * 
+	 * @param num
+	 *            为增加的天数
+	 * @param newDate
+	 *            创建时间
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date plusDay(int num, Date currdate) throws ParseException {
+		Calendar ca = Calendar.getInstance();
+		ca.add(Calendar.DATE, num);// num为增加的天数，可以改变的
+		currdate = ca.getTime();
+		return currdate;
+	}
+	public static void main(String[] args) throws ParseException {
+		Date currentTime = new Date();
+	   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	   String dateString = formatter.format(currentTime);
+	   System.out.println(dateString);
+		Date d= plusDay(20,currentTime);
+		 String dateString1 = formatter.format(d);
+		System.out.println(dateString1);
+	}
+
 }

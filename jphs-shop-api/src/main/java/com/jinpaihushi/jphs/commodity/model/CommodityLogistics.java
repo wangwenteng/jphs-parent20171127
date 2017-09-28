@@ -50,7 +50,11 @@ public class CommodityLogistics extends BaseModel implements Predicate<Commodity
     /** 备注 */
 	@Length(max = 500, message = "{commodityLogistics.remark.illegal.length}")
 	private String remark;
+	
+	private String name;
 
+	private String code;
+	
 	public CommodityLogistics(){}
 
 	public CommodityLogistics(String id){
@@ -141,7 +145,27 @@ public class CommodityLogistics extends BaseModel implements Predicate<Commodity
     	this.remark = remark;
     }
 
-    public String toString() {
+	
+	
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String toString() {
 		return new StringBuilder().append("CommodityLogistics{").
 			append("id=").append(id).
 			append(",commodityOrderId=").append(commodityOrderId).

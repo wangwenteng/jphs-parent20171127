@@ -55,7 +55,7 @@ public class WechatPay {
 	}
 	
 	/**
-	 * 微信web支付
+	 * 微信公众号支付
 	 * 
 	 * @param content
 	 * @return
@@ -77,6 +77,7 @@ public class WechatPay {
 		String out_trade_no = ""; // 订单号
 		String CREATE_IP = "";
 		String serviceType = "";//	1：服务，2:商品
+		String familyData = "";
 		String OPENID = "";
 		try {
 			JSONObject contentjson = JSONObject.fromObject(content);
@@ -115,6 +116,16 @@ public class WechatPay {
 			serviceType = contentjson.getString("serviceType");
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付参数：serviceType=" + serviceType);
+			}
+			
+			if(serviceType.equals("3")){
+				if (!contentjson.containsKey("familyData") || StringUtils.isEmpty(contentjson.getString("familyData"))) {
+					return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+				}
+				familyData = contentjson.getString("familyData");
+				if (Util.debugLog.isDebugEnabled()) {
+					Util.debugLog.debug("微信支付参数：familyData=" + familyData);
+				}
 			}
 			
 			if (!contentjson.containsKey("OPENID") || StringUtils.isEmpty(contentjson.getString("OPENID"))) {
@@ -187,6 +198,10 @@ public class WechatPay {
 		try {
 			JSONObject attach_obj = new JSONObject();
 			attach_obj.put("payType", serviceType);//	支付类型1：服务；2：商品
+			if(!"".equals(serviceType) && serviceType.equals("3")){
+				attach_obj.put("familyData", familyData);
+			}
+			
 			
 			SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
 			packageParams.put("appid", APP_ID);
@@ -290,7 +305,8 @@ public class WechatPay {
 		String body = ""; // 商品名称
 		String out_trade_no = ""; // 订单号
 		String CREATE_IP = "";
-		String serviceType = "";//	1：服务，2:商品
+		String serviceType = "";//	1：服务，2:商品	,3:家庭护士
+		String familyData = "";
 		try {
 			JSONObject contentjson = JSONObject.fromObject(content);
 			if (!contentjson.containsKey("price") || StringUtils.isEmpty(contentjson.getString("price"))) {
@@ -328,6 +344,15 @@ public class WechatPay {
 			serviceType = contentjson.getString("serviceType");
 			if (Util.debugLog.isDebugEnabled()) {
 				Util.debugLog.debug("微信支付参数：serviceType=" + serviceType);
+			}
+			if(serviceType.equals("3")){
+				if (!contentjson.containsKey("familyData") || StringUtils.isEmpty(contentjson.getString("familyData"))) {
+					return ReturnUtils.jsonReturnToString("0", "参数不完整", "");
+				}
+				familyData = contentjson.getString("familyData");
+				if (Util.debugLog.isDebugEnabled()) {
+					Util.debugLog.debug("微信支付参数：familyData=" + familyData);
+				}
 			}
 		} catch (Exception e1) {
 			if (Util.debugLog.isDebugEnabled()) {
@@ -392,6 +417,9 @@ public class WechatPay {
 		try {
 			JSONObject attach_obj = new JSONObject();
 			attach_obj.put("payType", serviceType);//	支付类型1：服务；2：商品
+			if(!"".equals(serviceType) && serviceType.equals("3")){
+				attach_obj.put("familyData", familyData);
+			}
 			
 			SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
 			packageParams.put("appid", APP_ID);

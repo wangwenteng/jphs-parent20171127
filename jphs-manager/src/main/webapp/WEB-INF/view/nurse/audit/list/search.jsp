@@ -12,30 +12,24 @@
 				<td>身份证号：</td>
 				<td width="200"><input type="text" name="sfz" id="sfz"
 					value="${nurseJobtitle.sfz}" placeholder="请输入搜索身份证号" /></td>
-				<%-- <td>参加工作时间：</td>
-				<td width="200">
-					<div class="form-group">
-						<div style="width: 130%; margin-top: -23px; margin-bottom: -40px;"
-							class="input-group date form_date col-md-3" data-date=""
-							data-date-format="yyyy-mm-dd" data-link-field="workYears"
-							data-link-format="yyyy-mm-dd">
-							<input class="form-control"
-								value="<fmt:formatDate value="${nurseJobtitle.workYears}" type="both" pattern="yyyy-MM-dd" />"
-								size="14" placeholder="请选择开始工作时间" type="text" value="" readonly>
-							<span class="input-group-addon"><span
-								class="glyphicon glyphicon-remove" title="清空"></span></span> <span
-								class="input-group-addon"><span
-								class="glyphicon glyphicon-calendar" title="选择日期"></span></span> <input
-								type="hidden" name="workYears" id="workYears" value="" />
-						</div>
+				<td>状态：</td>
+				<td>
+					<div class="controls col-md-6"
+						style="width: 70%; margin-left: -15px;">
+						<select class="marage_select" id="status"
+							name="status">
+							<option value="">全部</option>
+							<option value="1" <c:if test="${nurseJobtitle.status==1}">selected="selected"</c:if>>已审核</option>
+							<option value="0" <c:if test="${nurseJobtitle.status==0}">selected="selected"</c:if>>待审核</option>
+						</select>
 					</div>
-				</td> --%>
+				</td>
 			</tr>
 			<tr>
 
 				<td>姓名：</td>
-				<td width="200"><input type="text" name="user.name"
-					id="user.name" value="${nurseJobtitle.name}" placeholder="请输入搜索联系人姓名" /></td>
+				<td width="200"><input type="text" name="name"
+					id="name" value="${nurseJobtitle.name}" placeholder="请输入搜索联系人姓名" /></td>
 				<td>所属科室：</td>
 				<td>
 					<div class="controls col-md-6"

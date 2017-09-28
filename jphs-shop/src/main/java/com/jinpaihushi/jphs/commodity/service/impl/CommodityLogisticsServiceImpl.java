@@ -26,4 +26,10 @@ public class CommodityLogisticsServiceImpl extends BaseServiceImpl<CommodityLogi
 		return commodityLogisticsDao;
 	}
 
+	@Override
+	public CommodityLogistics getInfo(String coId) {
+		// TODO Auto-generated method stub
+		return commodityLogisticsDao.getInfo(coId);
+	}
+
 }

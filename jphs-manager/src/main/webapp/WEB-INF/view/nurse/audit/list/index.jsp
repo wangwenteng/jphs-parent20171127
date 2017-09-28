@@ -6,7 +6,7 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div class="common_right_title">
 	<img src="/static/images/yousanjiaox.png" />护士管理<i
-		class="public1-horn-45"></i>护士审核 <i class="public1-horn-45"></i>待审核护士列表
+		class="public1-horn-45"></i>资质认证 <i class="public1-horn-45"></i>资质认证列表
 </div>
 <div class="marage_right_title">
 	<jsp:include page="search.jsp"></jsp:include>

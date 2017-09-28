@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
+import com.jinpaihushi.jphs.family.service.FamilyOrderService;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.pay.wechatpay.WechatPay;
 import com.jinpaihushi.pay.wechatpay.utils.PayCommonUtil;
@@ -41,6 +42,9 @@ public class WechatController {
 	
 	@Autowired
 	private CommodityOrderService commodityOrderService;
+	
+	@Autowired
+	private FamilyOrderService familyOrderService;
 
 	@RequestMapping(path = "/getcode.json", name = "微信支付")
 	@ResponseBody
@@ -132,6 +136,9 @@ public class WechatController {
             		}
             		if(payType == 2){
             			pay_status = commodityOrderService.updateWechatCommodityOrderStutas(packageParams);
+            		}
+            		if(payType == 3){
+            			pay_status = familyOrderService.updateWechatfamilyOrderStutas(packageParams);
             		}
             		
             		// 记录日志-debug

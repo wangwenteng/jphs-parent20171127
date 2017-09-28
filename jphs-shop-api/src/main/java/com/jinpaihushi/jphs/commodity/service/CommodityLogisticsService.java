@@ -11,6 +11,6 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityLogisticsService extends BaseService<CommodityLogistics> {
 
-	
+	CommodityLogistics getInfo(String coId);
 
 }

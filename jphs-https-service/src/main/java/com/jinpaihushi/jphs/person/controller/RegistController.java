@@ -207,10 +207,9 @@ public class RegistController {
                 }
                 user_login.setNurse(new JSONObject().fromObject(nurse_s));
                 doPostSmsService.sendSms(user_login.getPhone(), SMS_nurse_regist, "");
-                nurseJPushService.jpushTag("您已成为“金牌护士”。在APP个人中心完成“资质认证后”即可开始服务。", user_login.getPhone(), "0");
+                nurseJPushService.jpushAlias("您已成为“金牌护士”。在APP个人中心完成“资质认证后”即可开始服务。", user_login.getPhone(), "0");
             }
             return JSONUtil.toJSONResult(1, "注册成功！", user_login);
-
         }
         catch (Exception e) {
             // 记录日志-fail

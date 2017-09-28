@@ -29,8 +29,8 @@ public interface OrderService extends BaseService<Order> {
      */
     Map<String, Object> createOrder(OrderInfo orderInfo);
 
-    
     List<Map<String, Object>> orderaccNotNullList(Map<String, Object> map);
+
     /**
      * 获取用的个人中心的订单列表
      * @param user 用户对象
@@ -122,4 +122,6 @@ public interface OrderService extends BaseService<Order> {
     List<Map<String, Object>> getOrderUnpaid();
 
     Map<String, Object> getSmsMessage(String id);
+
+    List<Map<String, Object>> getNotInRank();
 }

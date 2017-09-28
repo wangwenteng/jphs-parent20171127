@@ -55,13 +55,6 @@ public class AccountController {
     @Value("${SMS_Nurse_orders}")
     private String SMS_Nurse_orders;
 
-    //     #给护士派单（上门服务）
-    @Value("${SMS_nurse_delivery_order}")
-    private String SMS_nurse_delivery_order;
-
-    //支付成功
-    @Value("${SMS_pay_success}")
-    private String SMS_pay_success;
 
     @Autowired
     private OrderGoodsService orderGoodsService;

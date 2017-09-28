@@ -62,6 +62,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-family-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>

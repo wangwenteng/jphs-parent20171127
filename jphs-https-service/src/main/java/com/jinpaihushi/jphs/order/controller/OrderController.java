@@ -52,7 +52,7 @@ public class OrderController {
 
     @Autowired
     private VoucherService voucherService;
-    
+
     @Autowired
     private CommodityOrderService commodityOrderService;
 
@@ -288,9 +288,9 @@ public class OrderController {
     @RequestMapping(path = "/orderPay.json", name = "订单支付")
     @ResponseBody
     public byte[] orderPay(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, String goodsName,
-            String orderNo,String orderId, String return_url, Double payParice, Integer type, String userId, String show_url,
-            @RequestParam(name = "source", defaultValue = "5", required = true) Integer source, Integer serviceType,
-            String openid) {
+            String orderNo, String orderId, String return_url, Double payParice, Integer type, String userId,
+            String show_url, @RequestParam(name = "source", defaultValue = "5", required = true) Integer source,
+            Integer serviceType, String openid) {
         try {
             String ip = req.getHeader("x-forwarded-for");
             if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -303,9 +303,9 @@ public class OrderController {
                 ip = req.getRemoteAddr();
             }
             logger.info("ip地址：" + ip);
-            if (StringUtils.isEmpty(payParice.toString()) ||StringUtils.isEmpty(orderNo) || type == null || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(userId)
-                    || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(show_url) || serviceType == null
-                    || payParice == null) {
+            if (StringUtils.isEmpty(payParice.toString()) || StringUtils.isEmpty(orderNo) || type == null
+                    || StringUtils.isEmpty(return_url) || StringUtils.isEmpty(userId) || StringUtils.isEmpty(return_url)
+                    || StringUtils.isEmpty(show_url) || serviceType == null || payParice == null) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
             // 记录日志-debug
@@ -396,7 +396,7 @@ public class OrderController {
                 byte[] s = WechatPay.weixin_webpay(sParaTemp.toString());
                 return s;
             }
-            	//	微信公众号支付
+            //	微信公众号支付
             if (type == 4) {
                 Util.debugLog.debug("order.createOrder.json  weixin_webpay");
                 if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(openid) || StringUtils.isEmpty(goodsName)
@@ -416,19 +416,18 @@ public class OrderController {
                 return s;
             }
             //	余额支付
-            if(type == 5){
-            	Util.debugLog.debug("order.createOrder.json  balance_pay");
-                if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(goodsName)
-                        || payParice == null) {
+            if (type == 5) {
+                Util.debugLog.debug("order.createOrder.json  balance_pay");
+                if (StringUtils.isEmpty(orderNo) || StringUtils.isEmpty(goodsName) || payParice == null) {
                     return JSONUtil.toJSONResult(0, "参数不能为空", null);
                 }
-                if(serviceType == 1){
-                	byte[] rs = orderService.balancePayment(orderId, orderNo, payParice, userId);
-                	return rs;
+                if (serviceType == 1) {
+                    byte[] rs = orderService.balancePayment(orderId, orderNo, payParice, userId);
+                    return rs;
                 }
-                if(serviceType == 2){
-                	byte[] rs = commodityOrderService.balancePayment(orderId, orderNo, payParice, userId);
-                	return rs;
+                if (serviceType == 2) {
+                    byte[] rs = commodityOrderService.balancePayment(orderId, orderNo, payParice, userId);
+                    return rs;
                 }
             }
 
@@ -483,6 +482,9 @@ public class OrderController {
             Map<String, Object> result = orderService.createOrderNew(orderInfo);
             if (result == null) {
                 return JSONUtil.toJSONResult(0, "网络异常！", null);
+            }
+            if (null != result.get("msg") && StringUtils.isNotEmpty(result.get("msg").toString())) {
+                return JSONUtil.toJSONResult(0, result.get("msg").toString(), null);
             }
             return JSONUtil.toJSONResult(1, "操作成功！", result);
         }

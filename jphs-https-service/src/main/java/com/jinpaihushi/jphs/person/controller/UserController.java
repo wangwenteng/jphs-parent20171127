@@ -216,6 +216,8 @@ public class UserController extends BaseController<User> {
             user.setType(seesion.getType());
             flag = userService.update(user);
             if (StringUtils.isNotEmpty(user.getHeadPicture())) {
+                String headPicture = user.getHeadPicture();
+                headPicture = "https" + headPicture.substring(headPicture.indexOf(":"));
                 NurseImages nurseImages = new NurseImages();
                 nurseImages.setSourceId(user.getId());
                 nurseImages.setType(1);
@@ -224,7 +226,7 @@ public class UserController extends BaseController<User> {
                 if (nurseImages == null) {
                     nurseImages = new NurseImages();
                     nurseImages.setId(UUIDUtils.getId());
-                    nurseImages.setUrl(user.getHeadPicture());
+                    nurseImages.setUrl(headPicture);
                     nurseImages.setSourceId(user.getId());
                     nurseImages.setType(1);
                     nurseImages.setStatus(1);
@@ -237,7 +239,7 @@ public class UserController extends BaseController<User> {
                     }
                 }
                 else {
-                    nurseImages.setUrl(user.getHeadPicture());
+                    nurseImages.setUrl(headPicture);
                     nurseImages.setCreatorId(user.getId());
                     nurseImages.setCreatorName(seesion.getName());
                     nurseImages.setCreateTime(new Date());

@@ -36,6 +36,7 @@ import com.jinpaihushi.pay.unionpay.sdk.AcpService;
 import com.jinpaihushi.pay.unionpay.sdk.LogUtil;
 import com.jinpaihushi.pay.unionpay.sdk.SDKConfig;
 import com.jinpaihushi.pay.unionpay.sdk.SDKConstants;
+import com.jinpaihushi.utils.MD5;
 import com.jinpaihushi.utils.Util;
 
 import net.sf.json.JSONObject;
@@ -70,6 +71,10 @@ public class UnionpayController {
     //支付成功
     @Value("${SMS_pay_success}")
     private String SMS_pay_success;
+
+    //通知新订单
+    @Value("${SMS_notice_order}")
+    private String SMS_notice_order;
 
     @Autowired
     private TransactionService transactionService;
@@ -193,19 +198,34 @@ public class UnionpayController {
                                 // 发送验证码
                                 //通知用户下单成功
                                 doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
-                                        "{\"out_trade_no\":\"" + map.get("order_no").toString() + "\"}");
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\"}");
+                                //通知客服
+                                doPostSmsService.sendSms("13581912414", SMS_notice_order,
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
+                                                + map.get("order_no").toString() + "\"}");
                                 //判断订单有没有接单人有的话通知护士
                                 if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
                                     doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
-                                            "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
-                                                    + map.get("nurseName").toString() + "\",\"phone\":"
+                                            "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":\""
+                                                    + map.get("nurseName").toString() + "\",\"phone\":\""
                                                     + map.get("nursePhone").toString() + "\"}");
                                     //通知护士有新的订单
                                     doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
                                             "{\"name\":\"" + map.get("userName").toString() + "\"}");
-                                    nurseJPushService.jpushTag(
-                                            "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                    nurseJPushService.jpushAlias("您有一笔新的订单待处理，请登录APP查看订单状态并及时联系客户，服务开始时做好录音准备，避免造成纠纷。",
                                             map.get("nursePhone").toString(), "0");
+                                }
+                                else {
+                                    String address = map.get("address").toString();
+                                    String area = "";
+                                    if (address.split(",")[1].equals("市辖区")) {
+                                        area = address.split(",")[0].substring(0, 2);
+                                    }
+                                    else {
+                                        area = address.split(",")[1].substring(0, 2);
+                                    }
+                                    nurseJPushService.jpushTag("", MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8),
+                                            "0");
                                 }
                             }
 

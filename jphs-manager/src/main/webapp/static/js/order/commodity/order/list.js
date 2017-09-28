@@ -1,3 +1,11 @@
+
+$(document).ready(function() {
+	$('.form_date').datetimepicker({
+		 format: 'yyyy-mm-dd hh:ii:ss' 
+	});
+})
+
+
 $(function() {
 	$("#redirectAddPage").on("click", function() {
 		window.location.href = "/commodity/order/redirectAddPage.jhtml";
@@ -24,10 +32,12 @@ function fh(id){
 	$("#commodityOrderId").val(id);
 	$("#no").val("");
 }
-function addLogistics(){
+function addLogistics(id){
 	
-	var no = $("#no").val();
+	var no = $("#"+id).val();
 	var logisticsId = $("#logisticsId").val();
+	 
+	 
 	if(no != "" && logisticsId != ""){
 		if(confirm("确定添加吗？")){
 			$.ajax({

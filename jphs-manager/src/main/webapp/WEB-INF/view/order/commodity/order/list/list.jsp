@@ -32,8 +32,12 @@
 						<td><c:out value="${e.payPrice}" /></td>
 						<td><c:out value="${e.payPrice}" /></td>
 						<td><c:out value="${e.voucherPrice}" /></td>
-						<td>免物流费</td>
-						<td></td>
+						<td>0.00</td>
+						<td>
+							<c:if test="${e.logisticsName != null}">
+							${e.logisticsName}：${e.no}</td>
+							</c:if>
+						
 						<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
 						<td><c:if test="${e.schedule == -3}">
@@ -107,11 +111,11 @@
 									<option value="${e.id }">${e.name }</option>
 								</c:forEach>
 							</select> <span>物流单号</span> <span>
-								<input type="text" id="no" name="no" /> <input
+								<input type="text" id="${s.index+1}" name="no"  /> <input
 								type="hidden" id="commodityOrderId" name="commodityOrderId" /> </span>
 						</div>
 						<div >
-							<a onclick='addLogistics()'>确定</a>
+							<a onclick='addLogistics("${s.index+1}")'>确定</a>
 						</div>
 						</div>
 				</form>

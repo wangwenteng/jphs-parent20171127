@@ -90,7 +90,17 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	
 	private CommodityImages commodityImages;
 	
-	private String receivename;
+	private String logisticsName;
+	
+	private String no;
+	
+	private String title;
+	
+	private Date beginTime;
+	
+	private Date stopTime;
+	
+	private Integer flag;
 	
 	public CommodityOrder(){}
 
@@ -332,6 +342,14 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 		this.receivename = receivename;
 	}*/
 
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -376,6 +394,52 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 
 	public void setPlatformId(String platformId) {
 		this.platformId = platformId;
+	}
+
+	
+	
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+	
+	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	
+	
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getStopTime() {
+		return stopTime;
+	}
+
+	public void setStopTime(Date stopTime) {
+		this.stopTime = stopTime;
+	}
+
+	public String getLogisticsName() {
+		return logisticsName;
+	}
+
+	public void setLogisticsName(String logisticsName) {
+		this.logisticsName = logisticsName;
 	}
 
 	@Override

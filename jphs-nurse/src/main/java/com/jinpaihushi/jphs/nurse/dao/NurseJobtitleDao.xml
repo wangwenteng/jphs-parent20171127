@@ -569,7 +569,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 ) d ON d.creator_id = u.id
 
 		<where>
-			AND n.`status` =1 AND rn.`status` =1   AND  d.distance &lt;30  AND d.city LIKE CONCAT(#{city}, '%') 
+			AND n.`status` =1 AND rn.`status` =1   AND d.city LIKE CONCAT(#{city}, '%') 
 			<if test="goodsId!=null and goodsId!=''">
 				AND rn.user_id in(SELECT DISTINCT pn.creator_id FROM price_nurse pn WHERE pn.goods_id =#{goodsId})
 			</if>
@@ -599,6 +599,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="type" column="type" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="hospital" column="hospital" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="phone" column="phone" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="studyInstitution" column="study_institution" javaType="String"
 			jdbcType="VARCHAR"></result>
@@ -634,13 +636,68 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jt.`name` jobtitleTypeName,
 			j.`name` jobtitleName,
 			d.`name` departName,
+			u.phone,
 			nj.*
 		FROM
 			nurse_jobtitle nj
 		LEFT JOIN jobtitle j ON nj.jobtitle_id = j.id
 		LEFT JOIN jobtitle_type jt ON j.jobtitle_type_id = jt.id
 		LEFT JOIN department d ON nj.department_id = d.id
-		<include refid="queryWhere" />
+		LEFT JOIN `user` u ON nj.creator_id = u.id
+		<where>
+			AND NJ.status!=-1
+			<if test="id!=null and id!=''">
+				AND NJ.id = #{id} 
+			</if>
+			<if test="name!=null and name!=''">
+				AND NJ.name LIKE CONCAT('%', #{name}, '%')
+			</if>
+			<if test="sfz!=null and sfz!=''">
+				AND NJ.sfz LIKE CONCAT('%', #{sfz}, '%')
+			</if>
+			<if test="sex!=null">
+				AND NJ.sex=#{sex}
+			</if>
+			<if test="type!=null">
+				AND NJ.type=#{type}
+			</if>
+			<if test="hospital!=null and hospital!=''">
+				AND NJ.hospital LIKE CONCAT('%', #{hospital}, '%')
+			</if>
+			<if test="studyInstitution!=null and studyInstitution!=''">
+				AND NJ.study_institution=#{studyInstitution}
+			</if>
+			<if test="nurseInstitutionsId!=null and nurseInstitutionsId!=''">
+				AND NJ.nurse_institutions_id = #{nurseInstitutionsId} 
+			</if>
+			<if test="departmentId!=null and departmentId!=''">
+				AND NJ.department_id = #{departmentId} 
+			</if>
+			<if test="jobtitleId!=null and jobtitleId!=''">
+				AND NJ.jobtitle_id = #{jobtitleId} 
+			</if>
+			<if test="workYears!=null">
+				AND NJ.work_years=#{workYears}
+			</if>
+			<if test="education!=null and education!=''">
+				AND NJ.education LIKE CONCAT('%', #{education}, '%')
+			</if>
+			<if test="address!=null and address!=''">
+				AND NJ.address LIKE CONCAT('%', #{address}, '%')
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND NJ.creator_id = #{creatorId} 
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND NJ.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND NJ.create_time=#{createTime}
+			</if>
+			<if test="status!=null">
+				AND NJ.status=#{status}
+			</if>
+		</where>
 		<include refid="orderby" />
 	</select>
 </mapper>

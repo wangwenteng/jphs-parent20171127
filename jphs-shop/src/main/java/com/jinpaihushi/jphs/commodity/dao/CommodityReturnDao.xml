@@ -258,4 +258,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		WHERE CR.ID = #{id}
 	</select>
 	
+		<select id="getNotStatus" resultMap="commodityReturn">
+		SELECT <include refid="field"/>
+		FROM `COMMODITY_RETURN` CR
+		WHERE CR.COMMODITY_ORDER_INFO_ID = #{commodityOrderInfoId}
+		AND CR.`STATUS` != -1
+	</select>
+	
 </mapper>

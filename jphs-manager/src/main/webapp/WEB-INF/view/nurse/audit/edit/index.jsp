@@ -5,8 +5,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div class="common_right_title">
-	<img src="/static/images/yousanjiaox.png" />护士审核<i
-		class="public1-horn-45"></i>护士审核 <i class="public1-horn-45"></i>护士审核
+		<img src="/static/images/yousanjiaox.png" />护士管理<i
+		class="public1-horn-45"></i>资质认证 <i class="public1-horn-45"></i>资质认证审核
 </div>
 <div class="marage_right_content">
 	<div class="clearfix">

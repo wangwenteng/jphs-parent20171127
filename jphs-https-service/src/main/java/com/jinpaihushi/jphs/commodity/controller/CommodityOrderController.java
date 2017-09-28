@@ -30,6 +30,9 @@ import com.jinpaihushi.logistics.KdniaoTrackQueryAPI;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.JSONUtil;
 import com.jinpaihushi.utils.Util;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 /**
  * 
  * @author yangsong
@@ -65,6 +68,9 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 				Util.debugLog.debug("commodityOrder.createShopOrder.json,userId =" + userId + ",commodityId = "+commodityIds + ",userAddressId = "+userAddressId +",cpId = " + cpIds);
 			} 
 		 
+
+System.out.println("===================================");
+								System.out.println(device);
 
 			if (StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
@@ -371,8 +377,7 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			}
 		*/	 
 			String result = api.getOrderTracesByJson(expCode, expNo);
-
-			String replaceAll = result.replaceAll("\"", "");
+			/*String replaceAll = result.replaceAll("\"", "");
 			// System.out.println(replaceAll);
 			String[] split = replaceAll.split("Traces");
 
@@ -403,7 +408,18 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 					}
 				}
 			}
-				}
+				}*/
+		JSONArray arry = JSONObject.fromObject(result).getJSONArray("Traces");
+			ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			for (int i = 0; i < arry.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				String AcceptStation = arry.getJSONObject(i).getString("AcceptStation") ;
+				String AcceptTime = arry.getJSONObject(i).getString("AcceptTime") ;
+				map.put("AcceptTime", AcceptTime);
+				map.put("AcceptStation", AcceptStation);
+				list.add(map);
+			}
+
 			if (list.size() == 0) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("AcceptTime", new Date());

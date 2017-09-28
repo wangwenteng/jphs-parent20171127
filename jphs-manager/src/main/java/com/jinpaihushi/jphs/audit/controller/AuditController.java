@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,7 +19,6 @@ import com.jinpaihushi.jphs.audit.model.Audit;
 import com.jinpaihushi.jphs.audit.service.AuditService;
 import com.jinpaihushi.jphs.department.model.Department;
 import com.jinpaihushi.jphs.department.service.DepartmentService;
-import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.model.NurseJobtitle;
 import com.jinpaihushi.jphs.nurse.service.NurseJobtitleService;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
@@ -58,7 +58,6 @@ public class AuditController extends BaseController<Audit> {
     public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
             NurseJobtitle nurseJobtitle, Integer p, Integer n) {
         startPage(p, n);
-        nurseJobtitle.setStatus(0);
         nurseJobtitle.setOrderby("nj.create_time DESC");
         List<NurseJobtitle> list = nurseJobtitleService.getNurseJobtitleDetail(nurseJobtitle);
         PageInfos<NurseJobtitle> pageInfo = new PageInfos<NurseJobtitle>(list, req);
@@ -75,11 +74,10 @@ public class AuditController extends BaseController<Audit> {
             NurseJobtitle nurseJobtitle) {
         List<Department> department = departmentService.query(null);
         modelMap.put("department", department);
-        nurseJobtitle.setStatus(0);
         NurseJobtitle result = nurseJobtitleService.getNurseJobtitleDetails(nurseJobtitle);
         modelMap.put("nurseJobtitle", result);
         Audit audit = new Audit();
-        audit.setCreatorId(result.getCreatorId());
+        audit.setCreatorId(result.getId());
         List<Audit> list = auditService.list(audit);
         modelMap.put("audit", list);
         return "nurse/audit/edit";
@@ -93,15 +91,15 @@ public class AuditController extends BaseController<Audit> {
 
     @RequestMapping(name = "详情页", path = "/detail.jhtml", method = RequestMethod.GET)
     public String detail(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            Nurse nurse) {
+            NurseJobtitle nurseJobtitle) {
         List<Department> department = departmentService.query(null);
         modelMap.put("department", department);
-        Nurse result = nurseService.getNurseDetail(nurse).get(0);
-        modelMap.put("nurse", result);
-        modelMap.put("addressName",
-                result.getUser().getAddress() == null ? "" : result.getUser().getAddress().split("-")[3]);
-        // Audit audit = auditService.loadById(id);
-        // modelMap.put("audit", audit);
+        NurseJobtitle result = nurseJobtitleService.getNurseJobtitleDetails(nurseJobtitle);
+        modelMap.put("nurseJobtitle", result);
+        Audit audit = new Audit();
+        audit.setCreatorId(result.getId());
+        List<Audit> list = auditService.list(audit);
+        modelMap.put("audit", list);
         return "nurse/audit/detail";
     }
 
@@ -111,7 +109,9 @@ public class AuditController extends BaseController<Audit> {
         SystemUser systemUser = (SystemUser) req.getSession().getAttribute("session_user");
         if (audit.getAudit() == 1) {
             audit.setId(UUIDUtils.getId());
-            audit.setRemark("审核通过");
+            if (StringUtils.isEmpty(audit.getRemark())) {
+                audit.setRemark("审核通过");
+            }
             audit.setAuditTime(new Date());
             audit.setStatus(0);
             audit.setCreateTime(new Date());

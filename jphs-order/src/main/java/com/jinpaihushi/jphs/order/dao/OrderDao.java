@@ -63,7 +63,7 @@ public interface OrderDao extends BaseDao<Order> {
      * @return
      */
     Order nurseOrderDetails(Order order);
-    
+
     /**
      * 已枪订单
      * @param map
@@ -83,4 +83,6 @@ public interface OrderDao extends BaseDao<Order> {
     List<Map<String, Object>> getOrderUnpaid();
 
     Map<String, Object> getSmsMessage(String orderId);
+
+    List<Map<String, Object>> getNotInRank();
 }

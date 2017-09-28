@@ -1,4 +1,6 @@
 $(function() {
+	var date = new Date();
+	alert(date);
 	$("#redirectAddPage").on("click", function() {
 		window.location.href = "/nurse/redirectAddPage.jhtml";
 	});
@@ -15,6 +17,7 @@ $(function() {
 		todayHighlight: 1,
 		startView: 2,
 		minView: 2,
+		startDate:'',
 		forceParse: 0
 	});
 	

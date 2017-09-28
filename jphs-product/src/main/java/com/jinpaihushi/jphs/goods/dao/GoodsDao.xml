@@ -991,7 +991,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN goods g ON(jg.goods_id = g.id)
 		WHERE
 			1 = 1
-		AND pp.site_id = 0
+		AND pp.site_id = '3790272c-0ad4-445d-9fe6-d1710f1b7e06'
 		AND pp.`status` = 1
 		AND jg.`status` = 1
 		AND jg.jobtitle_id IN (
@@ -1046,7 +1046,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN price_nurse pn ON (pn.price_part_id = pp.id)
 		WHERE
 			1 = 1
-		AND pp.site_id = 0
+		AND pp.site_id = '3790272c-0ad4-445d-9fe6-d1710f1b7e06'
 		AND pp.`status` = 1
 		AND jg.`status` = 1
 		AND pn.`status` = 0

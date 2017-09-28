@@ -26,7 +26,7 @@ public interface NurseDao extends BaseDao<Nurse> {
 
     List<Map<String, Object>> queryNurseIncome(Nurse nurse);
 
-    List<Nurse> getSomeNurse(Nurse nurse);
+    List<Nurse> getSomeNurse(@Param("nurse")Nurse nurse);
 
     List<Map<String, Object>> getBasicInfo(Map<String, Object> map);
 

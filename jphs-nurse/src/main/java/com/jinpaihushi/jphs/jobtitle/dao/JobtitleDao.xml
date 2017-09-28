@@ -319,6 +319,6 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			AND jg.`status` = 1
 			AND p.`status` = 1
 			AND pp.`status` = 1
-			AND pp.site_id = 0
+			AND pp.site_id = '3790272c-0ad4-445d-9fe6-d1710f1b7e06'
 	</select>
 </mapper>

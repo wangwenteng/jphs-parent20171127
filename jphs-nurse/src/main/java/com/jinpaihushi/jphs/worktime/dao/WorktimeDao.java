@@ -37,4 +37,6 @@ public interface WorktimeDao extends BaseDao<Worktime> {
      */
     int deleteAll();
 
+    int updateByUserId(Worktime userWorktime);
+
 }

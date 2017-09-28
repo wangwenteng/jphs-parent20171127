@@ -148,7 +148,7 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                         nurseRank.setId(UUIDUtils.getId());
                         nurseRank.setUserId(audit.getCreatorId());
                         nurseRank.setType(1);
-                        nurseRank.setBaseServerNumber(100);
+                        nurseRank.setBaseServerNumber(0);
                         nurseRank.setRealServerNumer(0);
                         nurseRank.setDegreeHeat(0);
                         nurseRank.setFavorableRate(0.00);
@@ -172,15 +172,12 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                     nurse.setId(load.getId());
                     nurseDao.update(nurse);
                     //修改头像
-                    //插入審核記錄
-                    audit.setCreatorName(user.getName());
-                    int i = auditDao.insert(audit);
+
                     //更新職稱的狀態
                     nurseJobtitle = new NurseJobtitle();
-                    nurseJobtitle.setCreatorId(audit.getCreatorId());
                     nurseJobtitle.setStatus(1);
                     nurseJobtitle.setId(nurseJobtitleId);
-                    i = nurseJobtitleDao.update(nurseJobtitle);
+                    int i = nurseJobtitleDao.update(nurseJobtitle);
                     //判断职称类型
                     String jobtitleTypeId = "";
                     if (jobtitle.getType() == 1) {
@@ -203,10 +200,14 @@ public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditSer
                         priceNurse.setPrice(price);
                         priceNurse.setStatus(0);
                         priceNurse.setCreateTime(new Date());
-                        priceNurse.setCreatorId(audit.getCreatorId());
+                        priceNurse.setCreatorId(load.getCreatorId());
                         priceNurse.setCreatorName(audit.getCreatorName());
                         priceNurseService.insert(priceNurse);
                     }
+                    //插入審核記錄
+                    audit.setCreatorName(user.getName());
+                    audit.setCreatorId(nurseJobtitleId);
+                    i = auditDao.insert(audit);
                     return "1";
 
                 }

@@ -13,6 +13,10 @@
 		<div class="public_left_list">
 			<jphs:hasPermission url="/order/index.jhtml">
 				<dd>
+					<a href="/order/index.jhtml"><img
+						src="/static/images/Group7.png" />全部订单</a>
+				</dd>
+				<dd>
 					<a href="/order/index.jhtml?schedule=0"><img
 						src="/static/images/Group7.png" />待支付</a>
 				</dd>
@@ -66,7 +70,10 @@
 		</dt>
 		<div class="public_left_list">
 			<dd>
-				<a href="/commodity/order/index.jhtml"><img src="/static/images/Group7.png" />订单管理</a>
+				<a href="/commodity/order/index.jhtml?flag=1"><img src="/static/images/Group7.png" />订单管理</a>
+			</dd>
+			<dd>
+				<a href="/commodity/order/index.jhtml?schedule=-2&&flag=2"><img src="/static/images/Group7.png" />退货管理</a>
 			</dd>
 		</div>
 	</dl>

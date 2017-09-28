@@ -3,6 +3,7 @@ package com.jinpaihushi.jphs.wechat.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -208,7 +209,27 @@ public class WechatServiceImpl extends BaseServiceImpl<Wechat> implements Wechat
 			if (json_user.containsKey("unionid"))
 				wechatUser.setUnionid(json_user.getString("unionid"));
 		}
-		wechatUserService.insert(wechatUser);
+		boolean flag = true;
+		if(!StringUtils.isEmpty(wechatUser.getOpenid())){
+			WechatUser wechatUser_ifnull = new WechatUser();
+			wechatUser_ifnull.setOpenid(wechatUser.getOpenid());
+			wechatUser_ifnull.setStatus(1);
+			List<WechatUser> wechatUser_list = wechatUserService.list(wechatUser_ifnull);
+			if(wechatUser_list!=null && wechatUser_list.size() > 0){
+				flag = false;
+				wechatUser.setId(wechatUser_list.get(0).getId());
+				if(wechatUser_list.size() > 1){
+					for(int i=1;i < wechatUser_list.size();i++){
+						wechatUserService.deleteById(wechatUser_list.get(i).getId());
+					}
+				}
+			}
+		}
+		if(flag){
+			wechatUserService.insert(wechatUser);
+		} else{
+			wechatUserService.update(wechatUser);
+		}
 		return userResult;
 	}
 

@@ -113,6 +113,8 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
      */
     private String departName;
 
+    private String phone;
+
     public NurseJobtitle() {
     }
 
@@ -252,6 +254,14 @@ public class NurseJobtitle extends BaseModel implements Predicate<NurseJobtitle>
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     /**

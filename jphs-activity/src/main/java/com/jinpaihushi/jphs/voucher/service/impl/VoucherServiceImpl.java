@@ -191,6 +191,7 @@ public class VoucherServiceImpl extends BaseServiceImpl<Voucher> implements Vouc
             PriceNurse priceNurse = new PriceNurse();
             priceNurse.setPricePartId(pricePartId);
             priceNurse.setCreatorId(nurseId);
+            priceNurse.setStatus(0);
             priceNurse = priceNurseDao.load(priceNurse);
             if (priceNurse == null) {
                 return null;

@@ -69,7 +69,7 @@ public class GetLatAndLngByBaidu {
 
     public static void main(String args[]) {
         try {
-            Map<String, String> json = GetLatAndLngByBaidu.getGeocoderLatitude("天安门");
+            Map<String, String> json = GetLatAndLngByBaidu.getGeocoderLatitude("东三环南路22号");
             System.out.println("lng : " + json.get("lng"));
             System.out.println("lat : " + json.get("lat"));
         }

@@ -16,7 +16,7 @@
 			<jphs:hasPermission url="/audit/index.jhtml">
 				<dd>
 					<a href="/audit/index.jhtml"><img
-						src="/static/images/Group7.png" />护士审核</a>
+						src="/static/images/Group7.png" />资质认证</a>
 				</dd>
 			</jphs:hasPermission>
 			<jphs:hasPermission url="/nurse/index.jhtml">

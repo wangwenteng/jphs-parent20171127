@@ -39,6 +39,8 @@
 		<p>
 			<span>身份证号：</span>${nurseJobtitle.sfz}</p>
 		<p>
+			<span>联系方式：</span>${nurseJobtitle.phone}</p>
+		<p>
 			<span>学历：</span>${nurseJobtitle.education}</p>
 		 <p>
 			<span>联系地址：</span>
@@ -184,7 +186,7 @@
 			<div class="modal-body">
 				<form id="auditForm" method="post" class="form-horizontal" action="/audit/insert.jhtml">
 					<input type="hidden" id="creatorId" name="creatorId" value="${nurseJobtitle.creatorId}" /> 
-					<input type="hidden" id="creatorName" name="creatorName" value="${nurseJobtitle.creatorName}" />
+					<input type="hidden" id="creatorName" name="creatorName" value="${nurseJobtitle.name}" />
 					<input type="hidden" id="nurseJobtitleId" name="nurseJobtitleId" value="${nurseJobtitle.id}" />
 					<div class="form-group">
 						<label class="control-label col-md-3">审核结果</label>
@@ -202,7 +204,7 @@
 						<label class="control-label col-md-3">审核意见</label>
 						<div class="controls col-md-6">
 							<div class="textarea">
-								<textarea type="" id="remark" name="remark" class="form-control"></textarea>
+								<textarea type="" id="remark" name="remark" class="form-control">${nurseJobtitle.creatorId}</textarea>
 							</div>
 						</div>
 					</div>

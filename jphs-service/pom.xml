@@ -47,6 +47,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jinpaihushi.jphs</groupId>
+			<artifactId>jphs-family</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jinpaihushi.jphs</groupId>
 			<artifactId>jphs-shop</artifactId>
 			<version>${project.version}</version>
 		</dependency>

@@ -34,7 +34,7 @@
 						<td><c:out value="${e.nurseName}" /></td>
 						<td><c:if test="${e.schedule == 0}">待支付</c:if> <c:if
 								test="${e.schedule == 1}">待接单</c:if> <c:if
-								test="${e.schedule == 2}">已结单</c:if> <c:if
+								test="${e.schedule == 2}">已接单</c:if> <c:if
 								test="${e.schedule == 3}">执行中</c:if> <c:if
 								test="${e.schedule == 4}">待确定</c:if> <c:if
 								test="${e.schedule == 5}">已完成</c:if> <c:if

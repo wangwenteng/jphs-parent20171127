@@ -65,6 +65,7 @@ public class NurseManagementController {
             PersonGroup group = new PersonGroup();
             group.setName(personGroup.getName());
             group.setCreatorId(personGroup.getCreatorId());
+            group.setStatus(0);
             int i = personGroupService.count(group);
             if (i > 0) {
                 return JSONUtil.toJSONResult(0, "改分组已经存在！请不要重复添加！", null);

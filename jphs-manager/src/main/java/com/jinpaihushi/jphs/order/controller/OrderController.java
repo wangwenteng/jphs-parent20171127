@@ -1,5 +1,6 @@
 package com.jinpaihushi.jphs.order.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,18 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.jinpaihushi.controller.BaseController;
-import com.jinpaihushi.jphs.evaluation.model.Evaluation;
-import com.jinpaihushi.jphs.evaluation.service.EvaluationService;
-import com.jinpaihushi.jphs.goods.model.Goods;
-import com.jinpaihushi.jphs.goods.service.GoodsService;
+import com.jinpaihushi.jphs.cancel.model.CancelOrder;
+import com.jinpaihushi.jphs.cancel.service.CancelOrderService;
 import com.jinpaihushi.jphs.insurance.model.Insurance;
 import com.jinpaihushi.jphs.insurance.service.InsuranceService;
 import com.jinpaihushi.jphs.nurse.model.Nurse;
 import com.jinpaihushi.jphs.nurse.service.NurseService;
 import com.jinpaihushi.jphs.order.model.Order;
-import com.jinpaihushi.jphs.order.model.OrderGoods;
 import com.jinpaihushi.jphs.order.model.OrderOther;
-import com.jinpaihushi.jphs.order.service.OrderGoodsService;
 import com.jinpaihushi.jphs.order.service.OrderOtherService;
 import com.jinpaihushi.jphs.order.service.OrderService;
 import com.jinpaihushi.jphs.order.service.OrderServiceService;
@@ -61,7 +59,7 @@ public class OrderController extends BaseController<Order> {
     private UserService userService;
 
     @Autowired
-    private OrderGoodsService orderGoodsService;
+    private CancelOrderService cancelOrderService;
 
     @Autowired
     private OrderOtherService orderOtherService;
@@ -73,13 +71,9 @@ public class OrderController extends BaseController<Order> {
     private TransactionService transactionService;
 
     @Autowired
-    private EvaluationService evaluationService;
-
-    @Autowired
     private InsuranceService insuranceService;
 
-    @Autowired
-    private GoodsService goodsService;
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     protected BaseService<Order> getService() {
@@ -90,48 +84,73 @@ public class OrderController extends BaseController<Order> {
     public String index(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
             Order order, Integer p, Integer n) {
         startPage(p, n);
+        order.setStatus(1);
         // Page<Order> list = orderService.query(order);
         Page<Order> list = orderService.getList(order);
         PageInfos<Order> pageInfo = new PageInfos<Order>(list, req);
         modelMap.put("list", list);
         modelMap.put("pageInfo", pageInfo);
-
-        if (order.getSchedule() == 0) {
-            modelMap.put("content", "待支付");
-        }
-        else if (order.getSchedule() == 1) {
-            modelMap.put("content", "待接单");
-        }
-        else if (order.getSchedule() == 2) {
-            modelMap.put("content", "已结单");
-        }
-        else if (order.getSchedule() == 3) {
-            modelMap.put("content", "执行中");
-        }
-        else if (order.getSchedule() == 4) {
-            modelMap.put("content", "待确定");
-        }
-        else if (order.getSchedule() == 5) {
-            modelMap.put("content", "已完成");
-        }
-        else if (order.getSchedule() == 6) {
-            modelMap.put("content", "已取消");
+        if (null != order && null != order.getSchedule()) {
+            if (order.getSchedule() == 0) {
+                modelMap.put("content", "待支付");
+            }
+            else if (order.getSchedule() == 1) {
+                modelMap.put("content", "待接单");
+            }
+            else if (order.getSchedule() == 2) {
+                modelMap.put("content", "已结单");
+            }
+            else if (order.getSchedule() == 3) {
+                modelMap.put("content", "执行中");
+            }
+            else if (order.getSchedule() == 4) {
+                modelMap.put("content", "待确定");
+            }
+            else if (order.getSchedule() == 5) {
+                modelMap.put("content", "已完成");
+            }
+            else if (order.getSchedule() == 6) {
+                modelMap.put("content", "已取消");
+            }
+            else {
+                modelMap.put("content", "申诉中");
+            }
         }
         else {
-            modelMap.put("content", "申诉中");
+            modelMap.put("content", "全部订单");
         }
-
         return "order/order/list";
     }
 
     @RequestMapping(name = "跳转到修改页", path = "/redirectUpdate.jhtml")
     public String toUpdate(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-            String id, Nurse nurse) {
-        Order order = orderService.loadById(id);
+            String id, Nurse nurse,Integer p, Integer n) {
+        Order order = orderService.getUserOrderDetail(id, null);
+        String days=null;
+        String hour =null;
+        if(null!=nurse&&nurse.getWorkYear()!=null){
+//        	 String appointmentTime = format.format(order.getAppointmentTime());
+//             days = appointmentTime.substring(0, 10);
+//             hour = appointmentTime.substring(11, 13);
+//        }else{
+        	days = nurse.getWorkYear().split(" ")[0];
+        	hour=nurse.getWorkYear().split(" ")[1];
+        	nurse.setCalendar(days);
+            nurse.setH("h_"+Integer.parseInt(hour));
+        }
+        String city =null;
+        if(order.getOrderOther().getAddress().split(",")[1].equals("市辖区")){
+        	city =order.getOrderOther().getAddress().split(",")[0];
+        }else{
+        	city =order.getOrderOther().getAddress().split(",")[1];
+        }
+        nurse.setAreas(city);
+        startPage(p, n);
         List<Nurse> list = nurseService.getSomeNurse(nurse);
-
+        PageInfos<Nurse> pageInfo = new PageInfos<Nurse>(list, req);
         modelMap.put("list", list);
         modelMap.put("order", order);
+        modelMap.put("pageInfo", pageInfo);
         return "order/order/edit";
     }
 
@@ -146,40 +165,27 @@ public class OrderController extends BaseController<Order> {
             String id) {
 
         //查询订单相关信息
-        Order order = orderService.loadById(id);
+        Order order = orderService.getUserOrderDetail(id, null);
         //查询订单创建者的信息，即user
         User user = userService.loadById(order.getCreatorId());
         //查询接单者的信息，即nurse
         User nurse = userService.loadById(order.getAcceptUserId());
 
-        OrderGoods og = new OrderGoods();
-        Evaluation evaluation = new Evaluation();
         Transaction transaction = new Transaction();
-        OrderOther orderOther = new OrderOther();
         Insurance insurance = new Insurance();
-        com.jinpaihushi.jphs.order.model.OrderService orderService = new com.jinpaihushi.jphs.order.model.OrderService();
-        Goods goodsModel = new Goods();
-
-        //查询商品盈利等信息
-        og.setOrderId(order.getOrderNo());
-        Page<OrderGoods> ogList = orderGoodsService.query(og);
-        if (ogList.size() > 0) {
-            modelMap.put("og", ogList.get(0));
-            goodsModel.setId(ogList.get(0).getGoodsId());
-            Goods goods = goodsService.load(goodsModel);
-            modelMap.put("goods", goods);
+        CancelOrder cancelOrder = new CancelOrder();
+        cancelOrder.setSourceId(id);
+        List<CancelOrder> list = cancelOrderService.list(cancelOrder);
+        if (list.size() > 0) {
+            modelMap.put("cancelOrder", list.get(0));
         }
         else {
-            modelMap.put("og", null);
-            modelMap.put("goods", null);
+            modelMap.put("cancelOrder", null);
         }
-
         // 查询用户积分的相关信息
-        transaction.setOrderId(order.getOrderNo());
-        if (user != null) {
-            transaction.setCreatorId(user.getId());
-        }
-        Page<Transaction> transactionUserList = transactionService.query(transaction);
+        transaction.setOrderId(order.getId());
+        transaction.setOperate(3);
+        List<Transaction> transactionUserList = transactionService.list(transaction);
         if (transactionUserList.size() > 0) {
             modelMap.put("transactionUser", transactionUserList.get(0));
         }
@@ -211,38 +217,8 @@ public class OrderController extends BaseController<Order> {
             modelMap.put("transactionNurse", null);
         }
 
-        //查询订单的评价信息
-        evaluation.setOrderId(order.getOrderNo());
-        Page<Evaluation> eList = evaluationService.query(evaluation);
-        if (eList.size() > 0) {
-            modelMap.put("evaluation", eList.get(0));
-        }
-        else {
-            modelMap.put("evaluation", null);
-        }
-        //查询订单的患者和时间等信息
-        orderService.setOrderId(order.getOrderNo());
-        Page<com.jinpaihushi.jphs.order.model.OrderService> orderServiceList = orderServiceService
-                .getInfo(orderService);
-
-        orderOther.setOrderId(order.getOrderNo());
-        Page<OrderOther> orderOtherList = orderOtherService.query(orderOther);
-
-        if (orderServiceList.size() > 0) {
-            modelMap.put("orderService", orderServiceList.get(0));
-        }
-        else {
-            modelMap.put("orderService", null);
-        }
-        if (orderOtherList.size() > 0) {
-            modelMap.put("orderOther", orderOtherList.get(0));
-        }
-        else {
-            modelMap.put("orderOtherList", null);
-        }
-
         //查询保险
-        insurance.setOrderId(order.getOrderNo());
+        insurance.setOrderId(order.getId());
         Page<Insurance> insuranceList = insuranceService.query(insurance);
         if (insuranceList.size() > 0) {
             modelMap.put("insurance", insuranceList.get(0));
@@ -250,10 +226,6 @@ public class OrderController extends BaseController<Order> {
         else {
             modelMap.put("insurance", null);
         }
-        Integer count = orderGoodsService.getOrderCount(og);
-
-        modelMap.put("count", count);
-        modelMap.put("orderServiceList", orderServiceList);
         modelMap.put("nurse", nurse);
         modelMap.put("user", user);
         modelMap.put("order", order);

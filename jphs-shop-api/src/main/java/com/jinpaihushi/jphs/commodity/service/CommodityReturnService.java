@@ -11,6 +11,6 @@ import com.jinpaihushi.service.BaseService;
  */
 public interface CommodityReturnService extends BaseService<CommodityReturn> {
 
-	
+	CommodityReturn getNotStatus(CommodityReturn commodityReturn); 
 
 }

@@ -539,8 +539,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    ON (`og`.`goods_id` = `g`.`id`) 
 		  LEFT JOIN `jphs`.`order_other` AS `oo`
 		    ON (`o`.`id` = `oo`.`order_id`)
-		WHERE o.`schedule`
-		= #{schedule}
+		<where>
+		<if test="schedule!=null">
+			AND o.`schedule` = #{schedule}
+		</if>
 		<if test="orderNo !=null">
 			AND `o`.`order_no` LIKE concat(concat('%',#{orderNo}),'%')
 		</if>
@@ -566,7 +568,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="stopTime!=null">
 			AND `o`.`appointment_time` &lt;= #{stopTime}
 		</if>
-		 ORDER BY O.create_time DESC
+		</where>		 
+		ORDER BY O.create_time DESC
 	</select>
 	<select id="getUserOrder" resultType="java.util.HashMap">
 		SELECT
@@ -1055,8 +1058,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			og.order_id AS og_order_id,
 			og.goods_id AS og_goods_id,
 			og.title AS og_title,
-			og.price AS og_price,
+			og.price AS og_prices,
 			og.pay_price AS og_pay_price,
+			(SELECT SUM(oss.price) FROM order_service oss WHERE oss.order_id=o.id) og_price,
 			og.profit AS og_profit,
 			og.expector_id AS og_expector_id,
 			og.executor_id AS og_executor_id,
@@ -1067,12 +1071,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			u.name AS userName,
 			u.sex AS userSex,
 			si.url,
-			CASE WHEN o.`accept_user_id` IN ('', NULL) THEN 0 WHEN o.`accept_user_id` IS NULL THEN 0
-			ELSE 1 END isJd 
-			FROM `order` o
-			LEFT JOIN order_other oo ON o.`id`=oo.`order_id`
-			LEFT JOIN order_goods og ON o.`id`=og.`order_id`
-			LEFT JOIN `user` u ON o.`creator_id`=u.`id`
+			CASE WHEN o.`accept_user_id` IN ('', NULL) THEN 0 WHEN o.`accept_user_id` IS NULL THEN 0 ELSE 1 END isJd 
+			FROM `order` o 
+			LEFT JOIN order_other oo ON o.`id`=oo.`order_id` 
+			LEFT JOIN order_goods og ON o.`id`=og.`order_id` 
+			LEFT JOIN `user` u ON o.`creator_id`=u.`id` 
 			LEFT JOIN service_images si ON o.`id`=si.`source_id` AND si.`type`=1 
 			LEFT JOIN goods g ON og.`goods_id`=g.`id` 
 			WHERE o.status=#{status} 
@@ -1084,7 +1087,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="orderaccNotNullList" resultType="java.util.HashMap" >
-		 SELECT
+		 SELECT 
 			o.id order_id,
 			o.order_no,
 			o.voucher_price,
@@ -1119,7 +1122,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			og.order_id AS og_order_id,
 			og.goods_id AS og_goods_id,
 			og.title AS og_title,
-			og.price AS og_price,
+			og.price AS og_prices,
+			(SELECT SUM(oss.price) FROM order_service oss WHERE oss.order_id=o.id) og_price,
 			og.pay_price AS og_pay_price,
 			og.profit AS og_profit,
 			og.expector_id AS og_expector_id,
@@ -1192,9 +1196,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				og.order_id og_order_id,
 				og.goods_id og_goods_id,
 				og.title og_title,
-				og.price og_price,
+				og.price og_prices,
 				og.pay_price og_pay_price,
 				og.profit og_profit,
+				(SELECT SUM(oss.price) FROM order_service oss WHERE oss.order_id=o.id) og_price,
 				og.expector_id og_expector_id,
 				og.executor_id og_executor_id,
 				og.`status` og_status,
@@ -1279,7 +1284,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				og.order_id og_order_id,
 				og.goods_id og_goods_id,
 				og.title og_title,
-				og.price og_price,
+				og.price og_prices,
+				(SELECT SUM(oss.price) FROM order_service oss WHERE oss.order_id=o.id) og_price,
 				og.pay_price og_pay_price,
 				og.profit og_profit,
 				og.expector_id og_expector_id,
@@ -1416,24 +1422,45 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		LEFT JOIN `user` u ON o.creator_id = u.id
 		LEFT JOIN order_goods og ON og.order_id = o.id
 		WHERE
-			o.`schedule` = 0 AND TIMESTAMPDIFF(MINUTE,o.create_time,NOW())=15
+			o.`schedule` = 0 AND o.`status` =1  AND TIMESTAMPDIFF(MINUTE,o.create_time,NOW())=15
 	</select>
 	<select id="getSmsMessage" resultType="java.util.HashMap"> 
-	SELECT
-		o.id,
-		o.order_no,
-	IFNULL(u.`name`,'') userName,
-	IFNULL(u.phone,'') userPhone,
-	IFNULL(n.`name`,'') nurseName,
-	IFNULL(n.phone,'') nursePhone,
-	IFNULL(og.title,'') goodsName,
-	o.accept_time
-FROM
-	`order` o
-LEFT JOIN `user` u ON o.creator_id = u.id
-LEFT JOIN `user` n ON o.accept_user_id = n.id
-LEFT JOIN order_goods og ON og.order_id = o.id
-
-WHERE o.id =#{orderId}
+		SELECT
+				o.id,
+				o.order_no,
+			IFNULL(u.`name`,'') userName,
+			IFNULL(u.phone,'') userPhone,
+			IFNULL(n.`name`,'') nurseName,
+			IFNULL(n.phone,'') nursePhone,
+			IFNULL(og.title,'') goodsName,
+			o.accept_time,
+			oo.address,
+			count(os.order_id) totalNumber,
+			(SELECT count(*) FROM order_service os1 WHERE os1.order_id =#{orderId} AND os1.`schedule` =3 ) successNumber
+		FROM
+			`order` o
+		LEFT JOIN `user` u ON o.creator_id = u.id
+		LEFT JOIN `user` n ON o.accept_user_id = n.id
+		LEFT JOIN order_goods og ON og.order_id = o.id
+		LEFT JOIN order_other oo ON oo.order_id = o.id
+		LEFT JOIN order_service os ON os.order_id = o.id
+		WHERE o.id =#{orderId}
+	</select>
+	<select id="getNotInRank" resultType="java.util.HashMap">
+		SELECT
+			accept_user_id userId,
+			COUNT(o.id) number
+		FROM
+			`order` o
+		WHERE
+			o.accept_user_id NOT IN (
+				SELECT
+					nr.user_id
+				FROM
+					nurse_rank nr
+			)
+		AND o.`schedule` = 5
+		GROUP BY
+			o.accept_user_id
 	</select>
 </mapper>

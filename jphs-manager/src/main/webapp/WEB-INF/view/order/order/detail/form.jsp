@@ -14,12 +14,9 @@
 			<span>订单号：</span> ${order.orderNo }
 		</p>
 		<p>
-			<span>下单区域：</span>24
-		</p>
+			<span>服务名称：</span>${order.orderGoods.title }</p>
 		<p>
-			<span>服务名称：</span>${og.title }</p>
-		<p>
-			<span>服务次数：</span>${count	 }
+			<span>服务次数：</span>${fn:length(order.orderServiceList) }
 		</p>
 		<p>
 			<span>下单时间：</span>
@@ -33,9 +30,13 @@
 		</p>
 		<p>
 			<span>接单类型：</span>
+			<c:choose>
+				<c:when test="${order.expectorId==order.acceptUserId }">指定下单</c:when>
+				<c:otherwise>抢单</c:otherwise>
+			</c:choose>
 		</p>
 		<p>
-			<span>服务地址：</span>${orderOther.address },${orderOther.detailAddress }
+			<span>服务地址：</span>${order.orderOther.address },${order.orderOther.detailAddress }
 		</p>
 		<p>
 			<span>备注：</span>${order.remarks }
@@ -47,11 +48,12 @@
 			<c:if test="${order.device ==3 }">微信</c:if>
 			<c:if test="${order.device ==4 }">114等网站</c:if>
 			<c:if test="${order.device ==5 }">后台</c:if>
+			<c:if test="${order.device ==6 }">wap站</c:if>
 		</p>
 	</div>
 	<div class="col-md-6">
 		<p>
-			<span>用户信息：</span>
+			<span>用户信息</span>
 		</p>
 		<p>
 			<span>用户名称：</span>${user.name }</p>
@@ -64,26 +66,26 @@
 		</p>
 
 		<p>
-			<span> 患者姓名：</span>${orderService.patientName }
+			<span> 指定人姓名：</span>
+			<c:choose>
+				<c:when test="${order.expectorId==order.acceptUserId }">${order.nurseName }</c:when>
+				<c:otherwise>
+					无指定人
+				</c:otherwise>
+			</c:choose>
 		</p>
 		<p>
-			<span>患者联系电话：</span>${orderService.patientPhone }
+			<span>接单人信息</span>
 		</p>
 		<p>
-			<span> </span>
-		</p>
-		<p>
-			<span>接单人信息：</span>
-		</p>
-		<p>
-			<span>接单人名称：</span>${nurse.name }</p>
+			<span>接单人名称：</span>${order.nurseName }</p>
 		<p>
 			<span>接单时间：</span>
 			<fmt:formatDate value="${order.acceptTime }"
 				pattern="yyyy-MM-dd  HH:mm:ss" />
 		</p>
 		<p>
-			<span>接单人联系电话：</span>${nurse.phone }</p>
+			<span>接单人联系电话：</span>${order.nursePhone }</p>
 	</div>
 </div>
 <div class="details_box clearfix">
@@ -93,29 +95,38 @@
 			<th>序号</th>
 			<th>患者姓名</th>
 			<th>患者电话</th>
+			<th>预约时间</th>
 			<th>服务开始时间</th>
 			<th>护士确认结束时间</th>
-			<th>用户确认结束时间</th>
 			<th>功能服务者</th>
 			<th>状态</th>
+			<th>操作</th>
 			<c:choose>
-				<c:when test="${fn:length(orderServiceList) >0}">
-					<c:forEach items="${orderServiceList}" var="e" varStatus="s">
+				<c:when test="${fn:length(order.orderServiceList) >0}">
+					<c:forEach items="${order.orderServiceList}" var="e" varStatus="s">
 						<tr class="bg_list_body">
 							<td width="30">${s.index+1}</td>
 							<td>${e.patientName}</td>
 							<td>${e.patientPhone}</td>
+							<td><fmt:formatDate value="${e.appointmentTime}"
+									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td><fmt:formatDate value="${e.startServiceTime}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td><fmt:formatDate value="${e.endServiceTime}"
 									pattern="yyyy-MM-dd HH:mm:ss" /></td>
-							<td><fmt:formatDate value="${e.remindTime}"
-									pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td>${e.nurseName }</td>
-							<td><c:if test="${e.schedule==1 }">未执行</c:if> <c:if
-									test="${e.schedule==2 }">执行中</c:if> <c:if
-									test="${e.schedule==3 }">待确定</c:if> <c:if
-									test="${e.schedule==4 }">已完成</c:if></td>
+							<td><c:if test="${e.schedule==0 }">未开始</c:if> <c:if
+									test="${e.schedule==1 }">执行中</c:if> <c:if
+									test="${e.schedule==2 }">待确认</c:if> <c:if
+									test="${e.schedule==3 }">已完成</c:if> <c:if
+									test="${e.schedule==4 }">已取消</c:if></td>
+							<td>
+								<jphs:hasPermission url="/product/redirectUpdate.jhtml">				
+								<a onclick="redirectUpdatePage('${e.id}')" title="修改">
+									<img  src="/static/images/xiugai.png">
+								</a>
+								</jphs:hasPermission>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:when>
@@ -132,64 +143,108 @@
 	<p class="details_box_xinxi">交易信息</p>
 	<div class="col-md-6">
 		<p>
-			<span>订单金额：</span>${og.price }<span>实际支付：</span>${og.payPrice }
+			<span>订单金额：</span>${order.orderGoods.price }<span>实际支付：</span>${order.orderGoods.payPrice }
 		</p>
 		<p>
-			<span>支付时间：</span>
-			<fmt:formatDate value="${og.createTime }"
-				pattern="yyyy-mm-dd  HH:mm:ss" />
+			<c:choose>
+				<c:when test="${null!=transactionUser }">
+					<span>支付时间：</span>
+					<fmt:formatDate value="${transactionUser.createTime }"
+						pattern="yyyy-mm-dd  HH:mm:ss" />
+						<!-- (1支付宝，2微信，3余额，4银联，5vip卡支付) -->
+					<span>支付方式：</span>
+					<c:if test="${transactionUser.payType==1 }">支付宝</c:if>
+					<c:if test="${transactionUser.payType==2 }">微信</c:if>
+					<c:if test="${transactionUser.payType==3 }">余额</c:if>
+					<c:if test="${transactionUser.payType==4 }">银联</c:if>
+					<c:if test="${transactionUser.payType==5 }">vip卡支付</c:if>
+					<span>交易号：</span>${transactionUser.outTradeNo }
+				</c:when>
+				<c:otherwise>
+					<span>无支付信息</span>
+				</c:otherwise>
+			</c:choose>
 		</p>
-		<p>
-			<span>优惠券编号：</span>${order.voucherUseId } <span>优惠券面额：</span>
-			${order.voucherPrice } <span>优惠金额：</span>
-				<c:if test="${og.price - og.payPrice <0 }">未使用优惠券</c:if>
-				<c:if test="${og.price - og.payPrice >=0 }">${og.price - og.payPrice }</c:if>
-		</p>
+		<c:choose>
+			<c:when test="${null!=order.voucherUseId&&order.voucherUseId!='' }">
+				<p>
+					<span>优惠券编号：</span>${order.voucherUseId } <span>优惠券面额：</span>
+					${order.voucherPrice } <span>优惠金额：</span>
+					<c:if test="${og.price - og.payPrice <0 }">未使用优惠券</c:if>
+					<c:if test="${og.price - og.payPrice >=0 }">${og.price - og.payPrice }</c:if>
+				</p>
+			</c:when>
+		</c:choose>
 	</div>
 
 </div>
-<div class="details_box clearfix">
-	<p class="details_box_xinxi">保险信息</p>
-	<div class="col-md-6">
-		<p>
-			<span>保险公司：</span>
-		</p>
-		<p>
-			<span>被保人姓名：</span>
-			<c:if test="${insurance.name==null }">未申请保险</c:if>
-			<c:if test="${insurance.name!=null }">${insurance.name }</c:if>
-		</p>
-		<p>
-			<span>被保人身份证号：</span>
-			<c:if test="${insurance.sfz==null }">暂无相关信息</c:if>
-			<c:if test="${insurance.sfz!=null }">${insurance.sfz }</c:if>
-		</p>
+<c:if test="${null!=insurance }">
+	<div class="details_box clearfix">
+		<p class="details_box_xinxi">保险信息</p>
+		<div class="col-md-6">
+			<p>
+				<span>被保人姓名：</span>
+				<c:if test="${insurance.name!=null }">${insurance.name }</c:if>
+			</p>
+			<p>
+				<span>被保人身份证号：</span>
+				<c:if test="${insurance.sfz!=null }">${insurance.sfz }</c:if>
+			</p>
+		</div>
+	
 	</div>
-
-</div>
-<div class="details_box clearfix">
-	<p class="details_box_xinxi">退款信息</p>
-	<div class="col-md-6">
-		<table style="width: 600px;">
-			<th>退款方式</th>
-			<th>退款金额</th>
-			<th>退款状态</th>
-			<th>退款时间</th>
-			<th>退款备注</th>
-			<tr style="text-align: center;">
-				<td>${refund.payType }</td>
-				<td>${refund.amount }</td>
-				<td>
-					<c:if test="${refund.remark!=null }">已完成</c:if>
-				</td>
-				<td><fmt:formatDate value="${refund.createTime}"
-						pattern="yyyy-mm-dd  HH:mm:ss" /></td>
-				<td>${refund.remark }</td>
-			</tr>
-		</table>
+</c:if>
+<c:if test="${order.schedule==6 }">
+	<c:if test="${null!=cancelOrder }">
+	<div class="details_box clearfix">
+		<p class="details_box_xinxi">取消订单信息</p>
+		<div class="col-md-6">
+			<p>
+				<span>取消时间：</span>
+				<c:if test="${cancelOrder.cancelTime!=null }"><fmt:formatDate value="${cancelOrder.cancelTime}"
+									pattern="yyyy-MM-dd HH:mm:ss" /></c:if>
+			</p>
+			<p>
+				<span>取消理由：</span>
+				<c:if test="${cancelOrder.cancelReason!=null }">${cancelOrder.cancelReason }</c:if>
+			</p>
+			<p>
+				<span>退款金额：</span>
+				<c:if test="${cancelOrder.price!=null }">${cancelOrder.price }</c:if>
+			</p>
+		</div>
+	
 	</div>
-</div>
-<div class="details_box clearfix">
+	</c:if>
+	<div class="details_box clearfix">
+		<p class="details_box_xinxi">退款信息</p>
+		<c:choose>
+			<c:when test="${null!=refund }">
+				<div class="col-md-6">
+					<table style="width: 600px;">
+						<th>退款方式</th>
+						<th>退款金额</th>
+						<th>退款状态</th>
+						<th>退款时间</th>
+						<th>退款备注</th>
+						<tr style="text-align: center;">
+							<td>${refund.payType }</td>
+							<td>${refund.amount }</td>
+							<td><c:if test="${refund.remark!=null }">已完成</c:if></td>
+							<td><fmt:formatDate value="${refund.createTime}"
+									pattern="yyyy-mm-dd  HH:mm:ss" /></td>
+							<td>${refund.remark }</td>
+						</tr>
+					</table>
+				</div>
+			</c:when>
+			<c:otherwise>
+				退款申请处理中......
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>
+<%-- <div class="details_box clearfix">
 	<p class="details_box_xinxi">评价信息</p>
 	<div class="col-md-6">
 		<p>
@@ -210,7 +265,7 @@
 				pattern="yyyy-MM-dd  HH:mm:ss" />
 		</p>
 	</div>
-</div>
+</div> --%>
 </div>
 
 
@@ -233,20 +288,20 @@
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
-							<span>订单编号：</span>${order.orderNo} <input type="hidden" id="orderId"
-								name="orderId" value="${order.orderNo }">
-								<input type="hidden" id="id"
-								name="id" value="${order.id }">
+							<span>订单编号：</span>${order.orderNo} <input type="hidden"
+								id="orderId" name="orderId" value="${order.orderNo }"> <input
+								type="hidden" id="id" name="id" value="${order.id }">
 						</p>
 						<p>
 							患者电话：<input id="patientPhone" name="patientPhone">
 						</p>
 					</div>
 				</div>
-				<div class="modal-footer mt-50 text-center" style="border-top:0;width:150px;margin:0 auto">
-					<button type="button" class="btn btn-default" data-dismiss="modal" >取消
+				<div class="modal-footer mt-50 text-center"
+					style="border-top: 0; width: 150px; margin: 0 auto">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消
 					</button>
-					<button type="submit" class="btn btn-primary" >提交</button>
+					<button type="submit" class="btn btn-primary">提交</button>
 				</div>
 			</form>
 		</div>
@@ -276,10 +331,9 @@
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
-							<span>订单编号：</span>${order.orderNo} <input type="hidden" id="orderId"
-								name="orderId" value="${order.orderNo }">
-								<input type="hidden" id="id"
-								name="id" value="${order.id }">
+							<span>订单编号：</span>${order.orderNo} <input type="hidden"
+								id="orderId" name="orderId" value="${order.orderNo }"> <input
+								type="hidden" id="id" name="id" value="${order.id }">
 						</p>
 						<p>预约时间：</p>
 						<div style="width: 100%;"
@@ -299,7 +353,8 @@
 
 					</div>
 				</div>
-				<div class="modal-footer mt-50 text-center" style="border-top:0;width:150px;margin:0 auto">
+				<div class="modal-footer mt-50 text-center"
+					style="border-top: 0; width: 150px; margin: 0 auto">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消
 					</button>
 					<button type="submit" class="btn btn-primary">提交</button>
@@ -322,41 +377,40 @@
 				<h4 class="modal-title" id="myModalLabel">订单信息</h4>
 			</div>
 			<form action="/order/updateDetailAddress.jhtml" method="post">
-				<div >
+				<div>
 					<input type="hidden" id="creatorId" name="creatorId" value="" /> <input
 						type="hidden" id="creatorName" name="creatorName" value="" /> <label
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
-							<span>订单编号：</span>${order.orderNo}<input type="hidden" id="orderId"
-								name="orderId" value="${order.orderNo }">
-								<input type="hidden" id="id"
-								name="id" value="${order.id }">
+							<span>订单编号：</span>${order.orderNo}<input type="hidden"
+								id="orderId" name="orderId" value="${order.orderNo }"> <input
+								type="hidden" id="id" name="id" value="${order.id }">
 						</p>
 						请填写详细地址：
 						<div data-toggle="distpicker">
-							<div class="form-group nurse_width" style="width:30%">
+							<div class="form-group nurse_width" style="width: 30%">
 								<label class="sr-only" for="province1">Province</label> <select
-									class="form-control" id="province1" name="address"
-									>
+									class="form-control" id="province1" name="address">
 									<option selected="selected">${site.locationId }</option>
 								</select>
-								</div>
-								<div class="form-group nurse_width" style="width: 40%;">
-									<label class="sr-only" for="city1">City</label> <select
-										class="form-control" id="city1" name="address"
-										></select>
-								</div>
-								<div class="form-group nurse_width" style="width: 30%;">
-									<label class="sr-only" for="district1">District</label> <select
-										class="form-control" id="district1" name="address" ></select>
-								</div>
-							
+							</div>
+							<div class="form-group nurse_width" style="width: 40%;">
+								<label class="sr-only" for="city1">City</label> <select
+									class="form-control" id="city1" name="address"></select>
+							</div>
+							<div class="form-group nurse_width" style="width: 30%;">
+								<label class="sr-only" for="district1">District</label> <select
+									class="form-control" id="district1" name="address"></select>
+							</div>
+
 						</div>
-						<textarea rows="1" cols="" id="detailAddress" name="detailAddress" style="width:100%" class="mt-20"></textarea>
+						<textarea rows="1" cols="" id="detailAddress" name="detailAddress"
+							style="width: 100%" class="mt-20"></textarea>
 					</div>
 				</div>
-				<div class="modal-footer mt-50 text-center" style="border-top:0;width:150px;margin:0 auto">
+				<div class="modal-footer mt-50 text-center"
+					style="border-top: 0; width: 150px; margin: 0 auto">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消
 					</button>
 					<button type="submit" class="btn btn-primary">提交</button>
@@ -415,22 +469,22 @@
 						class='col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label'></label>
 					<div class='col-lg-8 col-md-8 col-sm-8 col-xs-8' id='remark'>
 						<p>
-							<span>订单编号：</span>${order.orderNo} <<input type="hidden" id="orderId"
-								name="orderId" value="${order.orderNo }">
-								<input type="hidden" id="id"
-								name="id" value="${order.id }">
+							<span>订单编号：</span>${order.orderNo} <<input type="hidden"
+								id="orderId" name="orderId" value="${order.orderNo }"> <input
+								type="hidden" id="id" name="id" value="${order.id }">
 						</p>
 						<p>
-							退款金额：<input id="amount" name="amount" placeholder="元">
-							<input	id="operate" name="operate"  value="4" type="hidden">
+							退款金额：<input id="amount" name="amount" placeholder="元"> <input
+								id="operate" name="operate" value="4" type="hidden">
 						</p>
 						<p>
 							备注：
-							<textarea rows="2" id="remark" name="remark" style="width:100%"  ></textarea>
+							<textarea rows="2" id="remark" name="remark" style="width: 100%"></textarea>
 						</p>
 					</div>
 				</div>
-				<div class="modal-footer mt-50 text-center" style="border-top:0;width:150px;margin:0 auto">
+				<div class="modal-footer mt-50 text-center"
+					style="border-top: 0; width: 150px; margin: 0 auto">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消
 					</button>
 					<button type="submit" class="btn btn-primary">提交</button>

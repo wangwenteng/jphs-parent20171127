@@ -233,6 +233,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="orderId" column="order_id" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
 		<result property="nurseId" column="nurse_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="nurseName" column="nurseName" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="patientName" column="patient_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="patientPhone" column="patient_phone" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="expectorDoctor" column="expector_doctor" javaType="String" jdbcType="VARCHAR"></result>
@@ -379,8 +380,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="orderService">
-		SELECT <include refid="field"/>
+		SELECT <include refid="field"/>,u.`name` nurseName
 		FROM `ORDER_SERVICE` OS
+		LEFT JOIN `user` u ON OS.nurse_id = u.id
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>

@@ -2,6 +2,8 @@ package com.jinpaihushi.jphs.push.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.jinpaihushi.utils.MD5;
+
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.JPushClient;
@@ -25,20 +27,21 @@ public class NurseJPush {
 
     //极光推送技术难题解决：http://blog.163.com/lujun19888@126/blog/static/30821972201531011362680/
     @Value("${Jpush}")
-    private String Jpush;
+    private String Jpush = "false";
 
     public static void main(String[] args) {
         //发送通知
         try {
-            new NurseJPush().jpushAlias("您有新的消息123123===", "42890", "00");
-            new NurseJPush().jpushTag("您有新的消息123123---", "18513683376", "00");
+            new NurseJPush().jpushTag("金牌康护提示您：天气转凉，请注意保暖！", MD5.md5crypt(MD5.md5crypt("北京")).substring(0, 8), "00");
+            //            new NurseJPush().jpushTag("您有新的消息123123---", "42883", "00");
+            //            new NurseJPush().jpushAlias("您有新的消息123123---", "15101588243", "00");
             //jpushTag("您有新的消息123","15210452542");
             //jpushTag("您有新的消息123","18605442910");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        new NurseJPush().jpushAlias("您有新的消息1234", "123456", "00");
+        //        new NurseJPush().jpushAlias("您有新的消息1234", "123456", "00");
 
     }
 

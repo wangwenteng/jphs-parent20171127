@@ -50,7 +50,16 @@
 		<p>
 			<span>优惠券：</span> ${commodityOrder.voucherPrice }
 			</p><p>
-			<span>物流费：</span> 免物流费
+			<span>物流费：</span> 0.00
+		</p>
+		<p>
+			<span>物流信息：</span> 
+			<c:if test="${cl.no!=null }">
+				${cl.name }
+				：${cl.no }
+				
+			<a data-toggle="modal" data-target="#Modal"  >查看物流</a>
+			</c:if>
 		</p>
 		<p>
 			<span>支付方式：</span> 
@@ -130,6 +139,10 @@
 			<th>金额</th>
 			<th>分销人</th>
 			<th>分销金额</th>
+			 <c:if test="${commodityOrder.schedule == -2}">
+			<th width="250px">退款原因</th>
+			<th>审核结果</th>
+			</c:if>
 			<c:choose>
 				<c:when test="${fn:length(coiList) >0}">
 					<c:forEach items="${coiList}" var="e" varStatus="s">
@@ -144,7 +157,21 @@
 							<td>${e.price }</td>
 							<td>${e.userName }</td>
 							<td>${e.profit }</td>
-							<td></td>
+							 <c:if test="${commodityOrder.schedule == -2}">
+							<td>${e.crReason }</td>
+							<td>
+								<c:if test="${e.crStatus == -2 }">
+									已拒绝
+								</c:if>
+								<c:if test="${e.crStatus == 2 }">
+									已退款
+								</c:if>
+								<c:if test="${e.crStatus == 1 }">
+									<a onclick=updateStatus("${e.crId }","-2")>拒绝</a>
+									<a onclick=updateStatus("${e.crId }","2")>同意</a>
+								</c:if>
+							</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</c:when>
@@ -156,4 +183,33 @@
 			</c:choose>
 		</table>
 	</div>
+</div>
+
+
+
+
+<div>
+	<div class="modal fade" id="Modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">物流信息</h4>
+			</div>
+				
+					<div style="text-align: center;">
+						<div class="controls col-md-6"
+							style="width: 100%; margin-left: 15px;">
+						</div>
+						<div >
+							 
+						</div>
+						</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
 </div>

@@ -6,64 +6,70 @@
 <%@taglib prefix="jphs" uri="http://www.jinpaihushi.com/jsp/core"%>
 <div>
 	<input type="hidden" id="id" name="id" value="${order.id}" />
-	<div style="margin: 10px 0px 10px 0px;" class="event_start_from">
-		<form action="/order/redirectUpdate.jhtml?id=${order.id }"  method="post">
-			<div  class="text-center">
-				<div>
-					<divtyle="margin: 20px;">护士姓名： 
-					 <input type="text" id="user.name" name="user.name" value="${nurse.user.name }"></div>
-				</div>
-				<div  class="text-center">
-					<div style="margin:20px 0 20px 0">手机号码： <input type="text" id="user.phone" name="user.phone" value=${nurse.user.phone }></div>
-				</div>
-				<div  class="text-center">
-					<div >护士类型：
-						<select  style="height: 30px;width: 180px" id="type" name="type">
-							<option value="1"
-								<c:if test="${nurse.type==1}">selected="selected"</c:if>>护士</option>
-							<option value="2"
-								<c:if test="${nurse.type==2}">selected="selected"</c:if>>康复师</option>
-								<option value="3"
-								<c:if test="${nurse.type==3}">selected="selected"</c:if>>母婴护理师</option>
-						</select>
-				</div>
-				</div>
-					<div class="text-center" style="margin: 5px;"><input type="submit"  type="button" class="public-info public_btn" data-role="search-btn" value="搜索"></div>
-		</form>
-		<form action="/order/insert.jhtml" method="post">
-			<input type="hidden" id="id" name="id" value="${order.id }">
-			<input type="hidden" id="schedule" name="schedule" value="1">
-			<table id="orderTable" style="border: none" class="tableStyle">
-				<tr>
-					<td style="width: 10%;"></td>
-					<td style="width: 20%;">姓名</td>
-					<td style="width: 20%;">手机号</td>
-					<td style="width: 50%;">类型</td>
-				</tr>
-				<c:choose>
-				<c:when test="${fn:length(list) >0}">
-					<c:forEach items="${list}" var="e" varStatus="s">
-						<tr class="bg_list_body">
-							<td width="30">
-							<input type="radio" id="acceptUserId" name="acceptUserId" value="${e.creatorId }"></td>
-							<td>${e.user.name }</td>
-							<td>${e.user.phone }</td>
-							<td>
-								<c:if test="${e.type==1 }">护士</c:if>
-								<c:if test="${e.type==2 }">康复师</c:if>
-								<c:if test="${e.type==3 }">母婴护理师</c:if>
-							</td>
-						</tr>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<tr>
-						<td colspan="20" align="center">没有可显示的记录。</td>
+	<table id="dateTable" cellpadding="0" cellspacing="0"
+	class="data_table text-center" style="width:100%;">
+	<thead>
+		<tr>
+			<th width="30"></th>
+			<th>姓名</th>
+			<th>手机号</th>
+			<th>性别</th>
+			<th>年龄</th>
+			<th>工龄</th>
+			<th>医院</th>
+			<th>接单数</th>
+			<th>状态</th>
+			<th width="125">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:choose>
+			<c:when test="${fn:length(list) >0}">
+				<c:forEach items="${list}" var="e" varStatus="s">
+					<tr class="bg_list_body">
+						<td width="30">${s.index+1}</td>
+						<td><c:out value="${e.user.name}" /></td>
+						<td><c:out value="${e.user.phone}" /></td>
+						<td>
+							<c:if test="${e.user.sex==0}">男</c:if>
+							<c:if test="${e.user.sex==1}">女</c:if>
+						</td>
+						<td><c:if test="${fn:length(e.sfz)>0 }">
+								<c:set var="idcard" value="${fn:substring(e.sfz,6,10) }" />
+								<jsp:useBean id="nowDate" class="java.util.Date" />
+								<fmt:formatDate var="nowStr" value="${nowDate}" pattern="yyyy" />
+								<c:if test="${nowStr-idcard<=0 }">1</c:if>
+								<c:if test="${nowStr-idcard>0 }">${nowStr-idcard}</c:if>
+							</c:if></td>
+						<td><fmt:formatDate var="str" value="${e.workYears}"
+								pattern="yyyy" /> <fmt:formatDate var="nowStr"
+								value="${nowDate}" pattern="yyyy" /> <c:if
+								test="${nowStr-str<=0 }">1</c:if> <c:if test="${nowStr-str>0 }">${nowStr-str}</c:if>
+						</td>
+						<td><c:out value="${e.hospital}" /></td>
+						<td><c:out value="${e.serviceNumber}" /></td>
+						<td><c:if test="${e.status == 0}"><span style="color: #F0BB1C;">待审核</span></c:if> 
+							<c:if test="${e.status == 1}"><span style="color: #34BC2C;">已审核</span></c:if> 
+						</td>
+						<td>
+							<jphs:hasPermission url="/order/detail.jhtml">
+							<a onclick="redirectDetailPage('${e.id}')"> <img
+									src="/static/images/xiugai.png">
+							</a>
+							</jphs:hasPermission>
+						 </td>
 					</tr>
-				</c:otherwise>
-			</c:choose>
-			</table>
-					<div class="text-center"><button type="submit"  class="public-info public_btn" data-role="search-btn">确定</button></div>
-		</form>
-	</div>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<tr>
+					<td colspan="20" align="center">没有可显示的记录。</td>
+				</tr>
+			</c:otherwise>
+		</c:choose>
+	</tbody>
+</table>
+<div class="page">
+	<jphs:page pageInfos="${pageInfo}"></jphs:page>
+</div>
 </div>

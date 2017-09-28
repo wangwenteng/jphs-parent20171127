@@ -607,4 +607,52 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<delete id="deleteAll">
 		DELETE w FROM worktime  w
 	</delete>
+	<update id="updateByUserId">
+		UPDATE `WORKTIME` W
+		<include refid="updateByUserId" />
+		WHERE W.userId = #{userid} AND W.calendar=#{calendar}
+	</update>
+	<sql id="updateByUserId">
+		<set>
+			<if test="h9!=null">
+				W.h_9=#{h9},
+			</if>
+			<if test="h10!=null">
+				W.h_10=#{h10},
+			</if>
+			<if test="h11!=null">
+				W.h_11=#{h11},
+			</if>
+			<if test="h12!=null">
+				W.h_12=#{h12},
+			</if>
+			<if test="h13!=null">
+				W.h_13=#{h13},
+			</if>
+			<if test="h14!=null">
+				W.h_14=#{h14},
+			</if>
+			<if test="h15!=null">
+				W.h_15=#{h15},
+			</if>
+			<if test="h16!=null">
+				W.h_16=#{h16},
+			</if>
+			<if test="h17!=null">
+				W.h_17=#{h17},
+			</if>
+			<if test="h18!=null">
+				W.h_18=#{h18},
+			</if>
+			<if test="h19!=null">
+				W.h_19=#{h19},
+			</if>
+			<if test="h20!=null">
+				W.h_20=#{h20},
+			</if>
+			<if test="h21!=null">
+				W.h_21=#{h21},
+			</if>
+		</set>
+	</sql>
 </mapper>

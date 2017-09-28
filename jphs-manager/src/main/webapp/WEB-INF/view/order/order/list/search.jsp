@@ -7,7 +7,7 @@
 <div class="clearfix">
 	<table class="text-right ">
 		<tr>
-		<input type="hidden" name="schedule" id="schedule" value="${order.schedule}" />
+		<%-- <input type="hidden" name="schedule" id="schedule" value="${order.schedule}" /> --%>
 			<td>昵称：</td>
 			<td width="200">
 				<input type="text" name="userName" id="userName" value="${order.userName}" />
@@ -48,6 +48,31 @@
 						<c:if test="${order.device==4}">selected="selected"</c:if>>114等网站</option>
 						<option value="5"
 						<c:if test="${order.device==5}">selected="selected"</c:if>>后台</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>订单状态：</td>
+			<td width="200">
+					<select class="form-control input-xlarge" id="schedule"
+					name="schedule">
+					<option value="" >全部订单</option>
+					<option value="0"
+						<c:if test="${order.schedule==0}">selected="selected"</c:if>>待支付</option>
+					<option value="1"
+						<c:if test="${order.schedule==1}">selected="selected"</c:if>>待接单</option>
+					<option value="2"
+						<c:if test="${order.schedule==2}">selected="selected"</c:if>>已接单</option>
+						<option value="3"
+						<c:if test="${order.schedule==3}">selected="selected"</c:if>>执行中</option>
+						<option value="4"
+						<c:if test="${order.schedule==4}">selected="selected"</c:if>>待确定</option>
+						<option value="5"
+						<c:if test="${order.schedule==5}">selected="selected"</c:if>>已完成</option>
+						<option value="6"
+						<c:if test="${order.schedule==6}">selected="selected"</c:if>>已取消</option>
+						<option value="7"
+						<c:if test="${order.schedule==7}">selected="selected"</c:if>>申诉中</option>
 				</select>
 			</td>
 		</tr>

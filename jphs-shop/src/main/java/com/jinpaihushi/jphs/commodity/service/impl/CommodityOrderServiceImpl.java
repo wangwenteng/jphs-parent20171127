@@ -194,6 +194,8 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 								commodityOrder.setPayPrice(payPrice);
 								commodityOrder.setProtectDay(commodity.getProtectDay());
 								commodityOrder.setVoucherUseId("");
+								System.out.println("===================================");
+								System.out.println(device);
 								commodityOrder.setDevice(device);
 								commodityOrder.setPlatformId(platformId);
 								// commodityOrder.setVoucherPrice(0);
@@ -342,7 +344,7 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 		for (int i = 0; i < orderList.size(); i++) {
 			System.out.println(orderList.get(i).getId());
 			String id = orderList.get(i).getId();
-System.out.println(id);
+ 
 			int allNumber = commodityOrderInfoDao.getAllNumber(id);
 			orderList.get(i).setCount(allNumber);
 
@@ -660,10 +662,6 @@ System.out.println(id);
 							remark += coi.getTitle();
 						}
 					}
-					
-
-					
-					
 
 					Transaction transaction = new Transaction();
 					transaction.setId(UUID.randomUUID().toString());

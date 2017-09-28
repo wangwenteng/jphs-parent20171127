@@ -13,6 +13,8 @@ import com.jinpaihushi.jphs.commodity.model.CommodityLogistics;
  */
 @Repository("commodityLogisticsDao")
 public interface CommodityLogisticsDao extends BaseDao<CommodityLogistics> {
+
+	CommodityLogistics getInfo(String coId);
 	
 	
 	

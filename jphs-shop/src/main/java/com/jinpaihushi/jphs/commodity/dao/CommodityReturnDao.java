@@ -13,6 +13,8 @@ import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
  */
 @Repository("commodityReturnDao")
 public interface CommodityReturnDao extends BaseDao<CommodityReturn> {
+
+	CommodityReturn getNotStatus(CommodityReturn commodityReturn);
 	
 	
 	

@@ -196,6 +196,23 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="creatorName" column="CL_creator_name" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
+	<resultMap id="cl" type="com.jinpaihushi.jphs.commodity.model.CommodityLogistics">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderId" column="commodity_order_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="logisticsId" column="logistics_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="price" column="price" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="schedule" column="schedule" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="type" column="type" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="code" column="code" javaType="String" jdbcType="VARCHAR"></result>
+	</resultMap>
+	
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityLogistics">
 		INSERT INTO `COMMODITY_LOGISTICS`(
 			id, commodity_order_id, 
@@ -285,6 +302,17 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		SELECT <include refid="field"/>
 		FROM `COMMODITY_LOGISTICS` CL
 		WHERE CL.ID = #{id}
+	</select>
+	
+	<select id="getInfo" resultMap="cl">
+		SELECT
+			cl.`no`,
+		l.`name`,
+		l.`code`
+		FROM
+			commodity_logistics cl
+		LEFT JOIN logistics l ON (cl.logistics_id= l.id) 
+		WHERE cl.commodity_order_id = #{coId}
 	</select>
 	
 </mapper>

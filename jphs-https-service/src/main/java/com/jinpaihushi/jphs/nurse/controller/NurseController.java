@@ -105,7 +105,8 @@ public class NurseController {
     public byte[] getRecommendNurse(HttpSession hs, HttpServletRequest req, HttpServletResponse resp,
             @RequestParam(value = "lon", defaultValue = "116.403119", required = true) String lon,
             @RequestParam(value = "lat", defaultValue = "39.914492", required = true) String lat, String goodsId,
-            String priceId, String time, @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
+            String city, String priceId, String time,
+            @RequestParam(value = "p", defaultValue = "1", required = true) Integer p,
             @RequestParam(value = "n", defaultValue = "10", required = true) Integer n) {
         try {
             if (Util.debugLog.isDebugEnabled()) {
@@ -119,6 +120,9 @@ public class NurseController {
                 lon = "116.403119";
                 lat = "39.914492";
             }
+            if (StringUtils.isEmpty(city)) {
+                city = "北京";
+            }
             //护士基本信息
             Map<String, Object> query = new HashMap<>();
             query.put("goodsId", goodsId);
@@ -126,6 +130,7 @@ public class NurseController {
             query.put("lat", lat);
             query.put("time", time);
             query.put("priceId", priceId);
+            query.put("city", city);
             PageHelper.startPage(p, n);
             List<Map<String, Object>> recommendNurse = nurseService.getRecommendNurse(query);
             PageInfo<Map<String, Object>> page = new PageInfo<Map<String, Object>>(recommendNurse);

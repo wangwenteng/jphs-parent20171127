@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.order.service.impl;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -64,10 +65,13 @@ import com.jinpaihushi.jphs.user.model.User;
 import com.jinpaihushi.jphs.user.model.UserAddress;
 import com.jinpaihushi.jphs.voucher.dao.VoucherRepertoryDao;
 import com.jinpaihushi.jphs.voucher.service.VoucherService;
+import com.jinpaihushi.jphs.worktime.dao.WorktimeDao;
+import com.jinpaihushi.jphs.worktime.model.Worktime;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.utils.Common;
 import com.jinpaihushi.utils.DoubleUtils;
 import com.jinpaihushi.utils.JSONUtil;
+import com.jinpaihushi.utils.MD5;
 import com.jinpaihushi.utils.TransactionTemplateUtils;
 import com.jinpaihushi.utils.UUIDUtils;
 import com.jinpaihushi.utils.Util;
@@ -152,6 +156,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     @Autowired
     private NurseJPushService nurseJPushService;
 
+    @Autowired
+    private WorktimeDao worktimeDao;
+
     //#护士接单
     @Value("${SMS_Nurse_orders}")
     private String SMS_Nurse_orders;
@@ -168,9 +175,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     @Value("${SMS_pay_success}")
     private String SMS_pay_success;
 
+    //通知新订单
+    @Value("${SMS_notice_order}")
+    private String SMS_notice_order;
+
     //支付成功
     @Value("${SMS_cancel_order}")
     private String SMS_cancel_order;
+
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     protected BaseDao<Order> getDao() {
@@ -375,19 +388,20 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
 
     public List<Map<String, Object>> getOrderGoodsList(Map<String, Object> map) {
         List<Map<String, Object>> q_order_list = orderDao.orderNotList(map);
-        if(q_order_list.size() < 10){
-         Map<String, Object> q_o_map_s = new HashMap<String, Object>();
-         q_o_map_s.put("status", 1);
-         q_o_map_s.put("type", 1);
-         List<Map<String, Object>> q_order_list_s = orderDao.orderaccNotNullList(q_o_map_s);
-         if(q_order_list_s.size() > 0 ){
-           	 int size_l = 10 - q_order_list.size();
-           	 if(size_l > q_order_list_s.size()){
-           		 q_order_list.addAll(q_order_list_s); 
-           	 }else{
-           		 q_order_list.addAll(q_order_list_s.subList(0, size_l));
-           	 }
-         }
+        if (q_order_list.size() < 10) {
+            Map<String, Object> q_o_map_s = new HashMap<String, Object>();
+            q_o_map_s.put("status", 1);
+            q_o_map_s.put("type", 1);
+            List<Map<String, Object>> q_order_list_s = orderDao.orderaccNotNullList(q_o_map_s);
+            if (q_order_list_s.size() > 0) {
+                int size_l = 10 - q_order_list.size();
+                if (size_l > q_order_list_s.size()) {
+                    q_order_list.addAll(q_order_list_s);
+                }
+                else {
+                    q_order_list.addAll(q_order_list_s.subList(0, size_l));
+                }
+            }
         }
 
         return q_order_list;
@@ -431,6 +445,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             public String doInTransaction(final TransactionStatus status) {
                 int i = 0;
                 try {
+
                     // 先获取商品的基本信息
                     Goods goods = goodsDao.getGoodsByPricePart(orderInfo.getPricePartId());
                     Double salePrice = 0.00;
@@ -452,10 +467,24 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     Double profit = pricePart.getProfit();
                     Double nursePrice = 0.00;
                     if (profit > 1) {
-                        nursePrice = DoubleUtils.sub(salePrice, pricePart.getProfit());
+                        if (salePrice > pricePart.getPrice()) {
+                            nursePrice = DoubleUtils.sub(pricePart.getPrice(), pricePart.getProfit());
+                            nursePrice = DoubleUtils.add(nursePrice,
+                                    DoubleUtils.mul(DoubleUtils.sub(salePrice, pricePart.getPrice()), 0.75));
+                        }
+                        else {
+                            nursePrice = DoubleUtils.sub(salePrice, pricePart.getProfit());
+                        }
                     }
                     else {
-                        nursePrice = DoubleUtils.sub(salePrice, DoubleUtils.mul(salePrice, profit));
+                        if (salePrice > pricePart.getPrice()) {
+                            nursePrice = DoubleUtils.sub(pricePart.getPrice(), DoubleUtils.mul(salePrice, profit));
+                            nursePrice = DoubleUtils.add(nursePrice,
+                                    DoubleUtils.mul(DoubleUtils.sub(salePrice, pricePart.getPrice()), 0.75));
+                        }
+                        else {
+                            nursePrice = DoubleUtils.sub(salePrice, DoubleUtils.mul(salePrice, profit));
+                        }
                     }
                     Double onePrice = DoubleUtils.div(nursePrice, price.getServiceNumber(), 2);
                     //判断是否有订单id
@@ -498,15 +527,213 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     }
 
                     String[] images = null;
+                    //判断就医证明
+                    if (goods.getIsProve() != 3) {
+                        images = orderInfo.getImages().split(",");
+                        if (images.length <= 0)
+                            return "2";
+                    }
+                    // 判断商品的信息中是否需要工具药品
+                    if (goods.getDzTool() == 1) {
+                        if (StringUtils.isEmpty(orderInfo.getDrug())) {
+                            return "4";
+                        }
+                    }
+                    if (goods.getHlTool() == 1) {
+                        if (StringUtils.isEmpty(orderInfo.getTool())) {
+                            return "4";
+                        }
+                    }
                     BeanUtils.copyProperties(order, orderInfo);
                     order.setId(UUIDUtils.getId());
                     order.setOrderNo(Common.getOrderNumber());
                     order.setSchedule(0);
                     order.setStatus(1);
-                    order.setVoucherPrice(DoubleUtils.sub(salePrice, voucherUsePrice));
+                    order.setVoucherPrice(voucherUsePrice);
+                    //如果有制定护士的话 设置接单人   接单时间 并修改护士的日程
                     if (StringUtils.isNotEmpty(orderInfo.getExpectorId())) {
                         order.setAcceptUserId(orderInfo.getExpectorId());
                         order.setAcceptTime(new Date());
+                        //根据预约时间修改护士的日程     appointment_time
+                        String appointmentTime = format.format(order.getAppointmentTime());
+                        String days = appointmentTime.substring(0, 10);
+                        String hour = appointmentTime.substring(11, 13);
+                        Worktime workTime = new Worktime();
+                        workTime.setCalendar(days);
+
+                        workTime.setUserid(orderInfo.getExpectorId());
+                        Worktime resultTime = worktimeDao.load(workTime);
+                        boolean flag = false;
+                        //判断时间 
+                        switch (Integer.parseInt(hour)) {
+                        case 9:
+                            if (resultTime.getH9() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 10:
+                            if (resultTime.getH10() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 11:
+                            if (resultTime.getH11() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 12:
+                            if (resultTime.getH12() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 13:
+                            if (resultTime.getH13() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 14:
+                            if (resultTime.getH14() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 15:
+                            if (resultTime.getH15() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 16:
+                            if (resultTime.getH16() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 17:
+                            if (resultTime.getH17() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 18:
+                            if (resultTime.getH18() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 19:
+                            if (resultTime.getH19() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 20:
+                            if (resultTime.getH20() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        case 21:
+                            if (resultTime.getH21() == 0) {
+                                flag = false;
+                            }
+                            else {
+                                flag = true;
+                            }
+                            ;
+                            break;
+                        }
+                        if (!flag) {
+                            switch (Integer.parseInt(hour)) {
+                            case 9:
+                                workTime.setH9(2);
+                                break;
+                            case 10:
+                                workTime.setH10(2);
+                                break;
+                            case 11:
+                                workTime.setH11(2);
+                                break;
+                            case 12:
+                                workTime.setH12(2);
+                                break;
+                            case 13:
+                                workTime.setH13(2);
+                                break;
+                            case 14:
+                                workTime.setH14(2);
+                                break;
+                            case 15:
+                                workTime.setH15(2);
+                                break;
+                            case 16:
+                                workTime.setH16(2);
+                                break;
+                            case 17:
+                                workTime.setH17(2);
+                                break;
+                            case 18:
+                                workTime.setH18(2);
+                                break;
+                            case 19:
+                                workTime.setH19(2);
+                                break;
+                            case 20:
+                                workTime.setH20(2);
+                                break;
+                            case 21:
+                                workTime.setH21(2);
+                                break;
+
+                            default:
+                                break;
+                            }
+                            worktimeDao.updateByUserId(workTime);
+                        }
+                        else {
+                            return "3";
+                        }
                     }
                     order.setCreateTime(new Date());
                     i = orderDao.insert(order);
@@ -542,26 +769,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                             orderOther.setOrderId(order.getId());
                             orderOther.setAddress(address);
                             orderOther.setDetailAddress(detailAddress);
-                            // 判断商品的信息中是否需要工具药品
-                            if (goods.getDzTool() == 1) {
-                                if (StringUtils.isEmpty(orderInfo.getDrug())) {
-                                    return "0";
-                                }
-                            }
-                            if (goods.getHlTool() == 1) {
-                                if (StringUtils.isEmpty(orderInfo.getTool())) {
-                                    return "0";
-                                }
-                            }
+
                             i = orderOtherDao.insert(orderOther);
                             // 判断是否需要上传就医证明
                             // 如果IsProve =3 不需要上传 2需要一张 1 需要三张
-                            if (goods.getIsProve() != 3) {
-                                images = orderInfo.getImages().split(",");
-                                if (images.length <= 0)
-                                    return "0";
-                            }
-                            System.out.println(1);
+
                             ServiceImages serviceImages = null;
                             if (i > 0) {
                                 serviceImages = new ServiceImages();
@@ -665,6 +877,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             //发送短信
             return result;
         }
+        else if (Integer.parseInt(rs) == 2) {
+            //发送短信
+            result.put("msg", "请上传就医证明！");
+            return result;
+        }
+        else if (Integer.parseInt(rs) == 3) {
+            //发送短信
+            result.put("msg", "护士的时间已经被预约！");
+            return result;
+        }
         else {
             return null;
         }
@@ -693,6 +915,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
             }
             if (StringUtils.isEmpty(order.getAcceptUserId())) {
                 resetVouvher(orderId, order);
+                refundFlag = true;
                 msg = "您的订单已经取消！";
             }
             if (order.getSchedule() < 3 && order.getSchedule() > 0) {
@@ -739,6 +962,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     Map<String, Object> map = getSmsMessage(orderId);
                     doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_cancel_order,
                             "{\"order_no\":\"" + map.get("order_no").toString() + "\"}");
+                    //通知客服
+                    doPostSmsService.sendSms("13581912414", SMS_notice_order,
+                            "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
+                                    + map.get("order_no").toString() + "\"}");
                 }
             }
         }
@@ -758,6 +985,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 cancelOrder.setStatus(0);
                 cancelOrder.setCreatorId(user.getId());
                 cancelOrder.setCreatorName(user.getName());
+                cancelOrder.setCreateTime(new Date());
                 cancelOrderDao.insert(cancelOrder);
             }
             else {
@@ -873,11 +1101,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 }
                 Order orderUp = new Order();
                 orderUp.setId(orders.getId());
-                if(orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())){
-	               	 orderUp.setSchedule(2);
-	               }else{
-	               	orderUp.setSchedule(1);
-	               }
+                if (orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())) {
+                    orderUp.setSchedule(2);
+                }
+                else {
+                    orderUp.setSchedule(1);
+                }
                 int orderUpbool = orderDao.update(orderUp);
                 // 记录日志-debug
                 if (Util.debugLog.isDebugEnabled()) {
@@ -900,21 +1129,35 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                             // 发送验证码
                             //通知用户下单成功
                             doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
-                                    "{\"out_trade_no\":\"" + out_trade_no + "\"}");
+                                    "{\"service_name\":\"" + map.get("goodsName").toString() + "\"}");
+                            //通知客服
+                            doPostSmsService.sendSms("13581912414", SMS_notice_order,
+                                    "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
+                                            + map.get("order_no").toString() + "\"}");
                             //判断订单有没有接单人有的话通知护士
-                            if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                            if (StringUtils.isNotEmpty(orders.getAcceptUserId())) {
                                 //通知用户
                                 doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
-                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
-                                                + map.get("nurseName").toString() + "\",\"phone\":"
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":\""
+                                                + map.get("nurseName").toString() + "\",\"phone\":\""
                                                 + map.get("nursePhone").toString() + "\"}");
                                 //通知护士有新的订单
                                 doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
                                         "{\"name\":\"" + map.get("userName").toString() + "\"}");
                                 //推送消息
-                                nurseJPushService.jpushTag(
-                                        "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                nurseJPushService.jpushAlias("您有一笔新的订单待处理，请登录APP查看订单状态并及时联系客户，服务开始时做好录音准备，避免造成纠纷。",
                                         map.get("nursePhone").toString(), "0");
+                            }
+                            else {
+                                String address = map.get("address").toString();
+                                String area = "";
+                                if (address.split(",")[1].equals("市辖区")) {
+                                    area = address.split(",")[0].substring(0, 2);
+                                }
+                                else {
+                                    area = address.split(",")[1].substring(0, 2);
+                                }
+                                nurseJPushService.jpushTag("", MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
                             }
                         }
                         return true;
@@ -1232,6 +1475,155 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     if (StringUtils.isEmpty(productId)) {
                         return "11";
                     }
+
+                    Order orders = new Order();
+                    orders.setId(orderId);
+                    orders.setSchedule(1);
+                    orders.setStatus(1);
+                    orders = orderDao.load(orders);
+                    // 8.错误		该订单已被抢走
+                    if (orders == null) {
+                        return "8";
+                        //          				return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
+                    }
+
+                    //根据预约时间修改护士的日程     appointment_time
+                    String appointmentTime = format.format(orders.getAppointmentTime());
+                    String days = appointmentTime.substring(0, 10);
+                    String hour = appointmentTime.substring(11, 13);
+                    Worktime workTime = new Worktime();
+                    workTime.setCalendar(days);
+                    workTime.setUserid(user.getId());
+                    Worktime resultTime = worktimeDao.load(workTime);
+                    if (resultTime == null) {
+                        return "18";
+                    }
+                    boolean flag = false;
+                    //判断时间 
+                    switch (Integer.parseInt(hour)) {
+                    case 9:
+                        if (resultTime.getH9() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 10:
+                        if (resultTime.getH10() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 11:
+                        if (resultTime.getH11() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 12:
+                        if (resultTime.getH12() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 13:
+                        if (resultTime.getH13() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 14:
+                        if (resultTime.getH14() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 15:
+                        if (resultTime.getH15() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 16:
+                        if (resultTime.getH16() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 17:
+                        if (resultTime.getH17() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 18:
+                        if (resultTime.getH18() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 19:
+                        if (resultTime.getH19() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 20:
+                        if (resultTime.getH20() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    case 21:
+                        if (resultTime.getH21() == 0) {
+                            flag = false;
+                        }
+                        else {
+                            flag = true;
+                        }
+                        ;
+                        break;
+                    }
+
+                    if (flag) {
+                        return "17";
+                    }
+
                     if (!productId.equals("139")) {
                         OrderOther oo = new OrderOther();
                         oo.setOrderId(orderId);
@@ -1244,6 +1636,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         if (oo_list.get(0).getAddress() == null || oo_list.get(0).getAddress().equals("")) {
                             return "11";
                         }
+
                         UserAddress ua = new UserAddress();
                         ua.setCreatorId(user.getId());
                         ua.setStatus(0);
@@ -1317,6 +1710,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                             return "16";
                         }
                     }
+
                     Order order = new Order();
                     order.setId(orderId);
                     order.setSchedule(1);
@@ -1327,6 +1721,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         return "8";
                         //          				return JSONUtil.toJSONResult(0, "该订单已被抢走！", null);
                     }
+
                     Order order_up = new Order();
                     order_up.setId(orderId);
                     order_up.setSchedule(2);
@@ -1338,6 +1733,53 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                         return "9";
                         //          				return JSONUtil.toJSONResult(0, "接单失败！", null);
                     }
+                    if (!flag) {
+                        switch (Integer.parseInt(hour)) {
+                        case 9:
+                            workTime.setH9(2);
+                            break;
+                        case 10:
+                            workTime.setH10(2);
+                            break;
+                        case 11:
+                            workTime.setH11(2);
+                            break;
+                        case 12:
+                            workTime.setH12(2);
+                            break;
+                        case 13:
+                            workTime.setH13(2);
+                            break;
+                        case 14:
+                            workTime.setH14(2);
+                            break;
+                        case 15:
+                            workTime.setH15(2);
+                            break;
+                        case 16:
+                            workTime.setH16(2);
+                            break;
+                        case 17:
+                            workTime.setH17(2);
+                            break;
+                        case 18:
+                            workTime.setH18(2);
+                            break;
+                        case 19:
+                            workTime.setH19(2);
+                            break;
+                        case 20:
+                            workTime.setH20(2);
+                            break;
+                        case 21:
+                            workTime.setH21(2);
+                            break;
+
+                        default:
+                            break;
+                        }
+                        worktimeDao.updateByUserId(workTime);
+                    }
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -1347,16 +1789,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                 }
                 Map<String, Object> map = getSmsMessage(orderId);
                 doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
-                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
+                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":\""
                                 + map.get("nurseName").toString() + "\",\"phone\":" + map.get("nursePhone").toString()
                                 + "\"}");
                 //通知护士有新的订单
                 doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_Nurse_order,
-                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":"
+                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
                                 + map.get("order_no").toString() + "\",\"time\":" + map.get("accept_time").toString()
                                 + "\"}");
                 //推送消息
-                nurseJPushService.jpushTag(
+                nurseJPushService.jpushAlias(
                         "您接到一笔" + map.get("goodsName").toString() + "订单，单号：" + map.get("order_no").toString() + "，预约时间："
                                 + map.get("accept_time").toString()
                                 + "。请到官网下载打印相关服务注意事项和同意书后及时联系客户，服务开始时做好录音准备，避免造成纠纷。",
@@ -1466,10 +1908,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                     }
                     Order orderUp = new Order();
                     orderUp.setId(orders.getId());
-                    if(orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())){
-                    	 orderUp.setSchedule(2);
-                    }else{
-                    	orderUp.setSchedule(1);
+                    if (orders.getAcceptUserId() != null && !"".equals(orders.getAcceptUserId())) {
+                        orderUp.setSchedule(2);
+                    }
+                    else {
+                        orderUp.setSchedule(1);
                     }
                     int orderUpbool = orderDao.update(orderUp);
                     if (orderUpbool < 1) {
@@ -1487,19 +1930,33 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
                             // 发送验证码
                             //通知用户下单成功
                             doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_pay_success,
-                                    "{\"out_trade_no\":\"" + map.get("order_no").toString() + "\"}");
+                                    "{\"service_name\":\"" + map.get("goodsName").toString() + "\"}");
+                            //通知客服
+                            doPostSmsService.sendSms("13581912414", SMS_notice_order,
+                                    "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"order_no\":\""
+                                            + map.get("order_no").toString() + "\"}");
                             //判断订单有没有接单人有的话通知护士
-                            if (StringUtils.isNotEmpty(map.get("nursePhone").toString())) {
+                            if (StringUtils.isNotEmpty(orders.getAcceptUserId())) {
                                 doPostSmsService.sendSms(map.get("userPhone").toString(), SMS_Nurse_orders,
-                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":"
-                                                + map.get("nurseName").toString() + "\",\"phone\":"
+                                        "{\"service_name\":\"" + map.get("goodsName").toString() + "\",\"name\":\""
+                                                + map.get("nurseName").toString() + "\",\"phone\":\""
                                                 + map.get("nursePhone").toString() + "\"}");
                                 //通知护士有新的订单
                                 doPostSmsService.sendSms(map.get("nursePhone").toString(), SMS_nurse_delivery_order,
                                         "{\"name\":\"" + map.get("userName").toString() + "\"}");
-                                nurseJPushService.jpushTag(
-                                        "有一笔新的订单待处理，发单人：" + map.get("userName").toString() + "，请及时联系发单人处理该订单！",
+                                nurseJPushService.jpushAlias("您有一笔新的订单待处理，请登录APP查看订单状态并及时联系客户，服务开始时做好录音准备，避免造成纠纷。",
                                         map.get("nursePhone").toString(), "0");
+                            }
+                            else {
+                                String address = map.get("address").toString();
+                                String area = "";
+                                if (address.split(",")[1].equals("市辖区")) {
+                                    area = address.split(",")[0].substring(0, 2);
+                                }
+                                else {
+                                    area = address.split(",")[1].substring(0, 2);
+                                }
+                                nurseJPushService.jpushTag("", MD5.md5crypt(MD5.md5crypt(area)).substring(0, 8), "0");
                             }
                         }
                         catch (Exception e) {
@@ -1563,6 +2020,61 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
         if (StringUtils.isNotEmpty(order.getVoucherUseId())) {
             // 将优惠券的使用时间以及状态修改为未使用状态
             voucherRepertoryDao.updataUseTime(order.getVoucherUseId());
+
+        }
+        //如果有接单人话将接单人的时间打开
+        if (StringUtils.isNotEmpty(order.getAcceptUserId())) {
+            String appointmentTime = format.format(order.getAppointmentTime());
+            String days = appointmentTime.substring(0, 10);
+            String hour = appointmentTime.substring(11, 13);
+            Worktime workTime = new Worktime();
+            workTime.setCalendar(days);
+            workTime.setUserid(order.getAcceptUserId());
+            Worktime resultTime = worktimeDao.load(workTime);
+            switch (Integer.parseInt(hour)) {
+            case 9:
+                resultTime.setH9(0);
+                break;
+            case 10:
+                resultTime.setH10(0);
+                break;
+            case 11:
+                resultTime.setH11(0);
+                break;
+            case 12:
+                resultTime.setH12(0);
+                break;
+            case 13:
+                resultTime.setH13(0);
+                break;
+            case 14:
+                resultTime.setH14(0);
+                break;
+            case 15:
+                resultTime.setH15(0);
+                break;
+            case 16:
+                resultTime.setH16(0);
+                break;
+            case 17:
+                resultTime.setH17(0);
+                break;
+            case 18:
+                resultTime.setH18(0);
+                break;
+            case 19:
+                resultTime.setH19(0);
+                break;
+            case 20:
+                resultTime.setH20(0);
+                break;
+            case 21:
+                resultTime.setH21(0);
+                break;
+            default:
+                break;
+            }
+            worktimeDao.updateByUserId(resultTime);
         }
         // 修改子订单状态
         com.jinpaihushi.jphs.order.model.OrderService orderService = new com.jinpaihushi.jphs.order.model.OrderService();
@@ -1591,6 +2103,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements OrderSer
     @Override
     public Map<String, Object> getSmsMessage(String id) {
         return orderDao.getSmsMessage(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getNotInRank() {
+        return orderDao.getNotInRank();
     }
 
 }

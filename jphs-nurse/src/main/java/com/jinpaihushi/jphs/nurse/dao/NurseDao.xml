@@ -234,6 +234,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="createTime" column="create_time" javaType="Date"
 			jdbcType="TIMESTAMP"></result>
+		<result property="serviceNumber" column="serviceNumber" javaType="Integer"
+			jdbcType="INTEGER"></result>
 		<result property="active" column="active" javaType="Integer"
 			jdbcType="INTEGER"></result>
 		<result property="status" column="status" javaType="Integer"
@@ -648,30 +650,54 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<select id="getSomeNurse" resultMap="nurseDetail">
 		SELECT
-		`u`.`name` user_name
-		, `u`.`phone` user_phone
-		, `n`.`type`
-		,`n`.`id`
-		, `n`.`creator_id`
+			u.id user_id,
+			u.`name` user_name,
+			u.phone user_phone,
+			u.sex user_sex,
+			IFNULL(n.sfz,'') sfz,
+			n.work_years,
+			n.hospital,
+			n.`status`,
+			(SELECT COUNT(*) FROM `order` o WHERE o.`schedule` = 5 AND o.accept_user_id = n.creator_id) serviceNumber,
+			c.city
 		FROM
-		`jphs`.`user` AS `u`
-		INNER JOIN
-		`jphs`.`nurse` AS `n`
-		ON
-		(`u`.`id` = `n`.`creator_id`)
-		WHERE u.`type`=0
-		AND u.`status` = 0
-		<if test="user!=null">
-			<if test="user.name!=null">
-				AND u.`name` = #{user.name}
-			</if>
-			<if test="user.phone!=null">
-				AND u.`phone` = #{user.phone}
-			</if>
+			nurse n
+		LEFT JOIN `user` u ON n.creator_id = u.id 
+		LEFT JOIN (SELECT
+			ua.creator_id,
+			ua.city
+		FROM
+			user_address ua
+			WHERE ua.`status` =0 AND ua.city LIKE CONCAT( #{nurse.areas},'%')
+		GROUP BY
+			ua.creator_id) c ON c.creator_id = n.creator_id 
+		<if test="nurse!=null and nurse.calendar!=null and nurse.calendar!=''">
+			LEFT JOIN worktime w ON u.id = w.userId
 		</if>
-		<if test="type !=null">
-			AND n.`type` = #{type}
-		</if>
+		<where>
+			AND  n.creator_id in(SELECT DISTINCT id FROM `user`) 
+			AND c.city LIKE CONCAT( #{nurse.areas},'%')
+			<if test="nurse!=null">
+				<if test="nurse.status!=null">
+					AND  n.`status` = #{nurse.status}
+				</if>
+				<if test="nurse.calendar!=null and nurse.calendar!=''">
+					AND w.calendar =#{nurse.calendar} AND w.${nurse.h}=0
+				</if>
+				<if test="nurse.user!=null">
+					<if test="nurse.user.name!=null and nurse.user.name!=''">
+						AND	u.`name`LIKE #{nurse.user.name}
+					</if>
+					<if test="nurse.user.phone!=null and nurse.user.phone!=''">
+						AND	u.phone=#{nurse.user.phone}
+					</if>
+					<if test="nurse.user.sex!=null and nurse.user.sex!=''">
+						AND	u.sex=#{nurse.user.sex}
+					</if>
+				</if>
+			</if>
+		</where>
+		ORDER BY serviceNumber DESC
 	</select>
 	<select id="getBasicInfo" resultType="java.util.HashMap">
 		SELECT

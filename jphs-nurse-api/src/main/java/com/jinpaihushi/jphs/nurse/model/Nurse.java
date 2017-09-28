@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.jinpaihushi.function.Updator;
 import com.jinpaihushi.jphs.location.model.Location;
@@ -94,8 +95,36 @@ public class Nurse extends BaseModel implements Predicate<Nurse>, Updator<Nurse>
     private String recommendName;
 
     private String workYear;
+    private String calendar;
+    private String h;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH")
+    private Date workTime;
+    
+    public Date getWorkTime() {
+		return workTime;
+	}
 
-    /**
+	public void setWorkTime(Date workTime) {
+		this.workTime = workTime;
+	}
+	
+	public String getCalendar() {
+		return calendar;
+	}
+
+	public void setCalendar(String calendar) {
+		this.calendar = calendar;
+	}
+
+	public String getH() {
+		return h;
+	}
+
+	public void setH(String h) {
+		this.h = h;
+	}
+
+	/**
      * 获取机构id
      */
     public String getNurseInstitutionsId() {

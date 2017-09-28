@@ -141,7 +141,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND rn.status=1 
 		AND w.${h}=0
 		AND t.price_id = #{priceId}
-		AND d.distance &lt;30
+		AND d.city LIKE  CONCAT(#{city}, '%') 
 		ORDER BY
 			serviceNumber DESC 
 	</select>

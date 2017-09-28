@@ -20,6 +20,9 @@
 			value="/WEB-INF/view/nurse/audit/edit/index.jsp" />
 		<put-attribute type="template" name="left"
 			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/nurse/audit/audit.css" />					
+		</put-list-attribute>
 		<put-list-attribute name="scripts" inherit="true">
 			<add-attribute value="/static/js/nurse/audit/edit.js" />
 		</put-list-attribute>
@@ -31,6 +34,9 @@
 			value="/WEB-INF/view/nurse/audit/detail/index.jsp" />
 		<put-attribute type="template" name="left"
 			value="/WEB-INF/view/nurse/left.jsp" />
+		<put-list-attribute name="css" inherit="true">
+			<add-attribute value="/static/css/nurse/audit/audit.css" />					
+		</put-list-attribute>
 		<put-list-attribute name="scripts" inherit="true">
 			<add-attribute value="/static/js/nurse/audit/detail.js" />
 		</put-list-attribute>
