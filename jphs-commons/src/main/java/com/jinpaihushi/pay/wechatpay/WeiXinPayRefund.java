@@ -1,25 +1,27 @@
 package com.jinpaihushi.pay.wechatpay;
 
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import com.jinpaihushi.pay.wechatpay.utils.ClientCustomSSL;
 import com.jinpaihushi.pay.wechatpay.utils.RequestHandler;
 import com.jinpaihushi.pay.wechatpay.utils.TenpayUtil;
+import com.jinpaihushi.pay.wechatpay.utils.XMLUtil;
 
 public class WeiXinPayRefund {
 	// 参考地址：http://blog.csdn.net/wangxuewei111/article/details/44021035
 	// http://blog.csdn.net/u011160656/article/details/41946873
 
 	// 正式用
-	private static String appid = "wx82592fbdce14467c";
+	private static String appid = "wxc1662397992295bf";
 
-	private static String appsecret = "7d5e5301dbc7f3c2797f89c74aafb21a";
+	private static String appsecret = "dc6cb0df2364ebba630ad629602a6620";
 
-	private static String partner = "1305979801";
+	private static String partner = "1485022192";
 
 	// 这个参数partnerkey是在商户后台配置的一个32位的key,微信商户平台-账户设置-安全设置-api安全
-	private static String partnerkey = "bffdd264a74e879d50146be9c34ce7e2";
+	private static String partnerkey = "mxkj111jinpaihushimeixinfuwu1111";
 
 	// openId 是微信用户针对公众号的标识，授权的部分这里不解释
 	// private static String openId = "";
@@ -29,7 +31,7 @@ public class WeiXinPayRefund {
 	// private static String notifyurl =
 	// "http://182.92.98.51/foot/weixinv3notify.do";
 
-	public static void doPost(String out_trade_no, String total_fee, String refund_fee) {
+	public static Map<String, Object> doPost(String out_trade_no, String total_fee, String refund_fee) {
 
 		String out_refund_no = TenpayUtil.getNonceStr();// 退款单号
 		// String out_trade_no = request.getParameter("out_trade_no");// 订单号
@@ -63,11 +65,12 @@ public class WeiXinPayRefund {
 		String createOrderURL = "https://api.mch.weixin.qq.com/secapi/pay/refund";
 		try {
 			String s = ClientCustomSSL.doRefund(createOrderURL, xml);
-			System.out.println(s);
+			Map<String, Object> map = XMLUtil.doXMLParse(s);
+			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return null;
 	}
 
 	public static void main(String[] args) {

@@ -53,6 +53,8 @@ public class FamilyMode extends BaseModel implements Predicate<FamilyMode>,
     /** 单位 */
 	@Length(max = 50, message = "{familyMode.unit.illegal.length}")
 	private String unit;
+	
+	private FamilyPackage familyPackage;
 
 	public FamilyMode(){}
 
@@ -60,6 +62,20 @@ public class FamilyMode extends BaseModel implements Predicate<FamilyMode>,
 		this.id = id;
 	}
 
+	/**
+	 * 获取
+	 */
+	public FamilyPackage getFamilyPackage() {
+    	return familyPackage;
+    }
+  	
+	/**
+	 * 设置
+	 */
+	public void setFamilyPackage(FamilyPackage familyPackage) {
+    	this.familyPackage = familyPackage;
+    }
+	
 	/**
 	 * 获取
 	 */

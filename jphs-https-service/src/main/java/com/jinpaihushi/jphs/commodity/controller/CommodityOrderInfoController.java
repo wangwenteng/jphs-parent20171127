@@ -195,7 +195,7 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 			   co.setId(coId);
 			   
 			   co.setStatus(0);
-			   b = commodityOrderService.update(co);
+			//   b = commodityOrderService.update(co);
 			}
 			  b = commodityOrderInfoService.update(coi);
 			  if (!b) {

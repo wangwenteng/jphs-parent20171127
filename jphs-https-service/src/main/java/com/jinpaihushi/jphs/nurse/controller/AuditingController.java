@@ -167,24 +167,28 @@ public class AuditingController {
                                                     || StringUtils.isEmpty(token)*/) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
+            
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("njType", nurseType);
             map.put("id", user.getId());
             List<NurseJobtitle> nj = nurseJobtitleService.getNurseAuditing(map);
-            for(int a=0;a<nj.size();a++){
-            	if(!StringUtils.isEmpty(nj.get(a).getJobtitleId())){
-            		Jobtitle j_one = jobtitleService.loadById(nj.get(a).getJobtitleId());
-            		nj.get(a).setJobtitleId(j_one.getName());
-            	}
-            	if(!StringUtils.isEmpty(nj.get(a).getDepartmentId())){
-            		Department d_one = departmentService.loadById(nj.get(a).getDepartmentId());
-            		nj.get(a).setDepartmentId(d_one.getName());
-            	}
-            	if(!StringUtils.isEmpty(nj.get(a).getNurseInstitutionsId())){
-            		NurseInstitutions ni_one = nurseInstitutionsService.loadById(nj.get(a).getNurseInstitutionsId());
-            		nj.get(a).setNurseInstitutionsId(ni_one.getName());
-            	}
+            if(!StringUtils.isEmpty(user.getPhone())){
+            	for(int a=0;a<nj.size();a++){
+                	if(!StringUtils.isEmpty(nj.get(a).getJobtitleId())){
+                		Jobtitle j_one = jobtitleService.loadById(nj.get(a).getJobtitleId());
+                		nj.get(a).setJobtitleId(j_one.getName());
+                	}
+                	if(!StringUtils.isEmpty(nj.get(a).getDepartmentId())){
+                		Department d_one = departmentService.loadById(nj.get(a).getDepartmentId());
+                		nj.get(a).setDepartmentId(d_one.getName());
+                	}
+                	if(!StringUtils.isEmpty(nj.get(a).getNurseInstitutionsId())){
+                		NurseInstitutions ni_one = nurseInstitutionsService.loadById(nj.get(a).getNurseInstitutionsId());
+                		nj.get(a).setNurseInstitutionsId(ni_one.getName());
+                	}
+                }
             }
+            
             return JSONUtil.toJSONResult(1, "成功", nj);
         }
         catch (Exception e) {
@@ -200,7 +204,7 @@ public class AuditingController {
     public byte[] setWapAudtingtwo(HttpServletRequest req, HttpServletResponse resp, String authCode,String userId,
     		String goodSkills, String skillsArr,String hospital,String departmentId,String jobtitleId,String workY,Integer nurseType,
     		String studyInstitution,String charteredProve, String seniorityProve,String hospitalContract,
-    		String therapistZ,String fransnanaCard){
+    		String therapistZ,String fransnanaCard,String nurseInstitutionsId){
     	try {
 	   		 // 记录日志-debug
 	        if (Util.debugLog.isDebugEnabled()) {
@@ -247,6 +251,8 @@ public class AuditingController {
    				nurseJobtitle_up.setHospital(hospital);
    				nurseJobtitle_up.setStudyInstitution(studyInstitution);
    			}else if(nurseType == 3){
+   				nurseJobtitle_up.setStudyInstitution(studyInstitution);
+   				nurseJobtitle_up.setNurseInstitutionsId(nurseInstitutionsId);
 //   				nurseJobtitle_up.sets
    			}
 

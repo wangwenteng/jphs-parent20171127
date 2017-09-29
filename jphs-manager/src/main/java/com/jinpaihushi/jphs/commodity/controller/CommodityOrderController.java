@@ -90,16 +90,33 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 			coi.setTitle(commodityOrder.getTitle());
 			coiList = commodityOrderInfoService.list(coi);
 			String ids = "";
+			System.out.println(coiList.size());
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			for (int i = 0;i<coiList.size() ;i++ ){
+				 
 				ids +=",'"+coiList.get(i).getCommodityOrderId()+"'";
 			}
-			commodityOrder.setId(ids.substring(1));
+			if(ids!=""){
+				commodityOrder.setId(ids.substring(1));
+			} 
+			
 		}
 		startPage(p, n);
-        Page<CommodityOrder> list = commodityOrderService.getList(commodityOrder);
+        Page<CommodityOrder> list = null;
+
+		if(commodityOrder.getFlag() == 1){
+			list = commodityOrderService.getList(commodityOrder);
+		}else{
+			list = commodityOrderService.getTkList(commodityOrder);
+		}
+		for (int i = 0; i<list.size();i++ ){
+			 
+			List<CommodityReturn> crList = commodityReturnService.getListByCoId(list.get(i).getId());
+			list.get(i).setFlag(crList.size());
+		}
         PageInfos<CommodityOrder> pageInfo = new PageInfos<CommodityOrder>(list, req);
 		Logistics l = new Logistics();
-		System.out.println(list.size());
+		l.setStatus(0);
 		List<Logistics> lList = logisticsService.list(l);
         modelMap.put("list", list);
 		modelMap.put("lList", lList);
@@ -169,6 +186,19 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 		Transaction transaction = new Transaction();
 		transaction.setOrderId(id);
 		Transaction t = transactionService.load(transaction);
+
+		Logistics l = new Logistics();
+		l.setStatus(0);
+		List<Logistics> lList = logisticsService.list(l);
+
+
+		 
+		List<CommodityReturn> crList = commodityReturnService.getListByCoId(id);
+		if(crList.size() > 0){
+			commodityOrder.setFlag(2);
+		}
+		
+		modelMap.put("lList", lList);
         modelMap.put("commodityOrder", commodityOrder);
 		modelMap.put("coiList", coiList);
 		modelMap.put("user", user);

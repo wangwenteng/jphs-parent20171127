@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.commodity.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.jinpaihushi.dao.BaseDao;
@@ -17,6 +19,8 @@ public interface CommodityReturnDao extends BaseDao<CommodityReturn> {
 	CommodityReturn getNotStatus(CommodityReturn commodityReturn);
 
 	boolean updateReason(CommodityReturn commodityReturn);
+
+	List<CommodityReturn> getListByCoId(String coId);
 	
 	
 	

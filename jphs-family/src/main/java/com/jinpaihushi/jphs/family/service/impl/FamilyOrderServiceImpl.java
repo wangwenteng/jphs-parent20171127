@@ -32,6 +32,7 @@ import com.jinpaihushi.jphs.transaction.dao.TransactionDao;
 import com.jinpaihushi.jphs.transaction.model.Transaction;
 import com.jinpaihushi.jphs.user.dao.UserDao;
 import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.pay.alipay.AlipaySign;
 import com.jinpaihushi.pay.wechatpay.WechatPay;
 import com.jinpaihushi.service.impl.BaseServiceImpl;
 import com.jinpaihushi.utils.Common;
@@ -123,6 +124,33 @@ public class FamilyOrderServiceImpl extends BaseServiceImpl<FamilyOrder> impleme
 		familyPackage.setId(fm.getFamilyPackageId());
 		FamilyPackage fp = familyPackageDao.load(familyPackage);
 		if(fm.getAccessMode() == 1){
+			
+			 //	支付宝支付
+            if (payType == 1) {
+                Util.debugLog.debug("order.createOrder.json  支付宝支付");
+                if (StringUtils.isEmpty("") || StringUtils.isEmpty("") || StringUtils.isEmpty("")
+                        || "" == null) {
+                    try {
+						return JSONUtil.toJSONResult(0, "参数不能为空", null);
+					} catch (IOException e) {
+					}
+                }
+
+                JSONObject sParaTemp = new JSONObject();
+                sParaTemp.put("_input_charset", "utf-8");
+                sParaTemp.put("body", "");
+                sParaTemp.put("notify_url", "");
+                sParaTemp.put("out_trade_no", "");
+                sParaTemp.put("payment_type", "1");
+                sParaTemp.put("return_url", "");
+                sParaTemp.put("show_url", "");
+                sParaTemp.put("subject", "");
+                sParaTemp.put("total_fee", "");
+                sParaTemp.put("serviceType", "");
+
+                byte[] s = AlipaySign.getAlisign(sParaTemp.toString(), "PRIVATE_KEY", "4");
+                return s;
+            }else 
 			// 微信web支付
 			if (payType == 3) {
 				JSONObject json = new JSONObject();

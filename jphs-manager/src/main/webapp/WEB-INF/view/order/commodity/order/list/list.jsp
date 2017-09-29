@@ -9,15 +9,16 @@
 	<thead>
 		<tr>
 			<th width="30"></th>
-			<th width="140">订单号</th>
+			<th width="180">订单号</th>
 			<th width="70">下单人</th>
 			<th width="80">订单金额</th>
 			<th width="80">实付金额</th>
-			<th width="80">优惠金额</th>
-			<th width="100">物流费</th>
+			<!-- <th width="80">优惠金额</th>
+			<th width="100">物流费</th> -->
 			<th width="140">物流信息</th>
 			<th width="100">下单时间</th>
 			<th width="80">状态</th>
+			<th width="60">退款请求</th>
 			<th width="125">操作</th>
 		</tr>
 	</thead>
@@ -31,12 +32,12 @@
 						<td><c:out value="${e.creatorName}" /></td>
 						<td><c:out value="${e.payPrice}" /></td>
 						<td><c:out value="${e.payPrice}" /></td>
-						<td><c:out value="${e.voucherPrice}" /></td>
-						<td>0.00</td>
+						<%-- <td><c:out value="${e.voucherPrice}" /></td>
+						<td>0.00</td> --%>
 						<td><c:if test="${e.logisticsName != null}">
-							${e.logisticsName}：${e.no}</td>
+							${e.logisticsName}<%--${e.no} --%>
 						</c:if>
-
+</td>
 						<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
 						<td><c:if test="${e.schedule == -3}">
@@ -56,6 +57,14 @@
 								</c:if> <c:if test="${e.schedule == 5}">
 								已删除订单
 								</c:if></td>
+								<td>
+									 <c:if test="${e.flag == 0}">
+									 	无
+									 </c:if>
+									  <c:if test="${e.flag != 0}">
+									 	有
+									 </c:if>
+								</td>
 						<td>
 							<%-- <a onclick="redirectDetailPage('${e.id}')">
 								<img src="/static/images/chakan.png">

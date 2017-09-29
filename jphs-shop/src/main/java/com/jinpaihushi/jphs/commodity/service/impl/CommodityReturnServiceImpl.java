@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.commodity.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,12 @@ public class CommodityReturnServiceImpl extends BaseServiceImpl<CommodityReturn>
 	public boolean updateReason(CommodityReturn commodityReturn) {
 		// TODO Auto-generated method stub
 		return commodityReturnDao.updateReason(commodityReturn);
+	}
+
+	@Override
+	public List<CommodityReturn> getListByCoId(String CoId) {
+		// TODO Auto-generated method stub
+		return commodityReturnDao.getListByCoId(CoId);
 	}
 
 }

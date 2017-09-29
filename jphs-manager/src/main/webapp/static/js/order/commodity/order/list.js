@@ -45,12 +45,8 @@ function addLogistics(id){
 				url: "/commodity/order/addLogistics.jhtml",
 				data:$('#logistics').serialize(),
 				dataType: "json",
-				success: function(data) { 
-					if(data.result == 1){
-						location.reload();
-					}else{
-						alert("添加失败");
-					}
+				success: function(data) {
+					location.reload();
 				}
 		 }); 
 		}

@@ -136,4 +136,5 @@ public interface OrderService extends BaseService<Order> {
 
 	List<Map<String, Object>> getNotInRank();
 
+	// int editAcceptUserId(String id, String orderId, String acceptUserId);
 }

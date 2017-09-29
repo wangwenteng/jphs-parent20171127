@@ -242,7 +242,13 @@
 						<th>退款时间</th>
 						<th>退款备注</th>
 						<tr style="text-align: center;">
-							<td>${refund.payType }</td>
+							<td>
+								<c:if test="${refund.payType==1 }">支付宝</c:if>
+								<c:if test="${refund.payType==2 }">微信</c:if>
+								<c:if test="${refund.payType==3 }">余额</c:if>
+								<c:if test="${refund.payType==4 }">银联</c:if>
+								<c:if test="${refund.payType==5 }">vip卡支付</c:if>
+							</td>
 							<td>${refund.amount }</td>
 							<td><c:if test="${refund.remark!=null }">已完成</c:if></td>
 							<td><fmt:formatDate value="${refund.createTime}"
@@ -489,7 +495,10 @@
 							<span>订单编号：</span>${order.orderNo} 
 							<input type="hidden"id="orderId" name="orderId" value="${order.id }">
 							<input type="hidden"id="totalMoney" name="totalMoney" value="${order.orderGoods.payPrice }">
-							<input type="hidden"id="outTradeNo" name="outTradeNo" value="${transactionUser.outTradeNo }">
+							<input type="hidden"id="outTradeNo" name="outTradeNo" 
+							<c:if test="${transactionUser.payType==2 }">value="${order.orderNo }"</c:if>
+							<c:if test="${transactionUser.payType==1 }">value="${transactionUser.outTradeNo }"</c:if>
+							>
 							<input type="hidden"id="cancelOrderId" name="cancelOrderId" value="${cancelOrder.id }">
 						</p>
 						<p>

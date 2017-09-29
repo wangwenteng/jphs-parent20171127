@@ -2,6 +2,7 @@ package com.jinpaihushi.jphs.commodity.controller;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jinpaihushi.controller.BaseController;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
+import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
+import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
 import com.jinpaihushi.jphs.commodity.service.CommodityReturnService;
+import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
 import com.jinpaihushi.utils.PageInfos;
 import com.github.pagehelper.Page;
 
@@ -35,6 +40,10 @@ public class CommodityReturnController extends BaseController<CommodityReturn> {
 
 	@Autowired
 	private CommodityReturnService commodityReturnService;
+	@Autowired
+	private CommodityOrderInfoService commodityOrderInfoService;
+	@Autowired
+    private CommodityOrderService commodityOrderService;
 
 	@Override
 	protected BaseService<CommodityReturn> getService() {
@@ -109,15 +118,43 @@ public class CommodityReturnController extends BaseController<CommodityReturn> {
 	
 	@RequestMapping(name = "修改", path = "/update.jhtml")
 	@ResponseBody
-	public JSONObject update(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, CommodityReturn commodityReturn) {
+	public JSONObject update(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap, CommodityReturn commodityReturn,String coId) {
 
 			JSONObject message = new JSONObject();
 			
 			boolean b = commodityReturnService.update(commodityReturn);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(coId);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
 			if(!b){
 				message.put("result", "0");
 			}else{
 				message.put("result", "1");
+
+			if(commodityReturn.getStatus() == 2){
+				CommodityOrderInfo coi = new CommodityOrderInfo();
+				coi.setCommodityOrderId(coId);
+				List<CommodityOrderInfo> coiList = commodityOrderInfoService.list(coi);
+				int k = 0;
+				for (int i = 0;i<coiList.size() ;i++ ){
+					CommodityReturn cr = new CommodityReturn();
+					cr.setCommodityOrderInfoId(coiList.get(i).getId());
+					cr.setStatus(2);
+					CommodityReturn crModel = commodityReturnService.load(cr);
+					if(crModel!=null){
+						k++;
+					}
+				}
+				if(k == coiList.size()){
+					CommodityOrder co = new CommodityOrder();
+					co.setId(coId);
+					co.setSchedule(-3);
+					commodityOrderService.update(co);
+				}
+
+			}
+
 			}
 		 
 		return message;

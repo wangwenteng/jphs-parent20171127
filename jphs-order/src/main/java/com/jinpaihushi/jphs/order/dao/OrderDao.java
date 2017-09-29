@@ -85,4 +85,6 @@ public interface OrderDao extends BaseDao<Order> {
     Map<String, Object> getSmsMessage(String orderId);
 
     List<Map<String, Object>> getNotInRank();
+
+    List<Map<String, Object>> exportExcel();
 }

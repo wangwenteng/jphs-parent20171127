@@ -43,4 +43,6 @@ public interface CommodityOrderDao extends BaseDao<CommodityOrder> {
 	List<CommodityOrder> getStatusByOrderNo(String orderNo);
 	
 	Page<CommodityOrder> getList(CommodityOrder commodityOrder);
+
+	Page<CommodityOrder> getTkList(CommodityOrder commodityOrder);
 }

@@ -7,14 +7,14 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 
 	<sql id="field">
 		T.id, T.order_id, T.amount, T.score, T.operate, T.remark,
-		T.withdraw, T.pay_type, T.out_trade_no, T.creator_id, T.creator_name,
+		T.withdraw, T.pay_type, T.out_trade_no,T.withdraw_cash_id, T.creator_id, T.creator_name,
 		T.create_time, T.status
 	</sql>
 
 	<sql id="fieldGlobal">
 		T.id T_id, T.order_id T_order_id, T.amount T_amount,
 		T.score T_score, T.operate T_operate, T.remark T_remark, T.withdraw
-		T_withdraw, T.pay_type T_pay_type, T.out_trade_no T_out_trade_no,
+		T_withdraw, T.pay_type T_pay_type, T.out_trade_no T_out_trade_no,T.withdraw_cash_id T_withdraw_cash_id,,
 		T.creator_id T_creator_id, T.creator_name T_creator_name,
 		T.create_time T_create_time, T.status T_status
 	</sql>
@@ -22,7 +22,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<sql id="fieldWithAlias">
 		T.id id, T.order_id orderId, T.amount amount, T.score
 		score, T.operate operate, T.remark remark, T.withdraw withdraw,
-		T.pay_type payType, T.out_trade_no outTradeNo, T.creator_id creatorId,
+		T.pay_type payType, T.out_trade_no outTradeNo,T.withdraw_cash_id withdrawCashId, T.creator_id creatorId,
 		T.creator_name creatorName, T.create_time createTime, T.status status
 	</sql>
 
@@ -53,6 +53,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</if>
 		<if test="outTradeNo!=null and outTradeNo!=''">
 			AND T.out_trade_no=#{outTradeNo}
+		</if>
+		<if test="withdrawCashId!=null and withdrawCashId!=''">
+			AND T.withdraw_cash_id=#{withdrawCashId}
 		</if>
 		<if test="creatorId!=null and creatorId!=''">
 			AND T.creator_id=#{creatorId}
@@ -103,6 +106,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="outTradeNo!=null and outTradeNo!=''">
 				AND T.out_trade_no LIKE CONCAT('%', #{outTradeNo}, '%')
 			</if>
+			<if test="withdrawCashId!=null and withdrawCashId!=''">
+				AND T.withdraw_cash_id LIKE CONCAT('%', #{withdrawCashId}, '%')
+			</if>
 			<if test="creatorId!=null and creatorId!=''">
 				AND T.creator_id LIKE CONCAT('%', #{creatorId}, '%')
 			</if>
@@ -150,6 +156,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="outTradeNo!=null">
 				T.out_trade_no=#{outTradeNo},
 			</if>
+			<if test="withdrawCashId !=null">
+				T.withdraw_cash_id=#{withdrawCashId},
+			</if>
 			<if test="creatorId!=null">
 				T.creator_id=#{creatorId},
 			</if>
@@ -190,6 +199,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="outTradeNo" column="out_trade_no" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="withdrawCashId" column="withdraw_cash_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="creatorId" column="creator_id" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="creator_name" javaType="String"
@@ -223,6 +234,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="INTEGER"></result>
 		<result property="outTradeNo" column="T_out_trade_no" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="withdrawCashId" column="T_withdraw_cash_id" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="creatorId" column="T_creator_id" javaType="String"
 			jdbcType="VARCHAR"></result>
 		<result property="creatorName" column="T_creator_name"
@@ -238,7 +251,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		INSERT INTO `TRANSACTION`(
 		id, order_id, amount, score,
 		operate, operate_source,remark, withdraw, pay_type,
-		out_trade_no, creator_id,
+		out_trade_no,withdraw_cash_id, creator_id,
 		creator_name, create_time, status,type )VALUES(
 		#{id,jdbcType=VARCHAR},
 		#{orderId,jdbcType=VARCHAR},
@@ -250,6 +263,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		#{withdraw,jdbcType=INTEGER},
 		#{payType,jdbcType=INTEGER},
 		#{outTradeNo,jdbcType=VARCHAR},
+		#{withdrawCashId,jdbcType=VARCHAR},
 		#{creatorId,jdbcType=VARCHAR},
 		#{creatorName,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP},
@@ -555,7 +569,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateWithdrawals" parameterType="java.util.Map">
 		UPDATE `transaction` tr
-		SET tr.withdraw = 2
+		SET tr.withdraw = 2,
+		tr.withdraw_cash_id=#{withdrawCashId} 
 		<where>
 			<if test="orderId!=null and orderId!=''">
 			AND	tr.order_id

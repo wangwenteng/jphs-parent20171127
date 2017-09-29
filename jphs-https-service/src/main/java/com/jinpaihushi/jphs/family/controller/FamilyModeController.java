@@ -39,7 +39,7 @@ public class FamilyModeController {
 	@ResponseBody
 	public byte[] getfamilyMode(HttpServletRequest req, HttpServletResponse resp, String authCode,String promoCode){
 		try{
-			// 查空
+			// 查空sss
             if (StringUtils.isEmpty(promoCode)) {
             	promoCode = "1";
             }
@@ -55,7 +55,7 @@ public class FamilyModeController {
             if(familyMode_m == null || familyMode_m.equals("")){
             	return JSONUtil.toJSONResult(0, "请通过正确途径兑换!", null);
             }
-            familyMode_m.setPrice(familyPackageOne.getPrice());
+            familyMode_m.setFamilyPackage(familyPackageOne);
             Date d = new Date();
             String msg = "操作成功！";
             int ib = d.compareTo(familyMode_m.getBeginTime());

@@ -118,7 +118,7 @@ public class NurseOrderController {
             }
 
             int a = 1;
-            String msg = "操作成功！确认订单完成";
+            String msg = "操作成功！恭喜您完成了本次服务，又获得了一笔不菲的佣金哦!";
             if (!rs.equals("1")) {
                 a = 0;
                 msg = "完成失败，请刷新重试!";
@@ -313,7 +313,7 @@ public class NurseOrderController {
                         "{\"name\":\"" + map.get("nurseName").toString() + "\",\"phone\":\""
                                 + map.get("nursePhone").toString() + "\"}");
 
-                return JSONUtil.toJSONResult(1, "操作成功！请准时到达服务地点，服务开始前请点击“开始服务”更新服务状态哦~", re_order);
+                return JSONUtil.toJSONResult(1, "操作成功！请您在服务结束并确认患者无任何身体不适后，点击“完成服务”更新服务状态哦", re_order);
             }
             else {
                 return JSONUtil.toJSONResult(0, "更新状态失败，请刷新重试", re_order);

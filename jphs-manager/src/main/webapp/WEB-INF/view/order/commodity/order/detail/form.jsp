@@ -106,7 +106,7 @@
 			<span>备注：</span>${remark }
 		</p>
 		<p>
-			<span> </span>
+			<span></span>
 		</p>
 	</div>
 </div>
@@ -144,7 +144,7 @@
 
 
 <div class="details_box clearfix">
-	<p class="details_box_xinxi">商品信息</p>
+	<p class="details_box_xinxi">商品信息<input type="hidden" id="coId" name = "coId" value="${commodityOrder.id}"></p>
 	<div class="col-md-6">
 		<table style="width: 800px; height: 100px; text-align: center;">
 			<th>序号</th>
@@ -156,7 +156,7 @@
 			<th>金额</th>
 			<th>分销人</th>
 			<th>分销金额</th>
-			 <c:if test="${commodityOrder.schedule == -2}">
+			 <c:if test="${commodityOrder.flag == 2}">
 			<th width="250px">退款原因</th>
 			<th>货品状态</th>
 			</c:if>
@@ -174,7 +174,7 @@
 							<td>${e.price }</td>
 							<td>${e.userName }</td>
 							<td>${e.profit }</td>
-							 <c:if test="${commodityOrder.schedule == -2}">
+							 <c:if test="${commodityOrder.flag == 2}">
 							<td>${e.crReason }</td>
 							<td>
 								<c:if test="${e.crStatus == -2 }">
@@ -184,8 +184,8 @@
 									退款
 								</c:if>
 								<c:if test="${e.crStatus == 1 }">
-									<a onclick=updateStatus("${e.crId }","-2")>拒绝</a>
-									<a onclick=updateStatus("${e.crId }","2")>同意</a>
+									<a onclick=updateStatus("${e.crId }","-2")>正常</a>
+									<a onclick=updateStatus("${e.crId }","2")>退款</a>
 								</c:if>
 							</td>
 							</c:if>
@@ -240,6 +240,43 @@
 			</c:choose>
 						</div>
 						</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal -->
+</div>
+
+
+<div>
+	<div class="modal fade" id="fhModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">添加物流信息</h4>
+			</div>
+				<form id="logistics">
+					<div style="text-align: center;">
+						<div class="controls col-md-6"
+							style="width: 100%; margin-left: 15px;">
+							<select class="marage_select" id="logisticsId" name="logisticsId">
+								<option value="">全部</option>
+								<c:forEach items="${lList}" var="e" varStatus="s">
+									<option value="${e.id }">${e.name }</option>
+								</c:forEach>
+							</select> <span>物流单号</span> <span> <input type="text"
+								id="no" name="no" /> <input type="hidden"
+								id="commodityOrderId" name="commodityOrderId" value="${commodityOrder.id }" />
+							</span>
+						</div>
+						<div>
+							<a onclick='addLogistics()'>确定</a>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 		<!-- /.modal-content -->

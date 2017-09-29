@@ -19,9 +19,9 @@
 				<td width="200"><input type="text" name="creatorName" id="creatorName"
 					value="${commodityOrder.creatorName}" /></td>
 				<td>状态：</td>
-				<td width="200"><select class="marage_select" id="schedule"
+				<td width="200"><c:if test="${commodityOrder.flag ==1}"><select class="marage_select" id="schedule"
 					name="schedule">
-					<c:if test="${commodityOrder.flag ==1}">
+					
 						<option value="" <c:if test="">selected="selected"</c:if>>选择状态</option>
 						
 						<option value="0"
@@ -38,12 +38,21 @@
 							<c:if test="${commodityOrder.schedule == 5}">selected="selected"</c:if>>已删除</option>
 						<option value="-1"
 							<c:if test="${commodityOrder.schedule == -1}">selected="selected"</c:if>>已取消</option>
-						</c:if>
+				</select></c:if>
+					
+					<c:if test="${commodityOrder.flag ==2}">
+						<select class="marage_select" id="crStatus"
+					name="crStatus">
+						<option value="1"
+							<c:if test="${commodityOrder.crStatus == 1}">selected="selected"</c:if>>退款中</option>
+						<option value="2"
+							<c:if test="${commodityOrder.crStatus == 2}">selected="selected"</c:if>>已退款</option>
 						<option value="-2"
-							<c:if test="${commodityOrder.schedule == -2}">selected="selected"</c:if>>退款中</option>
-						<option value="-3"
-							<c:if test="${commodityOrder.schedule == -3}">selected="selected"</c:if>>已退款</option>
-				</select></td>
+							<c:if test="${commodityOrder.crStatus == -2}">selected="selected"</c:if>>已拒绝</option>
+						 </select>
+					</c:if>
+					
+				</td>
 			</tr>
 			<tr>
 				<td>运单号：</td>

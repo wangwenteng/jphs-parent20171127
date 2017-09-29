@@ -274,13 +274,15 @@ public class OrderController extends BaseController<Order> {
 	 */
 	@RequestMapping(name = "退款", path = "/refund.jhtml")
 	public String refund(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
-			Transaction transaction, String cancelOrderId) {
-		CancelOrder cancelOrder = new CancelOrder();
-		cancelOrder.setStatus(1);
-		cancelOrder.setId(cancelOrderId);
-		cancelOrderService.update(cancelOrder);
-		transactionService.refund(transaction, cancelOrderId);
+			Transaction transaction, String totalMoney, String cancelOrderId) {
 
+		String i = transactionService.refund(transaction, totalMoney);
+		if (Integer.parseInt(i) == 1) {
+			CancelOrder cancelOrder = new CancelOrder();
+			cancelOrder.setStatus(1);
+			cancelOrder.setId(cancelOrderId);
+			cancelOrderService.update(cancelOrder);
+		}
 		return "redirect:/order/detail.jhtml?id=" + transaction.getOrderId();
 	}
 

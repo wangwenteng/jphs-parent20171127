@@ -102,6 +102,8 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 	
 	private Integer flag;
 	
+	private Integer crStatus;
+	
 	public CommodityOrder(){}
 
 	public CommodityOrder(String id){
@@ -440,6 +442,16 @@ public class CommodityOrder extends BaseModel implements Predicate<CommodityOrde
 
 	public void setLogisticsName(String logisticsName) {
 		this.logisticsName = logisticsName;
+	}
+
+	
+	
+	public Integer getCrStatus() {
+		return crStatus;
+	}
+
+	public void setCrStatus(Integer crStatus) {
+		this.crStatus = crStatus;
 	}
 
 	@Override

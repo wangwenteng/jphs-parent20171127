@@ -11,8 +11,9 @@
 	</div>
 	<div class="marage_right_content">
 	<div class="clearfix">
-	
-	
+	<c:if test="${commodityOrder.schedule == 1 }">
+		<button class="public-info public_btn public_btn_center" data-toggle="modal" data-target="#fhModal">发货</button>
+	</c:if>
 	<!-- <button class="public-info public_btn public_btn_left" >打印</button> -->
 	
 	</div>

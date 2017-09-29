@@ -70,8 +70,8 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 		 
 
 System.out.println("===================================");
-								System.out.println(device);
-
+ System.out.println(commodityIds);
+System.out.println("===================================");
 			if (StringUtils.isEmpty(userId)) {
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
@@ -122,7 +122,24 @@ System.out.println("===================================");
 				  goodsName += ","+str;
 			} 
 
+		
+			String[] commodityIdArr = commodityIds.split(",");
+				Map<String, Object> map1 = new HashMap<String, Object>();
+			if(commodityIdArr.length==1){
+					map1.put("number",number);
+					map1.put("commodityId",commodityIds);
+				//	commodityService.updateCount(map1);
 
+			}else{
+				for (int i = 0;i<commodityIdArr.length ;i++ ){
+				
+				map1.put("number",number);
+				map1.put("commodityId",commodityIdArr[i]);
+			//	commodityService.updateCount(map1);
+			}
+			}
+			
+			
 
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("orderNo",result);

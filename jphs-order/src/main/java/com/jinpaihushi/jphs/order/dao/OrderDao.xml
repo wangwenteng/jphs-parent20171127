@@ -1467,4 +1467,64 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		GROUP BY
 			o.accept_user_id
 	</select>
+	<select id="exportExcel" resultType="java.util.HashMap">
+		SELECT
+			o.order_no,
+			CASE u.`name`
+		WHEN '' THEN
+			u.phone
+		ELSE
+			u.`name`
+		END AS userName,
+		 CASE u.sex
+		WHEN 0 THEN
+			'男'
+		ELSE
+			'女'
+		END AS userSex,
+		 u.phone userPhone,
+		n.`name` nurseName,
+		n.phone nursePhone,
+		 o.create_time,
+		 o.appointment_time,
+		 o.remarks,
+		 p.title productName,
+		 g.title goodsName,
+		 CONCAT(pr.grade_name, '/', pr.title) serviceName,
+		 og.pay_price,
+		 oo.address,
+		 oo.detail_address,
+		 CASE o.`status`
+		WHEN 0 THEN
+			'待支付'
+		WHEN 1 THEN
+			'待接单'
+		WHEN 2 THEN
+			'已接单'
+		WHEN 3 THEN
+			'执行中'
+		WHEN 4 THEN
+			'待确定'
+		WHEN 5 THEN
+			'已完成'
+		WHEN 6 THEN
+			'已取消'
+		WHEN 7 THEN
+			'申诉中'
+		END AS `status`
+		FROM
+			`order` o
+		LEFT JOIN `user` u ON o.creator_id = u.id
+		LEFT JOIN `user` n ON o.accept_user_id = n.id
+		LEFT JOIN order_goods og ON og.order_id = o.id
+		LEFT JOIN goods g ON og.goods_id = g.id
+		LEFT JOIN product p ON g.product_id = p.id
+		LEFT JOIN price_part pp ON og.price_part_id = pp.id
+		LEFT JOIN price pr ON pp.price_id = pr.id
+		LEFT JOIN order_other oo ON oo.order_id = o.id
+		WHERE
+			o.`status` = 1
+		AND o.creator_id IS NOT NULL
+		ORDER BY o.create_time
+	</select>
 </mapper>

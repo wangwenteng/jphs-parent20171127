@@ -860,6 +860,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			jdbcType="VARCHAR"></result>
 		<result property="phone" column="phone" javaType="String"
 			jdbcType="VARCHAR"></result>
+		<result property="crStatus" column="crStatus" javaType="Integer"
+				jdbcType="INTEGER"></result>
 		<collection property="coiList"
 			ofType="com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo">
 			<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
@@ -958,4 +960,65 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			create_time DESC
 	</select>
+	
+	
+	
+	<select id="getTkList" resultMap="htco">
+		SELECT
+			co.id commodityOrderId,
+			co.order_no,
+		u.`name` creator_name,
+			co.pay_price,
+		l.`name` logisticsName,
+		co.create_time,
+		co.`schedule`,
+		coi.id coiId,
+		cr.id crId,
+		cr.`status` crStatus
+		FROM
+			`commodity_order` co
+		LEFT JOIN commodity_order_info coi ON (
+			coi.commodity_order_id = co.id
+		)
+		LEFT JOIN commodity_return cr ON (
+			cr.commodity_order_info_id = coi.id
+		)
+		LEFT JOIN `user` u ON(
+			u.id = co.creator_id
+		)
+		
+		LEFT JOIN commodity_logistics cl ON(
+			cl.commodity_order_id = co.id
+		)
+		LEFT JOIN logistics l ON(
+			l.id = cl.logistics_id
+		)
+		WHERE 1 = 1
+		<if test="orderNo!=null and orderNo!=''">
+		AND	co.order_no LIKE CONCAT('%', #{orderNo}, '%')
+		</if>
+		<if test="crStatus!=null">
+		AND	cr.`status` = #{crStatus}
+		</if>
+		<if test="creatorName!=null">
+		AND	u.`name` LIKE CONCAT('%', #{creatorName}, '%') 
+		</if>
+		<if test="no!=null">
+		AND	cl.`no` LIKE CONCAT('%', #{no}, '%') 
+		</if>
+		<if test="id!=null">
+		AND	co.`id` in(${id})
+		</if>
+		
+		<if test="beginTime!=null">
+			AND co.`create_time` &gt;= #{beginTime}
+		</if>
+		<if test="stopTime!=null">
+			AND co.`create_time` &lt;= #{stopTime}
+		</if>
+		 
+		ORDER BY
+			create_time DESC
+	</select>
+	
 </mapper>

@@ -297,4 +297,15 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND CR.creator_id = #{creatorId}
 		
 	</update>
+	
+	<select id="getListByCoId" resultMap="commodityReturn">
+		 SELECT
+			<include refid="field" />
+		FROM
+			commodity_return cr
+		LEFT JOIN commodity_order_info coi ON(coi.id = cr.commodity_order_info_id   )
+		LEFT JOIN commodity_order co ON (co.id = coi.commodity_order_id )
+		WHERE co.id = #{coId}
+		AND cr.`status` != -1;
+	</select>
 </mapper>

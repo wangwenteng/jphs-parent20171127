@@ -730,4 +730,10 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
 		return commodityOrderDao.getList(commodityOrder);
 	}
 
+	@Override
+	public Page<CommodityOrder> getTkList(CommodityOrder commodityOrder) {
+		// TODO Auto-generated method stub
+		return commodityOrderDao.getTkList(commodityOrder);
+	}
+
 }

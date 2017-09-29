@@ -43,4 +43,6 @@ public interface CommodityOrderService extends BaseService<CommodityOrder> {
 	boolean updateWechatCommodityOrderStutas(SortedMap<Object, Object> packageParams);
 	
 	Page<CommodityOrder> getList(CommodityOrder commodityOrder);
+	
+	Page<CommodityOrder> getTkList(CommodityOrder commodityOrder);
 }

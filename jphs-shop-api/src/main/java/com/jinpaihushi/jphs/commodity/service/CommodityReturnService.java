@@ -1,5 +1,7 @@
 package com.jinpaihushi.jphs.commodity.service;
 
+import java.util.List;
+
 import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
 import com.jinpaihushi.service.BaseService;
 
@@ -15,4 +17,6 @@ public interface CommodityReturnService extends BaseService<CommodityReturn> {
 	
 	boolean updateReason(CommodityReturn commodityReturn);
 
+	List<CommodityReturn> getListByCoId(String CoId);
+	
 }

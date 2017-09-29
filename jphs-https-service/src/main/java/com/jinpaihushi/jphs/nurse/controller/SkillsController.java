@@ -153,7 +153,7 @@ public class SkillsController {
                     }
                 }
             }
-            return JSONUtil.toJSONResult(1, "成功", null);
+            return JSONUtil.toJSONResult(1, "修改成功！", null);
         }
         catch (Exception e) {
             // 记录日志-fail

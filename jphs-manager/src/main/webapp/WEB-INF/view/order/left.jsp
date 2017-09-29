@@ -73,7 +73,7 @@
 				<a href="/commodity/order/index.jhtml?flag=1"><img src="/static/images/Group7.png" />订单管理</a>
 			</dd>
 			<dd>
-				<a href="/commodity/order/index.jhtml?schedule=-2&&flag=2"><img src="/static/images/Group7.png" />退货管理</a>
+				<a href="/commodity/order/index.jhtml?crStatus=1&&flag=2"><img src="/static/images/Group7.png" />退货管理</a>
 			</dd>
 		</div>
 	</dl>
