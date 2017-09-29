@@ -52,10 +52,12 @@
 							<c:if test="${e.status == 1}"><span style="color: #34BC2C;">已审核</span></c:if> 
 						</td>
 						<td>
-							<jphs:hasPermission url="/order/detail.jhtml">
-							<a onclick="redirectDetailPage('${e.id}')"> <img
+							<jphs:hasPermission url="/order/editAcceptUserId.jhtml">
+							<c:if test="${e.status == 1}">
+							<a onclick="editAcceptUserId('${e.user.id}','${order.id}','${order.acceptUserId }')"> <img
 									src="/static/images/xiugai.png">
 							</a>
+							</c:if>
 							</jphs:hasPermission>
 						 </td>
 					</tr>

@@ -314,5 +314,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM `ORDER_GOODS` OG
 		WHERE OG.`ORDER_ID` = #{orderId};
 	</select>
-	
+	<update id="updateByOrderId" >
+		UPDATE `ORDER_GOODS` OG
+		<include refid="dynamicSet" /> 
+	    WHERE OG.`ORDER_ID` = #{orderId}
+	</update>
 </mapper>

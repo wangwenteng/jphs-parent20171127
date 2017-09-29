@@ -161,9 +161,9 @@ public class AuditingController {
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
             }*/
             // 查空
-            if (StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.getPhone())
+            if (StringUtils.isEmpty(user.getId()) /*|| StringUtils.isEmpty(user.getPhone())
                     || StringUtils.isEmpty(user.getPassword()) || StringUtils.isEmpty(user.getType().toString())
-                    || StringUtils.isEmpty(authCode)/*
+                    || StringUtils.isEmpty(authCode)*//*
                                                     || StringUtils.isEmpty(token)*/) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
@@ -359,7 +359,7 @@ public class AuditingController {
                 nurseImages.setCreatorId(userId);
                 nurseImages.setCreatorName(nurseJobtitle_up.getName());
                 
-                if(!StringUtils.isEmpty(nurseJobtitle.getSculpture())){
+                if(!StringUtils.isEmpty(s1)){
                 	NurseImages nurseImages_del = new NurseImages();
             		nurseImages_del.setCreatorId(nurseJobtitle_up.getCreatorId());
             		nurseImages_del.setSourceId(nurseJobtitle_up.getId());
@@ -413,7 +413,7 @@ public class AuditingController {
                 /**	资格证	seniorityProve*/
                 /**	医院聘书	hospitalContract*/
                 /**	工牌	workCard*/
-                if (nurseJobtitle.getType() == 1) {
+                if (nurseType == 1) {
 
                 	if(charteredProve != null && !charteredProve.equals("")){
                 		NurseImages nurseImages_del = new NurseImages();
@@ -481,7 +481,7 @@ public class AuditingController {
                 //	康复师-验证康复师证件
                 /**	康复师资格证正面	therapistZ*/
                 /**	康复师资格证反面	therapistF*/
-                if (nurseJobtitle.getType() == 2) {
+                if (nurseType == 2) {
                 	if(therapistZ != null && !therapistZ.equals("")){
                 		NurseImages nurseImages_del = new NurseImages();
                 		nurseImages_del.setCreatorId(userId);
@@ -515,7 +515,7 @@ public class AuditingController {
                 }
                 //	母婴师-验证母婴师证件
                 /**	母婴师	fransnanaCard*/
-                if (nurseJobtitle.getType() == 3) {
+                if (nurseType == 3) {
                 	if(fransnanaCard != null && !fransnanaCard.equals("")){
                 		NurseImages nurseImages_del = new NurseImages();
                 		nurseImages_del.setCreatorId(userId);

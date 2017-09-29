@@ -15,6 +15,8 @@ import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
 public interface CommodityReturnDao extends BaseDao<CommodityReturn> {
 
 	CommodityReturn getNotStatus(CommodityReturn commodityReturn);
+
+	boolean updateReason(CommodityReturn commodityReturn);
 	
 	
 	

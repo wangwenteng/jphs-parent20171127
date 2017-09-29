@@ -182,6 +182,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<result property="userName" column="name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="grantName" column="grant_name" javaType="String" jdbcType="VARCHAR"></result>
 		<result property="repertoryId" column="repertoryId" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="no" column="no" javaType="String" jdbcType="VARCHAR"></result>
 	</resultMap>
 	
 	<resultMap id="voucherUseGlobal" type="com.jinpaihushi.jphs.activity.model.VoucherUse">
@@ -339,7 +340,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    , `vu`.`creator_name`
 		    , `vu`.`creator_id`
 		    , `vu`.`grant_name`
-		    , `vr`.`status`
+		    , `vr`.`status`,
+		    vr.`no`
 		FROM
 		    `jphs`.`voucher_use` AS `vu`
 		    RIGHT JOIN `jphs`.`voucher_repertory` AS `vr` 

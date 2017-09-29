@@ -105,7 +105,7 @@
 					<c:when test="${fn:length(list) >0}">
 						<c:forEach items="${list}" var="e" varStatus="s">
 							<tr>
-								<td><%-- ${voucher.id} --%>${e.repertoryId }</td>
+								<td><%-- ${voucher.id} --%>${e.no }</td>
 								<td><fmt:formatDate value="${e.createTime}"
 										pattern="yyyy-MM-dd HH:mm:ss" /></td>
 								<td>${e.creatorName}</td>

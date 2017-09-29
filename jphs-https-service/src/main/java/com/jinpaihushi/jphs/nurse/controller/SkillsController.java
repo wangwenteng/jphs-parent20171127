@@ -181,15 +181,15 @@ public class SkillsController {
             }
 
             // 查空
-            if (StringUtils.isEmpty(authCode) || StringUtils.isEmpty(user.getId())
-                    || StringUtils.isEmpty(user.getPassword())
+            if (/*StringUtils.isEmpty(authCode) || */StringUtils.isEmpty(user.getId())
+                    /*|| StringUtils.isEmpty(user.getPassword())
                     || StringUtils.isEmpty(user.getPhone())/*
                                                            ||StringUtils.isEmpty(token)*/) {
                 return JSONUtil.toJSONResult(0, "参数不能为空", null);
             }
-            if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
+           /* if(!Common.CheckPerson(user.getPhone(), user.getPassword(), token)){
             	return JSONUtil.toJSONResult(0, "token验证失败", null);
-            }
+            }*/
             List<Map<String, Object>> skills_list_re = new ArrayList<Map<String, Object>>();
             if(nurseType == null || nurseType.equals("")){
             	NurseJobtitle nurseJobtitle = new NurseJobtitle();

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -259,6 +260,7 @@ public class VoucherController extends BaseController<Voucher> {
 
                 voucherRepertory.setConditionAmount(voucher.getConditionAmount());
                 voucherRepertory.setDiscountAmount(voucher.getDiscountAmount());
+				voucherRepertory.setCode(getStringRandom(8));
                 voucherRepertoryService.insert(voucherRepertory);
             }
 
@@ -351,7 +353,7 @@ public class VoucherController extends BaseController<Voucher> {
     public String addUser(HttpSession hs, HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap,
             VoucherRepertory voucherRepertory, User user, Integer p, Integer n) {
 
-        user.setStatus(0);
+        user.setStatus(1);
         user.setType(1);
         user.setId("");
         startPage(p, n);
@@ -364,4 +366,26 @@ public class VoucherController extends BaseController<Voucher> {
         modelMap.put("voucherId", voucherRepertory.getVoucherId());
         return "activity/voucher/detail/addUser";
     }
+
+
+	private String getStringRandom(int length) {
+
+	String val = "";
+	Random random = new Random();
+
+	//参数length，表示生成几位随机数
+	for(int i = 0; i < length; i++) {
+
+	String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
+	//输出字母还是数字
+	if( "char".equalsIgnoreCase(charOrNum) ) {
+	//输出是大写字母还是小写字母
+	int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;
+	val += (char)(random.nextInt(26) + temp);
+	} else if( "num".equalsIgnoreCase(charOrNum) ) {
+	val += String.valueOf(random.nextInt(10));
+	}
+	}
+	return val;
+	}
 }

@@ -531,7 +531,7 @@ public class CommodityOrderServiceImpl extends BaseServiceImpl<CommodityOrder>im
     					transaction.setOperateSource(2);
     					transaction.setRemark(remark);
     					transaction.setWithdraw(0);
-    					transaction.setPayType(1);
+    					transaction.setPayType(3);
     					transaction.setOutTradeNo(orderNo);
     					transaction.setCreatorId(map_c.get("creator_id").toString());
     					transaction.setCreatorName(map_c.get("creator_name").toString());

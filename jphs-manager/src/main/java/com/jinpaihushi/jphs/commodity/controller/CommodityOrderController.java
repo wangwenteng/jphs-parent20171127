@@ -1,12 +1,11 @@
 package com.jinpaihushi.jphs.commodity.controller;
 
-import java.util.UUID;
-import java.util.List;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,30 +13,35 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller; 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+ 
 import com.github.pagehelper.Page;
-import com.alibaba.fastjson.JSONObject;
 import com.jinpaihushi.controller.BaseController;
+import com.jinpaihushi.jphs.commodity.model.CommodityLogistics;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrder;
-import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
 import com.jinpaihushi.jphs.commodity.model.CommodityOrderInfo;
+import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
+import com.jinpaihushi.jphs.commodity.service.CommodityLogisticsService;
 import com.jinpaihushi.jphs.commodity.service.CommodityOrderInfoService;
-import com.jinpaihushi.jphs.user.service.UserService;
-import com.jinpaihushi.logistics.KdniaoTrackQueryAPI;
-import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.jphs.commodity.service.CommodityOrderService;
+import com.jinpaihushi.jphs.commodity.service.CommodityReturnService;
 import com.jinpaihushi.jphs.logistics.model.Logistics;
 import com.jinpaihushi.jphs.logistics.service.LogisticsService;
-import com.jinpaihushi.jphs.commodity.model.CommodityLogistics;
-import com.jinpaihushi.jphs.commodity.service.CommodityLogisticsService;
-import com.jinpaihushi.jphs.commodity.model.CommodityReturn;
-import com.jinpaihushi.jphs.commodity.service.CommodityReturnService;
+import com.jinpaihushi.jphs.transaction.model.Transaction;
+import com.jinpaihushi.jphs.transaction.service.TransactionService;
+import com.jinpaihushi.jphs.user.model.User;
+import com.jinpaihushi.jphs.user.service.UserService;
+import com.jinpaihushi.logistics.KdniaoTrackQueryAPI;
 import com.jinpaihushi.service.BaseService;
 import com.jinpaihushi.utils.PageInfos;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -61,6 +65,10 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 	private CommodityLogisticsService commodityLogisticsService;
 	@Autowired
 	private CommodityReturnService commodityReturnService;
+	@Autowired
+	private TransactionService transactionService;
+
+
 
     @Override
     protected BaseService<CommodityOrder> getService() {
@@ -139,59 +147,35 @@ public class CommodityOrderController extends BaseController<CommodityOrder> {
 		 
 		CommodityLogistics cl =  commodityLogisticsService.getInfo(id);
 
+
 		KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
+
+		if(cl!=null){
 		String result = api.getOrderTracesByJson(cl.getCode(), cl.getNo());
-		//System.out.println(result);
-		 String replaceAll = result.replaceAll("\"", "");
-			// System.out.println(replaceAll);
-			String[] split = replaceAll.split("Traces");
-
-			String substring = split[1].substring(3);
-			String substring2 = substring.substring(0, substring.length() - 2).trim();
-				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				if(substring2.length() >0){
-			String substring3 = substring2.substring(0, substring2.length() - 1).trim();
-			String[] split2 = substring3.split("},");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date date = null;
-			 
 			
-			for (int i = 0; i < split2.length; i++) {
-
-				String[] split3 = split2[i].split("AcceptTime:");
-				//System.out.println(split3.length);
-				for (int j = 0; j < split3.length; j++) {
-					//j++;
-					//System.out.println(split3[j]);
-					String[] split4 = split3[j].split("AcceptStation:");
-				/*	System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
-					System.out.println(split4.length);
-					System.out.println(split4[0]);
-					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>================");*/
-					//	System.out.println(split4[1]);
-					for (int k = 0; k < split4.length; k++) {
-						Map<String, Object> map = new HashMap<String, Object>();
-
-					//	date = sdf.parse(split4[0].substring(0, split4[0].trim().length()));
-						
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
-						System.out.println(split4[0].substring(0, split4[0].trim().length()));
-						System.out.println(split4[0]);
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>================");
-						/*map.put("AcceptTime", date);
-						map.put("AcceptStation", split4[0]);*/
-						list.add(map);
-						break;
-					}
-				}
+		JSONArray arry = JSONObject.fromObject(result).getJSONArray("Traces");
+			ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			for (int i = 0; i < arry.size(); i++) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				String AcceptStation = arry.getJSONObject(i).getString("AcceptStation") ;
+				String AcceptTime = arry.getJSONObject(i).getString("AcceptTime") ;
+				map.put("AcceptTime", AcceptTime);
+				map.put("AcceptStation", AcceptStation);
+				list.add(map);
 			}
-				}
+			modelMap.put("LogisticsList", list);
+		}
+
+		Transaction transaction = new Transaction();
+		transaction.setOrderId(id);
+		Transaction t = transactionService.load(transaction);
         modelMap.put("commodityOrder", commodityOrder);
 		modelMap.put("coiList", coiList);
 		modelMap.put("user", user);
 		modelMap.put("remark", remark);
 		modelMap.put("cl", cl);
-		//modelMap.put("LogisticsList", list);
+		modelMap.put("transaction", t);
+		
 
         return "order/commodity/order/detail";
     }

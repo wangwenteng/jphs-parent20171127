@@ -59,7 +59,7 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 	
 	private String grantName;
 	
-	
+	private String no;
 	public Integer getType() {
 		return type;
 	}
@@ -186,6 +186,14 @@ public class VoucherUse extends BaseModel implements Predicate<VoucherUse>,
 
 	
 	
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
 	public String getRepertoryId() {
 		return repertoryId;
 	}

@@ -2,34 +2,31 @@
 <!DOCTYPE mapper
 PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
-<!--
-	author	:	yangsong
-	date	:	2017-08-15 13:57:49
-	version	:	1.0
--->
+<!-- author : yangsong date : 2017-08-15 13:57:49 version : 1.0 -->
 <mapper namespace="com.jinpaihushi.jphs.commodity.dao.CommodityReturnDao">
-	
+
 	<sql id="field">
-		CR.id, CR.commodity_order_info_id, CR.reason, CR.remark, 
-		CR.status, CR.create_time, CR.creator_id, CR.creator_name,CR.price,CR.sign
+		CR.id, CR.commodity_order_info_id, CR.reason, CR.remark,
+		CR.status, CR.create_time, CR.creator_id,
+		CR.creator_name,CR.price,CR.sign
 	</sql>
 
 	<sql id="fieldGlobal">
-		CR.id CR_id, CR.commodity_order_info_id CR_commodity_order_info_id, 
-		CR.reason CR_reason, CR.remark CR_remark, 
-		CR.status CR_status, CR.create_time CR_create_time, 
-		CR.creator_id CR_creator_id, CR.creator_name CR_creator_name,CR.price CR_price,
+		CR.id CR_id, CR.commodity_order_info_id
+		CR_commodity_order_info_id, CR.reason CR_reason, CR.remark CR_remark,
+		CR.status CR_status, CR.create_time CR_create_time, CR.creator_id
+		CR_creator_id, CR.creator_name CR_creator_name,CR.price CR_price,
 		CR.sign CR_sign
 	</sql>
-	
+
 	<sql id="fieldWithAlias">
-		CR.id id, CR.commodity_order_info_id commodityOrderInfoId, 
-		CR.reason reason, CR.remark remark, 
-		CR.status status, CR.create_time createTime, 
-		CR.creator_id creatorId, CR.creator_name creatorName,CR.price price,
+		CR.id id, CR.commodity_order_info_id commodityOrderInfoId,
+		CR.reason reason, CR.remark remark, CR.status status, CR.create_time
+		createTime, CR.creator_id creatorId, CR.creator_name
+		creatorName,CR.price price,
 		CR.sign sign
 	</sql>
-	
+
 	<sql id="condition">
 		<if test="id!=null and id!=''">
 			AND CR.id=#{id}
@@ -55,27 +52,28 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<if test="creatorName!=null and creatorName!=''">
 			AND CR.creator_name=#{creatorName}
 		</if>
-			<if test="price!=null and price!=''">
+		<if test="price!=null and price!=''">
 			AND CR.price=#{price}
 		</if>
 		<if test="sign!=null">
 			AND CR.sign=#{sign}
 		</if>
 	</sql>
-	
+
 	<sql id="dynamicWhere">
 		<where>
-			<include refid="condition"/>
+			<include refid="condition" />
 		</where>
 	</sql>
-	
+
 	<sql id="queryWhere">
 		<where>
 			<if test="id!=null and id!=''">
 				AND CR.id LIKE CONCAT('%', #{id}, '%')
 			</if>
 			<if test="commodityOrderInfoId!=null and commodityOrderInfoId!=''">
-				AND CR.commodity_order_info_id LIKE CONCAT('%', #{commodityOrderInfoId}, '%')
+				AND CR.commodity_order_info_id LIKE CONCAT('%',
+				#{commodityOrderInfoId}, '%')
 			</if>
 			<if test="reason!=null and reason!=''">
 				AND CR.reason LIKE CONCAT('%', #{reason}, '%')
@@ -103,93 +101,109 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="dynamicSet">
 		<set>
-           <if test="id!=null">
-				CR.id=#{id}, 
-		   </if>
-           <if test="commodityOrderInfoId!=null">
-				CR.commodity_order_info_id=#{commodityOrderInfoId}, 
-		   </if>
-           <if test="reason!=null">
-				CR.reason=#{reason}, 
-		   </if>
-           <if test="remark!=null">
-				CR.remark=#{remark}, 
-		   </if>
-           <if test="status!=null">
-				CR.status=#{status}, 
-		   </if>
-           <if test="createTime!=null">
-				CR.create_time=#{createTime}, 
-		   </if>
-           <if test="creatorId!=null">
-				CR.creator_id=#{creatorId}, 
-		   </if>
-           <if test="creatorName!=null">
-				CR.creator_name=#{creatorName}, 
-		   </if>
-		   <if test="price!=null">
-				CR.price=#{price}, 
-		   </if>
-		   <if test="sign!=null">
-				CR.sign=#{sign}, 
-		   </if>
+			<if test="id!=null">
+				CR.id=#{id},
+			</if>
+			<if test="commodityOrderInfoId!=null">
+				CR.commodity_order_info_id=#{commodityOrderInfoId},
+			</if>
+			<if test="reason!=null">
+				CR.reason=#{reason},
+			</if>
+			<if test="remark!=null">
+				CR.remark=#{remark},
+			</if>
+			<if test="status!=null">
+				CR.status=#{status},
+			</if>
+			<if test="createTime!=null">
+				CR.create_time=#{createTime},
+			</if>
+			<if test="creatorId!=null">
+				CR.creator_id=#{creatorId},
+			</if>
+			<if test="creatorName!=null">
+				CR.creator_name=#{creatorName},
+			</if>
+			<if test="price!=null">
+				CR.price=#{price},
+			</if>
+			<if test="sign!=null">
+				CR.sign=#{sign},
+			</if>
 		</set>
 	</sql>
-	
+
 	<sql id="orderby">
 		<if test="orderby != null">
 			ORDER BY ${orderby}
 		</if>
 	</sql>
 
-	<resultMap id="commodityReturn" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+	<resultMap id="commodityReturn"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
 		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderInfoId" column="commodity_order_info_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="reason" column="reason" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="commodityOrderInfoId" column="commodity_order_info_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reason" column="reason" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="remark" column="remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String"
+			jdbcType="VARCHAR"></result>
 		<result property="price" column="price" javaType="Double"
-				jdbcType="DECIMAL"></result>
-		<result property="sign" column="sign" javaType="Integer" jdbcType="INTEGER"></result>
+			jdbcType="DECIMAL"></result>
+		<result property="sign" column="sign" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<resultMap id="commodityReturnGlobal" type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
-		<result property="id" column="CR_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="commodityOrderInfoId" column="CR_commodity_order_info_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="reason" column="CR_reason" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="remark" column="CR_remark" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="status" column="CR_status" javaType="Integer" jdbcType="INTEGER"></result>
-		<result property="createTime" column="CR_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
-		<result property="creatorId" column="CR_creator_id" javaType="String" jdbcType="VARCHAR"></result>
-		<result property="creatorName" column="CR_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+
+	<resultMap id="commodityReturnGlobal"
+		type="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+		<result property="id" column="CR_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="commodityOrderInfoId" column="CR_commodity_order_info_id"
+			javaType="String" jdbcType="VARCHAR"></result>
+		<result property="reason" column="CR_reason" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="remark" column="CR_remark" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="status" column="CR_status" javaType="Integer"
+			jdbcType="INTEGER"></result>
+		<result property="createTime" column="CR_create_time" javaType="Date"
+			jdbcType="TIMESTAMP"></result>
+		<result property="creatorId" column="CR_creator_id" javaType="String"
+			jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="CR_creator_name"
+			javaType="String" jdbcType="VARCHAR"></result>
 		<result property="price" column="CR_price" javaType="Double"
-				jdbcType="DECIMAL"></result>
-		<result property="sign" column="CR_sign" javaType="Integer" jdbcType="INTEGER"></result>
+			jdbcType="DECIMAL"></result>
+		<result property="sign" column="CR_sign" javaType="Integer"
+			jdbcType="INTEGER"></result>
 	</resultMap>
-	
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jinpaihushi.jphs.commodity.model.CommodityReturn">
 		INSERT INTO `COMMODITY_RETURN`(
-			id, commodity_order_info_id, 
-			reason, remark, 
-			status, create_time, 
-			creator_id, creator_name,price,sign
-		)VALUES(
-			#{id,jdbcType=VARCHAR}, #{commodityOrderInfoId,jdbcType=VARCHAR}, 
-			#{reason,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-			#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-			#{creatorId,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR},
-			#{price,jdbcType=DECIMAL},#{sign,jdbcType=INTEGER}
+		id, commodity_order_info_id, reason, remark, status, create_time,
+		creator_id, creator_name,price,sign )VALUES(
+		#{id,jdbcType=VARCHAR}, #{commodityOrderInfoId,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{creatorId,jdbcType=VARCHAR},
+		#{creatorName,jdbcType=VARCHAR},
+		#{price,jdbcType=DECIMAL},#{sign,jdbcType=INTEGER}
 		)
 	</insert>
-	
-	<insert id="inserts" useGeneratedKeys="false"
-		parameterType="list">
+
+	<insert id="inserts" useGeneratedKeys="false" parameterType="list">
         <![CDATA[
         INSERT INTO `COMMODITY_RETURN`(
 			id, commodity_order_info_id, 
@@ -197,38 +211,43 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			status, create_time, 
 			creator_id, creator_name,price,sign
         )]]>
-       	VALUES
+		VALUES
 		<foreach collection="list" item="item" index="index"
 			separator=",">
 			(
-			#{item.id,jdbcType=VARCHAR}, #{item.commodityOrderInfoId,jdbcType=VARCHAR}, 
-			#{item.reason,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, 
-			#{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, 
-			#{item.creatorId,jdbcType=VARCHAR}, #{item.creatorName,jdbcType=VARCHAR},
+			#{item.id,jdbcType=VARCHAR},
+			#{item.commodityOrderInfoId,jdbcType=VARCHAR},
+			#{item.reason,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR},
+			#{item.status,jdbcType=INTEGER},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.creatorId,jdbcType=VARCHAR},
+			#{item.creatorName,jdbcType=VARCHAR},
 			#{item.price,jdbcType=DECIMAL},#{item.sign,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteById">
-		DELETE CR FROM `COMMODITY_RETURN` CR WHERE CR.ID = #{id} 
+		DELETE CR FROM `COMMODITY_RETURN` CR WHERE CR.ID =
+		#{id}
 	</delete>
-	
+
 	<update id="disableById">
-	    UPDATE `COMMODITY_RETURN` CR
-		SET 
+		UPDATE `COMMODITY_RETURN` CR
+		SET
 		CR.STATUS = -1
 		WHERE CR.ID = #{id}
 	</update>
 
 	<update id="update">
 		UPDATE `COMMODITY_RETURN` CR
-		<include refid="dynamicSet" /> 
-	    WHERE CR.ID = #{id}
+		<include refid="dynamicSet" />
+		WHERE CR.ID = #{id}
 	</update>
 
 	<select id="load" resultMap="commodityReturn">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_RETURN` CR
 		<include refid="dynamicWhere" />
 	</select>
@@ -239,30 +258,43 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="list" resultMap="commodityReturn">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_RETURN` CR
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
 
 	<select id="query" resultMap="commodityReturn">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_RETURN` CR
 		<include refid="dynamicWhere" />
 		<include refid="orderby" />
 	</select>
-	
+
 	<select id="loadById" resultMap="commodityReturn">
-		SELECT <include refid="field"/>
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_RETURN` CR
 		WHERE CR.ID = #{id}
 	</select>
-	
-		<select id="getNotStatus" resultMap="commodityReturn">
-		SELECT <include refid="field"/>
+
+	<select id="getNotStatus" resultMap="commodityReturn">
+		SELECT
+		<include refid="field" />
 		FROM `COMMODITY_RETURN` CR
-		WHERE CR.COMMODITY_ORDER_INFO_ID = #{commodityOrderInfoId}
+		WHERE CR.COMMODITY_ORDER_INFO_ID =
+		#{commodityOrderInfoId}
 		AND CR.`STATUS` != -1
 	</select>
-	
+
+
+	<update id="updateReason">
+		UPDATE `COMMODITY_RETURN` CR
+		<include refid="dynamicSet" />
+		WHERE CR.commodity_order_info_id = #{commodityOrderInfoId} AND CR.`status` = #{status} 
+		AND CR.creator_id = #{creatorId}
+		
+	</update>
 </mapper>

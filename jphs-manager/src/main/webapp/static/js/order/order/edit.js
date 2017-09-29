@@ -18,3 +18,13 @@ $(function() {
 	});
 	
 });
+/**
+ * 修改接单人  派单
+ * @param id
+ * @param orderId
+ * @param acceptUserId（如果有接单人就是修改接单人、没有就是派单）
+ */
+function editAcceptUserId(id,orderId,acceptUserId) {
+	alert(1);
+	window.location.href = "/order/editAcceptUserId.jhtml?id=" + id+"&orderId="+orderId+"&acceptUserId="+acceptUserId;
+}

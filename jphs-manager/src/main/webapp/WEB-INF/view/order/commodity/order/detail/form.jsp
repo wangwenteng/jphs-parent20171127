@@ -62,7 +62,24 @@
 			</c:if>
 		</p>
 		<p>
-			<span>支付方式：</span> 
+			<span>支付方式：</span>
+			  
+			<c:if test="${transaction.payType==1 }">
+				 支付宝
+			 </c:if>
+			 <c:if test="${transaction.payType==2 }">
+				 微信
+			 </c:if>
+			 <c:if test="${transaction.payType==3 }">
+				余额
+			 </c:if>
+			 <c:if test="${transaction.payType==4 }">
+				银联
+			 </c:if>
+			<c:if test="${transaction.payType==5 }">
+				VIP卡
+			 </c:if>
+			 
 		</p>
 		<p></p>
 	</div>
@@ -141,7 +158,7 @@
 			<th>分销金额</th>
 			 <c:if test="${commodityOrder.schedule == -2}">
 			<th width="250px">退款原因</th>
-			<th>审核结果</th>
+			<th>货品状态</th>
 			</c:if>
 			<c:choose>
 				<c:when test="${fn:length(coiList) >0}">
@@ -161,10 +178,10 @@
 							<td>${e.crReason }</td>
 							<td>
 								<c:if test="${e.crStatus == -2 }">
-									已拒绝
+									正常
 								</c:if>
 								<c:if test="${e.crStatus == 2 }">
-									已退款
+									退款
 								</c:if>
 								<c:if test="${e.crStatus == 1 }">
 									<a onclick=updateStatus("${e.crId }","-2")>拒绝</a>
@@ -201,10 +218,26 @@
 				
 					<div style="text-align: center;">
 						<div class="controls col-md-6"
-							style="width: 100%; margin-left: 15px;">
+							style="width: 150%; margin-left: 15px;">
 						</div>
 						<div >
+							 <c:choose>
+				<c:when test="${fn:length(LogisticsList) >0}">
+					<c:forEach items="${LogisticsList}" var="e" varStatus="s">
+						<div >
 							 
+							<span>${e.AcceptStation }</span>
+							 <span>${e.AcceptTime }</span>
+							  
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="20" align="center">没有可显示的记录。</td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
 						</div>
 						</div>
 			</div>

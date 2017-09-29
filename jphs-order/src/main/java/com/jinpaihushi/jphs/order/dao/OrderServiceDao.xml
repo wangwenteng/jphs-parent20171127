@@ -367,6 +367,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		<include refid="dynamicSet" /> 
 	    WHERE OS.ID = #{id}
 	</update>
+	<update id="updateByOrderId">
+		UPDATE `ORDER_SERVICE` OS
+		<include refid="dynamicSet" /> 
+	    WHERE OS.order_id = #{orderId} AND OS.setout_time IS NULL
+	</update>
 
 	<select id="load" resultMap="orderService">
 		SELECT <include refid="field"/>

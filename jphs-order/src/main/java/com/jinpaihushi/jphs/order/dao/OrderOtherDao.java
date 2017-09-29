@@ -17,5 +17,5 @@ public interface OrderOtherDao extends BaseDao<OrderOther> {
     boolean updateDetailAddress(OrderOther orderOther);
 
     int deleteByOrderId(String orderId);
-
-}
+    int updateByOrderId(OrderOther orderOther);
+}	

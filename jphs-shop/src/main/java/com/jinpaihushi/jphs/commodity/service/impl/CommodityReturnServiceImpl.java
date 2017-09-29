@@ -32,4 +32,10 @@ public class CommodityReturnServiceImpl extends BaseServiceImpl<CommodityReturn>
 		return commodityReturnDao.getNotStatus(commodityReturn);
 	}
 
+	@Override
+	public boolean updateReason(CommodityReturn commodityReturn) {
+		// TODO Auto-generated method stub
+		return commodityReturnDao.updateReason(commodityReturn);
+	}
+
 }

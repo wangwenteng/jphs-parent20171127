@@ -20,10 +20,10 @@
 		<tr>
 			<td>性别：</td>
 			<td width="200">
-				<select class="form-control input-xlarge" id="sex" name="sex">
+				<select class="form-control input-xlarge" id="user.sex" name="user.sex">
 					<option value="">全部</option>
-					<option value="0">男</option>
-					<option value="1">女</option>
+					<option value="0" <c:if test="${nurse.user.sex==0}">selected="selected"</c:if>>男</option>
+					<option value="1" <c:if test="${nurse.user.sex==1}">selected="selected"</c:if>>女</option>
 				</select>
 			</td>
 			<td>服务时间：</td>
@@ -64,4 +64,3 @@
 	</div>
 </div>
 </form>
-

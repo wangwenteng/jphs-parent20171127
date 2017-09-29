@@ -94,6 +94,7 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 				return JSONUtil.toJSONResult(0, "参数不能为空", null);
 			}
 			
+			 
 			coi.setId(UUID.randomUUID().toString());
 			String result = commodityOrderInfoService.insert(coi);
 			if (result.length() <= 0) {
@@ -203,21 +204,36 @@ public class CommodityOrderInfoController extends BaseController<CommodityOrderI
 			}
 			  CommodityReturn cr = new CommodityReturn();
 			  cr.setCommodityOrderInfoId(coi.getId());
-			  cr.setReason(reason);
-			  cr.setId(UUID.randomUUID().toString());
+			
+			  
 			  cr.setStatus(1);
-			  cr.setSign(sign);
-			  cr.setCreateTime(new Date());
 			  cr.setCreatorId(coi.getCreatorId());
-			  cr.setPrice(price);
-			   cr.setRemark(remark);
-				String result = commodityReturnService.insert(cr);
-
+				
+			
 			 
-			 if (result.length() <= 0) {
-				// 跳转到错误页
+			CommodityReturn comr =commodityReturnService.load(cr);
+			  if(comr != null){	 
+				   cr.setReason(reason);
+				boolean b1 = commodityReturnService.updateReason(cr);
+				if(!b1){
 				return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
-			}
+				}
+
+			  }else{ 
+				  cr.setCreateTime(new Date());
+				 cr.setReason(reason);
+				 cr.setPrice(price);
+				 cr.setId(UUID.randomUUID().toString());
+			     cr.setSign(sign);
+			     cr.setRemark(remark);
+			     String result = commodityReturnService.insert(cr);
+				 if (result.length() <= 0) {
+					// 跳转到错误页
+					return JSONUtil.toJSONResult(0, "请核对参数后访问", 0);
+				}
+			  }
+			 
+				
 			return JSONUtil.toJSONResult(1, "操作成功！", 1);
 		} catch (Exception e) {
 			Util.failLog.error("commodity.order.info.tkOneReason.json,coiId="+coi.getId(),e);

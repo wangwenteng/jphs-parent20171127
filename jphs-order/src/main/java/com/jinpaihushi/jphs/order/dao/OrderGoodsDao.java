@@ -17,5 +17,11 @@ public interface OrderGoodsDao extends BaseDao<OrderGoods> {
     Integer getOrderCount(OrderGoods orderGoods);
 
     int deleteByOrderId(String orderId);
+    /**
+     * 修改接单人
+     * @param orderId 订单id  接单人id
+     * @return
+     */
+    int updateByOrderId(OrderGoods orderGoods);
 
 }

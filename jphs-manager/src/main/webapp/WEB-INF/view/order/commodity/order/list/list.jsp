@@ -33,11 +33,10 @@
 						<td><c:out value="${e.payPrice}" /></td>
 						<td><c:out value="${e.voucherPrice}" /></td>
 						<td>0.00</td>
-						<td>
-							<c:if test="${e.logisticsName != null}">
+						<td><c:if test="${e.logisticsName != null}">
 							${e.logisticsName}：${e.no}</td>
-							</c:if>
-						
+						</c:if>
+
 						<td><fmt:formatDate value="${e.createTime}"
 								pattern="yy-MM-dd HH:mm" /></td>
 						<td><c:if test="${e.schedule == -3}">
@@ -68,14 +67,16 @@
 								<img src="/static/images/shanchu.png">
 							</a> --%> <a onclick="redirectDetailPage('${e.id}')"> <img
 								src="/static/images/chakan.png">
-						</a> 
-						<c:if test="${e.schedule == 1}">
-							<a 
-								data-toggle="modal" data-target="#Modal" onclick="fh('${e.id}')">
-								<img
-								src="/static/images/fh.png">
+						</a> <c:if test="${e.schedule == 1}">
+								<a data-toggle="modal" data-target="#Modal"
+									onclick="fh('${e.id}')"> <img src="/static/images/fh.png">
 								</a>
-								 
+
+							</c:if> <c:if test="${e.payTime !=null}">
+								<a data-toggle="modal" data-target="#Modal"
+									onclick="fh('${e.id}')"> <img src="/static/images/fh.png">
+								</a>
+
 							</c:if>
 						</td>
 					</tr>
@@ -96,11 +97,11 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">添加物流信息</h4>
-			</div>
-				
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">添加物流信息</h4>
+				</div>
+
 				<form id="logistics">
 					<div style="text-align: center;">
 						<div class="controls col-md-6"
@@ -110,14 +111,15 @@
 								<c:forEach items="${lList}" var="e" varStatus="s">
 									<option value="${e.id }">${e.name }</option>
 								</c:forEach>
-							</select> <span>物流单号</span> <span>
-								<input type="text" id="${s.index+1}" name="no"  /> <input
-								type="hidden" id="commodityOrderId" name="commodityOrderId" /> </span>
+							</select> <span>物流单号</span> <span> <input type="text"
+								id="${s.index+1}" name="no" /> <input type="hidden"
+								id="commodityOrderId" name="commodityOrderId" />
+							</span>
 						</div>
-						<div >
+						<div>
 							<a onclick='addLogistics("${s.index+1}")'>确定</a>
 						</div>
-						</div>
+					</div>
 				</form>
 			</div>
 		</div>
