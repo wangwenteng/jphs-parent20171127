@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--
+	author	:	wangwenteng
+	date	:	2017-09-07 11:16:39
+	version	:	1.0
+-->
+<mapper namespace="com.jinpaihushi.jphs.withdraw.dao.WithdrawCashDao">
+	
+	<sql id="field">
+		WC.id, WC.amount, WC.account_name, WC.alipay_account, 
+		WC.audit_time, WC.remark, WC.status, WC.creator_id, 
+		WC.creator_name, WC.create_time
+	</sql>
+
+	<sql id="fieldGlobal">
+		WC.id WC_id, WC.amount WC_amount, 
+		WC.account_name WC_account_name, WC.alipay_account WC_alipay_account, 
+		WC.audit_time WC_audit_time, WC.remark WC_remark, 
+		WC.status WC_status, WC.creator_id WC_creator_id, 
+		WC.creator_name WC_creator_name, WC.create_time WC_create_time
+	</sql>
+	
+	<sql id="fieldWithAlias">
+		WC.id id, WC.amount amount, 
+		WC.account_name accountName, WC.alipay_account alipayAccount, 
+		WC.audit_time auditTime, WC.remark remark, 
+		WC.status status, WC.creator_id creatorId, 
+		WC.creator_name creatorName, WC.create_time createTime
+	</sql>
+	
+	<sql id="condition">
+		<if test="id!=null and id!=''">
+			AND WC.id=#{id}
+		</if>
+		<if test="amount!=null">
+			AND WC.amount=#{amount}
+		</if>
+		<if test="accountName!=null and accountName!=''">
+			AND WC.account_name=#{accountName}
+		</if>
+		<if test="alipayAccount!=null and alipayAccount!=''">
+			AND WC.alipay_account=#{alipayAccount}
+		</if>
+		<if test="auditTime!=null">
+			AND WC.audit_time=#{auditTime}
+		</if>
+		<if test="remark!=null and remark!=''">
+			AND WC.remark=#{remark}
+		</if>
+		<if test="status!=null">
+			AND WC.status=#{status}
+		</if>
+		<if test="creatorId!=null and creatorId!=''">
+			AND WC.creator_id=#{creatorId}
+		</if>
+		<if test="creatorName!=null and creatorName!=''">
+			AND WC.creator_name=#{creatorName}
+		</if>
+		<if test="createTime!=null">
+			AND WC.create_time=#{createTime}
+		</if>
+	</sql>
+	
+	<sql id="dynamicWhere">
+		<where>
+			<include refid="condition"/>
+		</where>
+	</sql>
+	
+	<sql id="queryWhere">
+		<where>
+			<if test="id!=null and id!=''">
+				AND WC.id LIKE CONCAT('%', #{id}, '%')
+			</if>
+			<if test="amount!=null">
+				AND WC.amount=#{amount}
+			</if>
+			<if test="accountName!=null and accountName!=''">
+				AND WC.account_name LIKE CONCAT('%', #{accountName}, '%')
+			</if>
+			<if test="alipayAccount!=null and alipayAccount!=''">
+				AND WC.alipay_account LIKE CONCAT('%', #{alipayAccount}, '%')
+			</if>
+			<if test="auditTime!=null">
+				AND WC.audit_time=#{auditTime}
+			</if>
+			<if test="remark!=null and remark!=''">
+				AND WC.remark LIKE CONCAT('%', #{remark}, '%')
+			</if>
+			<if test="status!=null">
+				AND WC.status=#{status}
+			</if>
+			<if test="creatorId!=null and creatorId!=''">
+				AND WC.creator_id LIKE CONCAT('%', #{creatorId}, '%')
+			</if>
+			<if test="creatorName!=null and creatorName!=''">
+				AND WC.creator_name LIKE CONCAT('%', #{creatorName}, '%')
+			</if>
+			<if test="createTime!=null">
+				AND WC.create_time=#{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="dynamicSet">
+		<set>
+           <if test="id!=null">
+				WC.id=#{id}, 
+		   </if>
+           <if test="amount!=null">
+				WC.amount=#{amount}, 
+		   </if>
+           <if test="accountName!=null">
+				WC.account_name=#{accountName}, 
+		   </if>
+           <if test="alipayAccount!=null">
+				WC.alipay_account=#{alipayAccount}, 
+		   </if>
+           <if test="auditTime!=null">
+				WC.audit_time=#{auditTime}, 
+		   </if>
+           <if test="remark!=null">
+				WC.remark=#{remark}, 
+		   </if>
+           <if test="status!=null">
+				WC.status=#{status}, 
+		   </if>
+           <if test="creatorId!=null">
+				WC.creator_id=#{creatorId}, 
+		   </if>
+           <if test="creatorName!=null">
+				WC.creator_name=#{creatorName}, 
+		   </if>
+           <if test="createTime!=null">
+				WC.create_time=#{createTime}, 
+		   </if>
+		</set>
+	</sql>
+	
+	<sql id="orderby">
+		<if test="orderby != null">
+			ORDER BY ${orderby}
+		</if>
+	</sql>
+
+	<resultMap id="withdrawCash" type="com.jinpaihushi.jphs.withdraw.model.WithdrawCash">
+		<result property="id" column="id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="accountName" column="account_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="alipayAccount" column="alipay_account" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditTime" column="audit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<resultMap id="withdrawCashGlobal" type="com.jinpaihushi.jphs.withdraw.model.WithdrawCash">
+		<result property="id" column="WC_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="amount" column="WC_amount" javaType="Double" jdbcType="DECIMAL"></result>
+		<result property="accountName" column="WC_account_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="alipayAccount" column="WC_alipay_account" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="auditTime" column="WC_audit_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+		<result property="remark" column="WC_remark" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="status" column="WC_status" javaType="Integer" jdbcType="INTEGER"></result>
+		<result property="creatorId" column="WC_creator_id" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="creatorName" column="WC_creator_name" javaType="String" jdbcType="VARCHAR"></result>
+		<result property="createTime" column="WC_create_time" javaType="Date" jdbcType="TIMESTAMP"></result>
+	</resultMap>
+	
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.jinpaihushi.jphs.withdraw.model.WithdrawCash">
+		INSERT INTO `WITHDRAW_CASH`(
+			id, amount, 
+			account_name, alipay_account, 
+			audit_time, remark, 
+			status, creator_id, 
+			creator_name, create_time
+		)VALUES(
+			#{id,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+			#{accountName,jdbcType=VARCHAR}, #{alipayAccount,jdbcType=VARCHAR}, 
+			#{auditTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+			#{status,jdbcType=INTEGER}, #{creatorId,jdbcType=VARCHAR}, 
+			#{creatorName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<insert id="inserts" useGeneratedKeys="false"
+		parameterType="list">
+        <![CDATA[
+        INSERT INTO `WITHDRAW_CASH`(
+			id, amount, 
+			account_name, alipay_account, 
+			audit_time, remark, 
+			status, creator_id, 
+			creator_name, create_time
+        )]]>
+       	VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id,jdbcType=VARCHAR}, #{item.amount,jdbcType=DECIMAL}, 
+			#{item.accountName,jdbcType=VARCHAR}, #{item.alipayAccount,jdbcType=VARCHAR}, 
+			#{item.auditTime,jdbcType=TIMESTAMP}, #{item.remark,jdbcType=VARCHAR}, 
+			#{item.status,jdbcType=INTEGER}, #{item.creatorId,jdbcType=VARCHAR}, 
+			#{item.creatorName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE WC FROM `WITHDRAW_CASH` WC WHERE WC.ID = #{id} 
+	</delete>
+	
+	<update id="disableById">
+	    UPDATE `WITHDRAW_CASH` WC
+		SET 
+		WC.STATUS = -1
+		WHERE WC.ID = #{id}
+	</update>
+
+	<update id="update">
+		UPDATE `WITHDRAW_CASH` WC
+		<include refid="dynamicSet" /> 
+	    WHERE WC.ID = #{id}
+	</update>
+
+	<select id="load" resultMap="withdrawCash">
+		SELECT <include refid="field"/>
+		FROM `WITHDRAW_CASH` WC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM `WITHDRAW_CASH` WC
+		<include refid="dynamicWhere" />
+	</select>
+
+	<select id="list" resultMap="withdrawCash">
+		SELECT <include refid="field"/>
+		FROM `WITHDRAW_CASH` WC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+
+	<select id="query" resultMap="withdrawCash">
+		SELECT <include refid="field"/>
+		FROM `WITHDRAW_CASH` WC
+		<include refid="dynamicWhere" />
+		<include refid="orderby" />
+	</select>
+	
+	<select id="loadById" resultMap="withdrawCash">
+		SELECT <include refid="field"/>
+		FROM `WITHDRAW_CASH` WC
+		WHERE WC.ID = #{id}
+	</select>
+	
+	<select id="withdrawCashTDetail" resultType="withdrawCashTDetail" >
+		 SELECT
+			o.id order_id,
+			o.order_no,
+			o.voucher_price,
+			o.voucher_use_id,
+			o.platform_id,
+			o.expector_id,
+			o.accept_user_id,
+			o.appointment_time,
+			o.accept_time,
+			o.transaction_id,
+			o.`schedule`,
+			o.device,
+			o.remarks,
+			o.create_time,
+			o.creator_id,
+			oo.id AS oo_id,
+			oo.order_id AS oo_order_id,
+			oo.department_id AS
+			oo_department_id,
+			oo.hospital AS oo_hospital,
+			oo.address AS oo_address,
+			oo.detail_address AS oo_detail_address,
+			oo.drug AS oo_drug,
+			oo.tool AS oo_tool,
+			oo.public_name AS oo_public_name,
+			oo.public_content AS oo_public_content,
+			oo.status AS oo_status,
+			oo.create_time AS oo_create_time,
+			oo.creator_id AS oo_creator_id,
+			oo.remarks AS oo_remarks,
+			og.id AS og_id,
+			og.order_id AS og_order_id,
+			og.goods_id AS og_goods_id,
+			og.title AS og_title,
+			og.price AS og_prices,
+			og.pay_price AS og_pay_price,
+			(SELECT SUM(oss.price) FROM order_service oss WHERE oss.order_id=o.id) og_price,
+			og.profit AS og_profit,
+			og.expector_id AS og_expector_id,
+			og.executor_id AS og_executor_id,
+			og.`status` AS og_status,
+			og.create_time AS og_create_time,
+			og.remark AS og_remark,
+			u.phone AS userPhone,
+			u.name AS userName,
+			u.sex AS userSex,
+			u.id AS u_id
+			FROM `withdraw_cash` wc 
+			LEFT JOIN transaction tn ON wc.`id`=tn.`withdraw_cash_id` 
+			LEFT JOIN order o ON tn.`order_id`=o.`id` 
+			LEFT JOIN order_other oo ON o.`id`=oo.`order_id` 
+			LEFT JOIN order_goods og ON o.`id`=og.`order_id` 
+			LEFT JOIN `user` u ON o.`creator_id`=u.`id` 
+			LEFT JOIN goods g ON og.`goods_id`=g.`id` 
+			WHERE o.status=#{status} 
+			 AND o.`schedule`=#{schedule} 
+			 AND wc.creator_id=#{userId} 
+			 ORDER BY o.create_time DESC 
+	</select>
+	
+</mapper>

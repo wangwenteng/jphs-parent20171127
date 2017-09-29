@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -63,8 +62,13 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction> impleme
 				try {
 					// 判断支付方式<!-- (1支付宝，2微信，3余额，4银联，5vip卡支付) -->
 					// 余额支付
-
 					if (transaction.getPayType() == 3) {
+						// 插入退款信息
+						transaction.setId(UUIDUtils.getId());
+						transaction.setType(1);
+						transaction.setCreateTime(new Date());
+						transaction.setStatus(0);
+						transaction.setWithdraw(0);
 						// 退换余额
 						Account account = new Account();
 						account.setCreatorId(transaction.getCreatorId());
@@ -74,43 +78,14 @@ public class TransactionServiceImpl extends BaseServiceImpl<Transaction> impleme
 					}
 					// 微信支付
 					if (transaction.getPayType() == 2) {
-						Integer total = (int) (Double.parseDouble(totalMoney) * 100);
-						Integer refund = (int) (transaction.getAmount() * 100);
-						Map<String, Object> map = WeiXinPayRefund.doPost(transaction.getOutTradeNo(), total.toString(),
-								refund.toString());
-						if (map != null) {
-							if (!map.get("return_code").toString().equals("SUCCESS")
-									|| !map.get("result_code").toString().equals("SUCCESS")) {
-								status.setRollbackOnly();// 回滚
-								return "0";
-							} else {
-								transaction.setOutTradeNo(map.get("transaction_id").toString());
-							}
-						} else {
-							status.setRollbackOnly();// 回滚
-							return "0";
-						}
+
+						WeiXinPayRefund.doPost(transaction.getOutTradeNo(), totalMoney,
+								transaction.getAmount().toString());
 					}
 					// 支付宝支付
 					if (transaction.getPayType() == 1) {
-						Map map = AlipayRefund.doGet(transaction.getOutTradeNo(), transaction.getAmount().toString());
-						if (map != null) {
-							if (StringUtils.isEmpty(map.get("").toString())) {
-								status.setRollbackOnly();// 回滚
-								return "0";
-							}
-						} else {
-							status.setRollbackOnly();// 回滚
-							return "0";
-						}
-
+						AlipayRefund.doGet(transaction.getOutTradeNo(), transaction.getAmount().toString());
 					}
-					// 插入退款信息
-					transaction.setWithdraw(0);
-					transaction.setId(UUIDUtils.getId());
-					transaction.setCreateTime(new Date());
-					transaction.setStatus(1);
-					transaction.setType(1);
 					transactionDao.insert(transaction);
 					return "1";
 				} catch (Exception e) {
